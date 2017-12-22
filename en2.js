@@ -74,21 +74,22 @@ Msg = {
       "helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
     },
     "strong": {
-      "message0": "important %1 %2",
+      "message0": "<strong> %1 %2 </strong>",
       "tooltip": "",
       "helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
     },
     "headline": {
-      "message0": "headline %1 %2 %3",
+      var inputOne = "%1"
+      "message0": "<h %1 > %2 %3 </h" + inputOne + ">",
       "tooltip": "",
       "helpUrl": "http://www.w3schools.com/tags/tag_html.asp",
       "args0": [{"options": [
-        ["level 1","h1"],
-        ["level 2","h2"],
-        ["level 3","title"],
-        ["level 4","h4"],
-        ["level 5","h5"],
-        ["level 6","h6"]
+        ["1","h1"],
+        ["2","h2"],
+        ["3","h3"],
+        ["4","h4"],
+        ["5","h5"],
+        ["6","h6"]
       ]}],
     },
     "linebreak": {
