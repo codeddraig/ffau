@@ -24,38 +24,38 @@ Msg = {
       "message0": "document %1 header %2 %3 content %4 %5",
     },
     "html": {
-      "message0": "document %1 %2",
+      "message0": "<html> %1 %2",
     },
     "body": {
-      "message0": "content %1 %2",
+      "message0": "<body> %1 %2",
     },
     "head": {
-      "message0": "header %1 %2",
+      "message0": "<head> %1 %2",
     },
     "title": {
-      "message0": "titles-are-cool %1",
+      "message0": "<title> %1",
     },
     "paragraph": {
-      "message0": "paragraph %1",
+      "message0": "<p> %1",
     },
     "plaintext": {
-      "message0": "text %1",
+      "message0": "string %1",
     },
     "division": {
-      "message0": "division %1 %2",
+      "message0": "<div> %1 %2",
     },
     "style": {
-      "message0": "style =  %1 %2",
+      "message0": "<style> =  %1 %2",
       "tooltip": "",
       "helpUrl": ""
     },
     "color": {
-      "message0": "text colour :  %1",
+      "message0": "<color> :  %1",
       "tooltip": "",
       "helpUrl": ""
     },
     "bgcolour": {
-      "message0": "background colour :  %1",
+      "message0": "<bgcolour> :  %1",
       "helpUrl": ""
     },
     "genericstyle": {
@@ -88,7 +88,7 @@ Msg = {
       ],
     },
     "link": {
-      "message0": "link to %1 %2 %3",
+      "message0": "<a href=> %1 %2 %3",
       "tooltip": "",
       "helpUrl": "http://www.w3schools.com/tags/tag_html.asp",
       "args0": [{"text": "target"}],
@@ -157,7 +157,3 @@ Msg = {
     },
   }
 }
-
-
-
-
