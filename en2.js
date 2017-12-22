@@ -67,11 +67,7 @@ Msg = {
       "message0": "<a href=' %1 '> %2 %3 </a>",
       "tooltip": "",
       "helpUrl": "http://www.w3schools.com/tags/tag_html.asp",
-      "args0": [{"text": "target", "options": [
-        ["level 1","This project"],
-        ["level 2","Nowhere"],
-        ["level 3","Another project: %1 "],
-      ]}],,
+      "args0": [{"text": "target"}]
     },
     "span": {
       "message0": "<span> %1 %2 </span>",
