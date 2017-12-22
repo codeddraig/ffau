@@ -37,7 +37,34 @@ Msg = {
       "message0": "<title> %1 </title>",
     },
     "deleted": {
-      "message0": "<in> %1 %2 </in>",
+      "message0": "<del> %1 %2 </del>",
+    },
+    "inserted": {
+      "message0": "<ins> %1 %2 </ins>",
+    },
+    "superscript": {
+      "message0": "<sup> %1 %2 </sup>",
+    },
+    "subscript": {
+      "message0": "<sub> %1 %2 </sub>",
+    },
+    "code": {
+      "message0": "<code> %1 %2 </code>",
+    },
+    "quote": {
+      "message0": "<quote> %1 %2 </quote>",
+    },
+    "blockquote": {
+      "message0": "<blockquote> %1 %2 </blockquote>",
+    },
+    "table": {
+      "message0": "<table> %1 %2 </table>",
+    },
+    "row": {
+      "message0": "<tr> %1 %2 </tr>",
+    },
+    "entry": {
+      "message0": "<th> %1 %2 </th>",
     },
     "paragraph": {
       "message0": "<p> %1 </p>",
