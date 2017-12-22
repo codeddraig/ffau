@@ -94,27 +94,27 @@ Msg = {
       ]}],
     },
     "linebreak": {
-      "message0": "line break",
+      "message0": "<br/>",
       "tooltip": "",
       "helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
     },
     "horizontalbreak": {
-      "message0": "topic break",
+      "message0": "<hr/>",
       "tooltip": "",
       "helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
     },
     "unorderedlist": {
-      "message0": "unordered list %1 %2",
+      "message0": "<ul> %1 %2 </ul>",
       "tooltip": "",
       "helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
     },
     "orderedlist": {
-      "message0": "ordered list %1 %2",
+      "message0": "<ol> %1 %2 </ol>",
       "tooltip": "",
       "helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
     },
     "listelement": {
-      "message0": "list item %1 %2",
+      "message0": "<li> %1 %2 </li>",
       "tooltip": "",
       "helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
     },
