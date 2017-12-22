@@ -39,7 +39,7 @@ Msg = {
       "message0": "<p> %1 </p>",
     },
     "plaintext": {
-      "message0": "'%1'",
+      "message0": " " %1 " ",
     },
     "division": {
       "message0": "<div> %1 %2 </div>",
