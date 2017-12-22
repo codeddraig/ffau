@@ -1,7 +1,7 @@
 Msg = {
   categories: {
     "html": "HTML",
-    "baseframe": "Base frame",
+    "baseframe": "Hi - Base frame",
     "textstructure": "Text structure",
     "markup": "Text markup",
     "style": "Style",
@@ -33,7 +33,7 @@ Msg = {
       "message0": "header %1 %2",
     },
     "title": {
-      "message0": "title %1",
+      "message0": "titles-are-cool %1",
     },
     "paragraph": {
       "message0": "paragraph %1",
