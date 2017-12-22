@@ -8,16 +8,6 @@ Msg = {
     "enumerations": "Enumeration",
     "tables": "Tables",
     "forms": "Forms",
-    "scripts": "Script",
-    "scripting": "Scripting",
-    "logic": "Logic",
-    "loops": "Loops",
-    "math": "Math",
-    "text": "Text",
-    "lists": "Lists",
-    "colour": "Colour",
-    "variables": "Variables",
-    "functions": "Functions",
   },
   blocks: {
     "baseframe": {
@@ -62,7 +52,7 @@ Msg = {
       "message0": "<a href= %1 > %2 %3 </a>",
       "tooltip": "",
       "helpUrl": "http://www.w3schools.com/tags/tag_html.asp",
-      "args0": [{"text": "nowhere"}]
+      "args0": [{"text": "destination"}]
     },
     "span": {
       "message0": "<span> %1 %2 </span>",
@@ -79,10 +69,9 @@ Msg = {
       ],
     },
     "emphasise": {
-      "message0": "<em %3 > %1 %2 </em>",
+      "message0": "<em> %1 %2 </em>",
       "tooltip": "",
       "helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
-      "args0": [{"text": "args"}]
     },
     "strong": {
       "message0": "important %1 %2",
