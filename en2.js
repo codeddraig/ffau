@@ -45,7 +45,7 @@ Msg = {
       "message0": "<div> %1 %2 </div>",
     },
     "style": {
-      "message0": "style=' %1 %2 '",
+      "message0": "style= %1 %2 ",
       "tooltip": "",
       "helpUrl": ""
     },
@@ -64,10 +64,10 @@ Msg = {
       "helpUrl": ""
     },
     "link": {
-      "message0": "<a href=' %1 '> %2 %3 </a>",
+      "message0": "<a href= %1 > %2 %3 </a>",
       "tooltip": "",
       "helpUrl": "http://www.w3schools.com/tags/tag_html.asp",
-      "args0": [{"text": "target"}]
+      "args0": [{"text": "nowhere"}]
     },
     "span": {
       "message0": "<span> %1 %2 </span>",
