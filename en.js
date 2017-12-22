@@ -1,7 +1,7 @@
 Msg = {
   categories: {
     "html": "HTML",
-    "baseframe": "Base frame",
+    "baseframe": "Base frame - not!",
     "textstructure": "Text structure",
     "markup": "Text markup",
     "style": "Style",
@@ -39,7 +39,7 @@ Msg = {
       "message0": "paragraph %1",
     },
     "plaintext": {
-      "message0": "text %1",
+      "message0": "<p> %1",
     },
     "division": {
       "message0": "division %1 %2",
