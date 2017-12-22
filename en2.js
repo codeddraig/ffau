@@ -80,7 +80,7 @@ Msg = {
     },
     "headline": {
       var inputOne = "%1"
-      "message0": "<h %1 > %2 %3 </h" + inputOne + ">",
+      "message0": "<h %1 > %2 %3 </h %1 >,
       "tooltip": "",
       "helpUrl": "http://www.w3schools.com/tags/tag_html.asp",
       "args0": [{"options": [
