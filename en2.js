@@ -24,7 +24,7 @@ Msg = {
       "message0": "<html> %1 <head> %2 %3 </head> <body> %4 %5 </body> </html>",
     },
     "html": {
-      "message0": "<html> %1 %2" + "</html>",
+      "message0": "<html> %1 %2 </html>",
     },
     "body": {
       "message0": "<body> %1 %2 </body>",
@@ -39,13 +39,13 @@ Msg = {
       "message0": "<p> %1 </p>",
     },
     "plaintext": {
-      "message0": "%1",
+      "message0": "'%1'",
     },
     "division": {
       "message0": "<div> %1 %2 </div>",
     },
     "style": {
-      "message0": "style= %1 %2 ",
+      "message0": "style=' %1 %2 '",
       "tooltip": "",
       "helpUrl": ""
     },
@@ -63,23 +63,18 @@ Msg = {
       "tooltip": "",
       "helpUrl": ""
     },
-    "genericattribute": {
-      "message0": "%1  =  %2",
-      "tooltip": "",
-      "helpUrl": "",
-      "args0": [
-        {"text": "attribute"},
-        {"text": "value"}
-      ],
-    },
     "link": {
-      "message0": "link to %1 %2 %3",
+      "message0": "<a href=' %1 '> %2 %3 </a>",
       "tooltip": "",
       "helpUrl": "http://www.w3schools.com/tags/tag_html.asp",
-      "args0": [{"text": "target"}],
+      "args0": [{"text": "target", "options": [
+        ["level 1","This project"],
+        ["level 2","Nowhere"],
+        ["level 3","Another project: %1 "],
+      ]}],,
     },
     "span": {
-      "message0": "span %1 %2",
+      "message0": "<span> %1 %2 </span>",
       "tooltip": "",
       "helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
     },
