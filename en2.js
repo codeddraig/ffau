@@ -100,7 +100,7 @@ Msg = {
       "args0": [{"options": [
         ["level 1","h1"],
         ["level 2","h2"],
-        ["level 3","h5"],
+        ["level 3","title"],
         ["level 4","h4"],
         ["level 5","h5"],
         ["level 6","h6"]
