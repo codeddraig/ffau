@@ -36,6 +36,9 @@ Msg = {
     "title": {
       "message0": "<title> %1 </title>",
     },
+    "deleted": {
+      "message0": "<in> %1 %2 </in> 
+    }
     "paragraph": {
       "message0": "<p> %1 </p>",
     },
