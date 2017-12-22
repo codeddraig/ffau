@@ -60,10 +60,10 @@ Msg = {
     "table": {
       "message0": "<table> %1 %2 </table>",
     },
-    "row": {
+    "tablerow": {
       "message0": "<tr> %1 %2 </tr>",
     },
-    "entry": {
+    "tableentry": {
       "message0": "<th> %1 %2 </th>",
     },
     "paragraph": {
