@@ -24,7 +24,7 @@ Msg = {
       "message0": "<html> %1 <head> %2 %3 </head> <body> %4 %5 </body> </html>",
     },
     "html": {
-      "message0": "<html> %1 %2 </html>",
+      "message0": "<html> %1 %2" + "</html>",
     },
     "body": {
       "message0": "<body> %1 %2 </body>",
@@ -45,7 +45,7 @@ Msg = {
       "message0": "<div> %1 %2 </div>",
     },
     "style": {
-      "message0": "style=" %1 %2 "",
+      "message0": "style= %1 %2 ",
       "tooltip": "",
       "helpUrl": ""
     },
