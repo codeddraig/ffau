@@ -1,13 +1,13 @@
 Msg = {
   categories: {
-    "html": "Click",
-    "baseframe": "Base frame",
-    "textstructure": "Text structure",
-    "markup": "Text markup",
-    "style": "Style",
-    "enumerations": "Enumeration",
+    "html": "(not meant to be here)",
+    "baseframe": "HTML Frame",
+    "textstructure": "Text layout",
+    "markup": "Text design",
+    "style": "Styling",
+    "enumerations": "Lists",
     "tables": "Tables",
-    "forms": "Forms",
+    "forms": "Forms and inputs",
     //Below this point, there shouldn't be anything visible. Simply deleting the section's 'definition' does not work, so I temporarily filled it in with sample text to show that it is not meant to be there until I figure out a way to _completely_ get rid of any trace of its existance.   
     "scripts": "Do not click!",
     "scripting": "Do not click!",
