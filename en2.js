@@ -58,11 +58,6 @@ Msg = {
       "message0": "background-colour:  %1",
       "helpUrl": ""
     },
-    "more_attributes": {
-      "message0": "%1 %2 %3",
-      "tooltip": "",
-      "helpUrl": ""
-    },
     "link": {
       "message0": "<a href= %1 > %2 %3 </a>",
       "tooltip": "",
@@ -75,18 +70,19 @@ Msg = {
       "helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
     },
     "image": {
-      "message0": "image %1 or %2",
+      "message0": "<img src= %1 alt= %2 >",
       "tooltip": "",
       "helpUrl": "http://www.w3schools.com/tags/tag_html.asp",
       "args0": [
-        {"text": "URL"},
-        {"text": "alternative text"}
+        {"text": ""},
+        {"text": ""}
       ],
     },
     "emphasise": {
-      "message0": "emphasise %1 %2",
+      "message0": "<em %3 > %1 %2 </em>",
       "tooltip": "",
       "helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
+      "args0": [{"text": "args"}]
     },
     "strong": {
       "message0": "important %1 %2",
