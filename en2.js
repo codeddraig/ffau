@@ -38,7 +38,7 @@ Msg = {
     },
     "deleted": {
       "message0": "<in> %1 %2 </in> 
-    }
+    },
     "paragraph": {
       "message0": "<p> %1 </p>",
     },
