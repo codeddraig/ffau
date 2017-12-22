@@ -1,7 +1,7 @@
 Msg = {
   categories: {
     "html": "HTML",
-    "baseframe": "Hi - Base frame",
+    "baseframe": "Base frame",
     "textstructure": "Text structure",
     "markup": "Text markup",
     "style": "Style",
@@ -21,57 +21,42 @@ Msg = {
   },
   blocks: {
     "baseframe": {
-      "message0": "document %1 header %2 %3 content %4 %5",
+      "message0": "<html> %1 <head> %2 %3 </head> <body> %4 %5 </body> </html>",
     },
     "html": {
-      "message0": "<html> %1 %2",
+      "message0": "<html> %1 %2 </html>",
     },
     "body": {
-      "message0": "<body> %1 %2",
+      "message0": "<body> %1 %2 </body>",
     },
     "head": {
-      "message0": "<head> %1 %2",
+      "message0": "<head> %1 %2 </head>",
     },
     "title": {
-      "message0": "<title> %1",
+      "message0": "<title> %1 </title>",
     },
     "paragraph": {
-      "message0": "<p> %1",
+      "message0": "<p> %1 </p>",
     },
     "plaintext": {
-      "message0": "string %1",
+      "message0": "%1",
     },
     "division": {
-      "message0": "<div> %1 %2",
+      "message0": "<div> %1 %2 </div>",
     },
     "style": {
-      "message0": "<style> =  %1 %2",
+      "message0": "style=" %1 %2 "",
       "tooltip": "",
       "helpUrl": ""
     },
     "color": {
-      "message0": "<color> :  %1",
+      "message0": "colour:  %1",
       "tooltip": "",
       "helpUrl": ""
     },
     "bgcolour": {
-      "message0": "<bgcolour> :  %1",
+      "message0": "background-colour:  %1",
       "helpUrl": ""
-    },
-    "genericstyle": {
-      "message0": "%1 : %2",
-      "tooltip": "",
-      "helpUrl": "",
-      "args0": [
-        {"text": "property"},
-        {"text": "value"}
-      ],
-    },
-    "generictag": {
-      "message0": "< %1 > %2 %3",
-      "tooltip": "",
-      "helpUrl": "http://www.w3schools.com/tags/tag_html.asp",
-      "args0": [{"text": "tag"},],
     },
     "more_attributes": {
       "message0": "%1 %2 %3",
@@ -88,7 +73,7 @@ Msg = {
       ],
     },
     "link": {
-      "message0": "<a href=> %1 %2 %3",
+      "message0": "link to %1 %2 %3",
       "tooltip": "",
       "helpUrl": "http://www.w3schools.com/tags/tag_html.asp",
       "args0": [{"text": "target"}],
@@ -157,3 +142,7 @@ Msg = {
     },
   }
 }
+
+
+
+
