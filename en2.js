@@ -27,6 +27,9 @@ Msg = {
     "html": {
       "message0": "<html> %1 %2 </html>",
     },
+    "gezablock": {
+      "message0": "<gezablock> %1 %2 </gezablock>",
+    },
     "body": {
       "message0": "<body> %1 %2 </body>",
     },
