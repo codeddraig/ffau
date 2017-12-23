@@ -700,6 +700,28 @@ var htmlBlocks =
   "tooltip": "",
   "helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
 },
+ 
+ //Geza custom block experiment
+{
+  "type": "gezablock",
+  "message0": "<gezablock> Hi </gezablock>",
+  "args0": [
+  {
+    "type": "input_dummy"
+  },
+  {
+    "type": "input_statement",
+    "name": "content"
+  }
+  ],
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 50,
+  "tooltip": "",
+  "helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
+},
+ 
+ 
 {
   "type": "form",
   "message0": "form %1 %2",
