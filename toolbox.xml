@@ -1,6 +1,4 @@
 <xml xmlns="http://www.w3.org/1999/xhtml" id="toolbox" style="display: none;">
-  <category name="HTML"></category>
-  <sep></sep>
   <category name="Base frame" colour="#a55b5b">
     <block type="html">
       <statement name="content">
