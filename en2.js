@@ -9,16 +9,6 @@ Msg = {
     "tables": "Tables",
     "forms": "Forms and inputs",
     //Below this point, there shouldn't be anything visible. Simply deleting the section's 'definition' does not work, so I temporarily filled it in with sample text to show that it is not meant to be there until I figure out a way to _completely_ get rid of any trace of its existance.   
-    "scripts": "Do not click!",
-    "scripting": "Do not click!",
-    "logic": "Do not click!",
-    "loops": "Do not click!",
-    "math": "Do not click!",
-    "text": "Do not click!",
-    "lists": "Do not click!",
-    "color": "Do not click!",
-    "variables": "Do not click!",
-    "functions": "Do not click!",
   },
   blocks: {
     "baseframe": {
