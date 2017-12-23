@@ -22,6 +22,7 @@
     <block type="body"></block>
     <block type="body_attributes"></block>
     <block type="head"></block>
+    <block type="gezablock"></block>
     <block type="title">
       <statement name="content">
         <block type="plaintext"></block>
