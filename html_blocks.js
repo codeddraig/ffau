@@ -402,7 +402,7 @@ var htmlBlocks =
 },
 {
   "type": "headline",
-  "message0": "headline %1 %2 %3",
+  "message0": "headline %1 %2 %3 %4",
   "args0": [
   {
     "type": "field_dropdown",
@@ -440,7 +440,10 @@ var htmlBlocks =
   {
     "type": "input_statement",
     "name": "content"
-  }
+  },
+  {
+    "type": "input_statement",
+    "value": "NAME"
   ],
   "previousStatement": null,
   "nextStatement": null,
