@@ -179,6 +179,11 @@ HtmlGenerator['horizontalbreak'] = function(block) {
   return code;
 };
 
+HtmlGenerator['gezablock'] = function(block) {
+  var statements_name = HtmlGenerator.statementToCode(block, 'NAME');
+  var code = '<gezablock>\n' + statements_name + '</gezablock>\n';
+}
+
 HtmlGenerator['unorderedlist'] = function(block) {
   var statements_name = HtmlGenerator.statementToCode(block, 'NAME');
   var code = '<ul>\n' + statements_name + '</ul>\n';
