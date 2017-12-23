@@ -115,7 +115,7 @@ Msg = {
     
     "headline": {
       //Theodore, how would we make the closing tag here? I am not fully proficient in Javascript, so see if you can figure something out.
-      "message0": "<h %1 > %2 %3 </h1>",
+      "message0": "<h %1 > %2 %3 </h %4 >",
       "tooltip": "",
       "helpUrl": "http://www.w3schools.com/tags/tag_html.asp",
       "args0": [{"options": [
