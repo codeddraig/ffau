@@ -9,6 +9,16 @@ Msg = {
     "tables": "Tables",
     "forms": "Forms and inputs",
     //Below this point, there shouldn't be anything visible. Simply deleting the section's 'definition' does not work, so I temporarily filled it in with sample text to show that it is not meant to be there until I figure out a way to _completely_ get rid of any trace of its existance.   
+    "scripts": "Do not click!",
+    "scripting": "Do not click!",
+    "logic": "Do not click!",
+    "loops": "Do not click!",
+    "math": "Do not click!",
+    "text": "Do not click!",
+    "lists": "Do not click!",
+    "color": "Do not click!",
+    "variables": "Do not click!",
+    "functions": "Do not click!",
   },
   blocks: {
     "baseframe": {
@@ -115,7 +125,7 @@ Msg = {
     
     "headline": {
       //Theodore, how would we make the closing tag here? I am not fully proficient in Javascript, so see if you can figure something out.
-      "message0": "<h %1 > %2 %3 </h %4 >",
+      "message0": "<h %1 > %2 %3 </h1>",
       "tooltip": "",
       "helpUrl": "http://www.w3schools.com/tags/tag_html.asp",
       "args0": [{"options": [
@@ -125,7 +135,7 @@ Msg = {
         ["4","h4"],
         ["5","h5"],
         ["6","h6"]
-      ]}],
+      ]},
     },
     "linebreak": {
       "message0": "<br/>",
