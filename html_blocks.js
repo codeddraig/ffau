@@ -470,6 +470,7 @@ var htmlBlocks =
     "h6"
     ]
     ]
+  },
   ],
   "previousStatement": null,
   "nextStatement": null,
