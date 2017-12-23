@@ -1225,6 +1225,52 @@
         <field name="HUE">330</field>
       </block>
     </value>
+    </block>
+    
+    
+    
+    <block type="factory_base" id=",uZ?DNf{6+qhfT`pYF6H" deletable="false" movable="false" x="0" y="0">
+    <mutation connections="BOTH"></mutation>
+    <field name="NAME">gezablock</field>
+    <field name="INLINE">AUTO</field>
+    <field name="CONNECTIONS">BOTH</field>
+    <statement name="INPUTS">
+      <block type="input_dummy" id="de5^Ub#!^99IkqCQ8x}j">
+        <field name="ALIGN">LEFT</field>
+        <statement name="FIELDS">
+          <block type="field_static" id="$Nvjd`dOOOW8RdFT]/7/">
+            <field name="TEXT"><gezablock></field>
+          </block>
+        </statement>
+      </block>
+    </statement>
+    <value name="TOOLTIP">
+      <block type="text" id=":}DEzID4=tMRK}@{b).[" deletable="false" movable="false">
+        <field name="TEXT"></field>
+      </block>
+    </value>
+    <value name="HELPURL">
+      <block type="text" id="R?.3!qt:L|Eu?Xv/#aea" deletable="false" movable="false">
+        <field name="TEXT">http://www.w3schools.com/tags/tag_html.asp</field>
+      </block>
+    </value>
+    <value name="TOPTYPE">
+      <shadow type="type_null" id="eA90.8h@dZOnhT$LeX.:"></shadow>
+    </value>
+    <value name="BOTTOMTYPE">
+      <shadow type="type_null" id="N/qP;#CGcZ{H[Dk,r?]+"></shadow>
+    </value>
+    <value name="COLOUR">
+      <block type="colour_hue" id="[@5*@t_`=T(C(rX^c;%l">
+        <mutation colour="#a55b80"></mutation>
+        <field name="HUE">330</field>
+      </block>
+    </value>
+    
+    
+    
+    
+    
   </block><block type="factory_base" id=",uZ?DNf{6+qhfT`pYF6H" deletable="false" movable="false" x="0" y="0">
     <mutation connections="BOTH"></mutation>
     <field name="NAME">unorderedlist</field>
