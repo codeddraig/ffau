@@ -442,8 +442,34 @@ var htmlBlocks =
     "name": "content"
   },
   {
-    "type": "input_statement",
-    "value": "NAME"
+    "type": "field_dropdown",
+    "name": "NAME",
+    "options": [
+    [
+    "level 1",
+    "h1"
+    ],
+    [
+    "level 2",
+    "h2"
+    ],
+    [
+    "level 3",
+    "h2"
+    ],
+    [
+    "level 4",
+    "h4"
+    ],
+    [
+    "level 5",
+    "h5"
+    ],
+    [
+    "level 6",
+    "h6"
+    ]
+    ]
   ],
   "previousStatement": null,
   "nextStatement": null,
