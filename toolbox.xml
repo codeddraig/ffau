@@ -48,9 +48,6 @@
     <block type="code"></block>
     <block type="quote"></block>
     <block type="blockquote"></block>
-    <block type="sample"></block>
-    <block type="keyboard"></block>
-    <block type="variable"></block>
     <block type="division"></block>
   </category>
   <category name="Style" colour="#5b6da5">
