@@ -40,6 +40,18 @@
 	</head>
 
 	<body>
+		<nav>
+			<div class="nav-wrapper">
+				<a href="#" class="brand-logo">Ffau Editor</a>
+				<ul id="nav-mobile" class="right hide-on-med-and-down">
+					<li id="version-loader">Version</li>
+					<script>
+						$('#version-loader').load('version.txt');
+					</script>
+				</ul>
+			</div>
+		</nav>
+
 		<div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
 		<xml id="toolbox" style="display: none">
 			<category name="Structure" colour="230">
