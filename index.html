@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<script src="library/blockly/google-blockly-c455689/blockly_compressed.js"></script>
+		<script src="library/blockly/google-blockly-c455689/msg/js/en.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+		<script src="library/blockly/html/blocks.js"></script>
+		<script src="library/blockly/html/generator.js"></script>
+		<title>CodeDragon : Editor</title>
+	</head>
+	<body>
+		<div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
+		<xml id="toolbox" style="display: none">
+			<category name="Structure" colour="230">
+				<block type="html"></block>
+				<block type="head"></block>
+				<block type="body"></block>
+				<block type="title"></block>
+			</category>
+			<category name="Modifiers" colour="120">
+				<block type="args"></block>
+				<block type="class"></block>
+				<block type="id"></block>
+			</category>
+			<category name="Text" colour="65">
+				<block type="emptytext"></block>
+				<block type="paragraph"></block>
+				<block type="header"></block>
+			</category>
+			<category name="Style" colour="290">
+				<category name="Structure" colour="290">
+					<block type="style"></block>
+					<block type="cssitem"></block>
+				</category>
+				<category name="Items" colour="290">
+					<block type="fontfamily"></block>
+				</category>
+			</category>
+		</xml>
+		<p id="code"></p>
+		<button onclick="writeCode()">Write Code</button>
+		<script>
+			var workspacePlayground = Blockly.inject('blocklyDiv',
+				{toolbox: document.getElementById('toolbox')});
+			function writeCode(){
+				var code = htmlGen.workspaceToCode(workspacePlayground);
+				alert(code);
+			}
+		</script>
+	</body>
+</html>
