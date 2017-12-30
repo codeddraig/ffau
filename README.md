@@ -11,9 +11,6 @@ This project would not be possible without the following amazing libraries. We a
 ### Blockly by Google (https://github.com/google/blockly)
 A magic library which you should have heard of by now. It creates the whole drag-and-drop block system, which is the basis for this entire system!
 
-### Blockly-HTML by BWINF.de (https://github.com/bwinf/blockly-html)
-The core framework for converting the blocks into HTML code.
-
 ## Contributors
 
 ### Theodore Tucker https://github.com/tti0 // tt@tti0.net // https://tti0.net
