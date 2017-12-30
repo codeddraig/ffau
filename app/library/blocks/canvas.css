@@ -1,0 +1,32 @@
+body{
+	margin:0;
+	font-family:'Roboto',sans-serif;
+}
+.canvas{
+	height:100vh;
+	width:100%;
+	overflow:hidden;
+	margin:0;
+	padding:0;
+	display:inline-flex;
+}
+.items{
+	height:100vh;
+	margin:0;
+	padding:15px 0 0 15px;
+	width:15%;
+	background-color:#DBDBDB;
+}
+.item-img{
+	width:75%;
+}
+.codespace{
+	width:85%;
+	height:100vh;
+	margin:0;
+}
+.bin{
+	margin-top:87vh;
+	margin-left:25px;
+	width:50px;
+}
