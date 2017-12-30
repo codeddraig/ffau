@@ -1,14 +1,40 @@
+<!--		Ffau - A blocky-based editor for teaching HTML, CSS and Javascript.
+
+				Developed by Pal Kerecsenyi, Geza Kerecsenyi and Theodore Tucker.
+				Full details are avaliable at the Github repo: https://github.com/codeddraig/ffau
+				Ffau editor will not work without its libraries. The best way to get all
+					off this data at once is to grab the latest release version from the
+					Github repo.
+				Ffau is open source software. This means you can re-mix, share and use
+					it however you want, including for commercial purposes. However, you
+					MUST provide attribution to the original authors if you do this.
+				However, Ffau is provided with NO WARRANTY whatsoever, and by using this
+					software, you agree to the terms of the MIT License.
+
+				Copyright (c) 2017-18 Pal Kerecsenyi, Geza Kerecsenyi and Theodore Tucker
+
+				THIS IS VERSION 0.1-candidate-a
+ -->
+
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="utf-8">
+
+		<!-- HEADER LIBRARIES -->
+		<!-- google's blockly stuff first -->
 		<script src="library/blockly/google-blockly/blockly_compressed.js"></script>
 		<script src="library/blockly/google-blockly/msg/js/en.js"></script>
+		<!-- jquery -->
 		<script src="library/jquery/jquery-3.2.1.js"></script>
+		<!-- our blockly tweaks -->
 		<script src="library/blockly/html/blocks.js"></script>
 		<script src="library/blockly/html/generator.js"></script>
-		<title>CodeDragon : Editor</title>
+		<!-- /HEADER LIBRARIES -->
+
+		<title>Ffau Editor</title>
 	</head>
+
 	<body>
 		<div id="blocklyDiv" style="height: 480px; width: 600px;"></div>
 		<xml id="toolbox" style="display: none">
