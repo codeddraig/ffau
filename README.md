@@ -7,7 +7,7 @@ General contact: **ffau [at] codei0 [dot] net**
 
 Live demo: https://codeddraig.github.io/ffau/
 
-THIS IS VERSION 0.1.1
+THIS IS VERSION 0.1.2-candidate-a
 
 ## License info
 
@@ -42,6 +42,12 @@ A magic library which you should have heard of by now. It creates the whole drag
 
 ### Materialize.css by Alvin Wang (https://github.com/Dogfalo/materialize)
 The CSS framework for everything in Ffau except the blocks themselves. It is intended to replicate Google's Material Design philosophy for the web. However, the library itself is not endorsed by Google.
+
+### Royalty Free Music by Kevin McLeod (http://incompetech.com/)
+"Dance of the Sugar Plum Fairy", "Monkeys Spinning Monkeys", "Pixelland"
+Kevin MacLeod (incompetech.com)
+Licensed under Creative Commons: By Attribution 3.0
+http://creativecommons.org/licenses/by/3.0/
 
 ## Inspiration
 Our project is inspired by, but not a direct clone of, the blockly-html project (https://github.com/bwinf/blockly-html) by the BWNIF (Bundesweit Informatik Nachwuchs Fördern), a German charity which seeks to further development in Computer Science in Children. Also, we owe some of our inspiration to the EduBlocks project (https://github.com/AllAboutCode/EduBlocks) by Joshua Lowe, which performs a similar function to our work, but for Python, rather than the web.
