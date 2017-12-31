@@ -1,7 +1,7 @@
-# Ffau Editor Changelog - Version 0.1.2
+# Ffau Editor Changelog - Version 0.1.1
 
 ## Summary
-Summary to go here. Please add new blocks in bold italics on the list below.
+Most work done is fundamentals of editor, and stage-setting for JS and further HTML/CSS implementation. I am indebted to @palkerecsenyi for his excellent work with the Blockly foundations, and to @gezakerecsenyi for his enthusiasm in creating new blocks.
 
 ## Details
 * Updated version numbers in index.html and version.txt
