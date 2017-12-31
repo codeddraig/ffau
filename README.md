@@ -7,7 +7,7 @@ General contact: **ffau [at] codei0 [dot] net**
 
 Live demo: https://codeddraig.github.io/ffau/
 
-THIS IS VERSION 0.1.1-candidate-a
+THIS IS VERSION 0.1.1-candidate-b
 
 ## License info
 

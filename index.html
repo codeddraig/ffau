@@ -13,7 +13,7 @@
 
 				Copyright (c) 2017-18 Pal Kerecsenyi, Geza Kerecsenyi and Theodore Tucker
 
-				THIS IS VERSION 0.1.1-candidate-a
+				THIS IS VERSION 0.1.1-candidate-b
  -->
 
 <!DOCTYPE html>
@@ -29,8 +29,8 @@
 		<script src="library/blockly/google-blockly/msg/js/en.js"></script>
 		<!-- a little tweak to blockly, to make the block colours more vibrant -->
 		<script>
-			Blockly.HSV_SATURATION = 1;
-			Blockly.HSV_VALUE = 0.7;
+		Blockly.HSV_SATURATION = 1;
+		Blockly.HSV_VALUE = 0.7;
 		</script>
 		<!-- jquery -->
 		<script src="library/jquery/jquery-3.2.1.js"></script>
@@ -69,137 +69,80 @@
 			<div class="col s8">
 				<div id="blocklyDiv" style="height: 480px;"></div>
 			</div>
+
+			<xml id="toolbox" style="display: none">
+			  <category name="Structure" colour="210">
+			    <category name="Page" colour="210">
+			      <block type="html"></block>
+			      <block type="head"></block>
+			      <block type="body"></block>
+			      <block type="title"></block>
+			    </category>
+			    <category name="Layout" colour="210">
+			      <block type="divider"></block>
+			      <block type="linebreak"></block>
+			      <block type="hline"></block>
+			    </category>
+			  </category>
+			  <category name="Modifiers" colour="120">
+			    <block type="args"></block>
+			    <block type="class"></block>
+			    <block type="id"></block>
+			    <block type="emptyarg"></block>
+			  </category>
+			  <category name="Style" colour="290">
+			    <category name="Structure" colour="290">
+			      <block type="style"></block>
+			      <block type="stylearg"></block>
+			      <block type="cssitem"></block>
+			    </category>
+			    <category name="Items" colour="290">
+			      <category name="Text" colour="290">
+			        <block type="fontfamily"></block>
+			        <block type="fontsize"></block>
+			        <block type="color"></block>
+			      </category>
+			      <category name="Arrangement" colour="290">
+			        <block type="margin"></block>
+			      </category>
+			      <category name="Design" colour="290">
+			        <block type="bgcolor"></block>
+			        <block type="border"></block>
+			        <block type="bordercol"></block>
+			      </category>
+			      <block type="othercss"></block>
+			    </category>
+			  </category>
+			  <sep></sep>
+			  <category name="Text" colour="65">
+			    <block type="emptytext"></block>
+			    <block type="span"></block>
+			    <block type="textmod"></block>
+			    <block type="paragraph"></block>
+			    <block type="header"></block>
+			    <block type="link"></block>
+			  </category>
+			  <category name="Tables" colour="20">
+			    <block type="table"></block>
+			    <block type="tablerow"></block>
+			    <block type="tableheading"></block>
+			    <block type="tabledata"></block>
+			  </category>
+			</xml>
+
 			<div id="preview" class="col s4">
 				<ul class="tabs">
 					<li class="tab col s6"><a onclick="showMePreview()">Preview</a></li>
 					<li class="tab col s6"><a onclick="showMeCode()">Real code</a></li>
 				</ul>
-				<iframe id="preview-frame" name="prev"></iframe>
+				<iframe id="preview-frame" name="prev" height="435px" width="100%"></iframe>
 				<pre><code id="code-output"></code></pre>
 			</div>
 		</div> <!-- /row -->
 
-		<xml id="toolbox" style="display: none">
-			<category name="Structure" colour="210">
-				<category name="Page" colour="210">
-					<block type="html"></block>
-					<block type="head"></block>
-					<block type="body"></block>
-					<block type="title"></block>
-				</category>
-				<category name="Layout" colour="210">
-					<block type="divider"></block>
-					<block type="linebreak"></block>
-					<block type="hline"></block>
-				</category>
-			</category>
-			<category name="Modifiers" colour="120">
-				<block type="args"></block>
-				<block type="class"></block>
-				<block type="id"></block>
-				<block type="emptyarg"></block>
-			</category>
-			<category name="Style" colour="290">
-				<category name="Structure" colour="290">
-					<block type="style"></block>
-					<block type="stylearg"></block>
-					<block type="cssitem"></block>
-				</category>
-				<category name="Items" colour="290">
-					<category name="Text" colour="290">
-						<block type="fontfamily"></block>
-						<block type="fontsize"></block>
-						<block type="color"></block>
-					</category>
-					<category name="Arrangement" colour="290">
-						<block type="margin"></block>
-					</category>
-					<category name="Design" colour="290">
-						<block type="bgcolor"></block>
-						<block type="border"></block>
-						<block type="bordercol"></block>
-					</category>
-					<block type="othercss"></block>
-				</category>
-			</category>
-			<sep></sep>
-			<category name="Text" colour="65">
-				<block type="emptytext"></block>
-				<block type="span"></block>
-				<block type="textmod"></block>
-				<block type="paragraph"></block>
-				<block type="header"></block>
-				<block type="link"></block>
-			</category>
-			<category name="Tables" colour="20">
-				<block type="table"></block>
-				<block type="tablerow"></block>
-				<block type="tableheading"></block>
-				<block type="tabledata"></block>
-			</category>
-		</xml>
-
-		<script>
-			$(document).ready(function(){
-				$('.load').hide();
-			});
-			var workspace = Blockly.inject('blocklyDiv',{toolbox: document.getElementById('toolbox')});
-			function onUpdate(event){
-				var code = htmlGen.workspaceToCode(workspace);
-				var iframe = document.getElementById('preview-frame');
-				$('#code-output').text(code);
-				iframe.src = "data:text/html;charset=utf-8," + encodeURIComponent(code);
-			}
-			workspace.addChangeListener(onUpdate);
-			function saveCode(){
-				var xml = Blockly.Xml.workspaceToDom(workspace);
-				var xml_text = Blockly.Xml.domToText(xml);
-				download('code.cdr',xml_text);
-			}
-			function clearCode(){
-				if(confirm("Are you sure you want to reset the Ffau workspace?")){
-					Blockly.mainWorkspace.clear();
-				}
-			}
-			function loadCode(){
-				$('.load').show();
-				$('#loadi').hide();
-			}
-			function doLoad(){
-				var fileToLoad = document.getElementById('loadText').files[0];
-				var fileReader = new FileReader();
-				fileReader.onload = function(fileLoadedEvent){
-					var textFromFileLoaded = fileLoadedEvent.target.result;
-					var xml = Blockly.Xml.textToDom(textFromFileLoaded);
-					Blockly.Xml.domToWorkspace(xml, workspace);
-					$('.load').hide();
-					$('#loadi').show();
-				};
-				fileReader.readAsText(fileToLoad, "UTF-8");
-			}
-			function download(filename, text) {
-				var element = document.createElement('a');
-				element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-				element.setAttribute('download', filename);
-				element.style.display = 'none';
-				document.body.appendChild(element);
-				element.click();
-				document.body.removeChild(element);
-			}
-		</script>
-		<script>
-			$('#version-loader').load('version.txt');
-		</script>
-		<script>
-			function showMePreview(){
-				document.getElementById("preview-frame").style.display = 'block';
-				document.getElementById("code-output").style.display = 'none';
-			}
-			function showMeCode(){
-				document.getElementById("preview-frame").style.display = 'none';
-				document.getElementById("code-output").style.display = 'block';
-			}
-		</script>
+		<!-- our special JS to drive this page -->
+		<script type="text/javascript" src="library/index.js"></script>
+		<!-- materialize JS -->
 		<script type="text/javascript" src="library/materialize/js/materialize.js"></script>
 	</body>
 
