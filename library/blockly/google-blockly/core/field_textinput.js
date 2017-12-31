@@ -180,7 +180,7 @@ Blockly.FieldTextInput.prototype.showInlineEditor_ = function(quietInput) {
   var fontSize =
       (Blockly.FieldTextInput.FONTSIZE * this.workspace_.scale) + 'pt';
   div.style.fontSize = fontSize;
-  htmlInput.style.fontSize = fontSize;
+  htmlInput.style.backgroundColor = "white";
 
   Blockly.FieldTextInput.htmlInput_ = htmlInput;
   div.appendChild(htmlInput);
