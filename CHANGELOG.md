@@ -50,18 +50,18 @@ Adding new blocks. That's all.
       * &lt;th&gt;
       * &lt;td&gt;
     * **LISTS**
-      * **&lt;ul&rt;**
-      * **&lt;ol&rt;**
-      * **&lt;li&rt;**
+      * **&lt;ul&gt;**
+      * **&lt;ol&gt;**
+      * **&lt;li&gt;**
     * **SUMMARY**
-      * **&lt;details&rt;**
-      * **&lt;summary&rt;**
+      * **&lt;details&gt;**
+      * **&lt;summary&gt;**
     * **FORMS**
-      * **&lt;form&rt;**
-      * **&lt;input&rt;**
+      * **&lt;form&gt;**
+      * **&lt;input&gt;**
     * **MEDIA**
-      * **&lt;audio&rt;**
-      * **&lt;img&rt;**
+      * **&lt;audio&gt;**
+      * **&lt;img&gt;**
       
 
 Thanks! - @tti0, 16:44 (GMT), 2017-21-31, Manchester, UK.
