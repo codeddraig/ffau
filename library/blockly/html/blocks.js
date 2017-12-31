@@ -2,7 +2,7 @@
 Blockly.Blocks['html'] = {
 	init: function() {
 		this.jsonInit({
-			"message0": '<html> %1 %2',
+			"message0": '<html> %1 %2 </html>',
 			"args0": [
 				{
 					"type": "input_dummy"
@@ -13,7 +13,7 @@ Blockly.Blocks['html'] = {
 					"check": "document"
 				}
 			],
-			"colour": 230,
+			"colour": 210,
 			"tooltip": "HTML tag",
 			"helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
 		});
@@ -24,7 +24,7 @@ Blockly.Blocks['html'] = {
 Blockly.Blocks['head'] = {
 	init: function() {
 		this.jsonInit({
-			"message0": '<head> %1 %2',
+			"message0": '<head> %1 %2 </head>',
 			"args0": [
 				{
 					"type": "input_dummy"
@@ -37,9 +37,9 @@ Blockly.Blocks['head'] = {
 			],
 			"previousStatement": "document",
 			"nextStatement": "document",
-			"colour": 230,
+			"colour": 210,
 			"tooltip": "Head tag",
-			"helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
+			"helpUrl": "https://www.w3schools.com/tags/tag_head.asp"
 		});
 	}
 };
@@ -48,7 +48,7 @@ Blockly.Blocks['head'] = {
 Blockly.Blocks['body'] = {
 	init: function() {
 		this.jsonInit({
-			"message0": '<body> %1 %2',
+			"message0": '<body> %1 %2 </body>',
 			"args0": [
 				{
 					"type": "input_value",
@@ -62,9 +62,9 @@ Blockly.Blocks['body'] = {
 			],
 			"previousStatement": "document",
 			"nextStatement": "document",
-			"colour": 230,
+			"colour": 210,
 			"tooltip": "Body tag",
-			"helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
+			"helpUrl": "https://www.w3schools.com/tags/tag_body.asp"
 		});
 	}
 };
@@ -73,19 +73,78 @@ Blockly.Blocks['body'] = {
 Blockly.Blocks['title'] = {
 	init: function() {
 		this.jsonInit({
-			"message0": '<title> %1',
+			"message0": '<title> %1 </title>',
 			"args0": [
 				{
-					"type": "input_statement",
-					"name": "content",
-					"check": "textcontainer"
+					"type": "field_input",
+					"name": "value",
+					"text": "Untitled"
 				}
 			],
 			"previousStatement": "header",
 			"nextStatement": "header",
-			"colour": 230,
+			"colour": 210,
 			"tooltip": "Title tag",
-			"helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
+			"helpUrl": "https://www.w3schools.com/tags/tag_title.asp"
+		});
+	}
+};
+
+//Divider tag
+Blockly.Blocks['divider'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '<div> %1 %2 </div>',
+			"args0": [
+				{
+					"type": "input_value",
+					"name": "modifier"
+				},
+				{
+					"type": "input_statement",
+					"name": "content",
+					"check": "html"
+				}
+			],
+			"previousStatement": "html",
+			"nextStatement": "html",
+			"colour": 210,
+			"tooltip": "Divider tag",
+			"helpUrl": "https://www.w3schools.com/tags/tag_div.asp"
+		});
+	}
+};
+
+//br tag
+Blockly.Blocks['linebreak'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '<br/>',
+			"previousStatement": "html",
+			"nextStatement": "html",
+			"colour": 210,
+			"tooltip": "Line break tag",
+			"helpUrl": "https://www.w3schools.com/tags/tag_br.asp"
+		});
+	}
+};
+
+//hr tag
+Blockly.Blocks['hline'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '<hr/> %1',
+			"args0":[
+				{
+					"type": "input_value",
+					"name": "modifier"
+				}
+			],
+			"previousStatement": "html",
+			"nextStatement": "html",
+			"colour": 210,
+			"tooltip": "Horizontal line tag",
+			"helpUrl": "https://www.w3schools.com/tags/tag_hr.asp"
 		});
 	}
 };
@@ -128,7 +187,7 @@ Blockly.Blocks['class'] = {
 			"nextStatement": "args",
 			"colour": 120,
 			"tooltip": "Class modifier",
-			"helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
+			"helpUrl": "https://www.w3schools.com/html/html_classes.asp"
 		});
 	}
 };
@@ -148,7 +207,32 @@ Blockly.Blocks['id'] = {
 			"nextStatement": "args",
 			"colour": 120,
 			"tooltip": "ID modifier",
-			"helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
+			"helpUrl": "https://www.w3schools.com/tags/att_global_id.asp"
+		});
+	}
+};
+//Empty Argument
+Blockly.Blocks['emptyarg'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '%1 = \" %2 \"',
+			"args0": [
+				{
+					"type": "field_input",
+					"name": "property",
+					"text": "property"
+				},
+				{
+					"type": "field_input",
+					"name": "value",
+					"text": "value"
+				}
+			],
+			"previousStatement": "args",
+			"nextStatement": "args",
+			"colour": 120,
+			"tooltip": "Empty modifier",
+			"helpUrl": "https://www.w3schools.com/html/html_classes.asp"
 		});
 	}
 };
@@ -172,7 +256,30 @@ Blockly.Blocks['style'] = {
 			"nextStatement": "header",
 			"colour": 290,
 			"tooltip": "Style tag",
-			"helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
+			"helpUrl": "https://www.w3schools.com/tags/tag_style.asp"
+		});
+	}
+};
+
+//Style
+Blockly.Blocks['stylearg'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": 'style = %1 %2',
+			"args0": [
+				{
+					"type": "input_dummy"
+				},
+				{
+					"type": "input_statement",
+					"name": "content",
+					"check": "stylecontent"
+				}
+			],
+			"output": null,
+			"colour": 290,
+			"tooltip": "Inline CSS",
+			"helpUrl": "https://www.w3schools.com/css/css_howto.asp"
 		});
 	}
 };
@@ -201,7 +308,7 @@ Blockly.Blocks['cssitem'] = {
 			"nextStatement": "style",
 			"colour": 290,
 			"tooltip": "Style container",
-			"helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
+			"helpUrl": "https://www.w3schools.com/css/default.asp"
 		});
 	}
 };
@@ -222,7 +329,228 @@ Blockly.Blocks['fontfamily'] = {
 			"nextStatement": "stylecontent",
 			"colour": 290,
 			"tooltip": "CSS font-family",
-			"helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
+			"helpUrl": "https://www.w3schools.com/cssref/pr_font_font-family.asp"
+		});
+	}
+};
+
+//Font-size
+Blockly.Blocks['fontsize'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": 'font-size: %1',
+			"args0": [
+				{
+					"type": "field_input",
+					"name": "value",
+					"text": "12px"
+				}
+			],
+			"previousStatement": "stylecontent",
+			"nextStatement": "stylecontent",
+			"colour": 290,
+			"tooltip": "CSS font-size",
+			"helpUrl": "https://www.w3schools.com/cssref/pr_font_font-size.asp"
+		});
+	}
+};
+
+//Font-size
+Blockly.Blocks['margin'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": 'margin - %1 : %2',
+			"args0": [
+				{
+					"type": "field_dropdown",
+					"name": "direction",
+					"options": [
+						[
+							"top",
+							"top"
+						],
+						[
+							"right",
+							"right"
+						],
+						[
+							"bottom",
+							"bottom"
+						],
+						[
+							"left",
+							"left"
+						]
+					]
+				},
+				{
+					"type": "field_input",
+					"name": "value",
+					"text": "15px"
+				}
+			],
+			"previousStatement": "stylecontent",
+			"nextStatement": "stylecontent",
+			"colour": 290,
+			"tooltip": "CSS Margin",
+			"helpUrl": "https://www.w3schools.com/cssref/pr_margin.asp"
+		});
+	}
+};
+
+//Color
+Blockly.Blocks['color'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": 'color: %1',
+			"args0": [
+				{
+					"type": "field_colour",
+					"name": "value",
+					"colour": "#339999"
+				}
+			],
+			"previousStatement": "stylecontent",
+			"nextStatement": "stylecontent",
+			"colour": 290,
+			"tooltip": "CSS Color",
+			"helpUrl": "https://www.w3schools.com/cssref/pr_text_color.asp"
+		});
+	}
+};
+
+//BGColor
+Blockly.Blocks['bgcolor'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": 'background-color: %1',
+			"args0": [
+				{
+					"type": "field_colour",
+					"name": "value",
+					"colour": "#339999"
+				}
+			],
+			"previousStatement": "stylecontent",
+			"nextStatement": "stylecontent",
+			"colour": 290,
+			"tooltip": "CSS Background-Color",
+			"helpUrl": "https://www.w3schools.com/css/css_background.asp"
+		});
+	}
+};
+
+//BGColor
+Blockly.Blocks['border'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": 'border: %1 px %2 %3',
+			"args0": [
+				{
+					"type": "field_number",
+					"name": "width",
+					"value": 5,
+					"min": 0
+				},
+				{
+					"type": "field_dropdown",
+					"name": "type",
+					"options": [
+						[
+						"none",
+						"none"
+						],
+						[
+						"solid",
+						"solid"
+						],
+						[
+						"dotted",
+						"dotted"
+						],
+						[
+						"dashed",
+						"dashed"
+						],
+						[
+						"double",
+						"double"
+						],
+						[
+						"groove",
+						"groove"
+						],
+						[
+						"ridge",
+						"ridge"
+						],
+						[
+						"inset",
+						"inset"
+						],
+						[
+						"outset",
+						"outset"
+						]
+					]
+				},
+				{
+					"type": "field_colour",
+					"name": "color",
+					"colour": "#000000"
+				}
+			],
+			"previousStatement": "stylecontent",
+			"nextStatement": "stylecontent",
+			"colour": 290,
+			"tooltip": "CSS Border",
+			"helpUrl": "https://www.w3schools.com/css/css_border.asp"
+		});
+	}
+};
+
+Blockly.Blocks['bordercol'] = {
+	init: function(){
+		this.jsonInit({
+			"message0": 'border-collapse: %1',
+			"args0": [
+				{
+					"type": "field_checkbox",
+					"name": "value",
+					"checked": true
+				}
+			],
+			"previousStatement": "stylecontent",
+			"nextStatement": "stylecontent",
+			"colour": 290,
+			"tooltip": "CSS Border collapse",
+			"helpUrl": "https://www.w3schools.com/cssref/pr_border-collapse.asp"
+		});
+	}
+};
+
+//Other tag
+Blockly.Blocks['othercss'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '%1 : %2',
+			"args0": [
+				{
+					"type": "field_input",
+					"name": "property",
+					"text": "property"
+				},
+				{
+					"type": "field_input",
+					"name": "value",
+					"text": "value"
+				}
+			],
+			"previousStatement": "stylecontent",
+			"nextStatement": "stylecontent",
+			"colour": 290,
+			"tooltip": "Any other CSS tag",
+			"helpUrl": "https://www.w3schools.com/css/default.asp"
 		});
 	}
 };
@@ -243,7 +571,76 @@ Blockly.Blocks['emptytext'] = {
 			"nextStatement": "textcontainer",
 			"colour": 65,
 			"tooltip": "Text",
-			"helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
+			"helpUrl": ""
+		});
+	}
+};
+
+//Text modifier
+Blockly.Blocks['textmod'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '< %1 > %2 %3 </>',
+			"args0": [
+				{
+					"type": "field_dropdown",
+					"name": "type",
+					"options": [
+						[
+							"strong",
+							"strong"
+						],
+						[
+							"em",
+							"em"
+						],
+						[
+							"mark",
+							"mark"
+						],
+						[
+							"small",
+							"small"
+						],
+						[
+							"big",
+							"big"
+						],
+						[
+							"del",
+							"del"
+						],
+						[
+							"ins",
+							"ins"
+						],
+						[
+							"sub",
+							"sub"
+						],
+						[
+							"sup",
+							"sup"
+						],
+						[
+							"code",
+							"code"
+						],
+					]
+				},
+				{
+					"type": "input_dummy"
+				},
+				{
+					"type": "input_statement",
+					"name": "content"
+				}
+			],
+			"previousStatement": "textcontainer",
+			"nextStatement": "textcontainer",
+			"colour": 65,
+			"tooltip": "Text modifier - used to achieve formatting effects with text",
+			"helpUrl": "https://www.w3schools.com/html/html_formatting.asp"
 		});
 	}
 };
@@ -252,7 +649,7 @@ Blockly.Blocks['emptytext'] = {
 Blockly.Blocks['paragraph'] = {
 	init: function() {
 		this.jsonInit({
-			"message0": '<p> %1 %2',
+			"message0": '<p> %1 %2 </p>',
 			"args0": [
 				{
 					"type": "input_value",
@@ -268,7 +665,7 @@ Blockly.Blocks['paragraph'] = {
 			"nextStatement": "html",
 			"colour": 65,
 			"tooltip": "Paragraph tag",
-			"helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
+			"helpUrl": "https://www.w3schools.com/tags/tag_p.asp"
 		});
 	}
 };
@@ -277,7 +674,7 @@ Blockly.Blocks['paragraph'] = {
 Blockly.Blocks['header'] = {
 	init: function() {
 		this.jsonInit({
-			"message0": '<h %1 > %2 %3',
+			"message0": '<h %1 > %2 %3 </h>',
 			"args0": [
 				{
 					"type": "field_dropdown",
@@ -323,7 +720,161 @@ Blockly.Blocks['header'] = {
 			"nextStatement": "html",
 			"colour": 65,
 			"tooltip": "Header tag",
-			"helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
+			"helpUrl": "https://www.w3schools.com/tags/tag_hn.asp"
+		});
+	}
+};
+
+Blockly.Blocks['link'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '<a href=\" %1 \"> %2 %3 </a>',
+			"args0": [
+				{
+					"type": "field_input",
+					"name": "target",
+					"text": "http://"
+				},
+				{
+					"type": "input_value",
+					"name": "modifier"
+				},
+				{
+					"type": "input_statement",
+					"name": "content",
+					"check": "textcontainer"
+				}
+			],
+			"previousStatement": "textcontainer",
+			"nextStatement": "textcontainer",
+			"colour": 65,
+			"tooltip": "Paragraph tag",
+			"helpUrl": "https://www.w3schools.com/tags/tag_p.asp"
+		});
+	}
+};
+
+//Span tag
+Blockly.Blocks['span'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '<span> %1 %2 </span>',
+			"args0": [
+				{
+					"type": "input_value",
+					"name": "modifier"
+				},
+				{
+					"type": "input_statement",
+					"name": "content",
+					"check": "textcontainer"
+				}
+			],
+			"previousStatement": "textcontainer",
+			"nextStatement": "textcontainer",
+			"colour": 65,
+			"tooltip": "Span tag",
+			"helpUrl": "https://www.w3schools.com/tags/tag_span.asp"
+		});
+	}
+};
+
+//Table tag
+Blockly.Blocks['table'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '<table> %1 %2 </table>',
+			"args0": [
+				{
+					"type": "input_value",
+					"name": "modifier"
+				},
+				{
+					"type": "input_statement",
+					"name": "content",
+					"check": "table"
+				}
+			],
+			"previousStatement": "html",
+			"nextStatement": "html",
+			"colour": 20,
+			"tooltip": "Table tag",
+			"helpUrl": "https://www.w3schools.com/tags/tag_table.asp"
+		});
+	}
+};
+
+//TR tag
+Blockly.Blocks['tablerow'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '<tr> %1 %2 </tr>',
+			"args0": [
+				{
+					"type": "input_value",
+					"name": "modifier"
+				},
+				{
+					"type": "input_statement",
+					"name": "content",
+					"check": "tablerow"
+				}
+			],
+			"previousStatement": "table",
+			"nextStatement": "table",
+			"colour": 20,
+			"tooltip": "Table row tag",
+			"helpUrl": "https://www.w3schools.com/tags/tag_tr.asp"
+		});
+	}
+};
+
+//TH tag
+Blockly.Blocks['tableheading'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '<th> %1 %2 </th>',
+			"args0": [
+				{
+					"type": "input_value",
+					"name": "modifier"
+				},
+				{
+					"type": "input_statement",
+					"name": "content",
+					"check": "textcontainer"
+				}
+			],
+			"previousStatement": "tablerow",
+			"nextStatement": "tablerow",
+			"colour": 20,
+			"tooltip": "Table heading tag",
+			"helpUrl": "https://www.w3schools.com/tags/tag_th.asp"
+		});
+	}
+};
+
+//TD tag
+Blockly.Blocks['tabledata'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '<td> %1 %2 </td>',
+			"args0": [
+				{
+					"type": "input_value",
+					"name": "modifier"
+				},
+				{
+					"type": "input_statement",
+					"name": "content",
+					"check": "textcontainer"
+				}
+			],
+			"previousStatement": "tablerow",
+			"nextStatement": "tablerow",
+			"colour": 20,
+			"tooltip": "Table data tag",
+			"helpUrl": "https://www.w3schools.com/tags/tag_td.asp"
 		});
 	}
 };
