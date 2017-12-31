@@ -23,6 +23,12 @@ htmlGen['head'] = function(block) {
 	return code;
 };
 
+htmlGen['metacharset'] = function(block) {
+	var value = block.getFieldValue('value');
+	var code = '<meta charset="'+value+'">\n';
+	return code;
+};
+
 htmlGen['title'] = function(block) {
 	var value = block.getFieldValue('value');
 	var code = '<title>'+value+'</title>\n';
@@ -33,6 +39,20 @@ htmlGen['body'] = function(block) {
 	var statements_content = htmlGen.statementToCode(block, 'content');
 	var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
 	var code = '<body'+block_modifier+'>\n' + statements_content + '</body>\n';
+	return code;
+};
+
+htmlGen['headertag'] = function(block) {
+	var statements_content = htmlGen.statementToCode(block, 'content');
+	var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+	var code = '<header'+block_modifier+'>\n' + statements_content + '</header>\n';
+	return code;
+};
+
+htmlGen['footertag'] = function(block) {
+	var statements_content = htmlGen.statementToCode(block, 'content');
+	var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+	var code = '<footer'+block_modifier+'>\n' + statements_content + '</footer>\n';
 	return code;
 };
 
@@ -120,6 +140,21 @@ htmlGen['bordercol'] = function(block){
 	}
 	return code;
 }
+
+htmlGen['widthheightnum'] = function(block){
+	var option = block.getFieldValue('option');
+	var size = block.getFieldValue('size');
+	var unit = block.getFieldValue('unit');
+	var code = option+': '+size+unit+';\n';
+	return code;
+};
+
+htmlGen['widthheight'] = function(block){
+	var option = block.getFieldValue('option');
+	var value = block.getFieldValue('value');
+	var code = option+': '+value+';\n';
+	return code;
+};
 
 htmlGen['othercss'] = function(block){
 	var property = block.getFieldValue('property');
@@ -220,5 +255,96 @@ htmlGen['tabledata'] = function(block){
 	var content = htmlGen.statementToCode(block, 'content');
 	var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
 	var code = '<td'+block_modifier+'>\n'+content+'</td>\n';
+	return code;
+};
+
+htmlGen['form'] = function(block){
+	var stmt = htmlGen.statementToCode(block, 'content');
+	var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+	var code = '<form'+block_modifier+'>\n'+stmt+'</form>\n';
+	return code;
+};
+
+htmlGen['input'] = function(block){
+	var type = block.getFieldValue('type');
+	var value = block.getFieldValue('value');
+	var placeholder = block.getFieldValue('placeholder');
+	var name = block.getFieldValue('name');
+	var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+	var code = '<input type="'+type+'" value="'+value+'" placeholder="'+placeholder+'" name="'+name+'"'+block_modifier+'>\n';
+	return code;
+};
+
+htmlGen['image'] = function(block){
+	var source = block.getFieldValue('source');
+	var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+	var code = '<img src="'+source+'"'+mod+'>\n';
+	return code;
+};
+
+htmlGen['orderedlist'] = function(block){
+	var content = htmlGen.statementToCode(block,'content');
+	var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+	var code = '<ol'+mod+'>\n'+content+'</ol>\n';
+	return code;
+};
+
+htmlGen['unorderedlist'] = function(block){
+	var content = htmlGen.statementToCode(block,'content');
+	var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+	var code = '<ul'+mod+'>\n'+content+'</ul>\n';
+	return code;
+};
+
+htmlGen['listitem'] = function(block){
+	var content = htmlGen.statementToCode(block,'content');
+	var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+	var code = '<li'+mod+'>'+content+'</li>\n';
+	return code;
+};
+
+htmlGen['details'] = function(block){
+	var content = htmlGen.statementToCode(block,'content');
+	var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+	var code = '<details'+mod+'>\n'+content+'</details>\n';
+	return code;
+};
+
+htmlGen['summary'] = function(block){
+	var content = htmlGen.statementToCode(block,'content');
+	var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+	var code = '<summary'+mod+'>'+content+'</summary>\n';
+	return code;
+};
+
+htmlGen['audio'] = function(block){
+	var source = block.getFieldValue('source');
+	var loop = block.getFieldValue('loop');
+	var autoplay = block.getFieldValue('autoplay');
+	var controls = block.getFieldValue('controls');
+	var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+	var code = '<audio'+mod;
+	if(loop==="TRUE"){
+		code+=' loop';
+	}
+	if(autoplay==="TRUE"){
+		code+=' autoplay';
+	}
+	if(controls==="TRUE"){
+		code+=' controls';
+	}
+	var type;
+	switch(source){
+		case "8bit.ogg":
+			type = "audio/ogg";
+			break;
+		case "classical.mp3":
+			type = "audio/mpeg";
+			break;
+		case "happy.wav":
+			type = "audio/wav";
+			break;
+	}
+	code+='>\n<source src="http://cdbeta.hma-uk.org/library/media/'+source+'" type="'+type+'">\n</audio>\n';
 	return code;
 };

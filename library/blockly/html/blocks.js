@@ -69,6 +69,86 @@ Blockly.Blocks['body'] = {
 	}
 };
 
+//Meta Charset tag
+Blockly.Blocks['metacharset'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '<meta charset =  %1 >',
+			"args0": [
+				{
+					"type": "field_dropdown",
+					"name": "value",
+					"options": [
+						[
+							"utf-8",
+							"utf-8"
+						],
+						[
+							"utf-16",
+							"utf-16"
+						]
+					]
+				},
+			],
+			"previousStatement": "header",
+			"nextStatement": "header",
+			"colour": 210,
+			"tooltip": "Meta charset tag",
+			"helpUrl": "https://www.w3schools.com/tags/tag_meta.asp"
+		});
+	}
+};
+
+//header tag
+Blockly.Blocks['headertag'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '<header> %1 %2 </header>',
+			"args0": [
+				{
+					"type": "input_value",
+					"name": "modifier"
+				},
+				{
+					"type": "input_statement",
+					"name": "content",
+					"check": "html"
+				}
+			],
+			"previousStatement": "html",
+			"nextStatement": "html",
+			"colour": 210,
+			"tooltip": "header tag",
+			"helpUrl": "https://www.w3schools.com/tags/tag_header.asp"
+		});
+	}
+};
+
+//footer tag
+Blockly.Blocks['footertag'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '<footer> %1 %2 </footer>',
+			"args0": [
+				{
+					"type": "input_value",
+					"name": "modifier"
+				},
+				{
+					"type": "input_statement",
+					"name": "content",
+					"check": "html"
+				}
+			],
+			"previousStatement": "html",
+			"nextStatement": "html",
+			"colour": 210,
+			"tooltip": "footer tag",
+			"helpUrl": "https://www.w3schools.com/tags/tag_footer.asp"
+		});
+	}
+};
+
 //Title tag
 Blockly.Blocks['title'] = {
 	init: function() {
@@ -317,7 +397,7 @@ Blockly.Blocks['cssitem'] = {
 Blockly.Blocks['fontfamily'] = {
 	init: function() {
 		this.jsonInit({
-			"message0": 'font-family: %1',
+			"message0": 'font-family: %1 ;',
 			"args0": [
 				{
 					"type": "field_input",
@@ -338,7 +418,7 @@ Blockly.Blocks['fontfamily'] = {
 Blockly.Blocks['fontsize'] = {
 	init: function() {
 		this.jsonInit({
-			"message0": 'font-size: %1',
+			"message0": 'font-size: %1 ;',
 			"args0": [
 				{
 					"type": "field_input",
@@ -359,7 +439,7 @@ Blockly.Blocks['fontsize'] = {
 Blockly.Blocks['margin'] = {
 	init: function() {
 		this.jsonInit({
-			"message0": 'margin - %1 : %2',
+			"message0": 'margin - %1 : %2 ;',
 			"args0": [
 				{
 					"type": "field_dropdown",
@@ -402,7 +482,7 @@ Blockly.Blocks['margin'] = {
 Blockly.Blocks['color'] = {
 	init: function() {
 		this.jsonInit({
-			"message0": 'color: %1',
+			"message0": 'color: %1 ;',
 			"args0": [
 				{
 					"type": "field_colour",
@@ -423,7 +503,7 @@ Blockly.Blocks['color'] = {
 Blockly.Blocks['bgcolor'] = {
 	init: function() {
 		this.jsonInit({
-			"message0": 'background-color: %1',
+			"message0": 'background-color: %1 ;',
 			"args0": [
 				{
 					"type": "field_colour",
@@ -444,7 +524,7 @@ Blockly.Blocks['bgcolor'] = {
 Blockly.Blocks['border'] = {
 	init: function() {
 		this.jsonInit({
-			"message0": 'border: %1 px %2 %3',
+			"message0": 'border: %1 px %2 %3 ;',
 			"args0": [
 				{
 					"type": "field_number",
@@ -512,7 +592,7 @@ Blockly.Blocks['border'] = {
 Blockly.Blocks['bordercol'] = {
 	init: function(){
 		this.jsonInit({
-			"message0": 'border-collapse: %1',
+			"message0": 'border-collapse: %1 ;',
 			"args0": [
 				{
 					"type": "field_checkbox",
@@ -529,11 +609,117 @@ Blockly.Blocks['bordercol'] = {
 	}
 };
 
+//Width height number selector
+Blockly.Blocks['widthheightnum'] = {
+	init: function(){
+		this.jsonInit({
+			"message0": '%1 : %2 %3 ;',
+			"args0": [
+				{
+					"type": "field_dropdown",
+					"name": "option",
+					"options": [
+						[
+							"width",
+							"width"
+						],
+						[
+							"height",
+							"height"
+						]
+					]
+				},
+				{
+					"type": "field_number",
+					"name": "size",
+					"value": 10,
+					"min": 0
+				},
+				{
+					"type": "field_dropdown",
+					"name": "unit",
+					"options": [
+						[
+							"%",
+							"%"
+						],
+						[
+							"px",
+							"px"
+						],
+						[
+							"cm",
+							"cm"
+						],
+						[
+							"em",
+							"em"
+						]
+					]
+				}
+			],
+			"previousStatement": "stylecontent",
+			"nextStatement": "stylecontent",
+			"colour": 290,
+			"tooltip": "CSS Width/height",
+			"helpUrl": "https://www.w3schools.com/css/css_dimension.asp"
+		});
+	}
+};
+
+//Width height number selector
+Blockly.Blocks['widthheight'] = {
+	init: function(){
+		this.jsonInit({
+			"message0": '%1 : %2 ;',
+			"args0": [
+				{
+					"type": "field_dropdown",
+					"name": "option",
+					"options": [
+						[
+							"width",
+							"width"
+						],
+						[
+							"height",
+							"height"
+						]
+					]
+				},
+				{
+					"type": "field_dropdown",
+					"name": "value",
+					"options": [
+						[
+							"auto",
+							"auto"
+						],
+						[
+							"initial",
+							"initial"
+						],
+						[
+							"inherit",
+							"inherit"
+						]
+					]
+				}
+			],
+			"previousStatement": "stylecontent",
+			"nextStatement": "stylecontent",
+			"colour": 290,
+			"tooltip": "CSS Width/height",
+			"helpUrl": "https://www.w3schools.com/css/css_dimension.asp"
+		});
+	}
+};
+
 //Other tag
 Blockly.Blocks['othercss'] = {
 	init: function() {
 		this.jsonInit({
-			"message0": '%1 : %2',
+			"message0": '%1 : %2 ;',
 			"args0": [
 				{
 					"type": "field_input",
@@ -626,6 +812,26 @@ Blockly.Blocks['textmod'] = {
 							"code",
 							"code"
 						],
+						[
+							"q",
+							"q"
+						],
+						[
+							"aside",
+							"aside"
+						],
+						[
+							"blockquote",
+							"blockquote"
+						],
+						[
+							"legend",
+							"legend"
+						],
+						[
+							"cite",
+							"cite"
+						]
 					]
 				},
 				{
@@ -875,6 +1081,345 @@ Blockly.Blocks['tabledata'] = {
 			"colour": 20,
 			"tooltip": "Table data tag",
 			"helpUrl": "https://www.w3schools.com/tags/tag_td.asp"
+		});
+	}
+};
+
+//FORMS
+//Form tag
+Blockly.Blocks['form'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '<form> %1 %2 </form>',
+			"args0": [
+				{
+					"type": "input_value",
+					"name": "modifier"
+				},
+				{
+					"type": "input_statement",
+					"name": "content",
+					"check": "form"
+				}
+			],
+			"previousStatement": "html",
+			"nextStatement": "html",
+			"colour": 160,
+			"tooltip": "Form tag",
+			"helpUrl": "https://www.w3schools.com/tags/tag_form.asp"
+		});
+	}
+};
+
+//Input tag
+Blockly.Blocks['input'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '<input type = \" %1 \" value = \" %2 \" placeholder = \" %3 \" name = \" %4 \" > %5',
+			"args0": [
+				{
+					"type": "field_dropdown",
+					"name": "type",
+					"options": [
+						[
+							"submit",
+							"submit"
+						],
+						[
+							"checkbox",
+							"checkbox"
+						],
+						[
+							"color",
+							"color"
+						],
+						[
+							"date",
+							"date"
+						],
+						[
+							"datetime-local",
+							"datetime-local"
+						],
+						[
+							"email",
+							"email"
+						],
+						[
+							"hidden",
+							"hidden"
+						],
+						[
+							"month",
+							"month"
+						],
+						[
+							"number",
+							"number"
+						],
+						[
+							"password",
+							"password"
+						],
+						[
+							"radio",
+							"radio"
+						],
+						[
+							"range",
+							"range"
+						],
+						[
+							"text",
+							"text"
+						],
+						[
+							"time",
+							"time"
+						],
+						[
+							"week",
+							"week"
+						]
+					]
+				},
+				{
+					"type": "field_input",
+					"name": "value",
+					"text": ""
+				},
+				{
+					"type": "field_input",
+					"name": "placeholder",
+					"text": ""
+				},
+				{
+					"type": "field_input",
+					"name": "name",
+					"text": ""
+				},
+				{
+					"type": "input_value",
+					"name": "modifier",
+				}
+			],
+			"previousStatement": "form",
+			"nextStatement": "form",
+			"colour": 160,
+			"tooltip": "Input tag",
+			"helpUrl": "https://www.w3schools.com/tags/tag_input.asp"
+		});
+	}
+};
+
+//Image tag
+Blockly.Blocks['image'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '<img src = \"  %1 \"> %2',
+			"args0": [
+				{
+					"type": "field_input",
+					"name": "source",
+					"text": "http://"
+				},
+				{
+					"type": "input_value",
+					"name": "modifier"
+				}
+			],
+			"previousStatement": "html",
+			"nextStatement": "html",
+			"colour": 330,
+			"tooltip": "Image tag",
+			"helpUrl": "https://www.w3schools.com/tags/tag_img.asp"
+		});
+	}
+};
+
+//OL tag
+Blockly.Blocks['orderedlist'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '<ol> %1 %2 </ol>',
+			"args0": [
+				{
+					"type": "input_value",
+					"name": "modifier"
+				},
+				{
+					"type": "input_statement",
+					"name": "content",
+					"check": "list"
+				}
+			],
+			"previousStatement": "html",
+			"nextStatement": "html",
+			"colour": 20,
+			"tooltip": "Ordered list tag",
+			"helpUrl": "https://www.w3schools.com/html/html_lists.asp"
+		});
+	}
+};
+
+//UL tag
+Blockly.Blocks['unorderedlist'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '<ul> %1 %2 </ul>',
+			"args0": [
+				{
+					"type": "input_value",
+					"name": "modifier"
+				},
+				{
+					"type": "input_statement",
+					"name": "content",
+					"check": "list"
+				}
+			],
+			"previousStatement": "html",
+			"nextStatement": "html",
+			"colour": 20,
+			"tooltip": "Unordered list tag",
+			"helpUrl": "https://www.w3schools.com/html/html_lists.asp"
+		});
+	}
+};
+
+//LI tag
+Blockly.Blocks['listitem'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '<li> %1 %2 </li>',
+			"args0": [
+				{
+					"type": "input_value",
+					"name": "modifier"
+				},
+				{
+					"type": "input_statement",
+					"name": "content",
+					"check": "textcontainer"
+				}
+			],
+			"previousStatement": "list",
+			"nextStatement": "list",
+			"colour": 20,
+			"tooltip": "List item tag",
+			"helpUrl": "https://www.w3schools.com/html/html_lists.asp"
+		});
+	}
+};
+
+//Summary tag
+Blockly.Blocks['summary'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '<summary> %1 %2 </summary>',
+			"args0": [
+				{
+					"type": "input_value",
+					"name": "modifier"
+				},
+				{
+					"type": "input_statement",
+					"name": "content",
+					"check": "textcontainer"
+				}
+			],
+			"previousStatement": [
+				"summary",
+				"textcontainer"
+			],
+			"nextStatement": [
+				"summary",
+				"textcontainer"
+			],
+			"colour": 20,
+			"tooltip": "Summary tag",
+			"helpUrl": "https://www.w3schools.com/tags/tag_summary.asp"
+		});
+	}
+};
+
+//Details tag
+Blockly.Blocks['details'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '<details> %1 %2 </details>',
+			"args0": [
+				{
+					"type": "input_value",
+					"name": "modifier"
+				},
+				{
+					"type": "input_statement",
+					"name": "content",
+					"check": [
+						"textcontainer",
+						"summary"
+					]
+				}
+			],
+			"previousStatement": "html",
+			"nextStatement": "html",
+			"colour": 20,
+			"tooltip": "Details tag",
+			"helpUrl": "https://www.w3schools.com/tags/tag_details.asp"
+		});
+	}
+};
+
+//Audio tag
+Blockly.Blocks['audio'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '<audio src =  %1 loop = %2 autoplay = %3 controls = %4 > %5',
+			"args0": [
+				{
+					"type": "field_dropdown",
+					"name": "source",
+					"options": [
+						[
+							"8bit.ogg",
+							"8bit.ogg"
+						],
+						[
+							"classical.mp3",
+							"classical.mp3"
+						],
+						[
+							"happy.wav",
+							"happy.wav"
+						]
+					]
+				},
+				{
+					"type": "field_checkbox",
+					"name": "loop",
+					"checked": false
+				},
+				{
+					"type": "field_checkbox",
+					"name": "autoplay",
+					"checked": false
+				},
+				{
+					"type": "field_checkbox",
+					"name": "controls",
+					"checked": true
+				},
+				{
+					"type": "input_value",
+					"name": "modifier"
+				}
+			],
+			"previousStatement": "html",
+			"nextStatement": "html",
+			"colour": 330,
+			"tooltip": "Audio tag",
+			"helpUrl": "https://www.w3schools.com/tags/tag_audio.asp"
 		});
 	}
 };

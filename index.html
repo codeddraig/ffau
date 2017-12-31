@@ -13,7 +13,7 @@
 
 				Copyright (c) 2017-18 Pal Kerecsenyi, Geza Kerecsenyi and Theodore Tucker
 
-				THIS IS VERSION 0.1.1
+				THIS IS VERSION 0.1.2-candidate-a
  -->
 
 <!DOCTYPE html>
@@ -70,13 +70,16 @@
 				<div id="blocklyDiv" style="height: 480px;"></div>
 			</div>
 
-			<xml id="toolbox" style="display: none">
+			<xml id="toolbox" style="display: none;">
 			  <category name="Structure" colour="210">
 			    <category name="Page" colour="210">
 			      <block type="html"></block>
 			      <block type="head"></block>
+			      <block type="metacharset"></block>
 			      <block type="body"></block>
 			      <block type="title"></block>
+			      <block type="headertag"></block>
+			      <block type="footertag"></block>
 			    </category>
 			    <category name="Layout" colour="210">
 			      <block type="divider"></block>
@@ -104,6 +107,8 @@
 			      </category>
 			      <category name="Arrangement" colour="290">
 			        <block type="margin"></block>
+			        <block type="widthheightnum"></block>
+			        <block type="widthheight"></block>
 			      </category>
 			      <category name="Design" colour="290">
 			        <block type="bgcolor"></block>
@@ -122,11 +127,30 @@
 			    <block type="header"></block>
 			    <block type="link"></block>
 			  </category>
-			  <category name="Tables" colour="20">
-			    <block type="table"></block>
-			    <block type="tablerow"></block>
-			    <block type="tableheading"></block>
-			    <block type="tabledata"></block>
+			  <category name="Organisation" colour="20">
+			    <category name="Tables" colour="20">
+			      <block type="table"></block>
+			      <block type="tablerow"></block>
+			      <block type="tableheading"></block>
+			      <block type="tabledata"></block>
+			    </category>
+			    <category name="Lists" colour="20">
+			      <block type="unorderedlist"></block>
+			      <block type="orderedlist"></block>
+			      <block type="listitem"></block>
+			    </category>
+			    <category name="Summary" colour="20">
+			      <block type="details"></block>
+			      <block type="summary"></block>
+			    </category>
+			  </category>
+			  <category name="Forms" colour="160">
+			    <block type="form"></block>
+			    <block type="input"></block>
+			  </category>
+			  <category name="Media" colour="330">
+			    <block type="image"></block>
+			    <block type="audio"></block>
 			  </category>
 			</xml>
 
