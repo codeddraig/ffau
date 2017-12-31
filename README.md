@@ -3,6 +3,8 @@ Ffau - A blocky-based editor for teaching HTML, CSS and Javascript.
 
 Developed by Pal Kerecsenyi, Geza Kerecsenyi and Theodore Tucker.
 
+General contact: **ffau [at] codei0 [dot] net**
+
 Live demo: https://codeddraig.github.io/ffau/
 
 THIS IS VERSION 0.1.1-candidate-a
@@ -27,7 +29,7 @@ Alternativley, you may visit https://codeddraig.github.io/ffau/ in any modern we
 Ffau can save your blocks to a text file in the browser (with the extension .crd for 'CodeDragon') and import them to re-assemble your blocks.
 
 ## Bugs
-To report problems or potential additions, please feel free to visit the 'issues' section of this repo.
+To report problems or potential additions, please feel free to visit the 'issues' section of this repo. For security issues, please email us at: **ffau [at] codei0 [dot] net**.
 
 ## Libraries
 This project would not be possible without the following amazing libraries. We are much indebted to them for their support and work:
@@ -46,11 +48,10 @@ Our project is inspired by, but not a direct clone of, the blockly-html project 
 
 ## Developers
 
-### Theodore Tucker https://github.com/tti0 // tt@tti0.net // https://tti0.net
-Backend Developer, Manchester, UK.
+### Theodore Tucker // https://github.com/tti0 // https://tti0.net
 
-### Pal Kerecsenyi https://github.com/palkerecsenyi // palkerecs@gmail.com
-Backend Developer, Manchester, UK.
+### Pal Kerecsenyi // https://github.com/palkerecsenyi
 
-### Geza Kerecsenyi https://github.com/gezakerecsenyi // gezakerecsenyi@gmail.com
-Frontend and Blockly Developer, Manchester, UK.
+### Geza Kerecsenyi // https://github.com/gezakerecsenyi
+
+Please direct all correspondence to **ffau [at] codei0 [dot] net**
