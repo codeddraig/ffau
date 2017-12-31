@@ -23,7 +23,7 @@ Ffau editor will not work without its libraries. The best way to get all off thi
 To successfully use Ffau, place all files on this repo on any web server and navigate to index.html
 Please note Ffau is constantly being improved - especially new blocks being added, but also changes to the UI. We recommend you regularly update Ffau to receive the best experience.
 
-Alternativley, you may visit https://codeddraig.github.io/ffau/ in any modern web browser to use a demo of the software.
+Alternatively, you may visit https://codeddraig.github.io/ffau/ in any modern web browser to use a demo of the software.
 
 ## Export
 Ffau can save your blocks to a text file in the browser (with the extension .crd for 'CodeDragon') and import them to re-assemble your blocks.
