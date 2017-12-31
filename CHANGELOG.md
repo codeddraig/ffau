@@ -1,7 +1,8 @@
-# Ffau Editor Changelog - Version 0.1.1
+# Ffau Editor Changelog and Feature List - Version 0.1.2
+All new additions in **bold**.
 
 ## Summary
-Most work done is fundamentals of editor, and stage-setting for JS and further HTML/CSS implementation. I am indebted to @palkerecsenyi for his excellent work with the Blockly foundations, and to @gezakerecsenyi for his enthusiasm in creating new blocks.
+Adding new blocks. That's all.
 
 ## Details
 * Updated version numbers in index.html and version.txt
@@ -32,6 +33,7 @@ Most work done is fundamentals of editor, and stage-setting for JS and further H
       * font-size
       * color
       * margin-top/left/bottom/right
+      * **width**
       * background-color
       * border
       * border-collapse
@@ -47,5 +49,19 @@ Most work done is fundamentals of editor, and stage-setting for JS and further H
       * &lt;tr&gt;
       * &lt;th&gt;
       * &lt;td&gt;
+    * **LISTS**
+      * **&lt;ul&rt;**
+      * **&lt;ol&rt;**
+      * **&lt;li&rt;**
+    * **SUMMARY**
+      * **&lt;details&rt;**
+      * **&lt;summary&rt;**
+    * **FORMS**
+      * **&lt;form&rt;**
+      * **&lt;input&rt;**
+    * **MEDIA**
+      * **&lt;audio&rt;**
+      * **&lt;img&rt;**
+      
 
-Thanks! - @tti0, 10:31 (GMT), 2017-21-31, Manchester, UK.
+Thanks! - @tti0, 16:44 (GMT), 2017-21-31, Manchester, UK.
