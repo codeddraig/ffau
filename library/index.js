@@ -1,4 +1,14 @@
-var workspace = Blockly.inject('blocklyDiv',{toolbox: document.getElementById('toolbox')}); // assign a var to the blockly workspace for future adressing
+var workspace = Blockly.inject('blocklyDiv',
+										   {toolbox: document.getElementById('toolbox'),
+											zoom:
+											{controls:true,
+											 wheel:true,
+											 startScale: 1.0,
+											 maxScale: 3,
+											 minScale: 0.3,
+											 scaleSpeed:1.2},
+											trashcan: true}); 
+// [above] inject the blockly workspace into the div
 function onUpdate(event){
   var code = htmlGen.workspaceToCode(workspace);
   var iframe = document.getElementById('preview-frame');
