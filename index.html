@@ -71,64 +71,192 @@
 				<div id="blocklyDiv" style="height: 480px;"></div>
 			</div>
 
-			<xml id="toolbox" style="display: none">
-			  <category name="Structure" colour="210">
-			    <category name="Page" colour="210">
-			      <block type="html"></block>
-			      <block type="head"></block>
-			      <block type="body"></block>
-			      <block type="title"></block>
-			    </category>
-			    <category name="Layout" colour="210">
-			      <block type="divider"></block>
-			      <block type="linebreak"></block>
-			      <block type="hline"></block>
-			    </category>
-			  </category>
-			  <category name="Modifiers" colour="120">
-			    <block type="args"></block>
-			    <block type="class"></block>
-			    <block type="id"></block>
-			    <block type="emptyarg"></block>
-			  </category>
-			  <category name="Style" colour="290">
-			    <category name="Structure" colour="290">
-			      <block type="style"></block>
-			      <block type="stylearg"></block>
-			      <block type="cssitem"></block>
-			    </category>
-			    <category name="Items" colour="290">
-			      <category name="Text" colour="290">
-			        <block type="fontfamily"></block>
-			        <block type="fontsize"></block>
-			        <block type="color"></block>
-			      </category>
-			      <category name="Arrangement" colour="290">
-			        <block type="margin"></block>
-			      </category>
-			      <category name="Design" colour="290">
-			        <block type="bgcolor"></block>
-			        <block type="border"></block>
-			        <block type="bordercol"></block>
-			      </category>
-			      <block type="othercss"></block>
-			    </category>
-			  </category>
-			  <sep></sep>
-			  <category name="Text" colour="65">
-			    <block type="emptytext"></block>
-			    <block type="span"></block>
-			    <block type="textmod"></block>
-			    <block type="paragraph"></block>
-			    <block type="header"></block>
-			    <block type="link"></block>
-			  </category>
-			  <category name="Tables" colour="20">
-			    <block type="table"></block>
-			    <block type="tablerow"></block>
-			    <block type="tableheading"></block>
-			    <block type="tabledata"></block>
-			  </category>
+			<xml id="toolbox" style="display: none;">
+				<category name="Structure" colour="210">
+					<block type="emptyhtml"></block>
+					<category name="Page" colour="210">
+						<block type="html">
+							<value name="content">
+								<block type="body"></block>
+							</value>
+							<value name="content">
+								<block type="head">
+									<value name="content">
+										<block type="title"></block>
+									</value>
+									<value name="content">
+										<block type="metacharset"></block>
+									</value>
+								</block>
+							</value>
+						</block>
+						<block type="html"></block>
+						<block type="head"></block>
+						<block type="metacharset"></block>
+						<block type="body"></block>
+						<block type="title"></block>
+						<block type="headertag"></block>
+						<block type="footertag"></block>
+					</category>
+					<category name="Layout" colour="210">
+						<block type="divider"></block>
+						<block type="linebreak"></block>
+						<block type="hline"></block>
+					</category>
+				</category>
+				<category name="Modifiers" colour="120">
+					<block type="args"></block>
+					<block type="class"></block>
+					<block type="id"></block>
+					<block type="emptyarg"></block>
+				</category>
+				<category name="Style" colour="290">
+					<category name="Structure" colour="290">
+						<block type="style"></block>
+						<block type="linkhead"></block>
+						<block type="stylearg"></block>
+						<block type="cssitem"></block>
+					</category>
+					<category name="Items" colour="290">
+						<category name="Text" colour="290">
+							<block type="fontfamily"></block>
+							<block type="fontsize"></block>
+							<block type="color"></block>
+						</category>
+						<category name="Arrangement" colour="290">
+							<block type="margin"></block>
+							<block type="widthheightnum"></block>
+							<block type="widthheight"></block>
+						</category>
+						<category name="Design" colour="290">
+							<block type="bgcolor"></block>
+							<block type="border"></block>
+							<block type="bordercol"></block>
+						</category>
+						<block type="othercss"></block>
+					</category>
+				</category>
+				<sep></sep>
+				<category name="Text" colour="65">
+					<block type="emptytext"></block>
+					<block type="span">
+						<value name="content">
+							<block type="emptytext"></block>
+						</value>
+					</block>
+					<block type="textmod">
+						<value name="content">
+							<block type="emptytext"></block>
+						</value>
+					</block>
+					<block type="paragraph">
+						<value name="content">
+							<block type="emptytext"></block>
+						</value>
+					</block>
+					<block type="header">
+						<value name="content">
+							<block type="emptytext"></block>
+						</value>
+					</block>
+					<block type="link">
+						<value name="content">
+							<block type="emptytext"></block>
+						</value>
+					</block>
+				</category>
+				<category name="Organisation" colour="20">
+					<category name="Tables" colour="20">
+						<block type="table">
+							<value name="content">
+								<block type="tablerow">
+									<value name="content">
+										<block type="tabledata">
+											<value name="content">
+												<block type="emptytext"></block>
+											</value>
+										</block>
+									</value>
+									<value name="content">
+										<block type="tabledata">
+											<value name="content">
+												<block type="emptytext"></block>
+											</value>
+										</block>
+									</value>
+								</block>
+							</value>
+							<value name="content">
+								<block type="tablerow">
+									<value name="content">
+										<block type="tableheading">
+											<value name="content">
+												<block type="emptytext"></block>
+											</value>
+										</block>
+									</value>
+									<value name="content">
+										<block type="tableheading">
+											<value name="content">
+												<block type="emptytext"></block>
+											</value>
+										</block>
+									</value>
+								</block>
+							</value>
+						</block>
+						<block type="table"></block>
+						<block type="tablerow"></block>
+						<block type="tableheading"></block>
+						<block type="tabledata"></block>
+					</category>
+					<category name="Lists" colour="20">
+						<block type="unorderedlist">
+							<value name="content">
+								<block type="listitem">
+									<value name="content">
+										<block type="emptytext"></block>
+									</value>
+								</block>
+							</value>
+						</block>
+						<block type="orderedlist">
+							<value name="content">
+								<block type="listitem">
+									<value name="content">
+										<block type="emptytext"></block>
+									</value>
+								</block>
+							</value>
+						</block>
+						<block type="listitem">
+							<value name="content">
+								<block type="emptytext"></block>
+							</value>
+						</block>
+					</category>
+					<category name="Summary" colour="20">
+						<block type="details"></block>
+						<block type="summary">
+							<value name="content">
+								<block type="emptytext"></block>
+							</value>
+						</block>
+					</category>
+				</category>
+				<category name="Forms" colour="160">
+					<block type="form"></block>
+					<block type="input"></block>
+					<block type="label">
+						<value name="content">
+							<block type="emptytext"></block>
+						</value>
+					</block>
+				</category>
+				<category name="Media" colour="330">
+					<block type="image"></block>
+					<block type="audio"></block>
+				</category>
 			</xml>
 
 			<div id="preview" class="col s4">
