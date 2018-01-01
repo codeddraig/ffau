@@ -180,7 +180,14 @@ Blockly.FieldTextInput.prototype.showInlineEditor_ = function(quietInput) {
   var fontSize =
       (Blockly.FieldTextInput.FONTSIZE * this.workspace_.scale) + 'pt';
   div.style.fontSize = fontSize;
+  // BEGIN fixes for Materialize
   htmlInput.style.backgroundColor = "white";
+  htmlInput.style.border = "0 none white";
+  htmlInput.style.margin = "0";
+  htmlInput.style.padding = "0";
+  htmlInput.style.font = "inherit";
+  htmlInput.style.height = "1.5rem"
+  // END fixes for Materialize
 
   Blockly.FieldTextInput.htmlInput_ = htmlInput;
   div.appendChild(htmlInput);
