@@ -1,3 +1,32 @@
+//An empty tag
+Blockly.Blocks['emptyhtml'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '< %1 > %2 %3 </ >',
+			"args0": [
+				{
+					"type": "field_input",
+					"name": "blocktype",
+					"text": ""
+				},
+				{
+					"type": "input_value",
+					"name": "modifier"
+				},
+				{
+					"type": "input_statement",
+					"name": "content"
+				}
+			],
+			"previousStatement": null,
+			"nextStatement": null,
+			"colour": 210,
+			"tooltip": "Empty tag",
+			"helpUrl": "http://www.w3schools.com/tags/"
+		});
+	}
+};
+
 //HTML tag
 Blockly.Blocks['html'] = {
 	init: function() {
@@ -183,11 +212,21 @@ Blockly.Blocks['divider'] = {
 				{
 					"type": "input_statement",
 					"name": "content",
-					"check": "html"
+					"check": [
+						"html",
+						"textcontainer",
+						"form"
+					]
 				}
 			],
-			"previousStatement": "html",
-			"nextStatement": "html",
+			"previousStatement": [
+				"html",
+				"form"
+			],
+			"nextStatement": [
+				"html",
+				"form"
+			],
 			"colour": 210,
 			"tooltip": "Divider tag",
 			"helpUrl": "https://www.w3schools.com/tags/tag_div.asp"
@@ -356,9 +395,10 @@ Blockly.Blocks['stylearg'] = {
 					"check": "stylecontent"
 				}
 			],
-			"output": null,
+			"previousStatement": "args",
+			"nextStatement": "args",
 			"colour": 290,
-			"tooltip": "Inline CSS",
+			"tooltip": "Style modifier",
 			"helpUrl": "https://www.w3schools.com/css/css_howto.asp"
 		});
 	}
@@ -605,6 +645,35 @@ Blockly.Blocks['bordercol'] = {
 			"colour": 290,
 			"tooltip": "CSS Border collapse",
 			"helpUrl": "https://www.w3schools.com/cssref/pr_border-collapse.asp"
+		});
+	}
+};
+
+Blockly.Blocks['linkhead'] = {
+	init: function(){
+		this.jsonInit({
+			"message0": '<link rel = \"stylesheet\"  src = \" %1 \">',
+			"args0": [
+				{
+					"type": "field_dropdown",
+					"name": "library",
+					"options": [
+						[
+							"materialize.css",
+							"materialize"
+						],
+						[
+							"bootstrap.css",
+							"bootstrap"
+						]
+					]
+				}
+			],
+			"previousStatement": "header",
+			"nextStatement": "header",
+			"colour": 290,
+			"tooltip": "Import CSS Library",
+			"helpUrl": ""
 		});
 	}
 };
@@ -1208,6 +1277,42 @@ Blockly.Blocks['input'] = {
 			"colour": 160,
 			"tooltip": "Input tag",
 			"helpUrl": "https://www.w3schools.com/tags/tag_input.asp"
+		});
+	}
+};
+
+//Label tag
+Blockly.Blocks['label'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '<label for = \" %1 \" > %2 %3 </label>',
+			"args0": [
+				{
+					"type": "field_input",
+					"name": "for",
+					"text": "id"
+				},
+				{
+					"type": "input_value",
+					"name": "modifier"
+				},
+				{
+					"type": "input_statement",
+					"name": "content",
+					"check": "textcontainer"
+				}
+			],
+			"previousStatement": [
+				"html",
+				"form"
+			],
+			"nextStatement": [
+				"html",
+				"form"
+			],
+			"colour": 160,
+			"tooltip": "Label tag",
+			"helpUrl": "https://www.w3schools.com/tags/tag_label.asp"
 		});
 	}
 };

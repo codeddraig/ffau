@@ -11,6 +11,14 @@ htmlGen.scrub_ = function(block, code) {
 	return code + nextCode;
 };
 
+htmlGen['emptyhtml'] = function(block) {
+	var blocktype = block.getFieldValue('blocktype');
+	var statements_content = htmlGen.statementToCode(block, 'content');
+	var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+	var code = '<'+blocktype+block_modifier+'>\n'+statements_content+'</'+blocktype+'>\n';
+	return code;
+};
+
 htmlGen['html'] = function(block) {
 	var statements_content = htmlGen.statementToCode(block, 'content');
 	var code = '<html>\n' + statements_content + '</html>\n';
@@ -65,16 +73,16 @@ htmlGen['divider'] = function(block) {
 
 htmlGen['linebreak'] = function(block){
 	return "<br/>\n";
-}
+};
 
 htmlGen['hline'] = function(block){
 	var modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
 	return "<hr"+modifier+"/>\n";
-}
+};
 
 htmlGen['style'] = function(block){
 	var stmt = htmlGen.statementToCode(block, 'content');
-	var code = '<style>\n'+stmt+'</style>\n'
+	var code = '<style>\n'+stmt+'</style>\n';
 	return code;
 };
 
@@ -116,6 +124,17 @@ htmlGen['color'] = function(block){
 	return code;
 };
 
+htmlGen['linkhead'] = function(block){
+	var library = block.getFieldValue('library');
+	var code;
+	if(library==="bootstrap"){
+		code = '<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">\n';
+	}else if(library==="materialize"){
+		code = '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">\n';
+	}
+	return code;
+};
+
 htmlGen['bgcolor'] = function(block){
 	var color = block.getFieldValue('value');
 	var code = 'background-color: '+color+';\n';
@@ -139,7 +158,7 @@ htmlGen['bordercol'] = function(block){
 		code = 'border-collapse: separate;\n';
 	}
 	return code;
-}
+};
 
 htmlGen['widthheightnum'] = function(block){
 	var option = block.getFieldValue('option');
@@ -204,7 +223,7 @@ htmlGen['header'] = function(block) {
 	var statements_content = htmlGen.statementToCode(block, 'content');
 	var header_size = block.getFieldValue("size");
 	var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-	var code = '<h'+header_size+block_modifier+'>\n' + statements_content + '</h'+header_size+'>\n';
+	var code = '<h'+header_size+block_modifier+'>' + statements_content + '</h'+header_size+'>\n';
 	return code;
 };
 
@@ -226,7 +245,7 @@ htmlGen['link'] = function(block){
 	var text = htmlGen.statementToCode(block, 'content');
 	var link = block.getFieldValue('target');
 	var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-	var code = '<a href="'+link+'" '+block_modifier+'>'+text+'</a>\n';
+	var code = '<a href="'+link+'" target="_blank" '+block_modifier+'>'+text+'</a>\n';
 	return code;
 };
 
@@ -272,6 +291,14 @@ htmlGen['input'] = function(block){
 	var name = block.getFieldValue('name');
 	var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
 	var code = '<input type="'+type+'" value="'+value+'" placeholder="'+placeholder+'" name="'+name+'"'+block_modifier+'>\n';
+	return code;
+};
+
+htmlGen['label'] = function(block){
+	var forvar = block.getFieldValue('for');
+	var content = htmlGen.statementToCode(block,'content');
+	var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+	var code = '<label for="'+forvar+'"'+mod+'>'+content+'</label>\n';
 	return code;
 };
 
