@@ -1528,3 +1528,52 @@ Blockly.Blocks['audio'] = {
 		});
 	}
 };
+
+//Video tag
+Blockly.Blocks['video'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": '<video src =  %1 loop = %2 autoplay = %3 controls = %4 > %5',
+			"args0": [
+				{
+					"type": "field_dropdown",
+					"name": "source",
+					"options": [
+						[
+							"bigbuckbunny.mp4",
+							"bbb"
+						],
+						[
+							"llamadrama.mp4",
+							"ld"
+						]
+					]
+				},
+				{
+					"type": "field_checkbox",
+					"name": "loop",
+					"checked": false
+				},
+				{
+					"type": "field_checkbox",
+					"name": "autoplay",
+					"checked": false
+				},
+				{
+					"type": "field_checkbox",
+					"name": "controls",
+					"checked": true
+				},
+				{
+					"type": "input_value",
+					"name": "modifier"
+				}
+			],
+			"previousStatement": "html",
+			"nextStatement": "html",
+			"colour": 330,
+			"tooltip": "Video tag",
+			"helpUrl": "https://www.w3schools.com/tags/tag_video.asp"
+		});
+	}
+};
