@@ -395,10 +395,10 @@ htmlGen['video'] = function(block){
 	var type = "video/mp4";
 	switch(source){
 		case "bbb":
-			source = "http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_30fps_normal.mp4";
+			source = "http://cdbeta.hma-uk.org/library/media/bigbuckbunny_trail.mp4";
 			break;
 		case "ld":
-			source = "http://cdbeta.hma-uk.org/library/media/llama_drama_1080p.mp4";
+			source = "http://cdbeta.hma-uk.org/library/media/llamadrama_720p.mp4";
 			break;
 	}
 	code+='>\n<source src="'+source+'" type="'+type+'">\n</video>\n';
