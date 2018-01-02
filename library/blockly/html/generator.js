@@ -375,3 +375,32 @@ htmlGen['audio'] = function(block){
 	code+='>\n<source src="http://cdbeta.hma-uk.org/library/media/'+source+'" type="'+type+'">\n</audio>\n';
 	return code;
 };
+
+htmlGen['video'] = function(block){
+	var source = block.getFieldValue('source');
+	var loop = block.getFieldValue('loop');
+	var autoplay = block.getFieldValue('autoplay');
+	var controls = block.getFieldValue('controls');
+	var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+	var code = '<video'+mod;
+	if(loop==="TRUE"){
+		code+=' loop';
+	}
+	if(autoplay==="TRUE"){
+		code+=' autoplay';
+	}
+	if(controls==="TRUE"){
+		code+=' controls';
+	}
+	var type = "video/mp4";
+	switch(source){
+		case "bbb":
+			source = "http://distribution.bbb3d.renderfarming.net/video/mp4/bbb_sunflower_1080p_30fps_normal.mp4";
+			break;
+		case "ld":
+			source = "http://cdbeta.hma-uk.org/library/media/llama_drama_1080p.mp4";
+			break;
+	}
+	code+='>\n<source src="'+source+'" type="'+type+'">\n</video>\n';
+	return code;
+};
