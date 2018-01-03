@@ -1,5 +1,15 @@
 "use strict";
 
+function removeSpaces(string) {
+	while(string.indexOf(' ') === 0) {
+		string = string.substr(1);
+	}
+	while(string[string.length-1] === ' ') {
+		string = string.substr(0, string.length-1);
+	}
+	return string;
+}
+
 var htmlGen = new Blockly.Generator('HTML');
 
 htmlGen.init = function(workspace) {};
@@ -94,8 +104,24 @@ htmlGen['stylearg'] = function(block){
 
 htmlGen['cssitem'] = function(block){
 	var stmt = htmlGen.statementToCode(block, 'content');
+	var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+	mod = mod.split(' ').join('');
 	var selector = block.getFieldValue('selector');
-	var code = selector+'{\n'+stmt+'}\n';
+	var code = selector+mod+'{\n'+stmt+'}\n';
+	return code;
+};
+
+htmlGen['cssevents'] = function(block){
+	var stmt = block.getFieldValue('content');
+	var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+	var code = ':'+stmt+mod;
+	return code;
+};
+
+htmlGen['cssnot'] = function(block){
+	var stmt = block.getFieldValue('content');
+	var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+	var code = ':not('+stmt+')'+mod;
 	return code;
 };
 
@@ -111,10 +137,38 @@ htmlGen['fontsize'] = function(block){
 	return code;
 };
 
+htmlGen['textshadow'] = function(block){
+	var x = block.getFieldValue('xoffset');
+	var y = block.getFieldValue('yoffset');
+	var b = block.getFieldValue('blur');
+	var c = block.getFieldValue('color');
+	var code = 'text-shadow: '+x+' '+y+' '+b+' '+c+';\n';
+	return code;
+};
+
 htmlGen['margin'] = function(block){
 	var direction = block.getFieldValue('direction');
 	var value = block.getFieldValue('value');
 	var code = 'margin-'+direction+': '+value+';\n';
+	return code;
+};
+
+htmlGen['display'] = function(block){
+	var value = block.getFieldValue('content');
+	var code = 'display: '+value+';\n';
+	return code;
+};
+
+htmlGen['overflow'] = function(block){
+	var value = block.getFieldValue('content');
+	var code = 'overflow: '+value+';\n';
+	return code;
+};
+
+htmlGen['padding'] = function(block){
+	var direction = block.getFieldValue('direction');
+	var value = block.getFieldValue('value');
+	var code = 'padding-'+direction+': '+value+';\n';
 	return code;
 };
 
@@ -131,6 +185,8 @@ htmlGen['linkhead'] = function(block){
 		code = '<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">\n';
 	}else if(library==="materialize"){
 		code = '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">\n';
+	}else if (library==="magic"){
+		code = '<link rel="stylesheet" href="https://palkerecsenyi.github.io/magic/standard.css">\n';
 	}
 	return code;
 };
@@ -141,11 +197,47 @@ htmlGen['bgcolor'] = function(block){
 	return code;
 };
 
+htmlGen['bgimage'] = function(block){
+	var content = block.getFieldValue('content');
+	var code = 'background-image: url("'+content+'");\n';
+	return code;
+};
+
+htmlGen['bgposition'] = function(block){
+	var content = block.getFieldValue('content');
+	var code = 'background-position: '+content+';\n';
+	return code;
+};
+
+htmlGen['bgrepeat'] = function(block){
+	var content = block.getFieldValue('content');
+	var code = 'background-repeat: '+content+';\n';
+	return code;
+};
+
+htmlGen['bgsize'] = function(block){
+	var content = block.getFieldValue('content');
+	var code = 'background-size: '+content+';\n';
+	return code;
+};
+
 htmlGen['border'] = function(block){
 	var width = block.getFieldValue('width');
 	var type = block.getFieldValue('type');
 	var color = block.getFieldValue('color');
 	var code = 'border: '+width+'px '+type+' '+color+';\n';
+	return code;
+};
+
+htmlGen['borderrad'] = function(block){
+	var content = block.getFieldValue('content');
+	var code = 'border-radius: '+content+';\n';
+	return code;
+};
+
+htmlGen['cursor'] = function(block){
+	var content = block.getFieldValue('content');
+	var code = 'cursor: '+content+';\n';
 	return code;
 };
 
@@ -398,7 +490,7 @@ htmlGen['video'] = function(block){
 			source = "http://cdbeta.hma-uk.org/library/media/bigbuckbunny_trail.mp4";
 			break;
 		case "ld":
-			source = "http://cdbeta.hma-uk.org/library/media/llamadrama_720p.mp4";
+			source = "http://cdbeta.hma-uk.org/library/media/llama_drama_720p.mp4";
 			break;
 	}
 	code+='>\n<source src="'+source+'" type="'+type+'">\n</video>\n';
