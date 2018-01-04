@@ -7,7 +7,7 @@ General contact: **ffau [at] codei0 [dot] net**
 
 Live demo: https://codeddraig.github.io/ffau/
 
-THIS IS VERSION 0.1.3
+THIS IS VERSION 0.2.0-candidate-a
 
 ## License info
 
@@ -40,14 +40,14 @@ The JavaScript library which handles DOM transversals and event handling with fa
 ### Blockly by Google (https://github.com/google/blockly)
 A magic library which you should have heard of by now. It creates the whole drag-and-drop block system, which is the basis for this entire system!
 
-### Materialize.css by Alvin Wang (https://github.com/Dogfalo/materialize)
-The CSS framework for everything in Ffau except the blocks themselves. It is intended to replicate Google's Material Design philosophy for the web. However, the library itself is not endorsed by Google.
+### Magic.css by Pal Kerecsenyi (one of our own devs!) (https://github.com/palkerecsenyi/magic)
+Magic.css is a simple CSS library for building stylish interactive websites. It is intended to look similar to both Bootstrap and Materialize.css, without replicating them directly.
 
-### Royalty Free Music CC Attribution
-"Dance of the Sugar Plum Fairy", "Monkeys Spinning Monkeys", "Pixelland"
-Kevin MacLeod (incompetech.com)
-Licensed under Creative Commons: By Attribution 3.0
-http://creativecommons.org/licenses/by/3.0/
+### Music by Kevin MacLeod (http://incompetech.com)
+"Dance of the Sugar Plum Fairy", "Monkeys Spinning Monkeys", "Pixelland" - (Licensed under Creative Commons: By Attribution 3.0 (http://creativecommons.org/licenses/by/3.0/))
+
+### Video by the Open Movie Foundation (http://blender.org)
+**Trailer for "Big Buck Bunny"** and **"Llama Drama, Episode 1"**.
 
 ## Inspiration
 Our project is inspired by, but not a direct clone of, the blockly-html project (https://github.com/bwinf/blockly-html) by the BWNIF (Bundesweit Informatik Nachwuchs Fördern), a German organisation which seeks to further development in Computer Science among children. Also, we owe some of our inspiration to the EduBlocks project (https://github.com/AllAboutCode/EduBlocks) by Joshua Lowe, which performs a similar function to our work, but for Python, rather than the web.
