@@ -13,7 +13,7 @@
 
 				Copyright (c) 2017-18 Pal Kerecsenyi, Geza Kerecsenyi and Theodore Tucker
 
-				THIS IS VERSION 0.1.3
+				THIS IS VERSION 0.2.0-candidate-a
  -->
 
 <!DOCTYPE html>
@@ -38,8 +38,8 @@
 		<script src="library/blockly/html/blocks.js"></script>
 		<script src="library/blockly/html/generator.js"></script>
 		<!-- aesthetic CSS libraries -->
-		<link rel="stylesheet" src="library/animate/animate.css"/>
 		<link type="text/css" rel="stylesheet" href="library/materialize/css/materialize.css"  media="screen,projection"/>
+		<link type="text/css" rel="stylesheet" href="library/layout.css"/>
 		<!-- /HEADER LIBRARIES -->
 		<!--Let browser know website is optimized for mobile-->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -66,103 +66,236 @@
 		</nav>
 		<div class="row"></div>
 		<div class="row"> <!-- row -->
-			<div class="col s8">
+			<div class="col s7">
 				<div id="blocklyDiv" style="height: 480px;"></div>
 			</div>
 
 			<xml id="toolbox" style="display: none;">
-			  <category name="Structure" colour="210">
-			    <category name="Page" colour="210">
-			      <block type="html"></block>
-			      <block type="head"></block>
-			      <block type="metacharset"></block>
-			      <block type="body"></block>
-			      <block type="title"></block>
-			      <block type="headertag"></block>
-			      <block type="footertag"></block>
-			    </category>
-			    <category name="Layout" colour="210">
-			      <block type="divider"></block>
-			      <block type="linebreak"></block>
-			      <block type="hline"></block>
-			    </category>
-			  </category>
-			  <category name="Modifiers" colour="120">
-			    <block type="args"></block>
-			    <block type="class"></block>
-			    <block type="id"></block>
-			    <block type="emptyarg"></block>
-			  </category>
-			  <category name="Style" colour="290">
-			    <category name="Structure" colour="290">
-			      <block type="style"></block>
-			      <block type="stylearg"></block>
-			      <block type="cssitem"></block>
-			    </category>
-			    <category name="Items" colour="290">
-			      <category name="Text" colour="290">
-			        <block type="fontfamily"></block>
-			        <block type="fontsize"></block>
-			        <block type="color"></block>
-			      </category>
-			      <category name="Arrangement" colour="290">
-			        <block type="margin"></block>
-			        <block type="widthheightnum"></block>
-			        <block type="widthheight"></block>
-			      </category>
-			      <category name="Design" colour="290">
-			        <block type="bgcolor"></block>
-			        <block type="border"></block>
-			        <block type="bordercol"></block>
-			      </category>
-			      <block type="othercss"></block>
-			    </category>
-			  </category>
-			  <sep></sep>
-			  <category name="Text" colour="65">
-			    <block type="emptytext"></block>
-			    <block type="span"></block>
-			    <block type="textmod"></block>
-			    <block type="paragraph"></block>
-			    <block type="header"></block>
-			    <block type="link"></block>
-			  </category>
-			  <category name="Organisation" colour="20">
-			    <category name="Tables" colour="20">
-			      <block type="table"></block>
-			      <block type="tablerow"></block>
-			      <block type="tableheading"></block>
-			      <block type="tabledata"></block>
-			    </category>
-			    <category name="Lists" colour="20">
-			      <block type="unorderedlist"></block>
-			      <block type="orderedlist"></block>
-			      <block type="listitem"></block>
-			    </category>
-			    <category name="Summary" colour="20">
-			      <block type="details"></block>
-			      <block type="summary"></block>
-			    </category>
-			  </category>
-			  <category name="Forms" colour="160">
-			    <block type="form"></block>
-			    <block type="input"></block>
-			  </category>
-			  <category name="Media" colour="330">
-			    <block type="image"></block>
-			    <block type="audio"></block>
-			  </category>
+				<category name="Structure" colour="210">
+					<block type="emptyhtml"></block>
+					<category name="Page" colour="210">
+						<block type="html">
+							<value name="content">
+								<block type="body"></block>
+							</value>
+							<value name="content">
+								<block type="head">
+									<value name="content">
+										<block type="title"></block>
+									</value>
+									<value name="content">
+										<block type="metacharset"></block>
+									</value>
+								</block>
+							</value>
+						</block>
+						<block type="html"></block>
+						<block type="head"></block>
+						<block type="metacharset"></block>
+						<block type="body"></block>
+						<block type="title"></block>
+						<block type="headertag"></block>
+						<block type="footertag"></block>
+					</category>
+					<category name="Layout" colour="210">
+						<block type="divider"></block>
+						<block type="linebreak"></block>
+						<block type="hline"></block>
+					</category>
+				</category>
+				<category name="Modifiers" colour="120">
+					<block type="args"></block>
+					<block type="class"></block>
+					<block type="id"></block>
+					<block type="emptyarg"></block>
+				</category>
+				<category name="Style" colour="290">
+					<category name="Structure" colour="290">
+						<block type="style"></block>
+						<block type="stylearg"></block>
+						<block type="linkhead"></block>
+						<block type="cssitem"></block>
+					</category>
+					<category name="Items" colour="290">
+						<category name="Text" colour="290">
+							<label text="Font"></label>
+							<block type="fontfamily"></block>
+							<block type="fontsize"></block>
+							<label text="Text Styling"></label>
+							<block type="color"></block>
+							<block type="textshadow"></block>
+						</category>
+						<category name="Arrangement" colour="290">
+							<label text="Display"></label>
+							<block type="margin"></block>
+							<block type="padding"></block>
+							<block type="display"></block>
+							<block type="overflow"></block>
+							<label text="Dimensions"></label>
+							<block type="widthheightnum"></block>
+							<block type="widthheight"></block>
+						</category>
+						<category name="Design" colour="290">
+							<label text="Backgrounds"></label>
+							<block type="bgcolor"></block>
+							<block type="bgimage"></block>
+							<block type="bgposition"></block>
+							<block type="bgrepeat"></block>
+							<block type="bgsize"></block>
+							<label text="Borders"></label>
+							<block type="border"></block>
+							<block type="bordercol"></block>
+							<block type="borderrad"></block>
+							<label text="Other Design"></label>
+							<block type="boxshadow"></block>
+							<block type="cursor"></block>
+						</category>
+						<block type="othercss"></block>
+						<block type="cssevents"></block>
+						<block type="cssnot"></block>
+					</category>
+				</category>
+				<sep></sep>
+				<category name="Text" colour="65">
+					<block type="emptytext"></block>
+					<block type="span">
+						<value name="content">
+							<block type="emptytext"></block>
+						</value>
+					</block>
+					<block type="textmod">
+						<value name="content">
+							<block type="emptytext"></block>
+						</value>
+					</block>
+					<block type="paragraph">
+						<value name="content">
+							<block type="emptytext"></block>
+						</value>
+					</block>
+					<block type="header">
+						<value name="content">
+							<block type="emptytext"></block>
+						</value>
+					</block>
+					<block type="link">
+						<value name="content">
+							<block type="emptytext"></block>
+						</value>
+					</block>
+				</category>
+				<category name="Organisation" colour="20">
+					<category name="Tables" colour="20">
+						<block type="table">
+							<value name="content">
+								<block type="tablerow">
+									<value name="content">
+										<block type="tabledata">
+											<value name="content">
+												<block type="emptytext"></block>
+											</value>
+										</block>
+									</value>
+									<value name="content">
+										<block type="tabledata">
+											<value name="content">
+												<block type="emptytext"></block>
+											</value>
+										</block>
+									</value>
+								</block>
+							</value>
+							<value name="content">
+								<block type="tablerow">
+									<value name="content">
+										<block type="tableheading">
+											<value name="content">
+												<block type="emptytext"></block>
+											</value>
+										</block>
+									</value>
+									<value name="content">
+										<block type="tableheading">
+											<value name="content">
+												<block type="emptytext"></block>
+											</value>
+										</block>
+									</value>
+								</block>
+							</value>
+						</block>
+						<block type="table"></block>
+						<block type="tablerow"></block>
+						<block type="tableheading"></block>
+						<block type="tabledata"></block>
+					</category>
+					<category name="Lists" colour="20">
+						<block type="unorderedlist">
+							<value name="content">
+								<block type="listitem">
+									<value name="content">
+										<block type="emptytext"></block>
+									</value>
+								</block>
+							</value>
+						</block>
+						<block type="orderedlist">
+							<value name="content">
+								<block type="listitem">
+									<value name="content">
+										<block type="emptytext"></block>
+									</value>
+								</block>
+							</value>
+						</block>
+						<block type="listitem">
+							<value name="content">
+								<block type="emptytext"></block>
+							</value>
+						</block>
+					</category>
+					<category name="Summary" colour="20">
+						<block type="details"></block>
+						<block type="summary">
+							<value name="content">
+								<block type="emptytext"></block>
+							</value>
+						</block>
+					</category>
+				</category>
+				<category name="Forms" colour="160">
+					<block type="form"></block>
+					<block type="input"></block>
+					<block type="label">
+						<value name="content">
+							<block type="emptytext"></block>
+						</value>
+					</block>
+				</category>
+				<category name="Media" colour="330">
+					<block type="image"></block>
+					<block type="audio"></block>
+					<block type="video"></block>
+				</category>
 			</xml>
 
-			<div id="preview" class="col s4">
+			<div id="preview" class="col s5">
 				<ul class="tabs">
 					<li class="tab col s6"><a onclick="showMePreview()">Preview</a></li>
 					<li class="tab col s6"><a onclick="showMeCode()">Real code</a></li>
 				</ul>
 				<iframe id="preview-frame" name="prev" height="435px" width="100%"></iframe>
-				<pre><code id="code-output"></code></pre>
+				<div id="code-container"><pre><code id="code-output"></code></pre></div>
 			</div>
 		</div> <!-- /row -->
+
+    <footer class="page-footer">
+      <div class="footer-copyright">
+        <div class="container">
+        &copy; 2017-18 Pal Kerecsenyi, Geza Kerecsenyi and Theodore Tucker. // <a class="grey-text text-lighten-3" href="https://github.com/codeddraig/ffau">https://github.com/codeddraig/ffau</a>
+        </div>
+      </div>
+    </footer>
 
 		<!-- our special JS to drive this page -->
 		<script type="text/javascript" src="library/index.js"></script>

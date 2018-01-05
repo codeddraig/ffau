@@ -1,4 +1,14 @@
-var workspace = Blockly.inject('blocklyDiv',{toolbox: document.getElementById('toolbox')}); // assign a var to the blockly workspace for future adressing
+var workspace = Blockly.inject('blocklyDiv',
+										   {toolbox: document.getElementById('toolbox'),
+											zoom:
+											{controls:true,
+											 wheel:true,
+											 startScale: 1.0,
+											 maxScale: 3,
+											 minScale: 0.3,
+											 scaleSpeed:1.2},
+											trashcan: true});
+// [above] inject the blockly workspace into the div
 function onUpdate(event){
   var code = htmlGen.workspaceToCode(workspace);
   var iframe = document.getElementById('preview-frame');
@@ -14,6 +24,7 @@ function saveCode(){
 function clearCode(){
   if(confirm("Are you sure you want to reset the Ffau workspace?")){
     Blockly.mainWorkspace.clear();
+		showMePreview();
   }
 }
 function loadCode(){
@@ -43,17 +54,14 @@ function download(filename, text) {
 }
 function showMePreview(){
   document.getElementById("preview-frame").style.display = 'block';
-  document.getElementById("code-output").style.display = 'none';
+  document.getElementById("code-container").style.display = 'none';
 }
 function showMeCode(){
   document.getElementById("preview-frame").style.display = 'none';
-  document.getElementById("code-output").style.display = 'block';
+  document.getElementById("code-container").style.display = 'block';
 }
 $('#version-loader').load('version.txt');
 $(document).ready(function(){
   $('.load').hide();
   showMePreview();
-  if( /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent) ) {
-    alert('This site works better on a desktop.')
-  }
 });
