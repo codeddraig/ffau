@@ -1,7 +1,7 @@
 # ffau
 Ffau - A blocky-based editor for teaching HTML, CSS and Javascript.
 
-Developed by Pal Kerecsenyi, Geza Kerecsenyi and Theodore Tucker.
+Developed by Pal Kerecsenyi, Geza Kerecsenyi and tti0 (https://github.com/tti0).
 
 General contact: **ffau [at] codei0 [dot] net**
 
@@ -19,7 +19,7 @@ Ffau is open source software. This means you can re-mix, share and use it howeve
 
 For full details, please read LICENSE.
 
-Copyright (c) 2017-18 Pal Kerecsenyi, Geza Kerecsenyi and Theodore Tucker
+Copyright (c) 2017-18 Pal Kerecsenyi, Geza Kerecsenyi and tti0 (https://github.com/tti0)
 
 ## Setup
 Ffau editor will not work without its libraries. The best way to get all off this data at once is to grab the latest release version from the Github repo. You can use the 'Download ZIP' button, or use git from the command line to clone the repository if you know how. For most users, a ZIP download will work just fine.
