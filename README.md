@@ -58,7 +58,7 @@ Our project is inspired by, but not a direct clone of, the blockly-html project 
 
 ## Developers
 
-### Theodore Tucker // https://github.com/tti0 // https://tti0.net
+### tti0 // https://github.com/tti0 // https://tti0.net
 
 ### Pal Kerecsenyi // https://github.com/palkerecsenyi
 
