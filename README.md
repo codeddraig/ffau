@@ -9,6 +9,10 @@ Live demo: https://codeddraig.github.io/ffau/
 
 THIS IS VERSION 0.2.0-candidate-a
 
+## CodeDragon
+
+Ffau forms part of the CodeDragon ecosystem, a platform for teaching young people to code for the web. Check us out at http://codedragon.codei0.net/.
+
 ## License info
 
 Ffau is open source software. This means you can re-mix, share and use it however you want, including for commercial purposes. However, you MUST provide attribution to the original authors if you do this. However, Ffau is provided with NO WARRANTY whatsoever, and by using this software, you agree to the terms of the MIT License.
@@ -26,7 +30,7 @@ Please note Ffau is constantly being improved - especially new blocks being adde
 Alternatively, you may visit https://codeddraig.github.io/ffau/ in any modern web browser to use a demo of the software.
 
 ## Export
-Ffau can save your blocks to a text file in the browser (with the extension .crd for 'CodeDragon') and import them to re-assemble your blocks.
+Ffau can save your blocks to a text file in the browser (with the extension '.txt') and import them to re-assemble your blocks. Files exported from Ffau can be imported to CodeDragon (http://codedragon.codei0.net/), and vice-versa.
 
 ## Bugs
 To report problems or potential additions, please feel free to visit the 'issues' section of this repo. For security issues, please email us at: **ffau [at] codei0 [dot] net**.
@@ -40,8 +44,8 @@ The JavaScript library which handles DOM transversals and event handling with fa
 ### Blockly by Google (https://github.com/google/blockly)
 A magic library which you should have heard of by now. It creates the whole drag-and-drop block system, which is the basis for this entire system!
 
-### Magic.css by Pal Kerecsenyi (one of our own devs!) (https://github.com/palkerecsenyi/magic)
-Magic.css is a simple CSS library for building stylish interactive websites. It is intended to look similar to both Bootstrap and Materialize.css, without replicating them directly.
+### Materialize.css by Alvin Wang (https://github.com/Dogfalo/materialize)
+The CSS framework for everything in Ffau except the blocks themselves. It is intended to replicate Google's Material Design philosophy for the web. However, the library itself is not endorsed by Google.
 
 ### Music by Kevin MacLeod (http://incompetech.com)
 "Dance of the Sugar Plum Fairy", "Monkeys Spinning Monkeys", "Pixelland" - (Licensed under Creative Commons: By Attribution 3.0 (http://creativecommons.org/licenses/by/3.0/))
