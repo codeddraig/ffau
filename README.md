@@ -1,13 +1,12 @@
-# ffau
-Ffau - A blocky-based editor for teaching HTML, CSS and Javascript.
+<h1 align="center">FFAU</h1>
+<p align="center"><img src="https://img.shields.io/badge/version-0.2.0-brightgreen.svg"></p>
+<p align="center">Ffau - A blocky-based editor for teaching HTML, CSS and Javascript.</p>
+<p align="center">Developed by Pal Kerecsenyi, Geza Kerecsenyi and tti0 (https://github.com/tti0).</p>
 
-Developed by Pal Kerecsenyi, Geza Kerecsenyi and tti0 (https://github.com/tti0).
-
+## Information
 General contact: **ffau [at] codei0 [dot] net**
 
 Live demo: https://codeddraig.github.io/ffau/
-
-THIS IS VERSION 0.2.0
 
 ## CodeDragon
 
