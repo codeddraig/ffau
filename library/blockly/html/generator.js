@@ -186,7 +186,7 @@ htmlGen['linkhead'] = function(block){
 	}else if(library==="materialize"){
 		code = '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">\n';
 	}else if (library==="magic"){
-		code = '<link rel="stylesheet" href="https://palkerecsenyi.github.io/magic/standard.css">\n';
+		code = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/magical-css@latest/dist/magic.css">\n';
 	}
 	return code;
 };
@@ -496,3 +496,8 @@ htmlGen['video'] = function(block){
 	code+='>\n<source src="'+source+'" type="'+type+'">\n</video>\n';
 	return code;
 };
+htmlGen['script'] = function(block){
+  var content = Blockly.JavaScript.statementToCode(block, 'content');
+  var code = "<script>\n"+content+"\n</script>\n";
+  return code;
+}
