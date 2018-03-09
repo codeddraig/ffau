@@ -1,5 +1,15 @@
 "use strict";
 
+function removeSpaces(string) {
+	while(string.indexOf(' ') === 0) {
+		string = string.substr(1);
+	}
+	while(string[string.length-1] === ' ') {
+		string = string.substr(0, string.length-1);
+	}
+	return string;
+}
+
 var htmlGen = new Blockly.Generator('HTML');
 
 htmlGen.init = function(workspace) {};
@@ -9,6 +19,14 @@ htmlGen.scrub_ = function(block, code) {
 	var nextBlock = block.nextConnection && block.nextConnection.targetBlock();
 	var nextCode = htmlGen.blockToCode(nextBlock);
 	return code + nextCode;
+};
+
+htmlGen['emptyhtml'] = function(block) {
+	var blocktype = block.getFieldValue('blocktype');
+	var statements_content = htmlGen.statementToCode(block, 'content');
+	var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+	var code = '<'+blocktype+block_modifier+'>\n'+statements_content+'</'+blocktype+'>\n';
+	return code;
 };
 
 htmlGen['html'] = function(block) {
@@ -65,16 +83,16 @@ htmlGen['divider'] = function(block) {
 
 htmlGen['linebreak'] = function(block){
 	return "<br/>\n";
-}
+};
 
 htmlGen['hline'] = function(block){
 	var modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
 	return "<hr"+modifier+"/>\n";
-}
+};
 
 htmlGen['style'] = function(block){
 	var stmt = htmlGen.statementToCode(block, 'content');
-	var code = '<style>\n'+stmt+'</style>\n'
+	var code = '<style>\n'+stmt+'</style>\n';
 	return code;
 };
 
@@ -86,8 +104,24 @@ htmlGen['stylearg'] = function(block){
 
 htmlGen['cssitem'] = function(block){
 	var stmt = htmlGen.statementToCode(block, 'content');
+	var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+	mod = mod.split(' ').join('');
 	var selector = block.getFieldValue('selector');
-	var code = selector+'{\n'+stmt+'}\n';
+	var code = selector+mod+'{\n'+stmt+'}\n';
+	return code;
+};
+
+htmlGen['cssevents'] = function(block){
+	var stmt = block.getFieldValue('content');
+	var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+	var code = ':'+stmt+mod;
+	return code;
+};
+
+htmlGen['cssnot'] = function(block){
+	var stmt = block.getFieldValue('content');
+	var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+	var code = ':not('+stmt+')'+mod;
 	return code;
 };
 
@@ -103,10 +137,38 @@ htmlGen['fontsize'] = function(block){
 	return code;
 };
 
+htmlGen['textshadow'] = function(block){
+	var x = block.getFieldValue('xoffset');
+	var y = block.getFieldValue('yoffset');
+	var b = block.getFieldValue('blur');
+	var c = block.getFieldValue('color');
+	var code = 'text-shadow: '+x+' '+y+' '+b+' '+c+';\n';
+	return code;
+};
+
 htmlGen['margin'] = function(block){
 	var direction = block.getFieldValue('direction');
 	var value = block.getFieldValue('value');
 	var code = 'margin-'+direction+': '+value+';\n';
+	return code;
+};
+
+htmlGen['display'] = function(block){
+	var value = block.getFieldValue('content');
+	var code = 'display: '+value+';\n';
+	return code;
+};
+
+htmlGen['overflow'] = function(block){
+	var value = block.getFieldValue('content');
+	var code = 'overflow: '+value+';\n';
+	return code;
+};
+
+htmlGen['padding'] = function(block){
+	var direction = block.getFieldValue('direction');
+	var value = block.getFieldValue('value');
+	var code = 'padding-'+direction+': '+value+';\n';
 	return code;
 };
 
@@ -116,9 +178,46 @@ htmlGen['color'] = function(block){
 	return code;
 };
 
+htmlGen['linkhead'] = function(block){
+	var library = block.getFieldValue('library');
+	var code;
+	if(library==="bootstrap"){
+		code = '<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">\n';
+	}else if(library==="materialize"){
+		code = '<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">\n';
+	}else if (library==="magic"){
+		code = '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/magical-css@latest/dist/magic.css">\n';
+	}
+	return code;
+};
+
 htmlGen['bgcolor'] = function(block){
 	var color = block.getFieldValue('value');
 	var code = 'background-color: '+color+';\n';
+	return code;
+};
+
+htmlGen['bgimage'] = function(block){
+	var content = block.getFieldValue('content');
+	var code = 'background-image: url("'+content+'");\n';
+	return code;
+};
+
+htmlGen['bgposition'] = function(block){
+	var content = block.getFieldValue('content');
+	var code = 'background-position: '+content+';\n';
+	return code;
+};
+
+htmlGen['bgrepeat'] = function(block){
+	var content = block.getFieldValue('content');
+	var code = 'background-repeat: '+content+';\n';
+	return code;
+};
+
+htmlGen['bgsize'] = function(block){
+	var content = block.getFieldValue('content');
+	var code = 'background-size: '+content+';\n';
 	return code;
 };
 
@@ -127,6 +226,18 @@ htmlGen['border'] = function(block){
 	var type = block.getFieldValue('type');
 	var color = block.getFieldValue('color');
 	var code = 'border: '+width+'px '+type+' '+color+';\n';
+	return code;
+};
+
+htmlGen['borderrad'] = function(block){
+	var content = block.getFieldValue('content');
+	var code = 'border-radius: '+content+';\n';
+	return code;
+};
+
+htmlGen['cursor'] = function(block){
+	var content = block.getFieldValue('content');
+	var code = 'cursor: '+content+';\n';
 	return code;
 };
 
@@ -139,7 +250,7 @@ htmlGen['bordercol'] = function(block){
 		code = 'border-collapse: separate;\n';
 	}
 	return code;
-}
+};
 
 htmlGen['widthheightnum'] = function(block){
 	var option = block.getFieldValue('option');
@@ -204,7 +315,7 @@ htmlGen['header'] = function(block) {
 	var statements_content = htmlGen.statementToCode(block, 'content');
 	var header_size = block.getFieldValue("size");
 	var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-	var code = '<h'+header_size+block_modifier+'>\n' + statements_content + '</h'+header_size+'>\n';
+	var code = '<h'+header_size+block_modifier+'>' + statements_content + '</h'+header_size+'>\n';
 	return code;
 };
 
@@ -226,7 +337,7 @@ htmlGen['link'] = function(block){
 	var text = htmlGen.statementToCode(block, 'content');
 	var link = block.getFieldValue('target');
 	var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-	var code = '<a href="'+link+'" '+block_modifier+'>'+text+'</a>\n';
+	var code = '<a href="'+link+'" target="_blank" '+block_modifier+'>'+text+'</a>\n';
 	return code;
 };
 
@@ -272,6 +383,14 @@ htmlGen['input'] = function(block){
 	var name = block.getFieldValue('name');
 	var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
 	var code = '<input type="'+type+'" value="'+value+'" placeholder="'+placeholder+'" name="'+name+'"'+block_modifier+'>\n';
+	return code;
+};
+
+htmlGen['label'] = function(block){
+	var forvar = block.getFieldValue('for');
+	var content = htmlGen.statementToCode(block,'content');
+	var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+	var code = '<label for="'+forvar+'"'+mod+'>'+content+'</label>\n';
 	return code;
 };
 
@@ -345,6 +464,40 @@ htmlGen['audio'] = function(block){
 			type = "audio/wav";
 			break;
 	}
-	code+='>\n<source src="http://cdbeta.hma-uk.org/library/media/'+source+'" type="'+type+'">\n</audio>\n';
+	code+='>\n<source src="http://codedragon.codei0.net/library/media/'+source+'" type="'+type+'">\n</audio>\n';
 	return code;
 };
+
+htmlGen['video'] = function(block){
+	var source = block.getFieldValue('source');
+	var loop = block.getFieldValue('loop');
+	var autoplay = block.getFieldValue('autoplay');
+	var controls = block.getFieldValue('controls');
+	var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+	var code = '<video'+mod;
+	if(loop==="TRUE"){
+		code+=' loop';
+	}
+	if(autoplay==="TRUE"){
+		code+=' autoplay';
+	}
+	if(controls==="TRUE"){
+		code+=' controls';
+	}
+	var type = "video/mp4";
+	switch(source){
+		case "bbb":
+			source = "http://codedragon.codei0.net/library/media/bigbuckbunny_trail_720p.mp4";
+			break;
+		case "ld":
+			source = "http://codedragon.codei0.net/library/media/llamadrama_720p.mp4";
+			break;
+	}
+	code+='>\n<source src="'+source+'" type="'+type+'">\n</video>\n';
+	return code;
+};
+htmlGen['script'] = function(block){
+  var content = Blockly.JavaScript.statementToCode(block, 'content');
+  var code = "<script>\n"+content+"\n</script>\n";
+  return code;
+}
