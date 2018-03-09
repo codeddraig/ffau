@@ -1,0 +1,21 @@
+#preview-frame{
+	width:100%;
+	border:thin solid #DCDCDC;
+	max-height:800px;
+	overflow: scroll;
+}
+/*#loadText{
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}*/
+#code-container{
+	width:100%;
+	border:thin solid #DCDCDC;
+	height:435px;
+	max-height:435px;
+	overflow: scroll;
+}

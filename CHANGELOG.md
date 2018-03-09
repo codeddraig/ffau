@@ -1,12 +1,11 @@
-# Ffau Editor Changelog and Feature List - Version 0.1.3
+# Ffau Editor Changelog and Feature List - Version 0.2.0
 All new additions in **bold**.
 
 ## Summary
-No new blocks or features have been added in this release. Minor bug fixes, regarding how Blockly displays text inputs and colour selections vs Materialize.css's default styles. Some typos in documentation have also been rectified.
+A few new blocks have been added in this release, see below for details. Mostly backend work though, and work on compatibility between CodeDragon Community and Ffau Editor. Some further groundwork has been done for JS.
 
 ## Details
 * Updated version numbers in index.html and version.txt
-* Implemented changes from Pal's branch codedragon-editor:
   * Blocks:
     * STRUCTURE
       * &lt;html&gt;
@@ -18,6 +17,8 @@ No new blocks or features have been added in this release. Minor bug fixes, rega
       * &lt;div&gt;
       * &lt;/br&gt;
       * &lt;/hr&gt;
+      * **&lt;meta&gt;**
+      * **Pre-determined structure block sets**
     * MODIFIERS
       * (arguments)
       * class = ""
@@ -27,16 +28,27 @@ No new blocks or features have been added in this release. Minor bug fixes, rega
       * &lt;style&gt;
       * style =
       * (Pure CSS) selector { }
+      * **Ability to include Materialize.css and Bootstrap in your projects**
     * CSS ATTRIBUTES
       * property : value assignment
       * font-family
       * font-size
       * color
+      * **text-shadow**
       * margin-top/left/bottom/right
-      * width
+      * **padding**
+      * **display**
+      * **overflow**
+      * width / **height**
       * background-color
+      * **background-image**
+      * **background-position**
+      * **background-repeat**
+      * **background-size**
       * border
       * border-collapse
+      * **border-radius**
+      * **cursor**
     * TEXT
       * Text placeholder element
       * &lt;span&gt;
@@ -59,9 +71,11 @@ No new blocks or features have been added in this release. Minor bug fixes, rega
     * FORMS
       * &lt;form&gt;
       * &lt;input&gt;
+      * **&lt;label&gt;**
     * MEDIA
       * &lt;audio&gt;
       * &lt;img&gt;
+      * **&lt;video&gt;**
 
 
-Thanks! - @tti0, 09:38 (GMT), 2018-01-01, Manchester, UK.
+Thanks! - @tti0, 14:38 (GMT), 2018-01-05, Manchester, UK.
