@@ -43,8 +43,8 @@ The JavaScript library which handles DOM transversals and event handling with fa
 ### Blockly by Google (https://github.com/google/blockly)
 A magic library which you should have heard of by now. It creates the whole drag-and-drop block system, which is the basis for this entire system!
 
-### Materialize.css by Alvin Wang (https://github.com/Dogfalo/materialize)
-The CSS framework for everything in Ffau except the blocks themselves. It is intended to replicate Google's Material Design philosophy for the web. However, the library itself is not endorsed by Google.
+### Magic.css by Pal Kerecsenyi (https://github.com/palkerecsenyi/magic)
+CSS library for everything but the editor itself. Developed by one of our own team!
 
 ### Music by Kevin MacLeod (http://incompetech.com)
 "Dance of the Sugar Plum Fairy", "Monkeys Spinning Monkeys", "Pixelland" - (Licensed under Creative Commons: By Attribution 3.0 (http://creativecommons.org/licenses/by/3.0/))
