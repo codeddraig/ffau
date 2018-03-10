@@ -296,11 +296,106 @@ p {
   margin-right: 5px;
   vertical-align: middle; }
 
+.notification {
+  border-radius: 3px;
+  border: 1px solid transparent;
+  margin: 1rem 0;
+  box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.2), 0 2px 18px 0 rgba(0, 0, 0, 0.19); }
+  .notification.dismissable {
+    transition: opacity .2s ease; }
+  .notification.dismissed {
+    opacity: 0; }
+  .notification .body {
+    padding: 1.5rem 3rem; }
+    @media only screen and (max-width: 425px) {
+      .notification .body {
+        padding: 1.5rem 1rem; } }
+  .notification .title {
+    padding: 0.3rem 3rem;
+    font-size: 1.1rem;
+    font-weight: bolder; }
+    @media only screen and (max-width: 425px) {
+      .notification .title {
+        padding: 0.3rem 1rem; } }
+    .notification .title span.close {
+      float: right;
+      font-size: 2rem;
+      margin: 0;
+      line-height: 1.2rem;
+      cursor: pointer; }
+      .notification .title span.close:hover {
+        color: #242424; }
+  .notification.default .body {
+    color: black !important; }
+  .notification.default .body {
+    background-color: #0effdb; }
+    .notification.default .body .separator {
+      box-shadow: 0 10px 10px -10px #00a78e inset !important;
+      margin: .7rem 0; }
+  .notification.default .title {
+    background-color: #00a78e; }
+  .notification.red .body {
+    background-color: #ff5f7f; }
+    .notification.red .body .separator {
+      box-shadow: 0 10px 10px -10px #f80032 inset !important;
+      margin: .7rem 0; }
+  .notification.red .title {
+    background-color: #f80032; }
+  .notification.green .body {
+    background-color: #3fe484; }
+    .notification.green .body .separator {
+      box-shadow: 0 10px 10px -10px #17a753 inset !important;
+      margin: .7rem 0; }
+  .notification.green .title {
+    background-color: #17a753; }
+  .notification.yellow .body {
+    background-color: #ffe378; }
+    .notification.yellow .body .separator {
+      box-shadow: 0 10px 10px -10px #ffcf12 inset !important;
+      margin: .7rem 0; }
+  .notification.yellow .title {
+    background-color: #ffcf12; }
+  .notification.blue .body {
+    background-color: #4caff1; }
+    .notification.blue .body .separator {
+      box-shadow: 0 10px 10px -10px #0f7ec8 inset !important;
+      margin: .7rem 0; }
+  .notification.blue .title {
+    background-color: #0f7ec8; }
+  .notification.dark .body .separator {
+    box-shadow: 0 10px 10px -10px inset !important;
+    margin: .7rem 0; }
+  .notification.light .body .separator {
+    box-shadow: 0 10px 10px -10px inset !important;
+    margin: .7rem 0; }
+
+.notification-group {
+  box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.2), 0 2px 18px 0 rgba(0, 0, 0, 0.19); }
+  .notification-group .notification {
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+    border-bottom: none;
+    border-top: none; }
+    .notification-group .notification:first-child {
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+      border-top: 1px solid transparent; }
+    .notification-group .notification:last-child {
+      border-bottom-left-radius: 3px;
+      border-bottom-right-radius: 3px;
+      border-bottom: 1px solid transparent; }
+    .notification-group .notification .body {
+      padding: 1rem 3rem; }
+  .notification-group.group-titles .notification {
+    border-bottom: 1px solid transparent; }
+    .notification-group.group-titles .notification:not(:first-child) .title {
+      display: none; }
+
 .separator {
   width: 100%;
   height: 1px;
-  margin-top: 0;
-  margin-left: 0;
+  margin: .7rem 0;
   border: none;
   box-shadow: 0 10px 10px -10px #8c8b8b inset; }
 
@@ -425,30 +520,31 @@ nav + .container, nav + #nav-mobile + .container {
     margin-left: 83.3333333333% !important; }
   .row .offset11 {
     margin-left: 91.6666666667% !important; }
-  .row .offset1 {
-    margin-left: 8.3333333333% !important; }
-  .row .offset2 {
-    margin-left: 16.6666666667% !important; }
-  .row .offset3 {
-    margin-left: 25% !important; }
-  .row .offset4 {
-    margin-left: 33.3333333333% !important; }
-  .row .offset5 {
-    margin-left: 41.6666666667% !important; }
-  .row .offset6 {
-    margin-left: 50% !important; }
-  .row .offset7 {
-    margin-left: 58.3333333333% !important; }
-  .row .offset8 {
-    margin-left: 66.6666666667% !important; }
-  .row .offset9 {
-    margin-left: 75% !important; }
-  .row .offset10 {
-    margin-left: 83.3333333333% !important; }
-  .row .offset11 {
-    margin-left: 91.6666666667% !important; }
-  .row .offset12 {
-    margin-left: 100% !important; }
+  @media only screen and (max-width: 425px) {
+    .row .offset1 {
+      margin-left: 0 !important; }
+    .row .offset2 {
+      margin-left: 0 !important; }
+    .row .offset3 {
+      margin-left: 0 !important; }
+    .row .offset4 {
+      margin-left: 0 !important; }
+    .row .offset5 {
+      margin-left: 0 !important; }
+    .row .offset6 {
+      margin-left: 0 !important; }
+    .row .offset7 {
+      margin-left: 0 !important; }
+    .row .offset8 {
+      margin-left: 0 !important; }
+    .row .offset9 {
+      margin-left: 0 !important; }
+    .row .offset10 {
+      margin-left: 0 !important; }
+    .row .offset11 {
+      margin-left: 0 !important; }
+    .row .offset12 {
+      margin-left: 0 !important; } }
   .row .order1 {
     order: 1; }
   .row .order2 {
