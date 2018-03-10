@@ -40,7 +40,8 @@
 		<script src="library/blockly/html/blocks.js"></script>
 		<script src="library/blockly/html/generator.js"></script>
 		<!-- aesthetic CSS libraries -->
-		<link type="text/css" rel="stylesheet" href="library/materialize/css/materialize.css"  media="screen,projection"/>
+		<!--<link type="text/css" rel="stylesheet" href="library/materialize/css/materialize.css"  media="screen,projection"/>-->
+		<link rel="stylesheet" href="magiccss/magic.css">
 		<link type="text/css" rel="stylesheet" href="library/layout.css"/>
 		<!-- /HEADER LIBRARIES -->
 		<!--Let browser know website is optimized for mobile-->
@@ -50,22 +51,22 @@
 
 	<body>
 
-		<nav>
-			<div class="nav-wrapper blue-grey darken-4">
-				<a class="brand-logo">Ffau Editor</a>
-
-				<ul class="right hide-on-med-and-down">
-					<li id="version-loader">Version</li>
-					<li><a onclick="saveCode()" class="btn pink accent-4"><i class="fas fa-download"></i> Download</a></li>
-					<li><a onclick="loadCode()" id="loadi" class="btn pink accent-4"><i class="fas fa-upload"></i> Upload</a></li>
-					<li>
-						<input class="load" id="loadText" type="file">
-						<a onclick="doLoad()" class="load btn pink accent-4">Load</a>
-					</li>
-					<li><a onclick="clearCode()" class="btn pink accent-4"><i class="fas fa-trash"></i> Clear Workspace</a></li>
-				</ul>
-			</div>
+		<nav class="default">
+			<ul class="nav-left">
+				<li><a class="nav-brand-text">Ffau Editor</a></li>
+			</ul>
+			<ul class="nav-right">
+				<li class="nav-item" id="version-loader">Version</li>
+				<li class="nav-item"><a onclick="saveCode()" class="btn btn-default"><i class="fas fa-download"></i> Download</a></li>
+				<li class="nav-item"><a onclick="loadCode()" id="loadi" class="btn btn-default"><i class="fas fa-upload"></i> Upload</a></li>
+				<li class="nav-item">
+					<input class="load" id="loadText" type="file">
+					<a onclick="doLoad()" class="btn btn-default">Load</a>
+				</li>
+				<li class="nav-item"><a onclick="clearCode()" class="btn btn-default"><i class="fas fa-trash"></i> Clear Workspace</a></li>
+			</ul>
 		</nav>
+
 		<div class="row"></div>
 		<div class="row"> <!-- row -->
 			<div class="col s7">
