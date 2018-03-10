@@ -46,6 +46,9 @@ A magic library which you should have heard of by now. It creates the whole drag
 ### Magic.css by Pal Kerecsenyi (https://github.com/palkerecsenyi/magic)
 CSS library for everything but the editor itself. Developed by one of our own team!
 
+### Ace Editor (https://ace.c9.io/)
+Handles syntax highlighting in the "Real Code" tab.
+
 ### Music by Kevin MacLeod (http://incompetech.com)
 "Dance of the Sugar Plum Fairy", "Monkeys Spinning Monkeys", "Pixelland" - (Licensed under Creative Commons: By Attribution 3.0 (http://creativecommons.org/licenses/by/3.0/))
 

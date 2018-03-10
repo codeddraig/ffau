@@ -1,6 +1,7 @@
 var editor = ace.edit("code-output");
 editor.setTheme("ace/theme/textmate");
 editor.session.setMode("ace/mode/html");
+editor.setReadOnly(true);
 
 var workspace = Blockly.inject('blocklyDiv',
 										   {toolbox: document.getElementById('toolbox'),
