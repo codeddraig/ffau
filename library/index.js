@@ -1,5 +1,6 @@
 (function(){
   "use strict";
+  Blockly.JavaScript.init(workspace);
 }());
 var editor = ace.edit("code-output");
 editor.setTheme("ace/theme/textmate");

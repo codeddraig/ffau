@@ -26,6 +26,7 @@ class Ffau{
     var frameID = "ffauframe-"+Math.floor(Math.random()*10000);
     frame.id = frameID;
     this.ffauWorkspace = Blockly.inject(frameID,{toolbox: toolbox,zoom:{controls:true,wheel:true,startScale: 1.0,maxScale: 3,minScale: 0.3,scaleSpeed:1.2},trashcan: true});
+    Blockly.JavaScript.init(this.ffauWorkspace);
     return frameID;
   }
   renderPreview(frame){
