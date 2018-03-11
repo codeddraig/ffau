@@ -1,8 +1,10 @@
+(function(){
+  "use strict";
+}());
 var editor = ace.edit("code-output");
 editor.setTheme("ace/theme/textmate");
 editor.session.setMode("ace/mode/html");
 editor.setReadOnly(true);
-
 var workspace = Blockly.inject('blocklyDiv',
 										   {toolbox: document.getElementById('toolbox'),
 											zoom:
@@ -17,7 +19,7 @@ var workspace = Blockly.inject('blocklyDiv',
 function onUpdate(event){
   var code = htmlGen.workspaceToCode(workspace);
   var iframe = document.getElementById('preview-frame');
-  $('#code-output').text(code);
+  editor.setValue(code);
   iframe.src = "data:text/html;charset=utf-8," + encodeURIComponent(code);
 } // function to update HTML
 workspace.addChangeListener(onUpdate);
