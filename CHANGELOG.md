@@ -1,8 +1,8 @@
-# Ffau Editor Changelog and Feature List - Version 0.2.0
+# Ffau Editor Changelog and Feature List - Version 0.3.0
 All new additions in **bold**.
 
 ## Summary
-A few new blocks have been added in this release, see below for details. Mostly backend work though, and work on compatibility between CodeDragon Community and Ffau Editor. Some further groundwork has been done for JS.
+This release of Ffau Editor introduces JavaScript scripting, within the block editor. A few bugs have been fixed, and some minor HTML blocks have been added. We have moved from Materialize.css to Magic.css for formatting of the editor page, and have added syntax highlighting for pure code viewing to the editor page with Ace editor.
 
 ## Details
 * Updated version numbers in index.html and version.txt
@@ -17,8 +17,9 @@ A few new blocks have been added in this release, see below for details. Mostly 
       * &lt;div&gt;
       * &lt;/br&gt;
       * &lt;/hr&gt;
-      * **&lt;meta&gt;**
-      * **Pre-determined structure block sets**
+      * &lt;meta&lt;
+      * **&lt;meta name="viewport"&lt;**
+      * Pre-determined structure block sets
     * MODIFIERS
       * (arguments)
       * class = ""
@@ -28,27 +29,28 @@ A few new blocks have been added in this release, see below for details. Mostly 
       * &lt;style&gt;
       * style =
       * (Pure CSS) selector { }
-      * **Ability to include Materialize.css and Bootstrap in your projects**
+      * Ability to include Materialize.css and Bootstrap in your projects
+      * **Ability to include Magic.css in your projects**
     * CSS ATTRIBUTES
       * property : value assignment
       * font-family
       * font-size
       * color
-      * **text-shadow**
+      * text-shadow
       * margin-top/left/bottom/right
-      * **padding**
-      * **display**
-      * **overflow**
-      * width / **height**
+      * padding
+      * display
+      * overflow
+      * width / height
       * background-color
-      * **background-image**
-      * **background-position**
-      * **background-repeat**
-      * **background-size**
+      * background-image
+      * background-position
+      * background-repeat
+      * background-size
       * border
       * border-collapse
-      * **border-radius**
-      * **cursor**
+      * border-radius
+      * cursor
     * TEXT
       * Text placeholder element
       * &lt;span&gt;
@@ -71,11 +73,11 @@ A few new blocks have been added in this release, see below for details. Mostly 
     * FORMS
       * &lt;form&gt;
       * &lt;input&gt;
-      * **&lt;label&gt;**
+      * &lt;label&gt;
     * MEDIA
       * &lt;audio&gt;
       * &lt;img&gt;
-      * **&lt;video&gt;**
-
-
-Thanks! - @tti0, 14:38 (GMT), 2018-01-05, Manchester, UK.
+      * &lt;video&gt;
+    * **SCRIPTING**
+      * **&lt;script&gt;**
+      * **Default Blockly Scripting blocks + generators**
