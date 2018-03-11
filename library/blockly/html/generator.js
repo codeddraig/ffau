@@ -31,7 +31,7 @@ htmlGen['emptyhtml'] = function(block) {
 
 htmlGen['html'] = function(block) {
 	var statements_content = htmlGen.statementToCode(block, 'content');
-	var code = '<html>\n' + statements_content + '</html>\n';
+	var code = '<!DOCTYPE html>\n<html>\n' + statements_content + '</html>\n';
 	return code;
 };
 
