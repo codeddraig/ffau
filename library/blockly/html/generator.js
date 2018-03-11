@@ -47,6 +47,10 @@ htmlGen['metacharset'] = function(block) {
 	return code;
 };
 
+htmlGen['metaviewport'] = function(block){
+  return '<meta name="viewport" content="width=device-width, initial-scale=1">';
+};
+
 htmlGen['title'] = function(block) {
 	var value = block.getFieldValue('value');
 	var code = '<title>'+value+'</title>\n';

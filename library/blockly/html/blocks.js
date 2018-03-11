@@ -150,6 +150,19 @@ Blockly.Blocks['metacharset'] = {
 	}
 };
 
+Blockly.Blocks['metaviewport'] = {
+  init:function(){
+    this.jsonInit({
+      "message0": "<meta name=\"viewport\">",
+      "previousStatement": "header",
+      "nextStatement": "header",
+      "colour": 210,
+      "tooltip": "Meta viewport (adds responsiveness)",
+      "helpUrl": "https://developer.mozilla.org/en-US/docs/Mozilla/Mobile/Viewport_meta_tag"
+    });
+  }
+};
+
 //header tag
 Blockly.Blocks['headertag'] = {
 	init: function() {
