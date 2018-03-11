@@ -1,0 +1,26 @@
+{
+  "name": "ffau-editor",
+  "version": "0.3.0",
+  "description": "A Blocky-based editor for teaching HTML, CSS and Javascript.",
+  "main": "library/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/codeddraig/ffau.git"
+  },
+  "keywords": [
+    "blockly",
+    "teaching",
+    "javascript",
+    "drag-and-drop",
+    "codedragon"
+  ],
+  "author": "CodeDdraig",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/codeddraig/ffau/issues"
+  },
+  "homepage": "https://github.com/codeddraig/ffau#readme"
+}
