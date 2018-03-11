@@ -42,15 +42,6 @@
 		<!-- aesthetic CSS libraries -->
 		<link rel="stylesheet" href="library/magiccss/magic.css">
 		<link type="text/css" rel="stylesheet" href="library/layout.css"/>
-		<style type="text/css" media="screen">
-    #code-output {
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
-    }
-		</style>
 		<!-- /HEADER LIBRARIES -->
 		<!--Let browser know website is optimized for mobile-->
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -64,26 +55,39 @@
 				<li><a class="nav-brand-text">Ffau Editor</a></li>
 			</ul>
 			<ul class="nav-right">
-				<li class="nav-item" id="version-loader">Version</li>
-				<li class="nav-item"><a onclick="saveCode()"><i class="fas fa-download"></i> Download</a></li>
-				<li class="nav-item"><a onclick="loadCode()" id="loadi"><i class="fas fa-upload"></i> Upload</a></li>
-				<li class="nav-item">
-					<input class="load" id="loadText" type="file">
-					<a onclick="doLoad()">Load</a>
-				</li>
-				<li class="nav-item"><a onclick="clearCode()"><i class="fas fa-trash"></i> Clear Workspace</a></li>
+        <li class="nav-item" id="version-loader"><a>Version</a></li>
+				<li class="nav-item"><a onclick="saveCode()" href="#!"><i class="fas fa-download"></i> Download</a></li>
+				<li class="nav-item"><a id="loadi" href="#!"><label for="loadText" style="cursor:pointer;"><i class="fas fa-upload"></i> Upload</label></a></li>
+				<input class="load" id="loadText" type="file" style="display:none;">
+				<li class="nav-item"><a onclick="clearCode()" href="#!"><i class="fas fa-trash"></i> Clear Workspace</a></li>
 			</ul>
 		</nav>
 
 		<div class="container">
-
-			<div class="row"></div>
 			<div class="row"> <!-- row -->
 				<div class="col col7">
 					<div id="blocklyDiv" style="height: 480px;"></div>
 				</div>
+				<div id="preview" class="col col5">
+					<div class="breadcrumb bottom">
+            <ul>
+              <li><a href="#!" onclick="showMePreview()">Preview</a></li>
+              <li><a href="#!" onclick="showMeCode()">Real code</a></li>
+            </ul>
+          </div>
+          <iframe id="preview-frame" name="prev" height="420px" width="100%"></iframe>
+          <div id="code-output"></div>  
+			  </div>
+      </div>
+		</div>
 
-				<xml id="toolbox" style="display: none;">
+    <footer class="green">
+      <div class="bottom">
+        &copy; 2017-18 Pal Kerecsenyi, Geza Kerecsenyi and <a class="link" href="https://github.com/tti0">tti0</a>. // <a class="link" href="https://github.com/codeddraig/ffau">https://github.com/codeddraig/ffau</a>
+      </div>
+    </footer>
+    
+    <xml id="toolbox" style="display: none;">
 	        <category name="Structure" colour="210">
 	          <block type="emptyhtml"></block>
 	          <category name="Page" colour="210">
@@ -536,27 +540,8 @@
 	        </category>
 	        <category name="Variables" colour="310" custom="VARIABLE"></category>
 	        <category name="Functions" colour="290" custom="PROCEDURE"></category>
-	      </xml>
-
-				<div id="preview" class="col col5">
-					<div class="breadcrumb">
-					<ul>
-						<li><a onclick="showMePreview()">Preview</a></li>
-						<li><a onclick="showMeCode()">Real code</a></li>
-					</ul>
-					<iframe id="preview-frame" name="prev" height="435px" width="100%"></iframe>
-					<div id="code-output"></div>
-				</div>
-			</div> <!-- /row -->
-
-		</div> <!-- /container -->
-
-    <footer class="green">
-      <div class="bottom">
-        &copy; 2017-18 Pal Kerecsenyi, Geza Kerecsenyi and <a class="link" href="https://github.com/tti0">tti0</a>. // <a class="link" href="https://github.com/codeddraig/ffau">https://github.com/codeddraig/ffau</a>
-      </div>
-    </footer>
-
+	      </xml>  
+    
 		<!-- Ace JS import -->
 		<script src="library/ace/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 		<!-- our special JS to drive this page -->

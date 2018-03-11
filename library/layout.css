@@ -19,3 +19,14 @@
 	max-height:435px;
 	overflow: scroll;
 }
+.breadcrumb{
+  max-height: 60px;
+}
+#code-output {
+    height:420px;
+}
+footer{
+  position:fixed;
+  bottom:0;
+  width:100%;
+}
