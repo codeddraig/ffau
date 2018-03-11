@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Example Ffau editor</title>
+    <script src="../library/blockly/google-blockly/blockly_compressed.js"></script>
+		<script src="../library/blockly/google-blockly/javascript_compressed.js"></script>
+		<script src="../library/blockly/google-blockly/blocks_compressed.js"></script>
+		<script src="../library/blockly/google-blockly/msg/js/en.js"></script>
+    <script src="../library/blockly/html/blocks.js"></script>
+		<script src="../library/blockly/html/generator.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/magical-css@latest/dist/magic.css">
+  </head>
+  <body>
+    <div class="row">
+      <div class="col col8">
+        <div id="ffau-blockly" style="height:500px; width:100%"></div>
+      </div>
+      <div class="col col4">
+        <div id="ffau-preview"></div>
+        <div id="ffau-code" style="height:300px;width:100%;"></div>
+      </div>
+    </div>
+    
+    <xml id="ffau-toolbox" style="display: none;">
+      <category name="Structure" colour="210">
+        <block type="emptyhtml"></block>
+        <category name="Page" colour="210">
+          <block type="html">
+            <value name="content">
+              <block type="body"></block>
+            </value>
+            <value name="content">
+              <block type="head">
+                <value name="content">
+                  <block type="title"></block>
+                </value>
+                <value name="content">
+                  <block type="metacharset"></block>
+                </value>
+              </block>
+            </value>
+          </block>
+          <block type="html"></block>
+          <block type="head"></block>
+          <block type="metacharset"></block>
+          <block type="body"></block>
+          <block type="title"></block>
+          <block type="headertag"></block>
+          <block type="footertag"></block>
+        </category>
+        <category name="Layout" colour="210">
+          <block type="divider"></block>
+          <block type="linebreak"></block>
+          <block type="hline"></block>
+        </category>
+      </category>
+      <category name="Modifiers" colour="120">
+        <block type="args"></block>
+        <block type="class"></block>
+        <block type="id"></block>
+        <block type="emptyarg"></block>
+      </category>
+      <category name="Style" colour="290">
+        <category name="Structure" colour="290">
+          <block type="style"></block>
+          <block type="stylearg"></block>
+          <block type="linkhead"></block>
+          <block type="cssitem"></block>
+        </category>
+        <category name="Items" colour="290">
+          <category name="Text" colour="290">
+            <label text="Font"></label>
+            <block type="fontfamily"></block>
+            <block type="fontsize"></block>
+            <label text="Text Styling"></label>
+            <block type="color"></block>
+            <block type="textshadow"></block>
+          </category>
+          <category name="Arrangement" colour="290">
+            <label text="Display"></label>
+            <block type="margin"></block>
+            <block type="padding"></block>
+            <block type="display"></block>
+            <block type="overflow"></block>
+            <label text="Dimensions"></label>
+            <block type="widthheightnum"></block>
+            <block type="widthheight"></block>
+          </category>
+          <category name="Design" colour="290">
+            <label text="Backgrounds"></label>
+            <block type="bgcolor"></block>
+            <block type="bgimage"></block>
+            <block type="bgposition"></block>
+            <block type="bgrepeat"></block>
+            <block type="bgsize"></block>
+            <label text="Borders"></label>
+            <block type="border"></block>
+            <block type="bordercol"></block>
+            <block type="borderrad"></block>
+            <label text="Other Design"></label>
+            <block type="cursor"></block>
+          </category>
+          <block type="othercss"></block>
+          <block type="cssevents"></block>
+          <block type="cssnot"></block>
+        </category>
+      </category>
+      <sep></sep>
+      <category name="Text" colour="65">
+        <block type="emptytext"></block>
+        <block type="span">
+          <value name="content">
+            <block type="emptytext"></block>
+          </value>
+        </block>
+        <block type="textmod">
+          <value name="content">
+            <block type="emptytext"></block>
+          </value>
+        </block>
+        <block type="paragraph">
+          <value name="content">
+            <block type="emptytext"></block>
+          </value>
+        </block>
+        <block type="header">
+          <value name="content">
+            <block type="emptytext"></block>
+          </value>
+        </block>
+        <block type="link">
+          <value name="content">
+            <block type="emptytext"></block>
+          </value>
+        </block>
+      </category>
+      <category name="Organisation" colour="20">
+        <category name="Tables" colour="20">
+          <block type="table">
+            <value name="content">
+              <block type="tablerow">
+                <value name="content">
+                  <block type="tabledata">
+                    <value name="content">
+                      <block type="emptytext"></block>
+                    </value>
+                  </block>
+                </value>
+                <value name="content">
+                  <block type="tabledata">
+                    <value name="content">
+                      <block type="emptytext"></block>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </value>
+            <value name="content">
+              <block type="tablerow">
+                <value name="content">
+                  <block type="tableheading">
+                    <value name="content">
+                      <block type="emptytext"></block>
+                    </value>
+                  </block>
+                </value>
+                <value name="content">
+                  <block type="tableheading">
+                    <value name="content">
+                      <block type="emptytext"></block>
+                    </value>
+                  </block>
+                </value>
+              </block>
+            </value>
+          </block>
+          <block type="table"></block>
+          <block type="tablerow"></block>
+          <block type="tableheading"></block>
+          <block type="tabledata"></block>
+        </category>
+        <category name="Lists" colour="20">
+          <block type="unorderedlist">
+            <value name="content">
+              <block type="listitem">
+                <value name="content">
+                  <block type="emptytext"></block>
+                </value>
+              </block>
+            </value>
+          </block>
+          <block type="orderedlist">
+            <value name="content">
+              <block type="listitem">
+                <value name="content">
+                  <block type="emptytext"></block>
+                </value>
+              </block>
+            </value>
+          </block>
+          <block type="listitem">
+            <value name="content">
+              <block type="emptytext"></block>
+            </value>
+          </block>
+        </category>
+        <category name="Summary" colour="20">
+          <block type="details"></block>
+          <block type="summary">
+            <value name="content">
+              <block type="emptytext"></block>
+            </value>
+          </block>
+        </category>
+      </category>
+      <category name="Forms" colour="160">
+        <block type="form"></block>
+        <block type="input"></block>
+        <block type="label">
+          <value name="content">
+            <block type="emptytext"></block>
+          </value>
+        </block>
+      </category>
+      <category name="Media" colour="330">
+        <block type="image"></block>
+        <block type="audio"></block>
+        <block type="video"></block>
+      </category>
+      <category name="Scripting" colour="210">
+        <block type="script"></block>
+      </category>
+      <sep></sep>
+      <category name="Logic" colour="210">
+        <category name="If">
+          <block type="controls_if"></block>
+          <block type="controls_if">
+            <mutation else="1"></mutation>
+          </block>
+          <block type="controls_if">
+            <mutation elseif="1" else="1"></mutation>
+          </block>
+        </category>
+        <category name="Boolean">
+          <block type="logic_compare"></block>
+          <block type="logic_operation"></block>
+          <block type="logic_negate"></block>
+          <block type="logic_boolean"></block>
+          <block type="logic_null"></block>
+          <block type="logic_ternary"></block>
+        </category>
+      </category>
+      <category name="Loops" colour="120">
+        <block type="controls_repeat_ext">
+          <value name="TIMES">
+            <block type="math_number">
+              <field name="NUM">10</field>
+            </block>
+          </value>
+        </block>
+        <block type="controls_whileUntil"></block>
+        <block type="controls_for">
+          <field name="VAR">i</field>
+          <value name="FROM">
+            <block type="math_number">
+              <field name="NUM">1</field>
+            </block>
+          </value>
+          <value name="TO">
+            <block type="math_number">
+              <field name="NUM">10</field>
+            </block>
+          </value>
+          <value name="BY">
+            <block type="math_number">
+              <field name="NUM">1</field>
+            </block>
+          </value>
+        </block>
+        <block type="controls_forEach"></block>
+        <block type="controls_flow_statements"></block>
+      </category>
+      <category name="Math" colour="230">
+        <block type="math_number"></block>
+        <block type="math_arithmetic"></block>
+        <block type="math_single"></block>
+        <block type="math_trig"></block>
+        <block type="math_constant"></block>
+        <block type="math_number_property"></block>
+        <block type="math_round"></block>
+        <block type="math_on_list"></block>
+        <block type="math_modulo"></block>
+        <block type="math_constrain">
+          <value name="LOW">
+            <block type="math_number">
+              <field name="NUM">1</field>
+            </block>
+          </value>
+          <value name="HIGH">
+            <block type="math_number">
+              <field name="NUM">100</field>
+            </block>
+          </value>
+        </block>
+        <block type="math_random_int">
+          <value name="FROM">
+            <block type="math_number">
+              <field name="NUM">1</field>
+            </block>
+          </value>
+          <value name="TO">
+            <block type="math_number">
+              <field name="NUM">100</field>
+            </block>
+          </value>
+        </block>
+        <block type="math_random_float"></block>
+      </category>
+      <category name="Text" colour="160">
+        <block type="text"></block>
+        <block type="text_join"></block>
+        <block type="text_append">
+          <value name="TEXT">
+            <shadow type="text"></shadow>
+          </value>
+        </block>
+        <block type="text_length">
+          <value name="VALUE">
+            <shadow type="text">
+              <field name="TEXT">abc</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="text_isEmpty">
+          <value name="VALUE">
+            <shadow type="text">
+              <field name="TEXT"></field>
+            </shadow>
+          </value>
+        </block>
+        <block type="text_indexOf">
+          <value name="VALUE">
+            <block type="variables_get">
+              <field name="VAR">text</field>
+            </block>
+          </value>
+          <value name="FIND">
+            <shadow type="text">
+              <field name="TEXT">abc</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="text_charAt">
+          <value name="VALUE">
+            <block type="variables_get">
+              <field name="VAR">text</field>
+            </block>
+          </value>
+        </block>
+        <block type="text_getSubstring">
+          <value name="STRING">
+            <block type="variables_get">
+              <field name="VAR">text</field>
+            </block>
+          </value>
+        </block>
+        <block type="text_changeCase">
+          <value name="TEXT">
+            <shadow type="text">
+              <field name="TEXT">abc</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="text_trim">
+          <value name="TEXT">
+            <shadow type="text">
+              <field name="TEXT">abc</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="text_count">
+          <value name="SUB">
+            <shadow type="text"></shadow>
+          </value>
+          <value name="TEXT">
+            <shadow type="text"></shadow>
+          </value>
+        </block>
+        <block type="text_replace">
+          <value name="FROM">
+            <shadow type="text"></shadow>
+          </value>
+          <value name="TO">
+            <shadow type="text"></shadow>
+          </value>
+          <value name="TEXT">
+            <shadow type="text"></shadow>
+          </value>
+        </block>
+        <block type="text_reverse">
+          <value name="TEXT">
+            <shadow type="text"></shadow>
+          </value>
+        </block>
+        <label text="Input/Output:" web-class="ioLabel"></label>
+        <block type="text_print">
+          <value name="TEXT">
+            <shadow type="text">
+              <field name="TEXT">abc</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="text_prompt_ext">
+          <value name="TEXT">
+            <shadow type="text">
+              <field name="TEXT">abc</field>
+            </shadow>
+          </value>
+        </block>
+      </category>
+      <category name="Lists" colour="260">
+        <block type="lists_create_empty"></block>
+        <block type="lists_create_with"></block>
+        <block type="lists_repeat">
+          <value name="NUM">
+            <block type="math_number">
+              <field name="NUM">5</field>
+            </block>
+          </value>
+        </block>
+        <block type="lists_length"></block>
+        <block type="lists_isEmpty"></block>
+        <block type="lists_indexOf"></block>
+        <block type="lists_getIndex"></block>
+        <block type="lists_setIndex"></block>
+      </category>
+      <category name="Colour" colour="20">
+        <block type="colour_picker"></block>
+        <block type="colour_random"></block>
+        <block type="colour_rgb">
+          <value name="RED">
+            <shadow type="math_number">
+              <field name="NUM">100</field>
+            </shadow>
+          </value>
+          <value name="GREEN">
+            <shadow type="math_number">
+              <field name="NUM">50</field>
+            </shadow>
+          </value>
+          <value name="BLUE">
+            <shadow type="math_number">
+              <field name="NUM">0</field>
+            </shadow>
+          </value>
+        </block>
+        <block type="colour_blend">
+          <value name="COLOUR1">
+            <shadow type="colour_picker">
+              <field name="COLOUR">#ff0000</field>
+            </shadow>
+          </value>
+          <value name="COLOUR2">
+            <shadow type="colour_picker">
+              <field name="COLOUR">#3333ff</field>
+            </shadow>
+          </value>
+          <value name="RATIO">
+            <shadow type="math_number">
+              <field name="NUM">0.5</field>
+            </shadow>
+          </value>
+        </block>
+      </category>
+      <category name="Variables" colour="310" custom="VARIABLE"></category>
+      <category name="Functions" colour="290" custom="PROCEDURE"></category>
+    </xml>
+    
+    <script src="../library/ace/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../dist/ffau.js"></script>
+    <script>
+      var ffau = new Ffau;
+      ffau.renderBlockly(document.getElementById("ffau-blockly"),document.getElementById("ffau-toolbox"));
+      ffau.renderPreview(document.getElementById("ffau-preview"));
+      ffau.renderCode(document.getElementById("ffau-code"));
+      ffau.addEvent();
+    </script>
+  </body>
+</html>
