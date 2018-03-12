@@ -48,7 +48,7 @@ htmlGen['metacharset'] = function(block) {
 };
 
 htmlGen['metaviewport'] = function(block){
-  return '<meta name="viewport" content="width=device-width, initial-scale=1">';
+  return '<meta name="viewport" content="width=device-width, initial-scale=1">\n';
 };
 
 htmlGen['title'] = function(block) {
