@@ -2192,6 +2192,29 @@ Blockly.Blocks['form'] = {
 	}
 };
 
+Blockly.Blocks['button'] = {
+  init: function(){
+    this.jsonInit({
+      "message0": "<button> %1 %2 </button>",
+      "args0": [
+        {
+          "type": "input_value",
+          "name": "modifier"
+        },
+        {
+          "type": "input_statement",
+          "name": "content"
+        }
+      ],
+      "previousStatement": "html",
+      "nextStatement": "html",
+      "colour": 160,
+      "tooltip": "A default button tag",
+      "helpUrl": "https://www.w3schools.com/tags/tag_button.asp"
+    });
+  }
+}
+
 //Input tag
 Blockly.Blocks['input'] = {
 	init: function() {
