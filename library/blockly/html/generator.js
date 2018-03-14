@@ -390,6 +390,12 @@ htmlGen['input'] = function(block){
 	return code;
 };
 
+htmlGen['button'] = function(block){
+	var content = htmlGen.statementToCode(block,'content');
+  var modifier = htmlGen.statementToCode(block,'modifier',htmlGen.ORDER_ATOMIC);
+  return '<button '+modifier+'>\n'+content+'</button>\n';
+}
+
 htmlGen['label'] = function(block){
 	var forvar = block.getFieldValue('for');
 	var content = htmlGen.statementToCode(block,'content');
