@@ -2128,7 +2128,7 @@ Blockly.Blocks['tableheading'] = {
 				{
 					"type": "input_statement",
 					"name": "content",
-					"check": "textcontainer"
+					"check": ["html","textcontainer"]
 				}
 			],
 			"previousStatement": "tablerow",
@@ -2153,7 +2153,7 @@ Blockly.Blocks['tabledata'] = {
 				{
 					"type": "input_statement",
 					"name": "content",
-					"check": "textcontainer"
+					"check": ["html","textcontainer"]
 				}
 			],
 			"previousStatement": "tablerow",
@@ -2484,6 +2484,7 @@ Blockly.Blocks['summary'] = {
 };
 
 //Details tag
+
 Blockly.Blocks['details'] = {
 	init: function() {
 		this.jsonInit({
