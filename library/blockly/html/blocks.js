@@ -150,6 +150,19 @@ Blockly.Blocks['metacharset'] = {
 	}
 };
 
+Blockly.Blocks['metaviewport'] = {
+  init:function(){
+    this.jsonInit({
+      "message0": "<meta name=\"viewport\">",
+      "previousStatement": "header",
+      "nextStatement": "header",
+      "colour": 210,
+      "tooltip": "Meta viewport (adds responsiveness)",
+      "helpUrl": "https://developer.mozilla.org/en-US/docs/Mozilla/Mobile/Viewport_meta_tag"
+    });
+  }
+};
+
 //header tag
 Blockly.Blocks['headertag'] = {
 	init: function() {
@@ -2115,7 +2128,7 @@ Blockly.Blocks['tableheading'] = {
 				{
 					"type": "input_statement",
 					"name": "content",
-					"check": "textcontainer"
+					"check": ["html","textcontainer"]
 				}
 			],
 			"previousStatement": "tablerow",
@@ -2140,7 +2153,7 @@ Blockly.Blocks['tabledata'] = {
 				{
 					"type": "input_statement",
 					"name": "content",
-					"check": "textcontainer"
+					"check": ["html","textcontainer"]
 				}
 			],
 			"previousStatement": "tablerow",
@@ -2178,6 +2191,29 @@ Blockly.Blocks['form'] = {
 		});
 	}
 };
+
+Blockly.Blocks['button'] = {
+  init: function(){
+    this.jsonInit({
+      "message0": "<button> %1 %2 </button>",
+      "args0": [
+        {
+          "type": "input_value",
+          "name": "modifier"
+        },
+        {
+          "type": "input_statement",
+          "name": "content"
+        }
+      ],
+      "previousStatement": "html",
+      "nextStatement": "html",
+      "colour": 160,
+      "tooltip": "A default button tag",
+      "helpUrl": "https://www.w3schools.com/tags/tag_button.asp"
+    });
+  }
+}
 
 //Input tag
 Blockly.Blocks['input'] = {
@@ -2448,6 +2484,7 @@ Blockly.Blocks['summary'] = {
 };
 
 //Details tag
+
 Blockly.Blocks['details'] = {
 	init: function() {
 		this.jsonInit({

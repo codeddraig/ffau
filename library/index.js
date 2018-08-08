@@ -1,10 +1,3 @@
-(function(){
-  "use strict";
-}());
-var editor = ace.edit("code-output");
-editor.setTheme("ace/theme/textmate");
-editor.session.setMode("ace/mode/html");
-editor.setReadOnly(true);
 var workspace = Blockly.inject('blocklyDiv',
 										   {toolbox: document.getElementById('toolbox'),
 											zoom:
@@ -15,6 +8,15 @@ var workspace = Blockly.inject('blocklyDiv',
 											 minScale: 0.3,
 											 scaleSpeed:1.2},
 											trashcan: true});
+(function(){
+  "use strict";
+  Blockly.JavaScript.init(workspace);
+}());
+var editor = ace.edit("code-output");
+editor.setTheme("ace/theme/textmate");
+editor.session.setMode("ace/mode/html");
+editor.setReadOnly(true);
+
 // [above] inject the blockly workspace into the div
 function onUpdate(event){
   var code = htmlGen.workspaceToCode(workspace);

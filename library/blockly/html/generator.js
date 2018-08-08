@@ -31,7 +31,7 @@ htmlGen['emptyhtml'] = function(block) {
 
 htmlGen['html'] = function(block) {
 	var statements_content = htmlGen.statementToCode(block, 'content');
-	var code = '<html>\n' + statements_content + '</html>\n';
+	var code = '<!DOCTYPE html>\n<html>\n' + statements_content + '</html>\n';
 	return code;
 };
 
@@ -45,6 +45,10 @@ htmlGen['metacharset'] = function(block) {
 	var value = block.getFieldValue('value');
 	var code = '<meta charset="'+value+'">\n';
 	return code;
+};
+
+htmlGen['metaviewport'] = function(block){
+  return '<meta name="viewport" content="width=device-width, initial-scale=1">\n';
 };
 
 htmlGen['title'] = function(block) {
@@ -385,6 +389,12 @@ htmlGen['input'] = function(block){
 	var code = '<input type="'+type+'" value="'+value+'" placeholder="'+placeholder+'" name="'+name+'"'+block_modifier+'>\n';
 	return code;
 };
+
+htmlGen['button'] = function(block){
+	var content = htmlGen.statementToCode(block,'content');
+  var modifier = htmlGen.statementToCode(block,'modifier',htmlGen.ORDER_ATOMIC);
+  return '<button '+modifier+'>\n'+content+'</button>\n';
+}
 
 htmlGen['label'] = function(block){
 	var forvar = block.getFieldValue('for');
