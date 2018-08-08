@@ -1,8 +1,8 @@
-# Ffau Editor Changelog and Feature List - Version 0.3.0
+# Ffau Editor Changelog and Feature List - Version 0.3.1
 All new additions in **bold**.
 
 ## Summary
-This release of Ffau Editor introduces JavaScript scripting, within the block editor. A few bugs have been fixed, and some minor HTML blocks have been added. We have moved from Materialize.css to Magic.css for formatting of the editor page, and have added syntax highlighting for pure code viewing to the editor page with Ace editor.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam vel quam a tellus accumsan congue. Proin laoreet lacus id condimentum varius. Pellentesque vel libero eleifend, ultricies ligula finibus, venenatis lacus. Maecenas aliquet tellus ipsum, in maximus magna elementum ac. Aliquam id augue ac enim tristique tempor ac nec nulla. 
 
 ## Details
 * Updated version numbers in index.html and version.txt
@@ -18,7 +18,7 @@ This release of Ffau Editor introduces JavaScript scripting, within the block ed
       * &lt;/br&gt;
       * &lt;/hr&gt;
       * &lt;meta&lt;
-      * **&lt;meta name="viewport"&lt;**
+      * &lt;meta name="viewport"&lt;
       * Pre-determined structure block sets
     * MODIFIERS
       * (arguments)
@@ -30,7 +30,7 @@ This release of Ffau Editor introduces JavaScript scripting, within the block ed
       * style =
       * (Pure CSS) selector { }
       * Ability to include Materialize.css and Bootstrap in your projects
-      * **Ability to include Magic.css in your projects**
+      * Ability to include Magic.css in your projects
     * CSS ATTRIBUTES
       * property : value assignment
       * font-family
@@ -78,6 +78,6 @@ This release of Ffau Editor introduces JavaScript scripting, within the block ed
       * &lt;audio&gt;
       * &lt;img&gt;
       * &lt;video&gt;
-    * **SCRIPTING**
-      * **&lt;script&gt;**
-      * **Default Blockly Scripting blocks + generators**
+    * SCRIPTING
+      * &lt;script&gt;
+      * Default Blockly Scripting blocks + generators

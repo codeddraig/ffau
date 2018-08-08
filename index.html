@@ -1,3 +1,6 @@
+
+<!DOCTYPE html>
+
 <!--		Ffau - A blocky-based editor for teaching HTML, CSS and Javascript.
 
 				Developed by Pal Kerecsenyi, Geza Kerecsenyi and Theodore Tucker.
@@ -13,10 +16,9 @@
 
 				Copyright (c) 2017-18 Pal Kerecsenyi, Geza Kerecsenyi and tti0 (https://github.com/tti0)
 
-				THIS IS VERSION 0.3.0
+				THIS IS VERSION 0.3.1
  -->
 
-<!DOCTYPE html>
 <html>
 
 	<head>
@@ -76,7 +78,7 @@
             </ul>
           </div>
           <iframe id="preview-frame" name="prev" height="420px" width="100%"></iframe>
-          <div id="code-output"></div>  
+          <div id="code-output"></div>
 			  </div>
       </div>
 		</div>
@@ -86,7 +88,7 @@
         &copy; 2017-18 Pal Kerecsenyi, Geza Kerecsenyi and <a class="link" href="https://github.com/tti0">tti0</a>. // <a class="link" href="https://github.com/codeddraig/ffau">https://github.com/codeddraig/ffau</a>
       </div>
     </footer>
-    
+
     <xml id="toolbox" style="display: none;">
 	        <category name="Structure" colour="210">
 	          <block type="emptyhtml"></block>
@@ -109,6 +111,7 @@
 	            <block type="html"></block>
 	            <block type="head"></block>
 	            <block type="metacharset"></block>
+	            <block type="metaviewport"></block>
 	            <block type="body"></block>
 	            <block type="title"></block>
 	            <block type="headertag"></block>
@@ -287,6 +290,11 @@
 	              <block type="emptytext"></block>
 	            </value>
 	          </block>
+		        <block type="button">
+		          <value name="content">
+			          <block type="emptytext"></block>
+              </value>
+            </block>
 	        </category>
 	        <category name="Media" colour="330">
 	          <block type="image"></block>
@@ -540,8 +548,8 @@
 	        </category>
 	        <category name="Variables" colour="310" custom="VARIABLE"></category>
 	        <category name="Functions" colour="290" custom="PROCEDURE"></category>
-	      </xml>  
-    
+	      </xml>
+
 		<!-- Ace JS import -->
 		<script src="library/ace/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 		<!-- our special JS to drive this page -->
