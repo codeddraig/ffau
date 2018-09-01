@@ -29,7 +29,7 @@ The Ffau editor is made to be easily addable to any existing project. There are 
 git clone https://github.com/codeddraig/ffau.git
 ```
 
-2. Import our libraries in a specific order. Due to Blockly being our main dependency, you have to import our assets quite specifically. Here's a perfect example (we'll assume you've put cloned Ffau into ./assets/ffau):
+2. Import our libraries in a specific order. Due to Blockly being our main dependency, you have to import our assets quite specifically. Here's a perfect example (we'll assume you've cloned Ffau into `./assets/ffau`):
 
 ```html
 <head>
