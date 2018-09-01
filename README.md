@@ -119,8 +119,6 @@ Here's an example using all Ffau components and three blocks:
 </script>
 ```
 
-5. I know we said there were 4 steps. But here's a fifth. 'Enjoy :)'.
-
 You can find documentation for all functions in the `Ffau` class at https://codeddraig.github.io/ffau/docs/Ffau.html.
 
 ## Export
