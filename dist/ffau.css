@@ -1,0 +1,54 @@
+.blocklyTreeRow{
+    height: 40px;
+    transition: background-color 0.1s linear;
+}
+
+.blocklyTreeRow:not(.blocklyTreeSelected):hover{
+    background-color: unset !important;
+}
+
+.blocklyTreeLabel{
+    display: inline-block !important;
+    margin-left: 10px;
+    font-family: "Noto", "Roboto", sans-serif;
+    color: white;
+    vertical-align: middle;
+
+    height: 20px;
+    padding: 10px 0;
+}
+
+.blocklyTreeIcon{
+    display: none !important;
+}
+
+.blocklyTreeSeparator{
+    border-left: none;
+    border-bottom: none;
+
+    box-shadow: 0px 0px 15px 2px #000;
+
+    margin: 15px 0;
+}
+
+.blocklyToolboxDiv{
+    width: 170px;
+    min-width: 170px;
+    max-width: 170px;
+
+    background-color: #242424 !important;
+
+    box-shadow: 2px 0 30px -2px #000;
+}
+
+.blocklySvg{
+    background-color: #fff !important;
+}
+
+.blocklyFlyoutBackground{
+    fill: #242424 !important;
+}
+
+.blocklyFlyoutLabelText{
+    fill: #fff !important;
+}

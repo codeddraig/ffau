@@ -47,6 +47,8 @@ git clone https://github.com/codeddraig/ffau.git
     <!-- ace editor (optional: if you want a syntax-highlighted code preview) -->
     <script src="assets/ffau/library/ace/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 
+    <!-- ffau css -->
+    <link rel="stylesheet" href="assets/ffau/dist/ffau.css">
     <!-- ffau js last -->
     <script src="assets/ffau/dist/ffau.js"></script>
 </head>

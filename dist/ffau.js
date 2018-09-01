@@ -196,6 +196,7 @@ class Ffau{
 
     /**
      * Set the Blockly workspace to a specified XML string
+     *
      * @param {string} xmlString - The XML string to use
      */
     setXML(xmlString){
