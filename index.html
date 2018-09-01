@@ -62,19 +62,27 @@
         <li><a class="nav-brand-text">Ffau Editor</a></li>
     </ul>
     <ul class="nav-right">
-        <li class="nav-item"><a onclick="saveCode()" href="#!"><i class="fas fa-download"></i> Download</a></li>
+        <li class="nav-item">
+            <a onclick="saveCode()" href="#!">
+                <i class="fas fa-download"></i> Download
+            </a>
+        </li>
 
         <li class="nav-item">
-            <a id="loadi" href="#!">
+            <a href="#!">
                 <label for="loadText" style="cursor:pointer;">
                     <i class="fas fa-upload"></i>
                     Upload
                 </label>
             </a>
         </li>
-        <input class="load" id="loadText" type="file" style="display:none;">
+        <input class="load" onchange="uploadCode()" id="loadText" type="file" style="display:none;">
 
-        <li class="nav-item"><a onclick="clearCode()" href="#!"><i class="fas fa-trash"></i> Clear Workspace</a></li>
+        <li class="nav-item">
+            <a onclick="clearCode()" href="#!">
+                <i class="fas fa-trash"></i> Clear Workspace
+            </a>
+        </li>
     </ul>
 </nav>
 
@@ -342,6 +350,19 @@
     function clearCode(){
         // clear the workspace
         ffau.clearWorkspace();
+    }
+
+    function uploadCode(){
+        const input = document.getElementById('loadText');
+
+        let fileReader = new FileReader();
+
+        fileReader.onload = () => {
+            ffau.setXML(fileReader.result);
+            input.value = null;
+        };
+
+        fileReader.readAsText(input.files[0]);
     }
 </script>
 

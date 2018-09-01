@@ -195,6 +195,20 @@ class Ffau{
     }
 
     /**
+     * Set the Blockly workspace to a specified XML string
+     * @param {string} xmlString - The XML string to use
+     */
+    setXML(xmlString){
+        // change the text to dom
+        const dom = Blockly.Xml.textToDom(xmlString);
+        // clear the workspace to avoid adding code on top
+        this.clearWorkspace();
+
+        // set the dom into the workspace
+        Blockly.Xml.domToWorkspace(dom, this.ffauWorkspace);
+    }
+
+    /**
      * Clears all blocks from the workspace without further confirmation
      */
     clearWorkspace(){
