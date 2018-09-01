@@ -70,8 +70,17 @@
     <ul class="nav-right">
         <li class="nav-item" id="version-loader"><a>Version</a></li>
         <li class="nav-item"><a onclick="saveCode()" href="#!"><i class="fas fa-download"></i> Download</a></li>
-        <li class="nav-item"><a id="loadi" href="#!"><label for="loadText" style="cursor:pointer;"><i class="fas fa-upload"></i> Upload</label></a></li>
+
+        <li class="nav-item">
+            <a id="loadi" href="#!">
+                <label for="loadText" style="cursor:pointer;">
+                    <i class="fas fa-upload"></i>
+                    Upload
+                </label>
+            </a>
+        </li>
         <input class="load" id="loadText" type="file" style="display:none;">
+
         <li class="nav-item"><a onclick="clearCode()" href="#!"><i class="fas fa-trash"></i> Clear Workspace</a></li>
     </ul>
 </nav>
@@ -301,11 +310,6 @@
                 <block type="emptytext"></block>
             </value>
         </block>
-        <block type="button">
-            <value name="content">
-                <block type="emptytext"></block>
-            </value>
-        </block>
     </category>
     <category name="Media" colour="330">
         <block type="image"></block>
@@ -336,6 +340,16 @@
 
     // add event listener
     ffau.addEvent();
+
+    function saveCode(){
+        // download as text file with default name
+        ffau.downloadXML();
+    }
+
+    function clearCode(){
+        // clear the workspace
+        ffau.clearWorkspace();
+    }
 </script>
 
 </body>

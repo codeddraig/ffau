@@ -10,7 +10,7 @@ Live demo: https://codeddraig.github.io/ffau/
 
 ## CodeDragon
 
-Ffau forms part of the CodeDragon ecosystem, a platform for teaching young people to code for the web. Check us out at http://codedragon.codei0.net/.
+Ffau forms part of the CodeDragon ecosystem, a platform for teaching young people to code for the web. Check us out at https://codedragon.org
 
 ## License info
 
@@ -21,12 +21,7 @@ For full details, please read LICENSE.
 Copyright (c) 2017-18 Pal Kerecsenyi, Geza Kerecsenyi and tti0 (https://github.com/tti0)
 
 ## Setup
-Ffau editor will not work without its libraries. The best way to get all off this data at once is to grab the latest release version from the Github repo. You can use the 'Download ZIP' button, or use git from the command line to clone the repository if you know how. For most users, a ZIP download will work just fine.
-
-To successfully use Ffau, place all files on this repo on any web server and navigate to index.html
-Please note Ffau is constantly being improved - especially new blocks being added, but also changes to the UI. We recommend you regularly update Ffau to receive the best experience.
-
-Alternatively, you may visit https://codeddraig.github.io/ffau/ in any modern web browser to use a demo of the software.
+The Ffau editor is made to be easily addable to any existing project.
 
 ## Export
 Ffau can save your blocks to a text file in the browser (with the extension '.txt') and import them to re-assemble your blocks. Files exported from Ffau can be imported to CodeDragon (http://codedragon.codei0.net/), and vice-versa.

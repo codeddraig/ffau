@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/codeddraig/ffau/issues"
   },
-  "homepage": "http://ffau.readthedocs.io/en/latest/"
+  "homepage": "http://ffau.readthedocs.io/en/latest/",
+  "devDependencies": {
+    "jsdoc": "^3.5.5"
+  }
 }
