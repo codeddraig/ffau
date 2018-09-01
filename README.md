@@ -29,26 +29,26 @@ The Ffau editor is made to be easily addable to any existing project. There are 
 git clone https://github.com/codeddraig/ffau.git
 ```
 
-2. Import our libraries in a specific order. Due to Blockly being our main dependency, you have to import our assets quite specifically. Here's a perfect example (all file paths are relative to the root of this repo):
+2. Import our libraries in a specific order. Due to Blockly being our main dependency, you have to import our assets quite specifically. Here's a perfect example (we'll assume you've put cloned Ffau into ./assets/ffau):
 
 ```html
 <head>
     <!-- google's blockly stuff first -->
-    <script src="library/blockly/google-blockly/blockly_compressed.js"></script>
-    <script src="library/blockly/google-blockly/msg/js/en.js"></script>
+    <script src="assets/ffau/library/blockly/google-blockly/blockly_compressed.js"></script>
+    <script src="assets/ffau/library/blockly/google-blockly/msg/js/en.js"></script>
 
     <!-- jquery (you probably already have it imported, but make sure you've got at least v3.2.1) -->
-    <script src="library/jquery/jquery-3.2.1.js"></script>
+    <script src="assets/ffau/library/jquery/jquery-3.2.1.js"></script>
 
     <!-- our blockly blocks and generators -->
-    <script src="library/blockly/html/blocks.js"></script>
-    <script src="library/blockly/html/generator.js"></script>
+    <script src="assets/ffau/library/blockly/html/blocks.js"></script>
+    <script src="assets/ffau/library/blockly/html/generator.js"></script>
 
     <!-- ace editor (optional: if you want a syntax-highlighted code preview) -->
-    <script src="library/ace/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="assets/ffau/library/ace/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 
     <!-- ffau js last -->
-    <script src="dist/ffau.js"></script>
+    <script src="assets/ffau/dist/ffau.js"></script>
 </head>
 
 <body>
