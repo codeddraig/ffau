@@ -143,12 +143,30 @@
         </category>
         <category name="Layout" colour="210">
             <block type="divider"></block>
+
+            <block type="divider">
+                <value name="modifier">
+                    <block type="args">
+                        <value name="content">
+                            <block type="class"></block>
+                        </value>
+                    </block>
+                </value>
+            </block>
+
             <block type="linebreak"></block>
             <block type="hline"></block>
         </category>
     </category>
     <category name="Modifiers" colour="120">
         <block type="args"></block>
+
+        <block type="args">
+            <value name="content">
+                <block type="class"></block>
+            </value>
+        </block>
+
         <block type="class"></block>
         <block type="id"></block>
         <block type="emptyarg"></block>
@@ -231,46 +249,26 @@
         <category name="Tables" colour="20">
             <block type="table">
                 <value name="content">
-                    <block type="tablerow">
-                        <value name="content">
-                            <block type="tabledata">
-                                <value name="content">
-                                    <block type="emptytext"></block>
-                                </value>
-                            </block>
-                        </value>
-                        <value name="content">
-                            <block type="tabledata">
-                                <value name="content">
-                                    <block type="emptytext"></block>
-                                </value>
-                            </block>
-                        </value>
-                    </block>
+                    <block type="tablerow"></block>
                 </value>
                 <value name="content">
-                    <block type="tablerow">
-                        <value name="content">
-                            <block type="tableheading">
-                                <value name="content">
-                                    <block type="emptytext"></block>
-                                </value>
-                            </block>
-                        </value>
-                        <value name="content">
-                            <block type="tableheading">
-                                <value name="content">
-                                    <block type="emptytext"></block>
-                                </value>
-                            </block>
-                        </value>
-                    </block>
+                    <block type="tablerow"></block>
                 </value>
             </block>
             <block type="table"></block>
             <block type="tablerow"></block>
-            <block type="tableheading"></block>
-            <block type="tabledata"></block>
+
+            <block type="tableheading">
+                <value name="content">
+                    <block type="emptytext"></block>
+                </value>
+            </block>
+
+            <block type="tabledata">
+                <value name="content">
+                    <block type="emptytext"></block>
+                </value>
+            </block>
         </category>
         <category name="Lists" colour="20">
             <block type="unorderedlist">
