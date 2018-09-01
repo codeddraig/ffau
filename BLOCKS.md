@@ -50,7 +50,7 @@
 * `form` `<form> </form>`
 * `input` `<input type="" value="" placeholder="" name="">`
 * `label` `<label> </label>` (`for` attribute TBA)
-* `button` (TBA)
+* `button` (TBA, use `<input type="submit>` for now)
 
 ### Media
 * `image` `<img src="">` (`placeholder` attribute TBA)
