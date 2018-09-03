@@ -76,7 +76,8 @@ Blockly.Blocks['body'] = {
             "args0": [
                 {
                     "type": "input_value",
-                    "name": "modifier"
+                    "name": "modifier",
+"check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -144,7 +145,8 @@ Blockly.Blocks['headertag'] = {
             "args0": [
                 {
                     "type": "input_value",
-                    "name": "modifier"
+                    "name": "modifier",
+"check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -169,7 +171,8 @@ Blockly.Blocks['footertag'] = {
             "args0": [
                 {
                     "type": "input_value",
-                    "name": "modifier"
+                    "name": "modifier",
+"check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -216,7 +219,8 @@ Blockly.Blocks['divider'] = {
                 {
                     "type": "input_value",
 
-                    "name": "modifier"
+                    "name": "modifier",
+"check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -248,8 +252,8 @@ Blockly.Blocks['linebreak'] = {
     init: function() {
         this.jsonInit({
             "message0": '<br/>',
-            "previousStatement": null,
-            "nextStatement": null,
+            "previousStatement": "html",
+            "nextStatement": "html",
             "colour": 210,
             "tooltip": "Line break tag",
             "helpUrl": "https://www.w3schools.com/tags/tag_br.asp"
@@ -265,7 +269,8 @@ Blockly.Blocks['hline'] = {
             "args0":[
                 {
                     "type": "input_value",
-                    "name": "modifier"
+                    "name": "modifier",
+"check": "attributes"
                 }
             ],
             "previousStatement": "html",
@@ -292,8 +297,8 @@ Blockly.Blocks['args'] = {
                     "check": "args"
                 }
             ],
-            "output": null,
             "colour": 120,
+            "output": "attributes",
             "tooltip": "Additional arguments",
             "helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
         });
@@ -1075,8 +1080,22 @@ Blockly.Blocks['display'] = {
 Blockly.Blocks['overflow'] = {
     init: function() {
         this.jsonInit({
-            "message0": 'overflow: %1 ;',
+            "message0": 'overflow-%1: %2 ;',
             "args0": [
+                {
+                    type: "field_dropdown",
+                    name: "direction",
+                    options: [
+                        [
+                            "x",
+                            "x"
+                        ],
+                        [
+                            "y",
+                            "y"
+                        ]
+                    ]
+                },
                 {
                     "type": "field_dropdown",
                     "name": "content",
@@ -1149,6 +1168,79 @@ Blockly.Blocks['textshadow'] = {
             "colour": 290,
             "tooltip": "CSS Text-shadow",
             "helpUrl": "https://www.w3schools.com/cssref/css3_pr_text-shadow.asp"
+        });
+    }
+};
+
+// Text transform
+Blockly.Blocks['texttransform'] = {
+    init: function(){
+        this.jsonInit({
+            "message0": "text-transform: %1 ;",
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "value",
+                    "options": [
+                        ["none", "none"],
+                        ["capitalize", "capitalize"],
+                        ["uppercase", "uppercase"],
+                        ["lowercase", "lowercase"],
+                        ["initial", "initial"],
+                        ["inherit", "inherit"]
+                    ]
+                }
+            ],
+            "previousStatement": "stylecontent",
+            "nextStatement": "stylecontent",
+            "colour": 290,
+            "tooltip": "CSS Text-transform",
+            "helpUrl": "https://www.w3schools.com/cssref/pr_text_text-transform.asp"
+        });
+    }
+};
+
+Blockly.Blocks['textalign'] = {
+    init: function(){
+        this.jsonInit({
+            "message0": "text-align: %1 ;",
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "value",
+                    "options": [
+                        ["center", "center"],
+                        ["left", "left"],
+                        ["right", "right"],
+                        ["justify", "justify"]
+                    ]
+                }
+            ],
+            "previousStatement": "stylecontent",
+            "nextStatement": "stylecontent",
+            "colour": 290,
+            "tooltip": "CSS Text-align",
+            "helpUrl": "https://www.w3schools.com/cssref/pr_text_text-align.asp"
+        })
+    }
+};
+
+Blockly.Blocks['letterspacing'] = {
+    init: function(){
+        this.jsonInit({
+            "message0": "letter-spacing: %1 ;",
+            "args0": [
+                {
+                    "type": "field_input",
+                    "name": "value",
+                    "text": "0px"
+                }
+            ],
+            "previousStatement": "stylecontent",
+            "nextStatement": "stylecontent",
+            "colour": 290,
+            "tooltip": "CSS Letter-spacing",
+            "helpUrl": "https://www.w3schools.com/cssref/pr_text_letter-spacing.asp"
         });
     }
 };
@@ -1889,7 +1981,8 @@ Blockly.Blocks['paragraph'] = {
             "args0": [
                 {
                     "type": "input_value",
-                    "name": "modifier"
+                    "name": "modifier",
+"check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -1944,7 +2037,8 @@ Blockly.Blocks['header'] = {
                 },
                 {
                     "type": "input_value",
-                    "name": "modifier"
+                    "name": "modifier",
+"check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -1973,7 +2067,8 @@ Blockly.Blocks['link'] = {
                 },
                 {
                     "type": "input_value",
-                    "name": "modifier"
+                    "name": "modifier",
+"check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -1998,7 +2093,8 @@ Blockly.Blocks['span'] = {
             "args0": [
                 {
                     "type": "input_value",
-                    "name": "modifier"
+                    "name": "modifier",
+"check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -2023,7 +2119,8 @@ Blockly.Blocks['table'] = {
             "args0": [
                 {
                     "type": "input_value",
-                    "name": "modifier"
+                    "name": "modifier",
+"check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -2048,7 +2145,8 @@ Blockly.Blocks['tablerow'] = {
             "args0": [
                 {
                     "type": "input_value",
-                    "name": "modifier"
+                    "name": "modifier",
+"check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -2073,7 +2171,8 @@ Blockly.Blocks['tableheading'] = {
             "args0": [
                 {
                     "type": "input_value",
-                    "name": "modifier"
+                    "name": "modifier",
+"check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -2098,7 +2197,8 @@ Blockly.Blocks['tabledata'] = {
             "args0": [
                 {
                     "type": "input_value",
-                    "name": "modifier"
+                    "name": "modifier",
+"check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -2124,7 +2224,8 @@ Blockly.Blocks['form'] = {
             "args0": [
                 {
                     "type": "input_value",
-                    "name": "modifier"
+                    "name": "modifier",
+"check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -2232,6 +2333,7 @@ Blockly.Blocks['input'] = {
                 {
                     "type": "input_value",
                     "name": "modifier",
+"check": "attributes",
                 }
             ],
             "previousStatement": "form",
@@ -2256,7 +2358,8 @@ Blockly.Blocks['label'] = {
                 },
                 {
                     "type": "input_value",
-                    "name": "modifier"
+                    "name": "modifier",
+"check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -2292,7 +2395,8 @@ Blockly.Blocks['image'] = {
                 },
                 {
                     "type": "input_value",
-                    "name": "modifier"
+                    "name": "modifier",
+"check": "attributes"
                 }
             ],
             "previousStatement": "html",
@@ -2312,7 +2416,8 @@ Blockly.Blocks['orderedlist'] = {
             "args0": [
                 {
                     "type": "input_value",
-                    "name": "modifier"
+                    "name": "modifier",
+"check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -2337,7 +2442,8 @@ Blockly.Blocks['unorderedlist'] = {
             "args0": [
                 {
                     "type": "input_value",
-                    "name": "modifier"
+                    "name": "modifier",
+"check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -2362,7 +2468,8 @@ Blockly.Blocks['listitem'] = {
             "args0": [
                 {
                     "type": "input_value",
-                    "name": "modifier"
+                    "name": "modifier",
+"check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -2387,7 +2494,8 @@ Blockly.Blocks['summary'] = {
             "args0": [
                 {
                     "type": "input_value",
-                    "name": "modifier"
+                    "name": "modifier",
+"check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -2418,7 +2526,8 @@ Blockly.Blocks['details'] = {
             "args0": [
                 {
                     "type": "input_value",
-                    "name": "modifier"
+                    "name": "modifier",
+"check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -2479,7 +2588,8 @@ Blockly.Blocks['audio'] = {
                 },
                 {
                     "type": "input_value",
-                    "name": "modifier"
+                    "name": "modifier",
+"check": "attributes"
                 }
             ],
             "previousStatement": "html",
@@ -2528,7 +2638,8 @@ Blockly.Blocks['video'] = {
                 },
                 {
                     "type": "input_value",
-                    "name": "modifier"
+                    "name": "modifier",
+"check": "attributes"
                 }
             ],
             "previousStatement": "html",

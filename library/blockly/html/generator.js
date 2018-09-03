@@ -145,6 +145,21 @@ htmlGen['textshadow'] = function(block){
     return `text-shadow: ${x} ${y} ${b} ${c};\n`;
 };
 
+htmlGen['texttransform'] = function(block){
+    var value = block.getFieldValue('value');
+    return `text-transform: ${value};\n`;
+};
+
+htmlGen['textalign'] = function(block){
+    var value = block.getFieldValue('value');
+    return `text-align: ${value};\n`;
+};
+
+htmlGen['letterspacing'] = function(block){
+    var value = block.getFieldValue('value');
+    return `letter-spacing: ${ looseEscape(value) };\n`;
+};
+
 htmlGen['margin'] = function(block){
     var direction = block.getFieldValue('direction');
     var value = block.getFieldValue('value');
@@ -164,14 +179,14 @@ htmlGen['display'] = function(block){
 
 htmlGen['overflow'] = function(block){
     var value = block.getFieldValue('content');
-    var code = 'overflow: ' + value + ';\n';
-    return code;
+    var direction = block.getFieldValue('direction');
+
+    return `overflow-${direction}: ${value};\n`;
 };
 
 htmlGen['color'] = function(block){
     var color = block.getFieldValue('value');
-    var code = 'color: ' + color + ';\n';
-    return code;
+    return 'color: ' + color + ';\n';
 };
 
 htmlGen['linkhead'] = function(block){
