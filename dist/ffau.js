@@ -77,7 +77,7 @@ class Ffau{
             trashcan: true
         });
 
-        return frame.id;
+        return this.ffauWorkspace;
     }
 
     /**
