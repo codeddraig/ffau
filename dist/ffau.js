@@ -128,8 +128,10 @@ class Ffau{
 
     /**
      * Add the event listener for Blockly to generate a preview and code
+     *
+     * @param {function} customFunction - a function to execute at the end of the change event. Gets passed the scope as a parameter.
      */
-    addEvent(){
+    addEvent(customFunction){
         // add listener to workspace
         this.ffauWorkspace.addChangeListener(function(){
             // generate the code using htmlGen from generator.js
@@ -145,6 +147,8 @@ class Ffau{
             if(this.iframe){
                 this.iframe.src = "data:text/html;charset=utf-8," + encodeURIComponent(code);
             }
+		
+	    customFunction(this);
         }.bind(this) /* bind parent scope */ );
     }
 
