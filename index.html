@@ -6,7 +6,7 @@
 				Developed by Pal Kerecsenyi, Geza Kerecsenyi and Theodore Tucker.
 				Full details are avaliable at the Github repo: https://github.com/codeddraig/ffau
 				Ffau editor will not work without its libraries. The best way to get all
-					off this data at once is to grab the latest release version from the
+					off thi data at once is to grab the latest release version from the
 					Github repo.
 				Ffau is open source software. This means you can re-mix, share and use
 					it however you want, including for commercial purposes. However, you
@@ -21,540 +21,355 @@
 
 <html>
 
-	<head>
-		<meta charset="utf-8">
+<head>
+    <meta charset="utf-8">
 
-		<!-- HEADER LIBRARIES -->
-		<script defer src="library/fontawesome/all.js"></script>
-		<!-- google's blockly stuff first -->
-		<script src="library/blockly/google-blockly/blockly_compressed.js"></script>
-		<script src="library/blockly/google-blockly/javascript_compressed.js"></script>
-		<script src="library/blockly/google-blockly/blocks_compressed.js"></script>
-		<script src="library/blockly/google-blockly/msg/js/en.js"></script>
-		<!-- a little tweak to blockly, to make the block colours more vibrant -->
-		<script>
-		Blockly.HSV_SATURATION = 1;
-		Blockly.HSV_VALUE = 0.7;
-		</script>
-		<!-- jquery -->
-		<script src="library/jquery/jquery-3.2.1.js"></script>
-		<!-- our blockly tweaks -->
-		<script src="library/blockly/html/blocks.js"></script>
-		<script src="library/blockly/html/generator.js"></script>
-		<!-- aesthetic CSS libraries -->
-		<link rel="stylesheet" href="library/magiccss/magic.css">
-		<link type="text/css" rel="stylesheet" href="library/layout.css"/>
-		<!-- /HEADER LIBRARIES -->
-		<!--Let browser know website is optimized for mobile-->
-		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-		<title>Ffau Editor</title>
-	</head>
+    <!-- HEADER LIBRARIES -->
+    <script defer src="library/fontawesome/all.js"></script>
 
-	<body>
+    <!-- google's blockly stuff first -->
+    <script src="library/blockly/google-blockly/blockly_compressed.js"></script>
+    <script src="library/blockly/google-blockly/msg/js/en.js"></script>
 
-		<nav class="green">
-			<ul class="nav-left">
-				<li><a class="nav-brand-text">Ffau Editor</a></li>
-			</ul>
-			<ul class="nav-right">
-        <li class="nav-item" id="version-loader"><a>Version</a></li>
-				<li class="nav-item"><a onclick="saveCode()" href="#!"><i class="fas fa-download"></i> Download</a></li>
-				<li class="nav-item"><a id="loadi" href="#!"><label for="loadText" style="cursor:pointer;"><i class="fas fa-upload"></i> Upload</label></a></li>
-				<input class="load" id="loadText" type="file" style="display:none;">
-				<li class="nav-item"><a onclick="clearCode()" href="#!"><i class="fas fa-trash"></i> Clear Workspace</a></li>
-			</ul>
-		</nav>
+    <!-- jquery -->
+    <script src="library/jquery/jquery-3.2.1.js"></script>
 
-		<div class="container">
-			<div class="row"> <!-- row -->
-				<div class="col col7">
-					<div id="blocklyDiv" style="height: 480px;"></div>
-				</div>
-				<div id="preview" class="col col5">
-					<div class="breadcrumb bottom">
-            <ul>
-              <li><a href="#!" onclick="showMePreview()">Preview</a></li>
-              <li><a href="#!" onclick="showMeCode()">Real code</a></li>
-            </ul>
-          </div>
-          <iframe id="preview-frame" name="prev" height="420px" width="100%"></iframe>
-          <div id="code-output"></div>
-			  </div>
-      </div>
-		</div>
+    <!-- our blockly tweaks -->
+    <script src="library/blockly/html/blocks.js"></script>
+    <script src="library/blockly/html/generator.js"></script>
 
-    <footer class="green">
-      <div class="bottom">
+    <!-- ace editor -->
+    <script src="library/ace/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+
+    <!-- ffau js file -->
+    <script src="dist/ffau.js"></script>
+    <!-- ffau css file -->
+    <link rel="stylesheet" href="dist/ffau.css">
+
+    <!-- tab switcher -->
+    <script src="library/index.js"></script>
+
+    <!-- aesthetic CSS libraries -->
+    <link rel="stylesheet" href="library/magiccss/magic.css">
+    <link type="text/css" rel="stylesheet" href="library/layout.css"/>
+    <!-- /HEADER LIBRARIES -->
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Ffau Editor</title>
+</head>
+
+<body>
+
+<nav class="green">
+    <ul class="nav-left">
+        <li><a class="nav-brand-text">Ffau Editor</a></li>
+    </ul>
+    <ul class="nav-right">
+        <li class="nav-item">
+            <a onclick="saveCode()" href="#!">
+                <i class="fas fa-download"></i> Download
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="#!">
+                <label for="loadText" style="cursor:pointer;">
+                    <i class="fas fa-upload"></i>
+                    Upload
+                </label>
+            </a>
+        </li>
+        <input class="load" onchange="uploadCode()" id="loadText" type="file" style="display:none;">
+
+        <li class="nav-item">
+            <a onclick="clearCode()" href="#!">
+                <i class="fas fa-trash"></i> Clear Workspace
+            </a>
+        </li>
+    </ul>
+</nav>
+
+<div class="container">
+    <div class="row"> <!-- row -->
+        <div class="col col7">
+            <div id="blocklyDiv" style="height: 480px;"></div>
+        </div>
+        <div id="preview" class="col col5">
+            <div class="breadcrumb bottom">
+                <ul>
+                    <li><a href="#!" onclick="showMePreview()">Preview</a></li>
+                    <li><a href="#!" onclick="showMeCode()">Real code</a></li>
+                </ul>
+            </div>
+
+            <div id="preview-frame"></div>
+            <div id="code-output" style="display: none;"></div>
+        </div>
+    </div>
+</div>
+
+<footer class="green">
+    <div class="bottom">
         &copy; 2017-18 Pal Kerecsenyi, Geza Kerecsenyi and <a class="link" href="https://github.com/tti0">tti0</a>. // <a class="link" href="https://github.com/codeddraig/ffau">https://github.com/codeddraig/ffau</a>
-      </div>
-    </footer>
+    </div>
+</footer>
 
-    <xml id="toolbox" style="display: none;">
-	        <category name="Structure" colour="210">
-	          <block type="emptyhtml"></block>
-	          <category name="Page" colour="210">
-	            <block type="html">
-	              <value name="content">
-	                <block type="body"></block>
-	              </value>
-	              <value name="content">
-	                <block type="head">
-	                  <value name="content">
-	                    <block type="title"></block>
-	                  </value>
-	                  <value name="content">
-	                    <block type="metacharset"></block>
-	                  </value>
-	                </block>
-	              </value>
-	            </block>
-	            <block type="html"></block>
-	            <block type="head"></block>
-	            <block type="metacharset"></block>
-	            <block type="metaviewport"></block>
-	            <block type="body"></block>
-	            <block type="title"></block>
-	            <block type="headertag"></block>
-	            <block type="footertag"></block>
-	          </category>
-	          <category name="Layout" colour="210">
-	            <block type="divider"></block>
-	            <block type="linebreak"></block>
-	            <block type="hline"></block>
-	          </category>
-	        </category>
-	        <category name="Modifiers" colour="120">
-	          <block type="args"></block>
-	          <block type="class"></block>
-	          <block type="id"></block>
-	          <block type="emptyarg"></block>
-	        </category>
-	        <category name="Style" colour="290">
-	          <category name="Structure" colour="290">
-	            <block type="style"></block>
-	            <block type="stylearg"></block>
-	            <block type="linkhead"></block>
-	            <block type="cssitem"></block>
-	          </category>
-	          <category name="Items" colour="290">
-	            <category name="Text" colour="290">
-	              <label text="Font"></label>
-	              <block type="fontfamily"></block>
-	              <block type="fontsize"></block>
-	              <label text="Text Styling"></label>
-	              <block type="color"></block>
-	              <block type="textshadow"></block>
-	            </category>
-	            <category name="Arrangement" colour="290">
-	              <label text="Display"></label>
-	              <block type="margin"></block>
-	              <block type="padding"></block>
-	              <block type="display"></block>
-	              <block type="overflow"></block>
-	              <label text="Dimensions"></label>
-	              <block type="widthheightnum"></block>
-	              <block type="widthheight"></block>
-	            </category>
-	            <category name="Design" colour="290">
-	              <label text="Backgrounds"></label>
-	              <block type="bgcolor"></block>
-	              <block type="bgimage"></block>
-	              <block type="bgposition"></block>
-	              <block type="bgrepeat"></block>
-	              <block type="bgsize"></block>
-	              <label text="Borders"></label>
-	              <block type="border"></block>
-	              <block type="bordercol"></block>
-	              <block type="borderrad"></block>
-	              <label text="Other Design"></label>
-	              <block type="cursor"></block>
-	            </category>
-	            <block type="othercss"></block>
-	            <block type="cssevents"></block>
-	            <block type="cssnot"></block>
-	          </category>
-	        </category>
-	        <sep></sep>
-	        <category name="Text" colour="65">
-	          <block type="emptytext"></block>
-	          <block type="span">
-	            <value name="content">
-	              <block type="emptytext"></block>
-	            </value>
-	          </block>
-	          <block type="textmod">
-	            <value name="content">
-	              <block type="emptytext"></block>
-	            </value>
-	          </block>
-	          <block type="paragraph">
-	            <value name="content">
-	              <block type="emptytext"></block>
-	            </value>
-	          </block>
-	          <block type="header">
-	            <value name="content">
-	              <block type="emptytext"></block>
-	            </value>
-	          </block>
-	          <block type="link">
-	            <value name="content">
-	              <block type="emptytext"></block>
-	            </value>
-	          </block>
-	        </category>
-	        <category name="Organisation" colour="20">
-	          <category name="Tables" colour="20">
-	            <block type="table">
-	              <value name="content">
-	                <block type="tablerow">
-	                  <value name="content">
-	                    <block type="tabledata">
-	                      <value name="content">
-	                        <block type="emptytext"></block>
-	                      </value>
-	                    </block>
-	                  </value>
-	                  <value name="content">
-	                    <block type="tabledata">
-	                      <value name="content">
-	                        <block type="emptytext"></block>
-	                      </value>
-	                    </block>
-	                  </value>
-	                </block>
-	              </value>
-	              <value name="content">
-	                <block type="tablerow">
-	                  <value name="content">
-	                    <block type="tableheading">
-	                      <value name="content">
-	                        <block type="emptytext"></block>
-	                      </value>
-	                    </block>
-	                  </value>
-	                  <value name="content">
-	                    <block type="tableheading">
-	                      <value name="content">
-	                        <block type="emptytext"></block>
-	                      </value>
-	                    </block>
-	                  </value>
-	                </block>
-	              </value>
-	            </block>
-	            <block type="table"></block>
-	            <block type="tablerow"></block>
-	            <block type="tableheading"></block>
-	            <block type="tabledata"></block>
-	          </category>
-	          <category name="Lists" colour="20">
-	            <block type="unorderedlist">
-	              <value name="content">
-	                <block type="listitem">
-	                  <value name="content">
-	                    <block type="emptytext"></block>
-	                  </value>
-	                </block>
-	              </value>
-	            </block>
-	            <block type="orderedlist">
-	              <value name="content">
-	                <block type="listitem">
-	                  <value name="content">
-	                    <block type="emptytext"></block>
-	                  </value>
-	                </block>
-	              </value>
-	            </block>
-	            <block type="listitem">
-	              <value name="content">
-	                <block type="emptytext"></block>
-	              </value>
-	            </block>
-	          </category>
-	          <category name="Summary" colour="20">
-	            <block type="details"></block>
-	            <block type="summary">
-	              <value name="content">
-	                <block type="emptytext"></block>
-	              </value>
-	            </block>
-	          </category>
-	        </category>
-	        <category name="Forms" colour="160">
-	          <block type="form"></block>
-	          <block type="input"></block>
-	          <block type="label">
-	            <value name="content">
-	              <block type="emptytext"></block>
-	            </value>
-	          </block>
-		        <block type="button">
-		          <value name="content">
-			          <block type="emptytext"></block>
-              </value>
+<xml id="toolbox" style="display: none;">
+    <category name="Structure" colour="210">
+        <category name="Page" colour="210">
+            <block type="html">
+                <value name="content">
+                    <block type="body"></block>
+                </value>
+                <value name="content">
+                    <block type="head">
+                        <value name="content">
+                            <block type="title"></block>
+                        </value>
+                        <value name="content">
+                            <block type="metacharset"></block>
+                        </value>
+                    </block>
+                </value>
             </block>
-	        </category>
-	        <category name="Media" colour="330">
-	          <block type="image"></block>
-	          <block type="audio"></block>
-	          <block type="video"></block>
-	        </category>
-	        <category name="Scripting" colour="210">
-	          <block type="script"></block>
-	        </category>
-	        <sep></sep>
-	        <category name="Logic" colour="210">
-	          <category name="If">
-	            <block type="controls_if"></block>
-	            <block type="controls_if">
-	              <mutation else="1"></mutation>
-	            </block>
-	            <block type="controls_if">
-	              <mutation elseif="1" else="1"></mutation>
-	            </block>
-	          </category>
-	          <category name="Boolean">
-	            <block type="logic_compare"></block>
-	            <block type="logic_operation"></block>
-	            <block type="logic_negate"></block>
-	            <block type="logic_boolean"></block>
-	            <block type="logic_null"></block>
-	            <block type="logic_ternary"></block>
-	          </category>
-	        </category>
-	        <category name="Loops" colour="120">
-	          <block type="controls_repeat_ext">
-	            <value name="TIMES">
-	              <block type="math_number">
-	                <field name="NUM">10</field>
-	              </block>
-	            </value>
-	          </block>
-	          <block type="controls_whileUntil"></block>
-	          <block type="controls_for">
-	            <field name="VAR">i</field>
-	            <value name="FROM">
-	              <block type="math_number">
-	                <field name="NUM">1</field>
-	              </block>
-	            </value>
-	            <value name="TO">
-	              <block type="math_number">
-	                <field name="NUM">10</field>
-	              </block>
-	            </value>
-	            <value name="BY">
-	              <block type="math_number">
-	                <field name="NUM">1</field>
-	              </block>
-	            </value>
-	          </block>
-	          <block type="controls_forEach"></block>
-	          <block type="controls_flow_statements"></block>
-	        </category>
-	        <category name="Math" colour="230">
-	          <block type="math_number"></block>
-	          <block type="math_arithmetic"></block>
-	          <block type="math_single"></block>
-	          <block type="math_trig"></block>
-	          <block type="math_constant"></block>
-	          <block type="math_number_property"></block>
-	          <block type="math_round"></block>
-	          <block type="math_on_list"></block>
-	          <block type="math_modulo"></block>
-	          <block type="math_constrain">
-	            <value name="LOW">
-	              <block type="math_number">
-	                <field name="NUM">1</field>
-	              </block>
-	            </value>
-	            <value name="HIGH">
-	              <block type="math_number">
-	                <field name="NUM">100</field>
-	              </block>
-	            </value>
-	          </block>
-	          <block type="math_random_int">
-	            <value name="FROM">
-	              <block type="math_number">
-	                <field name="NUM">1</field>
-	              </block>
-	            </value>
-	            <value name="TO">
-	              <block type="math_number">
-	                <field name="NUM">100</field>
-	              </block>
-	            </value>
-	          </block>
-	          <block type="math_random_float"></block>
-	        </category>
-	        <category name="Text" colour="160">
-	          <block type="text"></block>
-	          <block type="text_join"></block>
-	          <block type="text_append">
-	            <value name="TEXT">
-	              <shadow type="text"></shadow>
-	            </value>
-	          </block>
-	          <block type="text_length">
-	            <value name="VALUE">
-	              <shadow type="text">
-	                <field name="TEXT">abc</field>
-	              </shadow>
-	            </value>
-	          </block>
-	          <block type="text_isEmpty">
-	            <value name="VALUE">
-	              <shadow type="text">
-	                <field name="TEXT"></field>
-	              </shadow>
-	            </value>
-	          </block>
-	          <block type="text_indexOf">
-	            <value name="VALUE">
-	              <block type="variables_get">
-	                <field name="VAR">text</field>
-	              </block>
-	            </value>
-	            <value name="FIND">
-	              <shadow type="text">
-	                <field name="TEXT">abc</field>
-	              </shadow>
-	            </value>
-	          </block>
-	          <block type="text_charAt">
-	            <value name="VALUE">
-	              <block type="variables_get">
-	                <field name="VAR">text</field>
-	              </block>
-	            </value>
-	          </block>
-	          <block type="text_getSubstring">
-	            <value name="STRING">
-	              <block type="variables_get">
-	                <field name="VAR">text</field>
-	              </block>
-	            </value>
-	          </block>
-	          <block type="text_changeCase">
-	            <value name="TEXT">
-	              <shadow type="text">
-	                <field name="TEXT">abc</field>
-	              </shadow>
-	            </value>
-	          </block>
-	          <block type="text_trim">
-	            <value name="TEXT">
-	              <shadow type="text">
-	                <field name="TEXT">abc</field>
-	              </shadow>
-	            </value>
-	          </block>
-	          <block type="text_count">
-	            <value name="SUB">
-	              <shadow type="text"></shadow>
-	            </value>
-	            <value name="TEXT">
-	              <shadow type="text"></shadow>
-	            </value>
-	          </block>
-	          <block type="text_replace">
-	            <value name="FROM">
-	              <shadow type="text"></shadow>
-	            </value>
-	            <value name="TO">
-	              <shadow type="text"></shadow>
-	            </value>
-	            <value name="TEXT">
-	              <shadow type="text"></shadow>
-	            </value>
-	          </block>
-	          <block type="text_reverse">
-	            <value name="TEXT">
-	              <shadow type="text"></shadow>
-	            </value>
-	          </block>
-	          <label text="Input/Output:" web-class="ioLabel"></label>
-	          <block type="text_print">
-	            <value name="TEXT">
-	              <shadow type="text">
-	                <field name="TEXT">abc</field>
-	              </shadow>
-	            </value>
-	          </block>
-	          <block type="text_prompt_ext">
-	            <value name="TEXT">
-	              <shadow type="text">
-	                <field name="TEXT">abc</field>
-	              </shadow>
-	            </value>
-	          </block>
-	        </category>
-	        <category name="Lists" colour="260">
-	          <block type="lists_create_empty"></block>
-	          <block type="lists_create_with"></block>
-	          <block type="lists_repeat">
-	            <value name="NUM">
-	              <block type="math_number">
-	                <field name="NUM">5</field>
-	              </block>
-	            </value>
-	          </block>
-	          <block type="lists_length"></block>
-	          <block type="lists_isEmpty"></block>
-	          <block type="lists_indexOf"></block>
-	          <block type="lists_getIndex"></block>
-	          <block type="lists_setIndex"></block>
-	        </category>
-	        <category name="Colour" colour="20">
-	          <block type="colour_picker"></block>
-	          <block type="colour_random"></block>
-	          <block type="colour_rgb">
-	            <value name="RED">
-	              <shadow type="math_number">
-	                <field name="NUM">100</field>
-	              </shadow>
-	            </value>
-	            <value name="GREEN">
-	              <shadow type="math_number">
-	                <field name="NUM">50</field>
-	              </shadow>
-	            </value>
-	            <value name="BLUE">
-	              <shadow type="math_number">
-	                <field name="NUM">0</field>
-	              </shadow>
-	            </value>
-	          </block>
-	          <block type="colour_blend">
-	            <value name="COLOUR1">
-	              <shadow type="colour_picker">
-	                <field name="COLOUR">#ff0000</field>
-	              </shadow>
-	            </value>
-	            <value name="COLOUR2">
-	              <shadow type="colour_picker">
-	                <field name="COLOUR">#3333ff</field>
-	              </shadow>
-	            </value>
-	            <value name="RATIO">
-	              <shadow type="math_number">
-	                <field name="NUM">0.5</field>
-	              </shadow>
-	            </value>
-	          </block>
-	        </category>
-	        <category name="Variables" colour="310" custom="VARIABLE"></category>
-	        <category name="Functions" colour="290" custom="PROCEDURE"></category>
-	      </xml>
+            <block type="html"></block>
+            <block type="head"></block>
+            <block type="metacharset"></block>
+            <block type="metaviewport"></block>
+            <block type="body"></block>
+            <block type="title"></block>
+            <block type="headertag"></block>
+            <block type="footertag"></block>
+        </category>
+        <category name="Layout" colour="210">
+            <block type="divider"></block>
 
-		<!-- Ace JS import -->
-		<script src="library/ace/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-		<!-- our special JS to drive this page -->
-		<script type="text/javascript" src="library/index.js"></script>
+            <block type="divider">
+                <value name="modifier">
+                    <block type="args">
+                        <value name="content">
+                            <block type="class"></block>
+                        </value>
+                    </block>
+                </value>
+            </block>
 
-	</body>
+            <block type="linebreak"></block>
+            <block type="hline"></block>
+        </category>
+    </category>
+    <category name="Modifiers" colour="120">
+        <block type="args"></block>
+
+        <block type="args">
+            <value name="content">
+                <block type="class"></block>
+            </value>
+        </block>
+
+        <block type="class"></block>
+        <block type="id"></block>
+        <block type="emptyarg"></block>
+    </category>
+    <category name="Style" colour="290">
+        <category name="Structure" colour="290">
+            <block type="style"></block>
+            <block type="stylearg"></block>
+            <block type="linkhead"></block>
+            <block type="cssitem"></block>
+        </category>
+        <category name="Items" colour="290">
+            <category name="Text" colour="290">
+                <label text="Font"></label>
+                <block type="fontfamily"></block>
+                <block type="fontsize"></block>
+                <label text="Text Styling"></label>
+                <block type="color"></block>
+                <block type="textshadow"></block>
+                <block type="texttransform"></block>
+                <block type="textalign"></block>
+                <block type="letterspacing"></block>
+            </category>
+            <category name="Arrangement" colour="290">
+                <label text="Display"></label>
+                <block type="margin"></block>
+                <block type="padding"></block>
+                <block type="display"></block>
+                <block type="overflow"></block>
+                <label text="Dimensions"></label>
+                <block type="widthheightnum"></block>
+                <block type="widthheight"></block>
+            </category>
+            <category name="Design" colour="290">
+                <label text="Backgrounds"></label>
+                <block type="bgcolor"></block>
+                <block type="bgimage"></block>
+                <block type="bgposition"></block>
+                <block type="bgrepeat"></block>
+                <block type="bgsize"></block>
+                <label text="Borders"></label>
+                <block type="border"></block>
+                <block type="bordercol"></block>
+                <block type="borderrad"></block>
+                <label text="Other Design"></label>
+                <block type="cursor"></block>
+            </category>
+            <block type="othercss"></block>
+            <block type="cssevents"></block>
+            <block type="cssnot"></block>
+        </category>
+    </category>
+    <sep></sep>
+    <category name="Text" colour="65">
+        <block type="emptytext"></block>
+        <block type="span">
+            <value name="content">
+                <block type="emptytext"></block>
+            </value>
+        </block>
+        <block type="textmod">
+            <value name="content">
+                <block type="emptytext"></block>
+            </value>
+        </block>
+        <block type="paragraph">
+            <value name="content">
+                <block type="emptytext"></block>
+            </value>
+        </block>
+        <block type="header">
+            <value name="content">
+                <block type="emptytext"></block>
+            </value>
+        </block>
+        <block type="link">
+            <value name="content">
+                <block type="emptytext"></block>
+            </value>
+        </block>
+    </category>
+    <category name="Organisation" colour="20">
+        <category name="Tables" colour="20">
+            <block type="table">
+                <value name="content">
+                    <block type="tablerow"></block>
+                </value>
+                <value name="content">
+                    <block type="tablerow"></block>
+                </value>
+            </block>
+            <block type="table"></block>
+            <block type="tablerow"></block>
+
+            <block type="tableheading">
+                <value name="content">
+                    <block type="emptytext"></block>
+                </value>
+            </block>
+
+            <block type="tabledata">
+                <value name="content">
+                    <block type="emptytext"></block>
+                </value>
+            </block>
+        </category>
+        <category name="Lists" colour="20">
+            <block type="unorderedlist">
+                <value name="content">
+                    <block type="listitem">
+                        <value name="content">
+                            <block type="emptytext"></block>
+                        </value>
+                    </block>
+                </value>
+            </block>
+            <block type="orderedlist">
+                <value name="content">
+                    <block type="listitem">
+                        <value name="content">
+                            <block type="emptytext"></block>
+                        </value>
+                    </block>
+                </value>
+            </block>
+            <block type="listitem">
+                <value name="content">
+                    <block type="emptytext"></block>
+                </value>
+            </block>
+        </category>
+        <category name="Summary" colour="20">
+            <block type="details"></block>
+            <block type="summary">
+                <value name="content">
+                    <block type="emptytext"></block>
+                </value>
+            </block>
+        </category>
+    </category>
+    <category name="Forms" colour="160">
+        <block type="form"></block>
+        <block type="input"></block>
+        <block type="label">
+            <value name="content">
+                <block type="emptytext"></block>
+            </value>
+        </block>
+    </category>
+    <category name="Media" colour="330">
+        <block type="image"></block>
+        <block type="audio"></block>
+        <block type="video"></block>
+    </category>
+</xml>
+
+<script>
+    const ffau = new Ffau();
+
+    // initialise blockly
+    ffau.renderBlockly(
+        document.getElementById('blocklyDiv'),
+        document.getElementById('toolbox')
+    );
+
+    // render preview
+    ffau.renderPreview(
+        document.getElementById('preview-frame')
+    );
+
+    // render code
+    ffau.renderCode(
+        ace,
+        document.getElementById('code-output')
+    );
+
+    // add event listener
+    ffau.addEvent();
+
+    function saveCode(){
+        // download as text file with default name
+        ffau.downloadXML();
+    }
+
+    function clearCode(){
+        // clear the workspace
+        ffau.clearWorkspace();
+    }
+
+    function uploadCode(){
+        const input = document.getElementById('loadText');
+
+        let fileReader = new FileReader();
+
+        fileReader.onload = () => {
+            ffau.setXML(fileReader.result);
+            input.value = null;
+        };
+
+        fileReader.readAsText(input.files[0]);
+    }
+</script>
+
+</body>
 
 </html>
