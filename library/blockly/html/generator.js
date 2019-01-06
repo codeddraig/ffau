@@ -1,15 +1,43 @@
+/*
+        Ffau - A blocky-based editor for teaching HTML, CSS and Javascript.
+
+				Developed by Pal Kerecsenyi, Geza Kerecsenyi and Oli Plant.
+				Full details are avaliable at the Github repo: https://github.com/codeddraig/ffau
+				Ffau editor will not work without its libraries. The best way to get all
+					off this data at once is to grab the latest release version from the
+					Github repo or to install via NPM.
+				Ffau is open source software. This means you can re-mix, share and use
+					it however you want, including for commercial purposes. However, you
+					MUST provide attribution to the original authors if you do this.
+				However, Ffau is provided with NO WARRANTY whatsoever, and by using this
+					software, you agree to the terms of the MIT License.
+
+				Copyright (c) 2017-19 The CodeDdraig Organisation
+
+				THIS IS VERSION 1.0.0
+*/
 
 function fullEscape(input){
-    return escape(input);
+    return escape(input)
+        .replace(/%25/g, "%");
 }
 
-function looseEscape(unsafe) {
-    return unsafe
+function looseEscape(input) {
+    return input
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+}
+
+function CSSEscape(input) {
+    return input
+        .replace(/;/g, "")
+        .replace(/{/g, "")
+        .replace(/}/g, "")
+        .replace(/>/g, "")
+        .replace(/:/g, "")
 }
 
 function URLInput(input){
@@ -46,6 +74,11 @@ htmlGen['head'] = function(block) {
 htmlGen['metacharset'] = function(block) {
     var value = block.getFieldValue('value');
     var code = '<meta charset="'+value+'">\n';
+    return code;
+};
+
+htmlGen['metaviewport'] = function(block) {
+    var code = '<meta name="viewport" content="width=device-width, initial-scale=1">\n';
     return code;
 };
 
@@ -107,7 +140,7 @@ htmlGen['cssitem'] = function(block){
     var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
     mod = mod.split(' ').join(''); // remove spaces
 
-    var selector = fullEscape(block.getFieldValue('selector'));
+    var selector = CSSEscape(block.getFieldValue('selector'));
 
     return selector + mod + '{\n' + stmt + '}\n';
 };
@@ -122,7 +155,7 @@ htmlGen['cssevents'] = function(block){
 htmlGen['cssnot'] = function(block){
     var value = block.getFieldValue('content');
     var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    var code = ':not(' + fullEscape(value) + ')'+mod;
+    var code = ':not(' + CSSEscape(value) + ')' + mod;
     return code;
 };
 
@@ -140,7 +173,7 @@ htmlGen['textshadow'] = function(block){
     var x = fullEscape(block.getFieldValue('xoffset'));
     var y = fullEscape(block.getFieldValue('yoffset'));
     var b = fullEscape(block.getFieldValue('blur'));
-    var c = fullEscape(block.getFieldValue('color'));
+    var c = block.getFieldValue('color');
 
     return `text-shadow: ${x} ${y} ${b} ${c};\n`;
 };
@@ -157,7 +190,7 @@ htmlGen['textalign'] = function(block){
 
 htmlGen['letterspacing'] = function(block){
     var value = block.getFieldValue('value');
-    return `letter-spacing: ${ looseEscape(value) };\n`;
+    return `letter-spacing: ${ fullEscape(value) };\n`;
 };
 
 htmlGen['margin'] = function(block){
@@ -266,7 +299,7 @@ htmlGen['widthheightnum'] = function(block){
     var option = block.getFieldValue('option');
     var size = block.getFieldValue('size');
 
-    return option + ': ' + looseEscape(size) + ';\n';
+    return option + ': ' + fullEscape(size) + ';\n';
 };
 
 htmlGen['widthheight'] = function(block){
@@ -336,7 +369,7 @@ htmlGen['span'] = function(block){
 
 htmlGen['link'] = function(block){
     var text = htmlGen.statementToCode(block, 'content');
-    var link = block.getFieldValue('target');
+    var link = URLInput(block.getFieldValue('target'));
     var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
     return '<a href="' + link + '" target="_blank"' + block_modifier + '>' + text + '</a>\n';
 };

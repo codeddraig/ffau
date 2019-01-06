@@ -3,7 +3,7 @@
 
 <!--		Ffau - A blocky-based editor for teaching HTML, CSS and Javascript.
 
-				Developed by Pal Kerecsenyi, Geza Kerecsenyi and Theodore Tucker.
+				Developed by Pal Kerecsenyi, Geza Kerecsenyi and Oli Plant.
 				Full details are avaliable at the Github repo: https://github.com/codeddraig/ffau
 				Ffau editor will not work without its libraries. The best way to get all
 					off thi data at once is to grab the latest release version from the
@@ -14,12 +14,12 @@
 				However, Ffau is provided with NO WARRANTY whatsoever, and by using this
 					software, you agree to the terms of the MIT License.
 
-				Copyright (c) 2017-18 Pal Kerecsenyi, Geza Kerecsenyi and tti0 (https://github.com/tti0)
+				Copyright (c) 2017-19 The CodeDdraig Organisation
 
-				THIS IS VERSION 0.3.1
+				THIS IS VERSION 1.0.0
  -->
 
-<html>
+<html lang="en">
 
 <head>
     <meta charset="utf-8">
@@ -158,6 +158,7 @@
             <block type="hline"></block>
         </category>
     </category>
+
     <category name="Modifiers" colour="120">
         <block type="args"></block>
 
@@ -167,10 +168,17 @@
             </value>
         </block>
 
+        <block type="args">
+            <value name="content">
+                <block type="stylearg"></block>
+            </value>
+        </block>
+
         <block type="class"></block>
         <block type="id"></block>
         <block type="emptyarg"></block>
     </category>
+
     <category name="Style" colour="290">
         <category name="Structure" colour="290">
             <block type="style"></block>
@@ -183,6 +191,7 @@
                 <label text="Font"></label>
                 <block type="fontfamily"></block>
                 <block type="fontsize"></block>
+
                 <label text="Text Styling"></label>
                 <block type="color"></block>
                 <block type="textshadow"></block>

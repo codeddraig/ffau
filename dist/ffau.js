@@ -1,20 +1,20 @@
 /*
         Ffau - A blocky-based editor for teaching HTML, CSS and Javascript.
 
-				Developed by Pal Kerecsenyi, Geza Kerecsenyi and Theodore Tucker.
+				Developed by Pal Kerecsenyi, Geza Kerecsenyi and Oli Plant.
 				Full details are avaliable at the Github repo: https://github.com/codeddraig/ffau
 				Ffau editor will not work without its libraries. The best way to get all
 					off this data at once is to grab the latest release version from the
-					Github repo.
+					Github repo or to install via NPM.
 				Ffau is open source software. This means you can re-mix, share and use
 					it however you want, including for commercial purposes. However, you
 					MUST provide attribution to the original authors if you do this.
 				However, Ffau is provided with NO WARRANTY whatsoever, and by using this
 					software, you agree to the terms of the MIT License.
 
-				Copyright (c) 2017-18 Pal Kerecsenyi, Geza Kerecsenyi and tti0 (https://github.com/tti0)
+				Copyright (c) 2017-19 The CodeDdraig Organisation
 
-				THIS IS VERSION 0.3.1
+				THIS IS VERSION 1.0.0
 */
 
 /* jshint esversion:6 */
@@ -37,7 +37,7 @@ class Ffau{
         console.log("=========================");
         console.log('%c Ffau Editor ', 'background: #00d1b2; color: white;');
         console.log("A Blockly-based HTML editor made by the CodeDdraig organisation.");
-        console.log("https://codedragon.org");
+        console.log("https://github.com/codeddraig/ffau");
         console.log("=========================\n");
     }
 
@@ -57,25 +57,35 @@ class Ffau{
      *
      * @param {HTMLElement} frame - The frame to put the editor in
      * @param {HTMLElement} toolbox - The XML toolbox
+     * @param {object} [options] - Custom options for the Blockly editor
      * @returns {*}
      */
-    renderBlockly(frame, toolbox){
+    renderBlockly(frame, toolbox, options){
         // generate a random ID for the frame to avoid duplication
         frame.id = Ffau.generateID(frame, 'blockly');
 
+        let editorOptions = {
+            toolbox: toolbox
+        };
+
+        if(options) {
+            editorOptions = Object.assign(editorOptions, options);
+        }else{
+            editorOptions = Object.assign(editorOptions, {
+                zoom: {
+                    controls: true,
+                    wheel: true,
+                    startScale: 1.0,
+                    maxScale: 3,
+                    minScale: 0.3,
+                    scaleSpeed: 1.2
+                },
+                trashcan: true
+            });
+        }
+
         // inject blockly
-        this.ffauWorkspace = Blockly.inject(frame.id, {
-            toolbox: toolbox,
-            zoom: {
-                controls:true,
-                wheel:true,
-                startScale: 1.0,
-                maxScale: 3,
-                minScale: 0.3,
-                scaleSpeed:1.2
-            },
-            trashcan: true
-        });
+        this.ffauWorkspace = Blockly.inject(frame.id, editorOptions);
 
         return this.ffauWorkspace;
     }
@@ -104,7 +114,7 @@ class Ffau{
      * @param {object} ace - The imported ace variable from the Ace library
      * @param {HTMLElement} frame - The frame to put the editor in
      * @param {string} [aceTheme=ace/theme/textmate] - The theme to use for Ace
-     * @returns {object} - The editor
+     * @returns {object} - The editor object (you can call functions on this to customise Ace)
      */
     renderCode(ace, frame, aceTheme){
         // set the id to the current ID or a random one
@@ -147,8 +157,11 @@ class Ffau{
             if(this.iframe){
                 this.iframe.src = "data:text/html;charset=utf-8," + encodeURIComponent(code);
             }
-		
-	    customFunction(this);
+
+            if(typeof customFunction === "function"){
+                customFunction(this);
+            }
+
         }.bind(this) /* bind parent scope */ );
     }
 

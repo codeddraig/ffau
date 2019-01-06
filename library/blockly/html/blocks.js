@@ -1,3 +1,21 @@
+/*
+        Ffau - A blocky-based editor for teaching HTML, CSS and Javascript.
+
+				Developed by Pal Kerecsenyi, Geza Kerecsenyi and Oli Plant.
+				Full details are avaliable at the Github repo: https://github.com/codeddraig/ffau
+				Ffau editor will not work without its libraries. The best way to get all
+					off this data at once is to grab the latest release version from the
+					Github repo or to install via NPM.
+				Ffau is open source software. This means you can re-mix, share and use
+					it however you want, including for commercial purposes. However, you
+					MUST provide attribution to the original authors if you do this.
+				However, Ffau is provided with NO WARRANTY whatsoever, and by using this
+					software, you agree to the terms of the MIT License.
+
+				Copyright (c) 2017-19 The CodeDdraig Organisation
+
+				THIS IS VERSION 1.0.0
+*/
 
 //Script tag
 Blockly.Blocks['script'] = {
