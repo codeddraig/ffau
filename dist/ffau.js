@@ -57,7 +57,7 @@ class Ffau{
      *
      * @param {HTMLElement} frame - The frame to put the editor in
      * @param {HTMLElement} toolbox - The XML toolbox
-     * @param {object} [options] - Custom options for the Blockly editor
+     * @param {object} [options] - Custom options for the Blockly editor. Ffau will apply some default options if this is not specified.
      * @returns {*}
      */
     renderBlockly(frame, toolbox, options){
@@ -101,7 +101,7 @@ class Ffau{
         frame.id = Ffau.generateID(frame, 'iframe');
 
         // set the innerhtml of the frame specified
-        frame.innerHTML = `<iframe style="height:inherit;width:inherit;" id="${frame.id}-iframe"></iframe>`;
+        frame.innerHTML = `<iframe style="height: inherit; width: inherit;" id="${frame.id}-iframe"></iframe>`;
 
         // save the frame for later use
         this.iframe = document.getElementById(frame.id + '-iframe');

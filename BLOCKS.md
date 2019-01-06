@@ -68,9 +68,10 @@
 * `fontfamily` `font-family: ;`
 * `fontsize` `font-size: ;`
 * `color` `color: ;`
-
 * `textshadow` `text-shadow: a b c d;`
 * `texttransform` `text-transform: ;`
+* `textalign` `text-align: ;`
+* `letterspacing` `letter-spacing: ;`
 
 ### Arrangement
 * `margin` `margin-direction: ;` (where direction is left, right, top or bottom)
