@@ -1,24 +1,24 @@
 <h1 align="center">FFAU</h1>
 <p align="center"><img src="https://img.shields.io/badge/version-0.3.1-brightgreen.svg"></p>
 <p align="center">Ffau - A blocky-based editor for teaching HTML, CSS and Javascript.</p>
-<p align="center">Developed by Pal Kerecsenyi, Geza Kerecsenyi and tti0 (https://github.com/tti0).</p>
+<p align="center">Developed by Pal Kerecsenyi, Geza Kerecsenyi and Oli Plant.</p>
 
 ## Information
-General contact: **ffau [at] codei0 [dot] net**
+General contact: **contact@codedragon.org**
 
 Live demo: https://codeddraig.github.io/ffau/
 
 ## CodeDragon
 
-Ffau forms part of the CodeDragon ecosystem, a platform for teaching young people to code for the web. Check us out at https://codedragon.org
+Ffau forms part of CodeDragon, a platform for teaching young people to code for the web with real-life HTML and CSS. Check it out at https://codedragon.org.
 
 ## License info
 
-Ffau is open source software. This means you can re-mix, share and use it however you want, including for commercial purposes. However, you MUST provide attribution to the original authors if you do this. However, Ffau is provided with NO WARRANTY whatsoever, and by using this software, you agree to the terms of the MIT License.
+Ffau is open source software. This means you can clone, share and use it however you want, including for commercial purposes. However, you MUST provide attribution to the original authors if you do this. However, Ffau is provided with NO WARRANTY whatsoever, and by using this software, you agree to the terms of the MIT License.
 
 For full details, please read LICENSE.
 
-Copyright (c) 2017-18 Pal Kerecsenyi, Geza Kerecsenyi and tti0 (https://github.com/tti0)
+Copyright (c) 2017-19 The CodeDdraig Organisation
 
 ## Setup
 The Ffau editor is made to be easily addable to any existing project. There are 4 main steps to setting the Ffau up for a simple project like the one linked above.
@@ -127,7 +127,7 @@ You can find documentation for all functions in the `Ffau` class at https://code
 Ffau can save your blocks to a text file in the browser (with the extension '.txt') and import them to re-assemble your blocks. Files exported from Ffau can be imported to CodeDragon (https://codedragon.org), and vice-versa.
 
 ## Bugs
-To report problems or potential additions, please feel free to visit the 'issues' section of this repo. For security issues, please email us at: **ffau [at] codei0 [dot] net**.
+To report problems or potential additions, please feel free to visit the 'issues' section of this repo. For security issues, please email us at: **contact@codedragon.org**.
 
 ## Libraries
 This project would not be possible without the following amazing libraries. We are much indebted to them for their support and work:
@@ -155,10 +155,9 @@ Our project is inspired by, but not a direct clone of, the blockly-html project 
 
 ## Developers
 
-### tti0 // https://github.com/tti0 // https://tti0.net
+### Oli Plant // https://github.com/ddevlop
 
 ### Pal Kerecsenyi // https://github.com/palkerecsenyi
 
 ### Geza Kerecsenyi // https://github.com/gezakerecsenyi
 
-Please direct all correspondence to **ffau [at] codei0 [dot] net**
