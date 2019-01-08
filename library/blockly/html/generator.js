@@ -36,7 +36,7 @@ function CSSEscape(input) {
         .replace(/;/g, "")
         .replace(/{/g, "")
         .replace(/}/g, "")
-        .replace(/>/g, "")
+        .replace(/</g, "")
         .replace(/:/g, "")
 }
 
