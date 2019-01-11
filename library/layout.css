@@ -26,7 +26,13 @@
     height:420px;
 }
 footer{
-  position:fixed;
-  bottom:0;
   width:100%;
+}
+
+#blocklyDiv {
+	z-index: -1 !important;
+}
+
+.link.white {
+	color: white !important;
 }
