@@ -22,6 +22,8 @@
 * `args` Contains other attributes (name should be `attrs`)
 * `class` `class=""`
 * `id` `id=""`
+* `align` `align=""` (deprecated in HTML5, but still available in most browsers)
+* `emptyarg` `attribute=""` (where attribute is any user-entered attribute name - **WARNING**: this can be dangerous, for example JavaScript attributes. We don't recommend including this in a production toolbox)
 
 ### Text
 * `emptytext` Inserts plain text in any appropriate container
@@ -80,6 +82,7 @@
 * `overflow` `overflow-direction: ;` (where direction is y or x)
 * `widthheightnum` `width/height: ;` (takes any input)
 * `widthheight` `width/height: ;` (takes only auto, initial or inherit)
+* `float` `float: ;`
 
 ### Design
 * `bgcolor` `background-color: ;`

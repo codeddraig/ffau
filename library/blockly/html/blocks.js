@@ -317,8 +317,8 @@ Blockly.Blocks['args'] = {
             ],
             "colour": 120,
             "output": "attributes",
-            "tooltip": "Additional arguments",
-            "helpUrl": "http://www.w3schools.com/tags/tag_html.asp"
+            "tooltip": "Additional attributes",
+            "helpUrl": "https://www.w3schools.com/html/html_attributes.asp"
         });
     }
 };
@@ -337,7 +337,7 @@ Blockly.Blocks['class'] = {
             "previousStatement": "args",
             "nextStatement": "args",
             "colour": 120,
-            "tooltip": "Class modifier",
+            "tooltip": "Class attribute",
             "helpUrl": "https://www.w3schools.com/html/html_classes.asp"
         });
     }
@@ -357,11 +357,39 @@ Blockly.Blocks['id'] = {
             "previousStatement": "args",
             "nextStatement": "args",
             "colour": 120,
-            "tooltip": "ID modifier",
+            "tooltip": "ID attribute",
             "helpUrl": "https://www.w3schools.com/tags/att_global_id.asp"
         });
     }
 };
+
+// Align attribute
+Blockly.Blocks['align'] = {
+    init: function() {
+        this.jsonInit({
+            "message0": 'align = \" %1 \"',
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "content",
+                    "options": [
+                        [ "left", "left" ],
+                        [ "right", "right" ],
+                        [ "middle", "middle" ],
+                        [ "top", "top" ],
+                        [ "bottom", "bottom" ]
+                    ]
+                }
+            ],
+            "previousStatement": "args",
+            "nextStatement": "args",
+            "colour": 120,
+            "tooltip": "Align attribute",
+            "helpUrl": "https://www.w3schools.com/tags/att_img_align.asp"
+        });
+    }
+};
+
 //Empty Argument
 Blockly.Blocks['emptyarg'] = {
     init: function() {
@@ -1855,7 +1883,34 @@ Blockly.Blocks['widthheight'] = {
     }
 };
 
-//Other tag
+// Float (CSS-version of 'align')
+Blockly.Blocks['float'] = {
+    init: function() {
+        this.jsonInit({
+            "message0": 'float : %1 ;',
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "content",
+                    "options": [
+                        [ 'left', 'left' ],
+                        [ 'right', 'right' ],
+                        [ 'none', 'none' ],
+                        [ 'initial', 'initial' ],
+                        [ 'inherit', 'inherit' ]
+                    ]
+                }
+            ],
+            "previousStatement": "stylecontent",
+            "nextStatement": "stylecontent",
+            "colour": 290,
+            "tooltip": "Float an element left or right",
+            "helpUrl": "https://www.w3schools.com/cssref/pr_class_float.asp"
+        });
+    }
+};
+
+// Other CSS
 Blockly.Blocks['othercss'] = {
     init: function() {
         this.jsonInit({

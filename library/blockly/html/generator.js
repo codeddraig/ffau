@@ -309,6 +309,10 @@ htmlGen['widthheight'] = function(block){
     return option + ': ' + value + ';\n';
 };
 
+htmlGen['float'] = function(block) {
+    return 'float: ' + block.getFieldValue('content') + ';\n';
+};
+
 htmlGen['othercss'] = function(block){
     var property = fullEscape(block.getFieldValue('property'));
     var value = fullEscape(block.getFieldValue('value'));
@@ -329,6 +333,10 @@ htmlGen['class'] = function(block) {
 htmlGen['id'] = function(block) {
     var text_content = block.getFieldValue('content');
     return 'id="' + looseEscape(text_content) + '" ';
+};
+
+htmlGen['align'] = function(block) {
+    return 'align="' + block.getFieldValue('content') + '" ';
 };
 
 htmlGen['emptyarg'] = function(block) {
