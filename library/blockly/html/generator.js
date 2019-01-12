@@ -433,7 +433,7 @@ htmlGen['label'] = function(block){
 htmlGen['image'] = function(block){
     var source = block.getFieldValue('source');
     var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    var code = '<img src="' + URLInput(source) + '"' + mod + '>\n';
+    var code = '<img src="' + URLInput(source) || 'https://codedragon.org/img/no_image.png' + '"' + mod + '>\n';
     return code;
 };
 
