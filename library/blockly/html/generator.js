@@ -315,7 +315,10 @@ htmlGen['float'] = function(block) {
 
 htmlGen['othercss'] = function(block){
     var property = fullEscape(block.getFieldValue('property'));
-    var value = fullEscape(block.getFieldValue('value'));
+
+    var value = fullEscape(block.getFieldValue('value'))
+        .replace(/%20/g, " ");
+
     var code = property + ': ' + value + ';\n';
     return code;
 };
