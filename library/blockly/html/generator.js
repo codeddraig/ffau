@@ -317,7 +317,9 @@ htmlGen['othercss'] = function(block){
     var property = fullEscape(block.getFieldValue('property'));
 
     var value = fullEscape(block.getFieldValue('value'))
-        .replace(/%20/g, " ");
+        .replace(/%20/g, " ")
+        .replace(/%28/g, "(")
+        .replace(/%29/g, ")");
 
     var code = property + ': ' + value + ';\n';
     return code;
