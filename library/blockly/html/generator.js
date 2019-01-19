@@ -548,3 +548,5 @@ htmlGen['script'] = function(block){
     var code = "<script>\n"+content+"\n</script>\n";
     return code;
 };
+
+window.htmlGen = htmlGen;
