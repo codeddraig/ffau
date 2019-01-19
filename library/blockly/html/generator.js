@@ -41,14 +41,14 @@ function CSSEscape(input) {
 }
 
 function URLInput(input){
-    let URLRegex = new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+    var URLRegex = new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
 
     if(URLRegex.test(input)){
         return input;
     }
 }
 
-let htmlGen = new Blockly.Generator('HTML');
+var htmlGen = new Blockly.Generator('HTML');
 
 htmlGen.init = function(workspace) {};
 htmlGen.finish = function(code) {return code;};
