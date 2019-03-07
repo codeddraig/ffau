@@ -323,6 +323,12 @@ htmlGen['float'] = function(block) {
     return 'float: ' + block.getFieldValue('content') + ';\n';
 };
 
+htmlGen['verticalalign'] = function(block) {
+    var align = block.getFieldValue('align');
+
+    return `vertical-align: ${align};\n`;
+};
+
 htmlGen['transition'] = function(block) {
     var property = fullEscape(block.getFieldValue('transition-property'));
     var duration = fullEscape(block.getFieldValue('duration'));

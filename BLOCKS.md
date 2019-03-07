@@ -83,6 +83,7 @@
 * `widthheightnum` `width/height: ;` (takes any input)
 * `widthheight` `width/height: ;` (takes only auto, initial or inherit)
 * `float` `float: ;`
+* `verticalalign` `vertical-align: ;`
 
 ### Design
 * `boxshadow` `box-shadow: x y blur color;`

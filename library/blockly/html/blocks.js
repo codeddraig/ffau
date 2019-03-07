@@ -1946,6 +1946,68 @@ Blockly.Blocks['float'] = {
     }
 };
 
+// Vertical align
+Blockly.Blocks['verticalalign'] = {
+    init: function() {
+        this.jsonInit({
+            "message0": "vertical-align: %1",
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "align",
+                    "options": [
+                        [
+                            "top",
+                            "top"
+                        ],
+                        [
+                            "sub",
+                            "sub"
+                        ],
+                        [
+                            "super",
+                            "super"
+                        ],
+                        [
+                            "baseline",
+                            "baseline"
+                        ],
+                        [
+                            "text-top",
+                            "text-top"
+                        ],
+                        [
+                            "middle",
+                            "middle"
+                        ],
+                        [
+                            "bottom",
+                            "bottom"
+                        ],
+                        [
+                            "text-bottom",
+                            "text-bottom"
+                        ],
+                        [
+                            "initial",
+                            "initial"
+                        ],
+                        [
+                            "inherit",
+                            "inherit"
+                        ]
+                    ]
+                }
+            ],
+            "previousStatement": "stylecontent",
+            "nextStatement": "stylecontent",
+            "colour": 290,
+            "tooltip": "Vertical-align CSS property",
+            "helpUrl": "https://www.w3schools.com/cssref/pr_pos_vertical-align.asp"
+        })
+    }
+};
+
 // transition property
 Blockly.Blocks['transition'] = {
     init: function() {
