@@ -323,6 +323,28 @@ htmlGen['float'] = function(block) {
     return 'float: ' + block.getFieldValue('content') + ';\n';
 };
 
+htmlGen['transition'] = function(block) {
+    var property = fullEscape(block.getFieldValue('transition-property'));
+    var duration = fullEscape(block.getFieldValue('duration'));
+    var delay = fullEscape(block.getFieldValue('delay'));
+    var timing = htmlGen.statementToCode(block, 'timing-function', htmlGen.ORDER_ATOMIC);
+
+    return `transition-item: ${property};\ntransition-duration: ${duration};\ntransition-delay: ${delay};\ntransition-timing-function: ${timing};\n`;
+};
+
+htmlGen['transitiontimingdropdown'] = function(block) {
+    return block.getFieldValue('function');
+};
+
+htmlGen['transitiontimingbezier'] = function(block) {
+    var bez1 = fullEscape(block.getFieldValue('bez1'));
+    var bez2 = fullEscape(block.getFieldValue('bez2'));
+    var bez3 = fullEscape(block.getFieldValue('bez3'));
+    var bez4 = fullEscape(block.getFieldValue('bez4'));
+
+    return `cubic-bezier(${bez1}, ${bez2}, ${bez3}, ${bez4})`;
+};
+
 htmlGen['othercss'] = function(block){
     var property = fullEscape(block.getFieldValue('property'));
 

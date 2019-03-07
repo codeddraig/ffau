@@ -1946,6 +1946,151 @@ Blockly.Blocks['float'] = {
     }
 };
 
+// transition property
+Blockly.Blocks['transition'] = {
+    init: function() {
+        this.jsonInit({
+            "message0": "transition-property: %1 %2 transition-duration: %3 s %4 transition-delay: %5 s %6 transition-timing-function: %7",
+            "args0": [
+                {
+                    "type": "field_input",
+                    "name": "transition-property",
+                    "text": "background-color"
+                },
+                {
+                    "type": "input_dummy"
+                },
+                {
+                    "type": "field_number",
+                    "name": "duration",
+                    "value": 0.1
+                },
+                {
+                    "type": "input_dummy"
+                },
+                {
+                    "type": "field_number",
+                    "name": "delay",
+                    "value": 0
+                },
+                {
+                    "type": "input_dummy"
+                },
+                {
+                    "type": "input_value",
+                    "name": "timing-function",
+                    "check": "timing-function"
+                }
+            ],
+            "previousStatement": "stylecontent",
+            "nextStatement": "stylecontent",
+            "colour": 270,
+            "tooltip": "CSS transition template",
+            "helpUrl": "https://www.w3schools.com/css/css3_transitions.asp"
+        })
+    }
+};
+
+// transition timing (options)
+Blockly.Blocks['transitiontimingdropdown'] = {
+    init: function() {
+        this.jsonInit({
+            "message0": "%1",
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "function",
+                    "options": [
+                        [
+                            "ease",
+                            "ease"
+                        ],
+                        [
+                            "linear",
+                            "linear"
+                        ],
+                        [
+                            "ease-in",
+                            "ease-in"
+                        ],
+                        [
+                            "ease-out",
+                            "ease-out"
+                        ],
+                        [
+                            "ease-in-out",
+                            "ease-in-out"
+                        ],
+                        [
+                            "step-start",
+                            "step-start"
+                        ],
+                        [
+                            "step-end",
+                            "step-end"
+                        ],
+                        [
+                            "initial",
+                            "initial"
+                        ],
+                        [
+                            "inherit",
+                            "inherit"
+                        ]
+                    ]
+                }
+            ],
+            "output": "timing-function",
+            "colour": 270,
+            "tooltip": "CSS timing function options",
+            "helpUrl": "https://www.w3schools.com/cssref/css3_pr_transition-timing-function.asp"
+        })
+    }
+};
+
+// transition timing (cubic bezier)
+Blockly.Blocks['transitiontimingbezier'] = {
+    init: function() {
+        this.jsonInit({
+            "message0": "cubic-bezier( %1 , %2 , %3 , %4 )",
+            "args0": [
+                {
+                    "type": "field_number",
+                    "name": "bez1",
+                    "value": 0,
+                    "min": 0,
+                    "max": 1
+                },
+                {
+                    "type": "field_number",
+                    "name": "bez2",
+                    "value": 0,
+                    "min": -5,
+                    "max": 5
+                },
+                {
+                    "type": "field_number",
+                    "name": "bez3",
+                    "value": 0,
+                    "min": 0,
+                    "max": 1
+                },
+                {
+                    "type": "field_number",
+                    "name": "bez4",
+                    "value": 0,
+                    "min": -5,
+                    "max": 5
+                }
+            ],
+            "output": "timing-function",
+            "colour": 270,
+            "tooltip": "CSS cubic bezier timing function",
+            "helpUrl": "https://www.w3schools.com/cssref/func_cubic-bezier.asp"
+        })
+    }
+};
+
 // Other CSS
 Blockly.Blocks['othercss'] = {
     init: function() {

@@ -96,6 +96,11 @@
 * `borderrad` `border-radius: ;`
 * `cursor` `cursor: ;`
 
+### Transitions
+* `transition` `transition-property: ; transition-duration: ; transition-delay: ; transition-timing-function: ;`
+* `transitiontimingdropdown` `ease/linear/etc...`
+* `transitiontimingbezier` `cubic-bezier(0, 0, 0, 0)`
+
 ### Other
 * `cssevents` `::after/::before/:focus/:hover` (name should be `csspseudo`)
 * `cssnot` `:not()`
