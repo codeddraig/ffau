@@ -169,6 +169,11 @@ htmlGen['fontsize'] = function(block){
     return 'font-size: ' + fullEscape(value) + ';\n';
 };
 
+htmlGen['fontweight'] = function(block) {
+    var weight = block.getFieldValue('weight');
+    return `font-weight: ${weight};\n`;
+};
+
 htmlGen['textshadow'] = function(block){
     var x = fullEscape(block.getFieldValue('xoffset'));
     var y = fullEscape(block.getFieldValue('yoffset'));

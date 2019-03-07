@@ -69,6 +69,7 @@
 ### Text
 * `fontfamily` `font-family: ;`
 * `fontsize` `font-size: ;`
+* `fontweight` `font-weight: ;`
 * `color` `color: ;`
 * `textshadow` `text-shadow: a b c d;`
 * `texttransform` `text-transform: ;`

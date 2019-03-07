@@ -605,6 +605,52 @@ Blockly.Blocks['fontsize'] = {
     }
 };
 
+// Font weight
+Blockly.Blocks['fontweight'] = {
+    init: function() {
+        this.jsonInit({
+            "message0": "font-weight: %1",
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "weight",
+                    "options": [
+                        [
+                            "normal",
+                            "normal"
+                        ],
+                        [
+                            "bold",
+                            "bold"
+                        ],
+                        [
+                            "bolder",
+                            "bolder"
+                        ],
+                        [
+                            "lighter",
+                            "lighter"
+                        ],
+                        [
+                            "initial",
+                            "initial"
+                        ],
+                        [
+                            "inherit",
+                            "inherit"
+                        ]
+                    ]
+                }
+            ],
+            "previousStatement": "stylecontent",
+            "nextStatement": "stylecontent",
+            "colour": 290,
+            "tooltip": "Font-weight CSS property",
+            "helpUrl": "https://www.w3schools.com/cssref/pr_font_weight.asp"
+        });
+    }
+};
+
 //Margin
 Blockly.Blocks['margin'] = {
     init: function() {
