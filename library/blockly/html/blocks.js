@@ -857,6 +857,42 @@ Blockly.Blocks['textshadow'] = {
     }
 };
 
+// Box-shadow
+Blockly.Blocks['boxshadow'] = {
+    init: function() {
+        this.jsonInit({
+            "message0": "box-shadow: %1 %2 %3 %4 ;",
+            "args0": [
+                {
+                    "type": "field_input",
+                    "name": "x-offset",
+                    "text": "x-offset"
+                },
+                {
+                    "type": "field_input",
+                    "name": "y-offset",
+                    "text": "y-offset"
+                },
+                {
+                    "type": "field_input",
+                    "name": "blur",
+                    "text": "blur"
+                },
+                {
+                    "type": "field_colour",
+                    "name": "color",
+                    "colour": "#333333"
+                }
+            ],
+            "previousStatement": "stylecontent",
+            "nextStatement": "stylecontent",
+            "colour": 290,
+            "tooltip": "CSS box shadow",
+            "helpUrl": "https://www.w3schools.com/cssref/css3_pr_box-shadow.asp"
+        })
+    }
+};
+
 //BGColor
 Blockly.Blocks['bgcolor'] = {
     init: function() {

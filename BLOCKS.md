@@ -85,6 +85,7 @@
 * `float` `float: ;`
 
 ### Design
+* `boxshadow` `box-shadow: x y blur color;`
 * `bgcolor` `background-color: ;`
 * `bgimage` `background-image: url();`
 * `bgposition` `background-position: ;`

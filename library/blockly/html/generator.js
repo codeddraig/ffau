@@ -178,6 +178,16 @@ htmlGen['textshadow'] = function(block){
     return `text-shadow: ${x} ${y} ${b} ${c};\n`;
 };
 
+htmlGen['boxshadow'] = function(block) {
+    var x = fullEscape(block.getFieldValue('x-offset'));
+    var y = fullEscape(block.getFieldValue('y-offset'));
+    var blur = fullEscape(block.getFieldValue('blur'));
+
+    var color = block.getFieldValue('color');
+
+    return `box-shadow: ${x} ${y} ${blur} ${color};\n`;
+};
+
 htmlGen['texttransform'] = function(block){
     var value = block.getFieldValue('value');
     return `text-transform: ${value};\n`;
