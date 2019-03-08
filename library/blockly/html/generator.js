@@ -237,6 +237,11 @@ htmlGen['color'] = function(block){
     return 'color: ' + color + ';\n';
 };
 
+htmlGen['colordropdown'] = function(block) {
+    var color = block.getFieldValue('color');
+    return `color: ${color};\n`;
+};
+
 htmlGen['linkhead'] = function(block){
     var library = block.getFieldValue('library');
 

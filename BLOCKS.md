@@ -71,6 +71,7 @@
 * `fontsize` `font-size: ;`
 * `fontweight` `font-weight: ;`
 * `color` `color: ;`
+* `colordropdown` `color: initial/inherit;`
 * `textshadow` `text-shadow: a b c d;`
 * `texttransform` `text-transform: ;`
 * `textalign` `text-align: ;`

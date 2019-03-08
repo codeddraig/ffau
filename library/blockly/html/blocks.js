@@ -747,7 +747,6 @@ Blockly.Blocks['color'] = {
                     "type": "field_colour",
                     "name": "value",
                     "colour": "#339999"
-
                 }
             ],
             "previousStatement": "stylecontent",
@@ -756,6 +755,35 @@ Blockly.Blocks['color'] = {
             "tooltip": "CSS Color",
             "helpUrl": "https://www.w3schools.com/cssref/pr_text_color.asp"
         });
+    }
+};
+
+Blockly.Blocks['colordropdown'] = {
+    init: function () {
+        this.jsonInit({
+            "message0": 'color: %1 ;',
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "color",
+                    "options": [
+                        [
+                            "initial",
+                            "initial"
+                        ],
+                        [
+                            "inherit",
+                            "inherit"
+                        ]
+                    ]
+                }
+            ],
+            "previousStatement": "stylecontent",
+            "nextStatement": "stylecontent",
+            "colour": 290,
+            "tooltip": "CSS Color",
+            "helpUrl": "https://www.w3schools.com/cssref/pr_text_color.asp"
+        })
     }
 };
 

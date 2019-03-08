@@ -79,6 +79,7 @@
                 </label>
             </a>
         </li>
+
         <input class="load" onchange="uploadCode()" id="loadText" type="file" style="display:none;">
 
         <li class="nav-item">
@@ -212,6 +213,8 @@
 
                 <label text="Text Styling"></label>
                 <block type="color"></block>
+                <block type="colordropdown"></block>
+
                 <block type="textshadow"></block>
                 <block type="texttransform"></block>
                 <block type="textalign"></block>
@@ -233,8 +236,6 @@
             </category>
 
             <category name="Design" colour="290">
-                <block type="boxshadow"></block>
-
                 <label text="Backgrounds"></label>
                 <block type="bgcolor"></block>
                 <block type="bgimage"></block>
@@ -242,17 +243,15 @@
                 <block type="bgrepeat"></block>
                 <block type="bgsize"></block>
 
-                <label text="Borders"></label>
-                <block type="border"></block>
-                <block type="bordercol"></block>
-                <block type="borderrad"></block>
-
                 <label text="Other Design"></label>
                 <block type="cursor"></block>
+                <block type="boxshadow"></block>
             </category>
 
             <category name="Borders" colour="290">
-
+                <block type="border"></block>
+                <block type="bordercol"></block>
+                <block type="borderrad"></block>
             </category>
 
             <category name="Transitions" colour="270">
