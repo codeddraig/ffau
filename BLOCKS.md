@@ -88,16 +88,19 @@
 * `verticalalign` `vertical-align: ;`
 
 ### Design
-* `boxshadow` `box-shadow: x y blur color;`
 * `bgcolor` `background-color: ;`
 * `bgimage` `background-image: url();`
 * `bgposition` `background-position: ;`
 * `bgrepeat` `background-repeat: ;`
 * `bgsize` `background-size: ;`
+* `cursor` `cursor: ;`
+* `boxshadow` `box-shadow: x y blur color;`
+
+### Borders
 * `border` `border: a b c;`
+* `borderedge` `border-edge: a b c;`
 * `bordercol` `border-collapse: ;`
 * `borderrad` `border-radius: ;`
-* `cursor` `cursor: ;`
 
 ### Transitions
 * `transition` `transition-property: ; transition-duration: ; transition-delay: ; transition-timing-function: ;`

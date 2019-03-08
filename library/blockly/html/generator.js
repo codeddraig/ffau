@@ -292,6 +292,15 @@ htmlGen['border'] = function(block){
     return 'border: ' + width + 'px ' + type + ' ' + color + ';\n';
 };
 
+htmlGen['borderedge'] = function(block) {
+    var edge = block.getFieldValue('edge');
+    var width = fullEscape(block.getFieldValue('width'));
+    var type =  block.getFieldValue('type');
+    var color = block.getFieldValue('color');
+
+    return `border-${edge}: ${width}px ${type} ${color};\n`;
+};
+
 htmlGen['borderrad'] = function(block){
     var content = block.getFieldValue('content');
     return 'border-radius: ' + fullEscape(content) + ';\n';

@@ -1653,6 +1653,95 @@ Blockly.Blocks['border'] = {
     }
 };
 
+Blockly.Blocks['borderedge'] = {
+    init: function() {
+        this.jsonInit({
+            "message0": "border- %1 : %2 px %3 %4",
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "edge",
+                    "options": [
+                        [
+                            "top",
+                            "top"
+                        ],
+                        [
+                            "bottom",
+                            "bottom"
+                        ],
+                        [
+                            "left",
+                            "left"
+                        ],
+                        [
+                            "right",
+                            "right"
+                        ]
+                    ]
+                },
+                {
+                    "type": "field_number",
+                    "name": "border-width",
+                    "value": 0
+                },
+                {
+                    "type": "field_dropdown",
+                    "name": "border-type",
+                    "options": [
+                        [
+                            "none",
+                            "none"
+                        ],
+                        [
+                            "solid",
+                            "solid"
+                        ],
+                        [
+                            "dotted",
+                            "dotted"
+                        ],
+                        [
+                            "dashed",
+                            "dashed"
+                        ],
+                        [
+                            "double",
+                            "double"
+                        ],
+                        [
+                            "groove",
+                            "groove"
+                        ],
+                        [
+                            "ridge",
+                            "ridge"
+                        ],
+                        [
+                            "inset",
+                            "inset"
+                        ],
+                        [
+                            "outset",
+                            "outset"
+                        ]
+                    ]
+                },
+                {
+                    "type": "field_colour",
+                    "name": "border-color",
+                    "colour": "#000000"
+                }
+            ],
+            "previousStatement": "stylecontent",
+            "nextStatement": "stylecontent",
+            "colour": 290,
+            "tooltip": "Edge border",
+            "helpUrl": "https://www.w3schools.com/cssref/pr_border-bottom.asp"
+        })
+    }
+};
+
 //Border Collapse
 Blockly.Blocks['bordercol'] = {
     init: function(){
