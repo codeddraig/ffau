@@ -354,7 +354,7 @@ htmlGen['transition'] = function(block) {
     var delay = fullEscape(block.getFieldValue('delay'));
     var timing = htmlGen.statementToCode(block, 'timing-function', htmlGen.ORDER_ATOMIC);
 
-    return `transition-item: ${property};\ntransition-duration: ${duration};\ntransition-delay: ${delay};\ntransition-timing-function: ${timing};\n`;
+    return `transition-property: ${property};\ntransition-duration: ${duration};\ntransition-delay: ${delay};\ntransition-timing-function: ${timing};\n`;
 };
 
 htmlGen['transitiontimingdropdown'] = function(block) {
