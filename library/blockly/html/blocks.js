@@ -1682,12 +1682,12 @@ Blockly.Blocks['borderedge'] = {
                 },
                 {
                     "type": "field_number",
-                    "name": "border-width",
+                    "name": "width",
                     "value": 0
                 },
                 {
                     "type": "field_dropdown",
-                    "name": "border-type",
+                    "name": "type",
                     "options": [
                         [
                             "none",
@@ -1729,7 +1729,7 @@ Blockly.Blocks['borderedge'] = {
                 },
                 {
                     "type": "field_colour",
-                    "name": "border-color",
+                    "name": "color",
                     "colour": "#000000"
                 }
             ],
