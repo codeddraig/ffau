@@ -3118,7 +3118,7 @@ Blockly.Blocks['video'] = {
                 {
                     "type": "input_value",
                     "name": "modifier",
-"check": "attributes"
+                    "check": "attributes"
                 }
             ],
             "previousStatement": "html",
@@ -3126,6 +3126,114 @@ Blockly.Blocks['video'] = {
             "colour": 330,
             "tooltip": "Video tag",
             "helpUrl": "https://www.w3schools.com/tags/tag_video.asp"
+        });
+    }
+};
+
+// Chart
+Blockly.Blocks['chart'] = {
+    init: function () {
+        this.jsonInit({
+            "message0": "google.charts %1 %2 %3 %4 %5 %6 %7 data %8",
+            "args0": [
+                {
+                    "type": "input_value",
+                    "name": "modifier",
+                    "check": "attributes"
+                },
+                {
+                    "type": "input_dummy"
+                },
+                {
+                    "type": "field_dropdown",
+                    "name": "type",
+                    "options": [
+                        [
+                            "bar",
+                            "Bar"
+                        ],
+                        [
+                            "pie",
+                            "PieChart"
+                        ],
+                        [
+                            "column",
+                            "Column"
+                        ]
+                    ]
+                },
+                {
+                    "type": "input_dummy"
+                },
+                {
+                    "type": "field_input",
+                    "name": "title",
+                    "text": "title"
+                },
+                {
+                    "type": "field_input",
+                    "name": "subtitle",
+                    "text": "subtitle"
+                },
+                {
+                    "type": "input_dummy"
+                },
+                {
+                    "type": "input_statement",
+                    "name": "data",
+                    "check": "chart_row"
+                }
+            ],
+            "previousStatement": "html",
+            "nextStatement": "html",
+            "tooltip": "A chart powered by Google Charts",
+            "helpUrl": "https://google-developers.appspot.com/chart/interactive/docs/",
+            "colour": "#6b6b6b"
+        });
+    }
+};
+
+// row of data for chart
+Blockly.Blocks['chart_row'] = {
+    init: function() {
+        this.jsonInit({
+            "message0": "row: [ %1 %2 ],",
+            "args0": [
+                {
+                    "type": "input_dummy"
+                },
+                {
+                    "type": "input_statement",
+                    "name": "columns",
+                    "check": "chart_column"
+                }
+            ],
+            "previousStatement": "chart_row",
+            "nextStatement": "chart_row",
+            "tooltip": "A row of data to go inside a chart",
+            "helpUrl": "https://google-developers.appspot.com/chart/interactive/docs/",
+            "colour": "#6b6b6b"
+        });
+    }
+};
+
+// column in row for data for chart
+Blockly.Blocks['chart_column'] = {
+    init: function() {
+        this.jsonInit({
+            "message0": "column:  %1,",
+            "args0": [
+                {
+                    "type": "field_input",
+                    "name": "value",
+                    "text": "value"
+                }
+            ],
+            "previousStatement": "chart_column",
+            "nextStatement": "chart_column",
+            "tooltip": "A column of data to go inside a row",
+            "helpUrl": "https://google-developers.appspot.com/chart/interactive/docs/",
+            "colour": "#6b6b6b"
         });
     }
 };

@@ -1,7 +1,8 @@
 #preview-frame{
 	width:100%;
 	border:thin solid #DCDCDC;
-	max-height:800px;
+	max-height:440px;
+	height: 440px;
 	overflow: scroll;
 }
 /*#loadText{

@@ -48,6 +48,16 @@ function URLInput(input){
     }
 }
 
+function makeid(length) {
+    var result = '';
+    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+}
+
 var htmlGen = new Blockly.Generator('HTML');
 
 htmlGen.init = function(workspace) {};
@@ -604,6 +614,73 @@ htmlGen['script'] = function(block){
     var content = Blockly.JavaScript.statementToCode(block, 'content');
     var code = "<script>\n"+content+"\n</script>\n";
     return code;
+};
+
+htmlGen['chart'] = function(block) {
+    var attributes = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    var data = htmlGen.statementToCode(block, 'data', htmlGen.ORDER_ATOMIC);
+    var title = block.getFieldValue('title');
+    var subtitle = block.getFieldValue('subtitle');
+    var chartType = block.getFieldValue('type');
+    var chartOrientation = '';
+    var chartLibrary;
+    var chartOptions = 'options';
+
+    if(chartType === 'Column') {
+        chartType = 'Bar';
+        chartOrientation = 'vertical';
+        chartLibrary = 'charts';
+    } else if(chartType === 'Bar') {
+        chartOrientation = 'horizontal';
+        chartLibrary = 'charts';
+    } else {
+        chartLibrary = 'visualization';
+    }
+
+    if(chartType !== 'PieChart') {
+        chartOptions = `google.charts.${chartType}.convertOptions(options)`;
+    }
+
+    var divId = makeid(6);
+
+    return `
+<div id="${divId}" ${attributes}></div>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+    google.charts.load('current', {'packages':['bar', 'corechart']});
+    google.charts.setOnLoadCallback(function() {
+        var data = google.visualization.arrayToDataTable([${data}]);
+        
+        var options = {
+            chart: {
+                title: '${title}',
+                subtitle: '${subtitle}'
+            },
+            orientation: '${chartOrientation}'
+        }
+        
+        var chart = new google.${chartLibrary}.${chartType}(document.getElementById('${divId}'));
+        chart.draw(data, ${chartOptions});
+    });
+</script>
+    `;
+};
+
+htmlGen['chart_row'] = function(block) {
+    var columns = htmlGen.statementToCode(block, 'columns', htmlGen.ORDER_ATOMIC);
+    return `
+        [${columns}],\n
+    `
+};
+
+htmlGen['chart_column'] = function(block) {
+    var value = block.getFieldValue('value');
+
+    if(isNaN(value)) {
+        value = `'${value}'`;
+    }
+
+    return `${value},`;
 };
 
 window.htmlGen = htmlGen;

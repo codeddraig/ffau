@@ -59,6 +59,51 @@
 * `audio` `<audio loop="" autoplay="" controls=""> <source src="" type=""> </audio>`
 * `video` `<video loop="" autoplay="" controls=""> <source src="" type=""> </video>`
 
+### Snippets
+For these snippets, the generated code is not shown since it's too long and relatively unimportant. However, XML toolbox examples may be provided.
+
+##### Google Chart
+* `chart` Google Chart (Bar, Column or Pie)
+* `chart_row` A row of data for a Google Chart
+* `chart_column` A column to go inside a row for a Google Chart
+
+XML toolbox example:
+```
+<block type="chart">
+    <value name="data">
+        <block type="chart_row">
+            <value name="columns">
+                <block type="chart_column"></block>
+            </value>
+            <value name="columns">
+                <block type="chart_column"></block>
+            </value>
+        </block>
+    </value>
+    
+    <value name="modifier">
+        <block type="args">
+            <value name="content">
+                <block type="stylearg">
+                    <value name="content">
+                        <block type="widthheightnum">
+                            <field name="option">height</field>
+                            <field name="size">300px</field>
+                        </block>
+                    </value>
+                    <value name="content">
+                        <block type="widthheightnum">
+                            <field name="option">width</field>
+                            <field name="size">400px</field>
+                        </block>
+                    </value>
+                </block>
+            </value>
+        </block>
+    </value>
+</block>
+```
+
 ## CSS
 ### Structure
 * `style` `<style> </style>` (only fits in `head`)
