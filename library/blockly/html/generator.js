@@ -100,29 +100,29 @@ htmlGen['title'] = function(block) {
 
 htmlGen['body'] = function(block) {
     var statements_content = htmlGen.statementToCode(block, 'content');
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    var code = '<body'+block_modifier+'>\n' + statements_content + '</body>\n';
+    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC).trim();
+    var code = '<body'+(block_modifier ? " " + block_modifier.trim() : "")+'>\n' + statements_content + '</body>\n';
     return code;
 };
 
 htmlGen['headertag'] = function(block) {
     var statements_content = htmlGen.statementToCode(block, 'content');
     var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    var code = '<header'+block_modifier+'>\n' + statements_content + '</header>\n';
+    var code = '<header'+(block_modifier ? " " + block_modifier.trim() : "")+'>\n' + statements_content + '</header>\n';
     return code;
 };
 
 htmlGen['footertag'] = function(block) {
     var statements_content = htmlGen.statementToCode(block, 'content');
     var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    var code = '<footer'+block_modifier+'>\n' + statements_content + '</footer>\n';
+    var code = '<footer'+(block_modifier ? " " + block_modifier.trim() : "")+'>\n' + statements_content + '</footer>\n';
     return code;
 };
 
 htmlGen['divider'] = function(block) {
     var statements_content = htmlGen.statementToCode(block, 'content');
     var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    var code = '<div'+block_modifier+'>\n' + statements_content + '</div>\n';
+    var code = '<div'+(block_modifier ? " " + block_modifier.trim() : "")+'>\n' + statements_content + '</div>\n';
     return code;
 };
 
@@ -131,8 +131,8 @@ htmlGen['linebreak'] = function(block){
 };
 
 htmlGen['hline'] = function(block){
-    var modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    return "<hr" + modifier + "/>\n";
+    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    return "<hr" + (block_modifier ? " " + block_modifier.trim() : "") + "/>\n";
 };
 
 htmlGen['style'] = function(block){
@@ -425,7 +425,7 @@ htmlGen['emptytext'] = function(block) {
 htmlGen['paragraph'] = function(block) {
     var statements_content = htmlGen.statementToCode(block, 'content');
     var block_modifier = htmlGen.statementToCode(block, 'modifier');
-    return '<p' + block_modifier + '>' + statements_content + '</p>\n';
+    return '<p' + (block_modifier ? " " + block_modifier.trim() : "") + '>' + statements_content + '</p>\n';
 };
 
 htmlGen['header'] = function(block) {
@@ -443,45 +443,45 @@ htmlGen['textmod'] = function(block){
 
 htmlGen['span'] = function(block){
     var content = htmlGen.statementToCode(block,'content');
-    var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    return '<span' + mod + '>' + content + '</span>';
+    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    return '<span' + (block_modifier ? " " + block_modifier.trim() : "") + '>' + content + '</span>';
 };
 
 htmlGen['link'] = function(block){
     var text = htmlGen.statementToCode(block, 'content');
     var link = URLInput(block.getFieldValue('target'));
     var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    return '<a href="' + link + '" target="_blank"' + block_modifier + '>' + text + '</a>\n';
+    return '<a href="' + link + '" target="_blank"' + (block_modifier ? " " + block_modifier.trim() : "") + '>' + text + '</a>\n';
 };
 
 htmlGen['table'] = function(block){
     var content = htmlGen.statementToCode(block, 'content');
     var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    return '<table' + block_modifier + '>\n' + content + '</table>\n';
+    return '<table' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n' + content + '</table>\n';
 };
 
 htmlGen['tablerow'] = function(block){
     var content = htmlGen.statementToCode(block, 'content');
     var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    return '<tr' + block_modifier + '>\n' + content + '</tr>\n';
+    return '<tr' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n' + content + '</tr>\n';
 };
 
 htmlGen['tableheading'] = function(block){
     var content = htmlGen.statementToCode(block, 'content');
     var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    return '<th' + block_modifier + '>\n' + content + '</th>\n';
+    return '<th' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n' + content + '</th>\n';
 };
 
 htmlGen['tabledata'] = function(block){
     var content = htmlGen.statementToCode(block, 'content');
     var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    return '<td' + block_modifier + '>' + content + '</td>\n';
+    return '<td' + (block_modifier ? " " + block_modifier.trim() : "") + '>' + content + '</td>\n';
 };
 
 htmlGen['form'] = function(block){
     var content = htmlGen.statementToCode(block, 'content');
     var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    return '<form' + block_modifier + '>\n' + content + '</form>\n';
+    return '<form' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n' + content + '</form>\n';
 };
 
 htmlGen['input'] = function(block){
@@ -491,56 +491,56 @@ htmlGen['input'] = function(block){
     var name = looseEscape(block.getFieldValue('name'));
 
     var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    return '<input type="' + type + '" value="' + value + '" placeholder="' + placeholder + '" name="' + name + '"' + block_modifier + '>\n';
+    return '<input type="' + type + '" value="' + value + '" placeholder="' + placeholder + '" name="' + name + '"' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n';
 };
 
 htmlGen['label'] = function(block){
     var labelFor = block.getFieldValue('for');
     var content = htmlGen.statementToCode(block,'content');
 
-    var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    return '<label for="' + looseEscape(labelFor) + '"' + mod + '>' + content + '</label>\n';
+    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    return '<label for="' + looseEscape(labelFor) + '"' + (block_modifier ? " " + block_modifier.trim() : "") + '>' + content + '</label>\n';
 };
 
 htmlGen['image'] = function(block){
     var source = block.getFieldValue('source');
-    var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    var code = '<img src="' + (URLInput(source) || 'https://codedragon.org/img/no_image.png') + '"' + mod + '>\n';
+    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    var code = '<img src="' + (URLInput(source) || 'https://codedragon.org/img/no_image.png') + '"' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n';
     return code;
 };
 
 htmlGen['orderedlist'] = function(block){
     var content = htmlGen.statementToCode(block,'content');
-    var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    var code = '<ol' + mod + '>\n' + content + '</ol>\n';
+    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    var code = '<ol' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n' + content + '</ol>\n';
     return code;
 };
 
 htmlGen['unorderedlist'] = function(block){
     var content = htmlGen.statementToCode(block,'content');
-    var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    var code = '<ul' + mod + '>\n' + content + '</ul>\n';
+    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    var code = '<ul' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n' + content + '</ul>\n';
     return code;
 };
 
 htmlGen['listitem'] = function(block){
     var content = htmlGen.statementToCode(block,'content');
-    var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    var code = '<li' + mod + '>' + content + '</li>\n';
+    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    var code = '<li' + (block_modifier ? " " + block_modifier.trim() : "") + '>' + content + '</li>\n';
     return code;
 };
 
 htmlGen['details'] = function(block){
     var content = htmlGen.statementToCode(block,'content');
-    var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    var code = '<details' + mod + '>\n' + content + '</details>\n';
+    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    var code = '<details' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n' + content + '</details>\n';
     return code;
 };
 
 htmlGen['summary'] = function(block){
     var content = htmlGen.statementToCode(block,'content');
-    var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    var code = '<summary' + mod + '>' + content + '</summary>\n';
+    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    var code = '<summary' + (block_modifier ? " " + block_modifier.trim() : "") + '>' + content + '</summary>\n';
     return code;
 };
 
@@ -549,9 +549,9 @@ htmlGen['audio'] = function(block){
     var loop = block.getFieldValue('loop');
     var autoplay = block.getFieldValue('autoplay');
     var controls = block.getFieldValue('controls');
-    var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
 
-    var code = '<audio' + mod;
+    var code = '<audio' + (block_modifier ? " " + block_modifier.trim() : "");
     if(loop === "TRUE"){
         code += ' loop';
     }
@@ -584,9 +584,9 @@ htmlGen['video'] = function(block){
     var loop = block.getFieldValue('loop');
     var autoplay = block.getFieldValue('autoplay');
     var controls = block.getFieldValue('controls');
-    var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
 
-    var code = '<video'+mod;
+    var code = '<video'+(block_modifier ? " " + block_modifier.trim() : "");
     if(loop==="TRUE"){
         code +=' loop';
     }
@@ -617,7 +617,8 @@ htmlGen['script'] = function(block){
 };
 
 htmlGen['chart'] = function(block) {
-    var attributes = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC).trim();
+    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC).trim();
+    var attributes = (block_modifier ? " " + block_modifier.trim() : "")
     var data = htmlGen.statementToCode(block, 'data', htmlGen.ORDER_ATOMIC);
     var title = block.getFieldValue('title');
     var subtitle = block.getFieldValue('subtitle');
@@ -663,8 +664,7 @@ htmlGen['chart'] = function(block) {
     var chart = new google.${chartLibrary}.${chartType}(document.getElementById('${divId}'));
     chart.draw(data, ${chartOptions});
   });
-</script>
-    `;
+</script>\n`;
 };
 
 htmlGen['chart_row'] = function(block) {
