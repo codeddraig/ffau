@@ -376,40 +376,53 @@
 
     <sep></sep>
 
-    <category name="Snippets" colour="#6b6b6b">
-        <block type="chart">
-            <value name="data">
-                <block type="chart_row">
-                    <value name="columns">
-                        <block type="chart_column"></block>
-                    </value>
-                    <value name="columns">
-                        <block type="chart_column"></block>
-                    </value>
-                </block>
-            </value>
+    <category name="Snippets" colour="#fc887b">
+	<category name="Google Charts" colour="#fc887b">
+		<block type="chart">
+		    <value name="data">
+			<block type="chart_row">
+			    <value name="columns">
+				<block type="chart_column"></block>
+			    </value>
+			    <value name="columns">
+				<block type="chart_column"></block>
+			    </value>
+			</block>
+		    </value>
 
-            <value name="modifier">
-                <block type="args">
-                    <value name="content">
-                        <block type="stylearg">
-                            <value name="content">
-                                <block type="widthheightnum">
-                                    <field name="option">height</field>
-                                    <field name="size">300px</field>
-                                </block>
-                            </value>
-                            <value name="content">
-                                <block type="widthheightnum">
-                                    <field name="option">width</field>
-                                    <field name="size">400px</field>
-                                </block>
-                            </value>
-                        </block>
-                    </value>
-                </block>
-            </value>
-        </block>
+		    <value name="modifier">
+			<block type="args">
+			    <value name="content">
+				<block type="stylearg">
+				    <value name="content">
+					<block type="widthheightnum">
+					    <field name="option">height</field>
+					    <field name="size">300px</field>
+					</block>
+				    </value>
+				    <value name="content">
+					<block type="widthheightnum">
+					    <field name="option">width</field>
+					    <field name="size">400px</field>
+					</block>
+				    </value>
+				</block>
+			    </value>
+			</block>
+		    </value>
+		</block>
+
+		<block type="chart_row">
+		    <value name="columns">
+			<block type="chart_column"></block>
+		    </value>
+		    <value name="columns">
+			<block type="chart_column"></block>
+		    </value>
+		</block>
+
+		<block type="chart_column"></block>
+	    </category>
     </category>
 </xml>
 
