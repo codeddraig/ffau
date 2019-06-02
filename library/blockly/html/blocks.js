@@ -3188,7 +3188,7 @@ Blockly.Blocks['chart'] = {
             "nextStatement": "html",
             "tooltip": "A chart powered by Google Charts",
             "helpUrl": "https://google-developers.appspot.com/chart/interactive/docs/",
-            "colour": "#6b6b6b"
+            "colour": "#fc887b"
         });
     }
 };
@@ -3212,7 +3212,7 @@ Blockly.Blocks['chart_row'] = {
             "nextStatement": "chart_row",
             "tooltip": "A row of data to go inside a chart",
             "helpUrl": "https://google-developers.appspot.com/chart/interactive/docs/",
-            "colour": "#6b6b6b"
+            "colour": "#fc887b"
         });
     }
 };
@@ -3233,7 +3233,7 @@ Blockly.Blocks['chart_column'] = {
             "nextStatement": "chart_column",
             "tooltip": "A column of data to go inside a row",
             "helpUrl": "https://google-developers.appspot.com/chart/interactive/docs/",
-            "colour": "#6b6b6b"
+            "colour": "#fc887b"
         });
     }
 };
