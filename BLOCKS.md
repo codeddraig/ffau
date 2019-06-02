@@ -104,6 +104,13 @@ XML toolbox example:
 </block>
 ```
 
+##### Gumshoe
+See <https://github.com/cferdinandi/gumshoe>.
+
+* `scrollspy` A block for creating a scrollspy system
+
+See <https://codedragon.org/editor/25d6617c5adb6470f9a2166d3a6d5f48> for an example of how to use this block.
+
 ## CSS
 ### Structure
 * `style` `<style> </style>` (only fits in `head`)

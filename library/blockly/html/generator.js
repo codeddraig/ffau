@@ -40,11 +40,23 @@ function CSSEscape(input) {
         .replace(/:/g, "")
 }
 
-function URLInput(input){
-    var URLRegex = new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+var URLRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
+var hashRegex = /#([A-z0-9]*)/;
 
-    if(URLRegex.test(input)){
+function isNewTabUrl(input) {
+    return URLRegex.test(input) || (!input.includes('http://') && !input.includes('https://')) && !hashRegex.test(input) && input.length > 0;
+}
+
+/**
+ * @return {string}
+ */
+function URLInput(input){
+    input = encodeURI(input);
+
+    if(URLRegex.test(input) || hashRegex.test(input)){
         return input;
+    } else if (isNewTabUrl(input)) {
+        return 'https://' + input;
     }
 }
 
@@ -449,9 +461,16 @@ htmlGen['span'] = function(block){
 
 htmlGen['link'] = function(block){
     var text = htmlGen.statementToCode(block, 'content');
+    var bareLink = block.getFieldValue('target');
     var link = URLInput(block.getFieldValue('target'));
     var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    return '<a href="' + link + '" target="_blank"' + (block_modifier ? " " + block_modifier.trim() : "") + '>' + text + '</a>\n';
+    var target = '';
+
+    if(isNewTabUrl(bareLink)) {
+        target = ' target="_blank"';
+    }
+
+    return '<a href="' + link + '"' + target + (block_modifier ? " " + block_modifier.trim() : "") + '>' + text + '</a>\n';
 };
 
 htmlGen['table'] = function(block){
@@ -620,8 +639,8 @@ htmlGen['chart'] = function(block) {
     var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC).trim();
     var attributes = (block_modifier ? " " + block_modifier.trim() : "")
     var data = htmlGen.statementToCode(block, 'data', htmlGen.ORDER_ATOMIC);
-    var title = block.getFieldValue('title');
-    var subtitle = block.getFieldValue('subtitle');
+    var title = looseEscape(block.getFieldValue('title'));
+    var subtitle = looseEscape(block.getFieldValue('subtitle'));
     var chartType = block.getFieldValue('type');
     var chartOrientation = '';
     var chartLibrary;
@@ -674,13 +693,22 @@ htmlGen['chart_row'] = function(block) {
 };
 
 htmlGen['chart_column'] = function(block) {
-    var value = block.getFieldValue('value');
+    var value = looseEscape(block.getFieldValue('value'));
 
     if(isNaN(value)) {
         value = `'${value}'`;
     }
 
     return `${value},`;
+};
+
+htmlGen['scrollspy'] = function(block) {
+    var elementId = looseEscape(block.getFieldValue('element'));
+    return `
+<script src="https://cdn.jsdelivr.net/gh/cferdinandi/gumshoe@5.1/dist/gumshoe.polyfills.min.js"></script>
+<script>
+  new Gumshoe('#${elementId} a');
+</script>\n`;
 };
 
 window.htmlGen = htmlGen;

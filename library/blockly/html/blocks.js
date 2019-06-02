@@ -3237,3 +3237,24 @@ Blockly.Blocks['chart_column'] = {
         });
     }
 };
+
+// Gumshoe scrollspy
+Blockly.Blocks['scrollspy'] = {
+    init: function() {
+        this.jsonInit({
+            "message0": "Gumshoe('# %1 a');",
+            "args0": [
+                {
+                    "type": "field_input",
+                    "name": "element",
+                    "text": "ID of navigation element"
+                }
+            ],
+            "previousStatement": 'html',
+            "nextStatement": 'html',
+            "colour": "#ff7575",
+            "tooltip": "Gumshoe scrollspy snippet",
+            "helpUrl": "https://github.com/cferdinandi/gumshoe"
+        });
+    }
+};
