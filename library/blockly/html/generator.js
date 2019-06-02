@@ -141,8 +141,8 @@ htmlGen['style'] = function(block){
 };
 
 htmlGen['stylearg'] = function(block){
-    var statement = htmlGen.statementToCode(block, 'content');
-    return 'style="' + statement + '"';
+    var statement = htmlGen.statementToCode(block, 'content').trim();
+    return 'style="' + statement + '" ';
 };
 
 htmlGen['cssitem'] = function(block){
@@ -393,7 +393,7 @@ htmlGen['othercss'] = function(block){
 };
 
 htmlGen['args'] = function(block) {
-    var code = htmlGen.statementToCode(block, 'content');
+    var code = htmlGen.statementToCode(block, 'content').trim();
     return code;
 };
 
@@ -431,8 +431,8 @@ htmlGen['paragraph'] = function(block) {
 htmlGen['header'] = function(block) {
     var statements_content = htmlGen.statementToCode(block, 'content');
     var header_size = block.getFieldValue("size");
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    return '<h' + header_size + block_modifier + '>' + statements_content + '</h' + header_size + '>\n';
+    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC).trim();
+    return '<h' + (header_size + ' ' + block_modifier).trim() + '>' + statements_content + '</h' + header_size + '>\n';
 };
 
 htmlGen['textmod'] = function(block){
@@ -475,7 +475,7 @@ htmlGen['tableheading'] = function(block){
 htmlGen['tabledata'] = function(block){
     var content = htmlGen.statementToCode(block, 'content');
     var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    return '<td' + block_modifier + '>\n' + content + '</td>\n';
+    return '<td' + block_modifier + '>' + content + '</td>\n';
 };
 
 htmlGen['form'] = function(block){
@@ -617,7 +617,7 @@ htmlGen['script'] = function(block){
 };
 
 htmlGen['chart'] = function(block) {
-    var attributes = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    var attributes = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC).trim();
     var data = htmlGen.statementToCode(block, 'data', htmlGen.ORDER_ATOMIC);
     var title = block.getFieldValue('title');
     var subtitle = block.getFieldValue('subtitle');
@@ -647,30 +647,30 @@ htmlGen['chart'] = function(block) {
 <div id="${divId}" ${attributes}></div>
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
-    google.charts.load('current', {'packages':['bar', 'corechart']});
-    google.charts.setOnLoadCallback(function() {
-        var data = google.visualization.arrayToDataTable([${data}]);
-        
-        var options = {
-            chart: {
-                title: '${title}',
-                subtitle: '${subtitle}'
-            },
-            orientation: '${chartOrientation}'
-        }
-        
-        var chart = new google.${chartLibrary}.${chartType}(document.getElementById('${divId}'));
-        chart.draw(data, ${chartOptions});
-    });
+  google.charts.load('current', {'packages':['bar', 'corechart']});
+  google.charts.setOnLoadCallback(function() {
+    var data = google.visualization.arrayToDataTable([${data}
+    ]);
+      
+    var options = {
+      chart: {
+        title: '${title}',
+        subtitle: '${subtitle}'
+      },
+      orientation: '${chartOrientation}'
+    }
+      
+    var chart = new google.${chartLibrary}.${chartType}(document.getElementById('${divId}'));
+    chart.draw(data, ${chartOptions});
+  });
 </script>
     `;
 };
 
 htmlGen['chart_row'] = function(block) {
-    var columns = htmlGen.statementToCode(block, 'columns', htmlGen.ORDER_ATOMIC);
+    var columns = htmlGen.statementToCode(block, 'columns', htmlGen.ORDER_ATOMIC).trim();
     return `
-        [${columns}],\n
-    `
+    [${columns}],`
 };
 
 htmlGen['chart_column'] = function(block) {
