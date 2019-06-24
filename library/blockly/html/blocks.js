@@ -743,11 +743,11 @@ Blockly.Blocks['color'] = {
         this.jsonInit({
             "message0": 'color: %1 ;',
             "args0": [
-                {
-                    "type": "field_colour",
-                    "name": "value",
-                    "colour": "#339999"
-                }
+				{
+					"type": "input_value",
+					"name": "value",
+					"check": "color"
+				}
             ],
             "previousStatement": "stylecontent",
             "nextStatement": "stylecontent",
@@ -916,11 +916,11 @@ Blockly.Blocks['textshadow'] = {
                     "name": "blur",
                     "text": "blur"
                 },
-                {
-                    "type": "field_colour",
-                    "name": "color",
-                    "colour": "#333333"
-                }
+				{
+					"type": "input_value",
+					"name": "color",
+					"check": "color"
+				}
             ],
             "previousStatement": "stylecontent",
             "nextStatement": "stylecontent",
@@ -952,11 +952,11 @@ Blockly.Blocks['boxshadow'] = {
                     "name": "blur",
                     "text": "blur"
                 },
-                {
-                    "type": "field_colour",
-                    "name": "color",
-                    "colour": "#333333"
-                }
+				{
+					"type": "input_value",
+					"name": "color",
+					"check": "color"
+				}
             ],
             "previousStatement": "stylecontent",
             "nextStatement": "stylecontent",
@@ -973,11 +973,11 @@ Blockly.Blocks['bgcolor'] = {
         this.jsonInit({
             "message0": 'background-color: %1 ;',
             "args0": [
-                {
-                    "type": "field_colour",
-                    "name": "value",
-                    "colour": "#339999"
-                }
+				{
+					"type": "input_value",
+					"name": "value",
+					"check": "color"
+				}
             ],
             "previousStatement": "stylecontent",
             "nextStatement": "stylecontent",
@@ -1313,11 +1313,11 @@ Blockly.Blocks['textshadow'] = {
                     "name": "blur",
                     "text": "blur"
                 },
-                {
-                    "type": "field_colour",
-                    "name": "color",
-                    "colour": "#333333"
-                }
+				{
+					"type": "input_value",
+					"name": "color",
+					"check": "color"
+				}
             ],
             "previousStatement": "stylecontent",
             "nextStatement": "stylecontent",
@@ -1407,11 +1407,11 @@ Blockly.Blocks['bgcolor'] = {
         this.jsonInit({
             "message0": 'background-color: %1 ;',
             "args0": [
-                {
-                    "type": "field_colour",
-                    "name": "value",
-                    "colour": "#339999"
-                }
+				{
+					"type": "input_value",
+					"name": "value",
+					"check": "color"
+				}
             ],
             "previousStatement": "stylecontent",
             "nextStatement": "stylecontent",
@@ -1638,11 +1638,11 @@ Blockly.Blocks['border'] = {
                         ]
                     ]
                 },
-                {
-                    "type": "field_colour",
-                    "name": "color",
-                    "colour": "#000000"
-                }
+				{
+					"type": "input_value",
+					"name": "color",
+					"check": "color"
+				}
             ],
             "previousStatement": "stylecontent",
             "nextStatement": "stylecontent",
@@ -1727,11 +1727,11 @@ Blockly.Blocks['borderedge'] = {
                         ]
                     ]
                 },
-                {
-                    "type": "field_colour",
-                    "name": "color",
-                    "colour": "#000000"
-                }
+				{
+					"type": "input_value",
+					"name": "color",
+					"check": "color"
+				}
             ],
             "previousStatement": "stylecontent",
             "nextStatement": "stylecontent",
@@ -3006,7 +3006,7 @@ Blockly.Blocks['details'] = {
                 {
                     "type": "input_value",
                     "name": "modifier",
-"check": "attributes"
+					"check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -3024,6 +3024,92 @@ Blockly.Blocks['details'] = {
             "helpUrl": "https://www.w3schools.com/tags/tag_details.asp"
         });
     }
+};
+
+//Hex color picker block
+Blockly.Blocks['hex_picker'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": "# %1",
+			"args0": [
+				{
+					"type": "field_input",
+					"name": "color",
+					"text": "ffffff"
+				}
+			],
+			"output": "color",
+			"colour": 290,
+			"tooltip": "HTML HEX color picker",
+			"helpUrl": "https://www.w3schools.com/html/html_colors.asp"
+		});
+	}
+};
+
+//RGBA color picker block
+Blockly.Blocks['rgba_picker'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": "rgba( %1 %2 %3 %4 )",
+			"args0": [
+				{
+					"type": "field_number",
+					"name": "r",
+					"value": 255,
+					"min": 0,
+					"max": 255,
+					"precision": 1
+				},
+				{
+					"type": "field_number",
+					"name": "g",
+					"value": 255,
+					"min": 0,
+					"max": 255,
+					"precision": 1
+				},
+				{
+					"type": "field_number",
+					"name": "b",
+					"value": 255,
+					"min": 0,
+					"max": 255,
+					"precision": 1
+				},
+				{
+					"type": "field_number",
+					"name": "a",
+					"value": 1,
+					"min": 0,
+					"max": 1
+				}
+			],
+			"output": "color",
+			"colour": 290,
+			"tooltip": "HTML RGBA color picker",
+			"helpUrl": "https://www.w3schools.com/html/html_colors.asp"
+		});
+	}
+};
+
+//Color picker block
+Blockly.Blocks['color_picker'] = {
+	init: function() {
+		this.jsonInit({
+			"message0": "%1",
+			"args0": [
+				{
+					"type": "field_colour",
+					"name": "color",
+					"colour": "#ffffff"
+				}
+			],
+			"output": "color",
+			"colour": 290,
+			"tooltip": "HTML color picker",
+			"helpUrl": "https://www.w3schools.com/html/html_colors.asp"
+		});
+	}
 };
 
 //Audio tag
