@@ -200,7 +200,7 @@ htmlGen['textshadow'] = function(block){
     var x = fullEscape(block.getFieldValue('xoffset'));
     var y = fullEscape(block.getFieldValue('yoffset'));
     var b = fullEscape(block.getFieldValue('blur'));
-    var c = block.getFieldValue('color');
+	var c = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC);
 
     return `text-shadow: ${x} ${y} ${b} ${c};\n`;
 };
@@ -210,7 +210,7 @@ htmlGen['boxshadow'] = function(block) {
     var y = fullEscape(block.getFieldValue('y-offset'));
     var blur = fullEscape(block.getFieldValue('blur'));
 
-    var color = block.getFieldValue('color');
+	var color = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC);
 
     return `box-shadow: ${x} ${y} ${blur} ${color};\n`;
 };
@@ -255,7 +255,7 @@ htmlGen['overflow'] = function(block){
 };
 
 htmlGen['color'] = function(block){
-    var color = block.getFieldValue('value');
+	var color = htmlGen.statementToCode(block, 'value', htmlGen.ORDER_ATOMIC);
     return 'color: ' + color + ';\n';
 };
 
@@ -280,7 +280,7 @@ htmlGen['linkhead'] = function(block){
 };
 
 htmlGen['bgcolor'] = function(block){
-    var color = block.getFieldValue('value');
+	var color = htmlGen.statementToCode(block, 'value', htmlGen.ORDER_ATOMIC);
     return 'background-color: ' + color + ';\n';
 };
 
@@ -309,7 +309,7 @@ htmlGen['bgsize'] = function(block){
 htmlGen['border'] = function(block){
     var width = fullEscape(block.getFieldValue('width'));
     var type =  block.getFieldValue('type');
-    var color = block.getFieldValue('color');
+	var color = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC);
 
     return 'border: ' + width + 'px ' + type + ' ' + color + ';\n';
 };
@@ -318,7 +318,7 @@ htmlGen['borderedge'] = function(block) {
     var edge = block.getFieldValue('edge');
     var width = fullEscape(block.getFieldValue('width'));
     var type =  block.getFieldValue('type');
-    var color = block.getFieldValue('color');
+	var color = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC);
 
     return `border-${edge}: ${width}px ${type} ${color};\n`;
 };
@@ -562,6 +562,23 @@ htmlGen['summary'] = function(block){
     var code = '<summary' + (block_modifier ? " " + block_modifier.trim() : "") + '>' + content + '</summary>\n';
     return code;
 };
+
+htmlGen['rgba_picker'] = function(block){
+	var r = looseEscape(block.getFieldValue('r'));
+	var g = looseEscape(block.getFieldValue('g'));
+	var b = looseEscape(block.getFieldValue('b'));
+	var a = looseEscape(block.getFieldValue('a'));
+	
+	return "rgba(" + r + ", " + g + ", " + b + ", " + a + ")";
+}
+
+htmlGen['hex_picker'] = function(block){
+	return "#" + looseEscape(block.getFieldValue('color'));
+}
+
+htmlGen['color_picker'] = function(block){
+	return looseEscape(block.getFieldValue('color'));
+}
 
 htmlGen['audio'] = function(block){
     var source = block.getFieldValue('source');
