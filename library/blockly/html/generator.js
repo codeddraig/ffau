@@ -569,16 +569,16 @@ htmlGen['rgba_picker'] = function(block){
 	var b = looseEscape(block.getFieldValue('b'));
 	var a = looseEscape(block.getFieldValue('a'));
 	
-	return "rgba(" + r + ", " + g + ", " + b + ", " + a + ")";
-}
+	return `rgba(${r}, ${g}, ${b}, ${a})`;
+};
 
 htmlGen['hex_picker'] = function(block){
 	return "#" + looseEscape(block.getFieldValue('color'));
-}
+};
 
 htmlGen['color_picker'] = function(block){
 	return looseEscape(block.getFieldValue('color'));
-}
+};
 
 htmlGen['audio'] = function(block){
     var source = block.getFieldValue('source');
