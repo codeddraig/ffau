@@ -212,10 +212,18 @@
                 <block type="fontweight"></block>
 
                 <label text="Text Styling"></label>
-                <block type="color"></block>
+                <block type="color-new">
+					<value name="value">
+						<block type="color_picker"></block>
+					</value>
+				</block>
                 <block type="colordropdown"></block>
 
-                <block type="textshadow"></block>
+                <block type="textshadow-new">
+					<value name="color">
+						<block type="color_picker"></block>
+					</value>
+				</block>
                 <block type="texttransform"></block>
                 <block type="textalign"></block>
                 <block type="letterspacing"></block>
@@ -236,8 +244,17 @@
             </category>
 
             <category name="Design" colour="290">
+				<label text="Colours"></label>
+				<block type="color_picker"></block>
+				<block type="hex_picker"></block>
+				<block type="rgba_picker"></block>
+				
                 <label text="Backgrounds"></label>
-                <block type="bgcolor"></block>
+                <block type="bgcolor-new">
+					<value name="value">
+						<block type="color_picker"></block>
+					</value>
+				</block>
                 <block type="bgimage"></block>
                 <block type="bgposition"></block>
                 <block type="bgrepeat"></block>
@@ -245,12 +262,24 @@
 
                 <label text="Other Design"></label>
                 <block type="cursor"></block>
-                <block type="boxshadow"></block>
+                <block type="boxshadow-new">
+					<value name="color">
+						<block type="color_picker"></block>
+					</value>
+				</block>
             </category>
 
             <category name="Borders" colour="290">
-                <block type="border"></block>
-                <block type="borderedge"></block>
+                <block type="border-new">
+					<value name="color">
+						<block type="color_picker"></block>
+					</value>
+				</block>
+                <block type="borderedge-new">
+					<value name="color">
+						<block type="color_picker"></block>
+					</value>
+				</block>
                 <block type="bordercol"></block>
                 <block type="borderrad"></block>
             </category>

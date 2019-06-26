@@ -19,7 +19,7 @@
 
 //Script tag
 Blockly.Blocks['script'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<script> %1 %2 </script>',
             "args0": [
@@ -42,7 +42,7 @@ Blockly.Blocks['script'] = {
 
 //HTML tag
 Blockly.Blocks['html'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<html> %1 %2 </html>',
             "args0": [
@@ -64,7 +64,7 @@ Blockly.Blocks['html'] = {
 
 //Head tag
 Blockly.Blocks['head'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<head> %1 %2 </head>',
             "args0": [
@@ -88,14 +88,14 @@ Blockly.Blocks['head'] = {
 
 //Body tag
 Blockly.Blocks['body'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<body> %1 %2 </body>',
             "args0": [
                 {
                     "type": "input_value",
                     "name": "modifier",
-"check": "attributes"
+                    "check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -114,7 +114,7 @@ Blockly.Blocks['body'] = {
 
 //Meta Charset tag
 Blockly.Blocks['metacharset'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<meta charset =  %1 >',
             "args0": [
@@ -143,7 +143,7 @@ Blockly.Blocks['metacharset'] = {
 };
 
 Blockly.Blocks['metaviewport'] = {
-    init:function(){
+    init: function () {
         this.jsonInit({
             "message0": "<meta name=\"viewport\">",
             "previousStatement": "header",
@@ -157,14 +157,14 @@ Blockly.Blocks['metaviewport'] = {
 
 //header tag
 Blockly.Blocks['headertag'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<header> %1 %2 </header>',
             "args0": [
                 {
                     "type": "input_value",
                     "name": "modifier",
-"check": "attributes"
+                    "check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -183,14 +183,14 @@ Blockly.Blocks['headertag'] = {
 
 //footer tag
 Blockly.Blocks['footertag'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<footer> %1 %2 </footer>',
             "args0": [
                 {
                     "type": "input_value",
                     "name": "modifier",
-"check": "attributes"
+                    "check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -209,7 +209,7 @@ Blockly.Blocks['footertag'] = {
 
 //Title tag
 Blockly.Blocks['title'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<title> %1 </title>',
             "args0": [
@@ -230,7 +230,7 @@ Blockly.Blocks['title'] = {
 
 //Divider tag
 Blockly.Blocks['divider'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<div> %1 %2 </div>',
             "args0": [
@@ -238,7 +238,7 @@ Blockly.Blocks['divider'] = {
                     "type": "input_value",
 
                     "name": "modifier",
-"check": "attributes"
+                    "check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -267,7 +267,7 @@ Blockly.Blocks['divider'] = {
 
 //br tag
 Blockly.Blocks['linebreak'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<br/>',
             "previousStatement": "html",
@@ -281,14 +281,14 @@ Blockly.Blocks['linebreak'] = {
 
 //hr tag
 Blockly.Blocks['hline'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<hr/> %1',
-            "args0":[
+            "args0": [
                 {
                     "type": "input_value",
                     "name": "modifier",
-"check": "attributes"
+                    "check": "attributes"
                 }
             ],
             "previousStatement": "html",
@@ -302,7 +302,7 @@ Blockly.Blocks['hline'] = {
 
 //Modifiers
 Blockly.Blocks['args'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'attributes: %1 %2',
             "args0": [
@@ -324,7 +324,7 @@ Blockly.Blocks['args'] = {
 };
 //Class
 Blockly.Blocks['class'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'class = \" %1 \"',
             "args0": [
@@ -344,7 +344,7 @@ Blockly.Blocks['class'] = {
 };
 //ID
 Blockly.Blocks['id'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'id = \" %1 \"',
             "args0": [
@@ -365,7 +365,7 @@ Blockly.Blocks['id'] = {
 
 // Align attribute
 Blockly.Blocks['align'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'align = \" %1 \"',
             "args0": [
@@ -373,11 +373,11 @@ Blockly.Blocks['align'] = {
                     "type": "field_dropdown",
                     "name": "content",
                     "options": [
-                        [ "left", "left" ],
-                        [ "right", "right" ],
-                        [ "middle", "middle" ],
-                        [ "top", "top" ],
-                        [ "bottom", "bottom" ]
+                        ["left", "left"],
+                        ["right", "right"],
+                        ["middle", "middle"],
+                        ["top", "top"],
+                        ["bottom", "bottom"]
                     ]
                 }
             ],
@@ -392,7 +392,7 @@ Blockly.Blocks['align'] = {
 
 //Empty Argument
 Blockly.Blocks['emptyarg'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '%1 = \" %2 \"',
             "args0": [
@@ -418,7 +418,7 @@ Blockly.Blocks['emptyarg'] = {
 
 //Style
 Blockly.Blocks['style'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<style> %1 %2 </style>',
             "args0": [
@@ -442,7 +442,7 @@ Blockly.Blocks['style'] = {
 
 //Style
 Blockly.Blocks['stylearg'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'style = %1 %2',
             "args0": [
@@ -467,7 +467,7 @@ Blockly.Blocks['stylearg'] = {
 
 //CSS Item
 Blockly.Blocks['cssitem'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '%1 { %2 %3 }',
             "args0": [
@@ -498,7 +498,7 @@ Blockly.Blocks['cssitem'] = {
 
 //CSS Event selector
 Blockly.Blocks['cssevents'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": ': %1 %2',
             "args0": [
@@ -540,7 +540,7 @@ Blockly.Blocks['cssevents'] = {
 
 //CSS Event selector
 Blockly.Blocks['cssnot'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": ':not( %1 ) %2',
             "args0": [
@@ -565,7 +565,7 @@ Blockly.Blocks['cssnot'] = {
 
 //Font-family
 Blockly.Blocks['fontfamily'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'font-family: %1 ;',
             "args0": [
@@ -586,7 +586,7 @@ Blockly.Blocks['fontfamily'] = {
 
 //Font-size
 Blockly.Blocks['fontsize'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'font-size: %1 ;',
             "args0": [
@@ -607,7 +607,7 @@ Blockly.Blocks['fontsize'] = {
 
 // Font weight
 Blockly.Blocks['fontweight'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": "font-weight: %1",
             "args0": [
@@ -653,7 +653,7 @@ Blockly.Blocks['fontweight'] = {
 
 //Margin
 Blockly.Blocks['margin'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'margin - %1 : %2 ;',
             "args0": [
@@ -696,7 +696,7 @@ Blockly.Blocks['margin'] = {
 
 //padding
 Blockly.Blocks['padding'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'padding - %1 : %2 ;',
             "args0": [
@@ -738,15 +738,15 @@ Blockly.Blocks['padding'] = {
 };
 
 //Color
-Blockly.Blocks['color'] = {
-    init: function() {
+Blockly.Blocks['color-new'] = {
+    init: function () {
         this.jsonInit({
             "message0": 'color: %1 ;',
             "args0": [
                 {
-                    "type": "field_colour",
+                    "type": "input_value",
                     "name": "value",
-                    "colour": "#339999"
+                    "check": "color"
                 }
             ],
             "previousStatement": "stylecontent",
@@ -787,9 +787,29 @@ Blockly.Blocks['colordropdown'] = {
     }
 };
 
+Blockly.Blocks['color'] = {
+    init: function () {
+        this.jsonInit({
+            "message0": 'color: %1 ;',
+            "args0": [
+                {
+                    "type": "field_colour",
+                    "name": "value",
+                    "colour": "#339999"
+                }
+            ],
+            "previousStatement": "stylecontent",
+            "nextStatement": "stylecontent",
+            "colour": 290,
+            "tooltip": "CSS Color",
+            "helpUrl": "https://www.w3schools.com/cssref/pr_text_color.asp"
+        });
+    }
+};
+
 //display
 Blockly.Blocks['display'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'display: %1 ;',
             "args0": [
@@ -851,7 +871,7 @@ Blockly.Blocks['display'] = {
 
 //Overflow
 Blockly.Blocks['overflow'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'overflow: %1 ;',
             "args0": [
@@ -896,8 +916,79 @@ Blockly.Blocks['overflow'] = {
 };
 
 //Text shadow
+Blockly.Blocks['textshadow-new'] = {
+    init: function () {
+        this.jsonInit({
+            "message0": 'text-shadow: %1 %2 %3 %4 ;',
+            "args0": [
+                {
+                    "type": "field_input",
+                    "name": "xoffset",
+                    "text": "x-offset"
+                },
+                {
+                    "type": "field_input",
+                    "name": "yoffset",
+                    "text": "y-offset"
+                },
+                {
+                    "type": "field_input",
+                    "name": "blur",
+                    "text": "blur"
+                },
+                {
+                    "type": "input_value",
+                    "name": "color",
+                    "check": "color"
+                }
+            ],
+            "previousStatement": "stylecontent",
+            "nextStatement": "stylecontent",
+            "colour": 290,
+            "tooltip": "CSS Text-shadow",
+            "helpUrl": "https://www.w3schools.com/cssref/css3_pr_text-shadow.asp"
+        });
+    }
+};
+
+// Box-shadow
+Blockly.Blocks['boxshadow-new'] = {
+    init: function () {
+        this.jsonInit({
+            "message0": "box-shadow: %1 %2 %3 %4 ;",
+            "args0": [
+                {
+                    "type": "field_input",
+                    "name": "x-offset",
+                    "text": "x-offset"
+                },
+                {
+                    "type": "field_input",
+                    "name": "y-offset",
+                    "text": "y-offset"
+                },
+                {
+                    "type": "field_input",
+                    "name": "blur",
+                    "text": "blur"
+                },
+                {
+                    "type": "input_value",
+                    "name": "color",
+                    "check": "color"
+                }
+            ],
+            "previousStatement": "stylecontent",
+            "nextStatement": "stylecontent",
+            "colour": 290,
+            "tooltip": "CSS box shadow",
+            "helpUrl": "https://www.w3schools.com/cssref/css3_pr_box-shadow.asp"
+        })
+    }
+};
+
 Blockly.Blocks['textshadow'] = {
-    init: function(){
+    init: function () {
         this.jsonInit({
             "message0": 'text-shadow: %1 %2 %3 %4 ;',
             "args0": [
@@ -933,7 +1024,7 @@ Blockly.Blocks['textshadow'] = {
 
 // Box-shadow
 Blockly.Blocks['boxshadow'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": "box-shadow: %1 %2 %3 %4 ;",
             "args0": [
@@ -968,15 +1059,15 @@ Blockly.Blocks['boxshadow'] = {
 };
 
 //BGColor
-Blockly.Blocks['bgcolor'] = {
-    init: function() {
+Blockly.Blocks['bgcolor-new'] = {
+    init: function () {
         this.jsonInit({
             "message0": 'background-color: %1 ;',
             "args0": [
                 {
-                    "type": "field_colour",
+                    "type": "input_value",
                     "name": "value",
-                    "colour": "#339999"
+                    "check": "color"
                 }
             ],
             "previousStatement": "stylecontent",
@@ -990,7 +1081,7 @@ Blockly.Blocks['bgcolor'] = {
 
 //BGImage
 Blockly.Blocks['bgimage'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'background-image: url( \" %1 \" );',
             "args0": [
@@ -1011,7 +1102,7 @@ Blockly.Blocks['bgimage'] = {
 
 //BGPosition
 Blockly.Blocks['bgposition'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'background-position: %1 ;',
             "args0": [
@@ -1077,7 +1168,7 @@ Blockly.Blocks['bgposition'] = {
 
 //padding
 Blockly.Blocks['padding'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'padding - %1 : %2 ;',
             "args0": [
@@ -1119,7 +1210,7 @@ Blockly.Blocks['padding'] = {
 };
 //BGRepeat
 Blockly.Blocks['bgrepeat'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'background-repeat: %1 ;',
             "args0": [
@@ -1172,7 +1263,7 @@ Blockly.Blocks['bgrepeat'] = {
 };
 //display
 Blockly.Blocks['display'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'display: %1 ;',
             "args0": [
@@ -1234,7 +1325,7 @@ Blockly.Blocks['display'] = {
 
 //Overflow
 Blockly.Blocks['overflow'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'overflow-%1: %2 ;',
             "args0": [
@@ -1292,45 +1383,9 @@ Blockly.Blocks['overflow'] = {
     }
 };
 
-//Text shadow
-Blockly.Blocks['textshadow'] = {
-    init: function(){
-        this.jsonInit({
-            "message0": 'text-shadow: %1 %2 %3 %4 ;',
-            "args0": [
-                {
-                    "type": "field_input",
-                    "name": "xoffset",
-                    "text": "x-offset"
-                },
-                {
-                    "type": "field_input",
-                    "name": "yoffset",
-                    "text": "y-offset"
-                },
-                {
-                    "type": "field_input",
-                    "name": "blur",
-                    "text": "blur"
-                },
-                {
-                    "type": "field_colour",
-                    "name": "color",
-                    "colour": "#333333"
-                }
-            ],
-            "previousStatement": "stylecontent",
-            "nextStatement": "stylecontent",
-            "colour": 290,
-            "tooltip": "CSS Text-shadow",
-            "helpUrl": "https://www.w3schools.com/cssref/css3_pr_text-shadow.asp"
-        });
-    }
-};
-
 // Text transform
 Blockly.Blocks['texttransform'] = {
-    init: function(){
+    init: function () {
         this.jsonInit({
             "message0": "text-transform: %1 ;",
             "args0": [
@@ -1357,7 +1412,7 @@ Blockly.Blocks['texttransform'] = {
 };
 
 Blockly.Blocks['textalign'] = {
-    init: function(){
+    init: function () {
         this.jsonInit({
             "message0": "text-align: %1 ;",
             "args0": [
@@ -1382,7 +1437,7 @@ Blockly.Blocks['textalign'] = {
 };
 
 Blockly.Blocks['letterspacing'] = {
-    init: function(){
+    init: function () {
         this.jsonInit({
             "message0": "letter-spacing: %1 ;",
             "args0": [
@@ -1403,14 +1458,14 @@ Blockly.Blocks['letterspacing'] = {
 
 //BGColor
 Blockly.Blocks['bgcolor'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'background-color: %1 ;',
             "args0": [
                 {
-                    "type": "field_colour",
+                    "type": "input_value",
                     "name": "value",
-                    "colour": "#339999"
+                    "check": "color"
                 }
             ],
             "previousStatement": "stylecontent",
@@ -1424,7 +1479,7 @@ Blockly.Blocks['bgcolor'] = {
 
 //BGImage
 Blockly.Blocks['bgimage'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'background-image: url( \" %1 \" );',
             "args0": [
@@ -1445,7 +1500,7 @@ Blockly.Blocks['bgimage'] = {
 
 //BGPosition
 Blockly.Blocks['bgposition'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'background-position: %1 ;',
             "args0": [
@@ -1511,7 +1566,7 @@ Blockly.Blocks['bgposition'] = {
 
 //BGRepeat
 Blockly.Blocks['bgrepeat'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'background-repeat: %1 ;',
             "args0": [
@@ -1565,7 +1620,7 @@ Blockly.Blocks['bgrepeat'] = {
 
 //BGSize
 Blockly.Blocks['bgsize'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'background-size: %1 ;',
             "args0": [
@@ -1585,8 +1640,10 @@ Blockly.Blocks['bgsize'] = {
 };
 
 //Border
+
+//Border
 Blockly.Blocks['border'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'border: %1 px %2 %3 ;',
             "args0": [
@@ -1654,7 +1711,7 @@ Blockly.Blocks['border'] = {
 };
 
 Blockly.Blocks['borderedge'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": "border- %1 : %2 px %3 %4",
             "args0": [
@@ -1742,9 +1799,166 @@ Blockly.Blocks['borderedge'] = {
     }
 };
 
+Blockly.Blocks['border-new'] = {
+    init: function () {
+        this.jsonInit({
+            "message0": 'border: %1 px %2 %3 ;',
+            "args0": [
+                {
+                    "type": "field_number",
+                    "name": "width",
+                    "value": 5,
+                    "min": 0
+                },
+                {
+                    "type": "field_dropdown",
+                    "name": "type",
+                    "options": [
+                        [
+                            "none",
+                            "none"
+                        ],
+                        [
+                            "solid",
+                            "solid"
+                        ],
+                        [
+                            "dotted",
+                            "dotted"
+                        ],
+                        [
+                            "dashed",
+                            "dashed"
+                        ],
+                        [
+                            "double",
+                            "double"
+                        ],
+                        [
+                            "groove",
+                            "groove"
+                        ],
+                        [
+                            "ridge",
+                            "ridge"
+                        ],
+                        [
+                            "inset",
+                            "inset"
+                        ],
+                        [
+                            "outset",
+                            "outset"
+                        ]
+                    ]
+                },
+                {
+                    "type": "input_value",
+                    "name": "color",
+                    "check": "color"
+                }
+            ],
+            "previousStatement": "stylecontent",
+            "nextStatement": "stylecontent",
+            "colour": 290,
+            "tooltip": "CSS Border",
+            "helpUrl": "https://www.w3schools.com/css/css_border.asp"
+        });
+    }
+};
+
+Blockly.Blocks['borderedge-new'] = {
+    init: function () {
+        this.jsonInit({
+            "message0": "border- %1 : %2 px %3 %4",
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "edge",
+                    "options": [
+                        [
+                            "top",
+                            "top"
+                        ],
+                        [
+                            "bottom",
+                            "bottom"
+                        ],
+                        [
+                            "left",
+                            "left"
+                        ],
+                        [
+                            "right",
+                            "right"
+                        ]
+                    ]
+                },
+                {
+                    "type": "field_number",
+                    "name": "width",
+                    "value": 0
+                },
+                {
+                    "type": "field_dropdown",
+                    "name": "type",
+                    "options": [
+                        [
+                            "none",
+                            "none"
+                        ],
+                        [
+                            "solid",
+                            "solid"
+                        ],
+                        [
+                            "dotted",
+                            "dotted"
+                        ],
+                        [
+                            "dashed",
+                            "dashed"
+                        ],
+                        [
+                            "double",
+                            "double"
+                        ],
+                        [
+                            "groove",
+                            "groove"
+                        ],
+                        [
+                            "ridge",
+                            "ridge"
+                        ],
+                        [
+                            "inset",
+                            "inset"
+                        ],
+                        [
+                            "outset",
+                            "outset"
+                        ]
+                    ]
+                },
+                {
+                    "type": "input_value",
+                    "name": "color",
+                    "check": "color"
+                }
+            ],
+            "previousStatement": "stylecontent",
+            "nextStatement": "stylecontent",
+            "colour": 290,
+            "tooltip": "Edge border",
+            "helpUrl": "https://www.w3schools.com/cssref/pr_border-bottom.asp"
+        })
+    }
+};
+
 //Border Collapse
 Blockly.Blocks['bordercol'] = {
-    init: function(){
+    init: function () {
         this.jsonInit({
             "message0": 'border-collapse: %1 ;',
             "args0": [
@@ -1765,7 +1979,7 @@ Blockly.Blocks['bordercol'] = {
 
 //Border radius
 Blockly.Blocks['borderrad'] = {
-    init: function(){
+    init: function () {
         this.jsonInit({
             "message0": 'border-radius: %1 ;',
             "args0": [
@@ -1786,7 +2000,7 @@ Blockly.Blocks['borderrad'] = {
 
 //Cursor
 Blockly.Blocks['cursor'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'cursor: %1 ;',
             "args0": [
@@ -1967,7 +2181,7 @@ Blockly.Blocks['cursor'] = {
 };
 
 Blockly.Blocks['linkhead'] = {
-    init: function(){
+    init: function () {
         this.jsonInit({
             "message0": '<link rel = \"stylesheet\"  src = \" %1 \">',
             "args0": [
@@ -2001,7 +2215,7 @@ Blockly.Blocks['linkhead'] = {
 
 //Width height number selector
 Blockly.Blocks['widthheightnum'] = {
-    init: function(){
+    init: function () {
         this.jsonInit({
             "message0": '%1 : %2;',
             "args0": [
@@ -2036,7 +2250,7 @@ Blockly.Blocks['widthheightnum'] = {
 
 //Width height number selector
 Blockly.Blocks['widthheight'] = {
-    init: function(){
+    init: function () {
         this.jsonInit({
             "message0": '%1 : %2 ;',
             "args0": [
@@ -2084,7 +2298,7 @@ Blockly.Blocks['widthheight'] = {
 
 // Float (CSS-version of 'align')
 Blockly.Blocks['float'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'float : %1 ;',
             "args0": [
@@ -2092,11 +2306,11 @@ Blockly.Blocks['float'] = {
                     "type": "field_dropdown",
                     "name": "content",
                     "options": [
-                        [ 'left', 'left' ],
-                        [ 'right', 'right' ],
-                        [ 'none', 'none' ],
-                        [ 'initial', 'initial' ],
-                        [ 'inherit', 'inherit' ]
+                        ['left', 'left'],
+                        ['right', 'right'],
+                        ['none', 'none'],
+                        ['initial', 'initial'],
+                        ['inherit', 'inherit']
                     ]
                 }
             ],
@@ -2111,7 +2325,7 @@ Blockly.Blocks['float'] = {
 
 // Vertical align
 Blockly.Blocks['verticalalign'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": "vertical-align: %1",
             "args0": [
@@ -2173,7 +2387,7 @@ Blockly.Blocks['verticalalign'] = {
 
 // transition property
 Blockly.Blocks['transition'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": "transition-property: %1 %2 transition-duration: %3 s %4 transition-delay: %5 s %6 transition-timing-function: %7",
             "args0": [
@@ -2218,7 +2432,7 @@ Blockly.Blocks['transition'] = {
 
 // transition timing (options)
 Blockly.Blocks['transitiontimingdropdown'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": "%1",
             "args0": [
@@ -2275,7 +2489,7 @@ Blockly.Blocks['transitiontimingdropdown'] = {
 
 // transition timing (cubic bezier)
 Blockly.Blocks['transitiontimingbezier'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": "cubic-bezier( %1 , %2 , %3 , %4 )",
             "args0": [
@@ -2318,7 +2532,7 @@ Blockly.Blocks['transitiontimingbezier'] = {
 
 // Other CSS
 Blockly.Blocks['othercss'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '%1 : %2 ;',
             "args0": [
@@ -2344,7 +2558,7 @@ Blockly.Blocks['othercss'] = {
 
 //empty text
 Blockly.Blocks['emptytext'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": 'text %1',
             "args0": [
@@ -2365,7 +2579,7 @@ Blockly.Blocks['emptytext'] = {
 
 //Text modifier
 Blockly.Blocks['textmod'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '< %1 > %2 %3 </>',
             "args0": [
@@ -2454,14 +2668,14 @@ Blockly.Blocks['textmod'] = {
 
 //p tag
 Blockly.Blocks['paragraph'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<p> %1 %2 </p>',
             "args0": [
                 {
                     "type": "input_value",
                     "name": "modifier",
-"check": "attributes"
+                    "check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -2480,7 +2694,7 @@ Blockly.Blocks['paragraph'] = {
 
 //header tag
 Blockly.Blocks['header'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<h %1 > %2 %3 </h>',
             "args0": [
@@ -2517,7 +2731,7 @@ Blockly.Blocks['header'] = {
                 {
                     "type": "input_value",
                     "name": "modifier",
-"check": "attributes"
+                    "check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -2535,7 +2749,7 @@ Blockly.Blocks['header'] = {
 };
 
 Blockly.Blocks['link'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<a href=\" %1 \"> %2 %3 </a>',
             "args0": [
@@ -2547,7 +2761,7 @@ Blockly.Blocks['link'] = {
                 {
                     "type": "input_value",
                     "name": "modifier",
-"check": "attributes"
+                    "check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -2566,14 +2780,14 @@ Blockly.Blocks['link'] = {
 
 //Span tag
 Blockly.Blocks['span'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<span> %1 %2 </span>',
             "args0": [
                 {
                     "type": "input_value",
                     "name": "modifier",
-"check": "attributes"
+                    "check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -2592,14 +2806,14 @@ Blockly.Blocks['span'] = {
 
 //Table tag
 Blockly.Blocks['table'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<table> %1 %2 </table>',
             "args0": [
                 {
                     "type": "input_value",
                     "name": "modifier",
-"check": "attributes"
+                    "check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -2618,14 +2832,14 @@ Blockly.Blocks['table'] = {
 
 //TR tag
 Blockly.Blocks['tablerow'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<tr> %1 %2 </tr>',
             "args0": [
                 {
                     "type": "input_value",
                     "name": "modifier",
-"check": "attributes"
+                    "check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -2644,19 +2858,19 @@ Blockly.Blocks['tablerow'] = {
 
 //TH tag
 Blockly.Blocks['tableheading'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<th> %1 %2 </th>',
             "args0": [
                 {
                     "type": "input_value",
                     "name": "modifier",
-"check": "attributes"
+                    "check": "attributes"
                 },
                 {
                     "type": "input_statement",
                     "name": "content",
-                    "check": ["html","textcontainer"]
+                    "check": ["html", "textcontainer"]
                 }
             ],
             "previousStatement": "tablerow",
@@ -2670,19 +2884,19 @@ Blockly.Blocks['tableheading'] = {
 
 //TD tag
 Blockly.Blocks['tabledata'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<td> %1 %2 </td>',
             "args0": [
                 {
                     "type": "input_value",
                     "name": "modifier",
-"check": "attributes"
+                    "check": "attributes"
                 },
                 {
                     "type": "input_statement",
                     "name": "content",
-                    "check": ["html","textcontainer"]
+                    "check": ["html", "textcontainer"]
                 }
             ],
             "previousStatement": "tablerow",
@@ -2697,14 +2911,14 @@ Blockly.Blocks['tabledata'] = {
 //FORMS
 //Form tag
 Blockly.Blocks['form'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<form> %1 %2 </form>',
             "args0": [
                 {
                     "type": "input_value",
                     "name": "modifier",
-"check": "attributes"
+                    "check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -2724,7 +2938,7 @@ Blockly.Blocks['form'] = {
 
 //Input tag
 Blockly.Blocks['input'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<input type = \" %1 \" value = \" %2 \" placeholder = \" %3 \" name = \" %4 \" > %5',
             "args0": [
@@ -2812,7 +3026,7 @@ Blockly.Blocks['input'] = {
                 {
                     "type": "input_value",
                     "name": "modifier",
-"check": "attributes",
+                    "check": "attributes",
                 }
             ],
             "previousStatement": "form",
@@ -2826,7 +3040,7 @@ Blockly.Blocks['input'] = {
 
 //Label tag
 Blockly.Blocks['label'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<label for = \" %1 \" > %2 %3 </label>',
             "args0": [
@@ -2838,7 +3052,7 @@ Blockly.Blocks['label'] = {
                 {
                     "type": "input_value",
                     "name": "modifier",
-"check": "attributes"
+                    "check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -2863,7 +3077,7 @@ Blockly.Blocks['label'] = {
 
 //Image tag
 Blockly.Blocks['image'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<img src = \"  %1 \"> %2',
             "args0": [
@@ -2875,7 +3089,7 @@ Blockly.Blocks['image'] = {
                 {
                     "type": "input_value",
                     "name": "modifier",
-"check": "attributes"
+                    "check": "attributes"
                 }
             ],
             "previousStatement": "html",
@@ -2889,14 +3103,14 @@ Blockly.Blocks['image'] = {
 
 //OL tag
 Blockly.Blocks['orderedlist'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<ol> %1 %2 </ol>',
             "args0": [
                 {
                     "type": "input_value",
                     "name": "modifier",
-"check": "attributes"
+                    "check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -2915,14 +3129,14 @@ Blockly.Blocks['orderedlist'] = {
 
 //UL tag
 Blockly.Blocks['unorderedlist'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<ul> %1 %2 </ul>',
             "args0": [
                 {
                     "type": "input_value",
                     "name": "modifier",
-"check": "attributes"
+                    "check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -2941,14 +3155,14 @@ Blockly.Blocks['unorderedlist'] = {
 
 //LI tag
 Blockly.Blocks['listitem'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<li> %1 %2 </li>',
             "args0": [
                 {
                     "type": "input_value",
                     "name": "modifier",
-"check": "attributes"
+                    "check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -2967,14 +3181,14 @@ Blockly.Blocks['listitem'] = {
 
 //Summary tag
 Blockly.Blocks['summary'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<summary> %1 %2 </summary>',
             "args0": [
                 {
                     "type": "input_value",
                     "name": "modifier",
-"check": "attributes"
+                    "check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -2999,14 +3213,14 @@ Blockly.Blocks['summary'] = {
 
 //Details tag
 Blockly.Blocks['details'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<details> %1 %2 </details>',
             "args0": [
                 {
                     "type": "input_value",
                     "name": "modifier",
-"check": "attributes"
+                    "check": "attributes"
                 },
                 {
                     "type": "input_statement",
@@ -3026,9 +3240,95 @@ Blockly.Blocks['details'] = {
     }
 };
 
+//Hex color picker block
+Blockly.Blocks['hex_picker'] = {
+    init: function () {
+        this.jsonInit({
+            "message0": "# %1",
+            "args0": [
+                {
+                    "type": "field_input",
+                    "name": "color",
+                    "text": "ffffff"
+                }
+            ],
+            "output": "color",
+            "colour": 290,
+            "tooltip": "HTML HEX color picker",
+            "helpUrl": "https://www.w3schools.com/html/html_colors.asp"
+        });
+    }
+};
+
+//RGBA color picker block
+Blockly.Blocks['rgba_picker'] = {
+    init: function () {
+        this.jsonInit({
+            "message0": "rgba( %1 %2 %3 %4 )",
+            "args0": [
+                {
+                    "type": "field_number",
+                    "name": "r",
+                    "value": 255,
+                    "min": 0,
+                    "max": 255,
+                    "precision": 1
+                },
+                {
+                    "type": "field_number",
+                    "name": "g",
+                    "value": 255,
+                    "min": 0,
+                    "max": 255,
+                    "precision": 1
+                },
+                {
+                    "type": "field_number",
+                    "name": "b",
+                    "value": 255,
+                    "min": 0,
+                    "max": 255,
+                    "precision": 1
+                },
+                {
+                    "type": "field_number",
+                    "name": "a",
+                    "value": 1,
+                    "min": 0,
+                    "max": 1
+                }
+            ],
+            "output": "color",
+            "colour": 290,
+            "tooltip": "HTML RGBA color picker",
+            "helpUrl": "https://www.w3schools.com/html/html_colors.asp"
+        });
+    }
+};
+
+//Color picker block
+Blockly.Blocks['color_picker'] = {
+    init: function () {
+        this.jsonInit({
+            "message0": "%1",
+            "args0": [
+                {
+                    "type": "field_colour",
+                    "name": "color",
+                    "colour": "#ffffff"
+                }
+            ],
+            "output": "color",
+            "colour": 290,
+            "tooltip": "HTML color picker",
+            "helpUrl": "https://www.w3schools.com/html/html_colors.asp"
+        });
+    }
+};
+
 //Audio tag
 Blockly.Blocks['audio'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<audio src =  %1 loop = %2 autoplay = %3 controls = %4 > %5',
             "args0": [
@@ -3068,7 +3368,7 @@ Blockly.Blocks['audio'] = {
                 {
                     "type": "input_value",
                     "name": "modifier",
-"check": "attributes"
+                    "check": "attributes"
                 }
             ],
             "previousStatement": "html",
@@ -3082,7 +3382,7 @@ Blockly.Blocks['audio'] = {
 
 //Video tag
 Blockly.Blocks['video'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": '<video src =  %1 loop = %2 autoplay = %3 controls = %4 > %5',
             "args0": [
@@ -3195,7 +3495,7 @@ Blockly.Blocks['chart'] = {
 
 // row of data for chart
 Blockly.Blocks['chart_row'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": "row: [ %1 %2 ],",
             "args0": [
@@ -3219,7 +3519,7 @@ Blockly.Blocks['chart_row'] = {
 
 // column in row for data for chart
 Blockly.Blocks['chart_column'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": "column:  %1,",
             "args0": [
@@ -3240,7 +3540,7 @@ Blockly.Blocks['chart_column'] = {
 
 // Gumshoe scrollspy
 Blockly.Blocks['scrollspy'] = {
-    init: function() {
+    init: function () {
         this.jsonInit({
             "message0": "Gumshoe('# %1 a');",
             "args0": [
