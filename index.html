@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <!--		Ffau - A blocky-based editor for teaching HTML, CSS and Javascript.
@@ -103,7 +102,8 @@
 <div class="container">
 
     <div class="error info">
-        Want to learn web development? Check out <a class="link white" href="https://codedragon.org" target="_blank">CodeDragon</a> - it's where this editor comes from.
+        Want to learn web development? Check out <a class="link white" href="https://codedragon.org" target="_blank">CodeDragon</a>
+        - it's where this editor comes from.
     </div>
 
     <div class="row"> <!-- row -->
@@ -213,17 +213,17 @@
 
                 <label text="Text Styling"></label>
                 <block type="color-new">
-					<value name="value">
-						<block type="color_picker"></block>
-					</value>
-				</block>
+                    <value name="value">
+                        <block type="color_picker"></block>
+                    </value>
+                </block>
                 <block type="colordropdown"></block>
 
                 <block type="textshadow-new">
-					<value name="color">
-						<block type="color_picker"></block>
-					</value>
-				</block>
+                    <value name="color">
+                        <block type="color_picker"></block>
+                    </value>
+                </block>
                 <block type="texttransform"></block>
                 <block type="textalign"></block>
                 <block type="letterspacing"></block>
@@ -244,17 +244,17 @@
             </category>
 
             <category name="Design" colour="290">
-				<label text="Colours"></label>
-				<block type="color_picker"></block>
-				<block type="hex_picker"></block>
-				<block type="rgba_picker"></block>
-				
+                <label text="Colours"></label>
+                <block type="color_picker"></block>
+                <block type="hex_picker"></block>
+                <block type="rgba_picker"></block>
+
                 <label text="Backgrounds"></label>
                 <block type="bgcolor-new">
-					<value name="value">
-						<block type="color_picker"></block>
-					</value>
-				</block>
+                    <value name="value">
+                        <block type="color_picker"></block>
+                    </value>
+                </block>
                 <block type="bgimage"></block>
                 <block type="bgposition"></block>
                 <block type="bgrepeat"></block>
@@ -263,23 +263,23 @@
                 <label text="Other Design"></label>
                 <block type="cursor"></block>
                 <block type="boxshadow-new">
-					<value name="color">
-						<block type="color_picker"></block>
-					</value>
-				</block>
+                    <value name="color">
+                        <block type="color_picker"></block>
+                    </value>
+                </block>
             </category>
 
             <category name="Borders" colour="290">
                 <block type="border-new">
-					<value name="color">
-						<block type="color_picker"></block>
-					</value>
-				</block>
+                    <value name="color">
+                        <block type="color_picker"></block>
+                    </value>
+                </block>
                 <block type="borderedge-new">
-					<value name="color">
-						<block type="color_picker"></block>
-					</value>
-				</block>
+                    <value name="color">
+                        <block type="color_picker"></block>
+                    </value>
+                </block>
                 <block type="bordercol"></block>
                 <block type="borderrad"></block>
             </category>
@@ -500,17 +500,17 @@
     // add event listener
     ffau.addEvent();
 
-    function saveCode(){
+    function saveCode() {
         // download as text file with default name
         ffau.downloadXML();
     }
 
-    function clearCode(){
+    function clearCode() {
         // clear the workspace
         ffau.clearWorkspace();
     }
 
-    function uploadCode(){
+    function uploadCode() {
         const input = document.getElementById('loadText');
 
         let fileReader = new FileReader();
