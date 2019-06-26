@@ -109,7 +109,7 @@ See <https://github.com/cferdinandi/gumshoe>.
 
 * `scrollspy` A block for creating a scrollspy system
 
-See <https://codedragon.org/editor/25d6617c5adb6470f9a2166d3a6d5f48> for an example of how to use this block.
+See <https://codedragon.org/editor/25d6617c5adb6470f9a2166d3a6d5f48> for an example of how to use this block
 
 ## CSS
 ### Structure
@@ -122,9 +122,11 @@ See <https://codedragon.org/editor/25d6617c5adb6470f9a2166d3a6d5f48> for an exam
 * `fontfamily` `font-family: ;`
 * `fontsize` `font-size: ;`
 * `fontweight` `font-weight: ;`
-* `color` `color: ;`
+* `color` `color: ;` - deprecated; kept for backwards compatibility
+* `color-new` `color: ;` - new version of `color`, accepting color type blocks instead of a built-in color picker
 * `colordropdown` `color: initial/inherit;`
-* `textshadow` `text-shadow: a b c d;`
+* `textshadow` `text-shadow: a b c d;` - deprecated; kept for backwards compatibility
+* `textshadow-new` `text-shadow: a b c d;` - new version of `textshadow`, accepting color type blocks instead of a built-in color picker
 * `texttransform` `text-transform: ;`
 * `textalign` `text-align: ;`
 * `letterspacing` `letter-spacing: ;`
@@ -140,17 +142,24 @@ See <https://codedragon.org/editor/25d6617c5adb6470f9a2166d3a6d5f48> for an exam
 * `verticalalign` `vertical-align: ;`
 
 ### Design
-* `bgcolor` `background-color: ;`
+* `color_picker` `#color` - built-in Blockly color picker
+* `hex_picker` `#color` - manual hex text entry
+* `rgba_picker` `rgba(r, g, b, a)`
+* `bgcolor` `background-color: ;` - deprecated; kept for backwards compatibility
+* `bgcolor-new` `background-color: ;` - new version of `bgcolor`, accepting color type blocks instead of a built-in color picker
 * `bgimage` `background-image: url();`
 * `bgposition` `background-position: ;`
 * `bgrepeat` `background-repeat: ;`
 * `bgsize` `background-size: ;`
 * `cursor` `cursor: ;`
-* `boxshadow` `box-shadow: x y blur color;`
+* `boxshadow` `box-shadow: x y blur color;` - deprecated; kept for backwards compatibility
+* `boxshadow-new` `box-shadow: x y blur color;` - new version of `boxshadow`, accepting color type blocks instead of a built-in color picker
 
 ### Borders
-* `border` `border: a b c;`
-* `borderedge` `border-edge: a b c;`
+* `border` `border: a b c;` - deprecated; kept for backwards compatibility
+* `border-new` `border: a b c;` - new version of `border`, accepting color type blocks instead of a built-in color picker
+* `borderedge` `border-edge: a b c;` - deprecated; kept for backwards compatibility
+* `borderedge-new` `border-edge: a b c;` - new version of `borderedge`, accepting color type blocks instead of a built-in color picker
 * `bordercol` `border-collapse: ;`
 * `borderrad` `border-radius: ;`
 
