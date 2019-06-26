@@ -1059,7 +1059,7 @@ Blockly.Blocks['boxshadow'] = {
 };
 
 //BGColor
-Blockly.Blocks['bgcolor-new'] = {
+Blockly.Blocks['bgcolor'] = {
     init: function () {
         this.jsonInit({
             "message0": 'background-color: %1 ;',
@@ -1457,7 +1457,7 @@ Blockly.Blocks['letterspacing'] = {
 };
 
 //BGColor
-Blockly.Blocks['bgcolor'] = {
+Blockly.Blocks['bgcolor-new'] = {
     init: function () {
         this.jsonInit({
             "message0": 'background-color: %1 ;',
