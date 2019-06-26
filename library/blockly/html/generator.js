@@ -207,7 +207,7 @@ htmlGen['textshadow-new'] = function (block) {
     var x = fullEscape(block.getFieldValue('xoffset'));
     var y = fullEscape(block.getFieldValue('yoffset'));
     var b = fullEscape(block.getFieldValue('blur'));
-    var c = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC);
+    var c = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC).trim();
 
     return `text-shadow: ${x} ${y} ${b} ${c};\n`;
 };
@@ -217,7 +217,7 @@ htmlGen['boxshadow-new'] = function (block) {
     var y = fullEscape(block.getFieldValue('y-offset'));
     var blur = fullEscape(block.getFieldValue('blur'));
 
-    var color = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC);
+    var color = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC).trim();
 
     return `box-shadow: ${x} ${y} ${blur} ${color};\n`;
 };
@@ -281,7 +281,7 @@ htmlGen['overflow'] = function (block) {
 };
 
 htmlGen['color-new'] = function (block) {
-    var color = htmlGen.statementToCode(block, 'value', htmlGen.ORDER_ATOMIC);
+    var color = htmlGen.statementToCode(block, 'value', htmlGen.ORDER_ATOMIC).trim();
     return 'color: ' + color + ';\n';
 };
 
@@ -311,7 +311,7 @@ htmlGen['linkhead'] = function (block) {
 };
 
 htmlGen['bgcolor-new'] = function (block) {
-    var color = htmlGen.statementToCode(block, 'value', htmlGen.ORDER_ATOMIC);
+    var color = htmlGen.statementToCode(block, 'value', htmlGen.ORDER_ATOMIC).trim();
     return 'background-color: ' + color + ';\n';
 };
 
@@ -345,7 +345,7 @@ htmlGen['bgsize'] = function (block) {
 htmlGen['border-new'] = function (block) {
     var width = fullEscape(block.getFieldValue('width'));
     var type = block.getFieldValue('type');
-    var color = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC);
+    var color = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC).trim();
 
     return 'border: ' + width + 'px ' + type + ' ' + color + ';\n';
 };
@@ -354,7 +354,7 @@ htmlGen['borderedge-new'] = function (block) {
     var edge = block.getFieldValue('edge');
     var width = fullEscape(block.getFieldValue('width'));
     var type = block.getFieldValue('type');
-    var color = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC);
+    var color = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC).trim();
 
     return `border-${edge}: ${width}px ${type} ${color};\n`;
 };
