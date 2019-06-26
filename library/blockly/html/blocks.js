@@ -1065,9 +1065,9 @@ Blockly.Blocks['bgcolor-new'] = {
             "message0": 'background-color: %1 ;',
             "args0": [
                 {
-                    "type": "input_value",
+                    "type": "field_colour",
                     "name": "value",
-                    "check": "color"
+                    "colour": "#ffffff"
                 }
             ],
             "previousStatement": "stylecontent",
