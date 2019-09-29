@@ -17,16 +17,16 @@
 				THIS IS VERSION 1.0.0
 */
 
-.blocklyTreeRow{
+.blocklyTreeRow {
     height: 40px;
     transition: background-color 0.1s linear;
 }
 
-.blocklyTreeRow:not(.blocklyTreeSelected):hover{
+.blocklyTreeRow:not(.blocklyTreeSelected):hover {
     background-color: unset !important;
 }
 
-.blocklyTreeLabel{
+.blocklyTreeLabel {
     display: inline-block !important;
     margin-left: 10px;
     font-family: "Noto", "Roboto", sans-serif;
@@ -37,17 +37,17 @@
     padding: 10px 0;
 }
 
-.blocklyTreeIcon{
+.blocklyTreeIcon {
     display: none !important;
 }
 
-.blocklyTreeSeparator{
+.blocklyTreeSeparator {
     margin: 15px auto;
     width: 60%;
     border-color: black !important;
 }
 
-.blocklyToolboxDiv{
+.blocklyToolboxDiv {
     min-width: 170px;
     overflow-x: visible;
 
@@ -58,18 +58,22 @@
     padding-bottom: 8px !important;
 }
 
-.blocklySvg{
+.blocklySvg {
     background-color: #fff !important;
 }
 
-.blocklyFlyoutBackground{
+.blocklyFlyoutBackground {
     fill: #242424 !important;
 }
 
-.blocklyFlyoutLabelText{
+.blocklyFlyoutLabelText {
     fill: #fff !important;
 }
 
-.blocklyText{
+.blocklyText {
     font-family: "Noto", "Roboto", sans-serif;
+}
+
+.cog-icon {
+    transition: color 120ms ease-in;
 }

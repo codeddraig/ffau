@@ -19,6 +19,12 @@
 
 /* jshint esversion:6 */
 
+function fontAwesome(icon) {
+    let elem = document.createElement("i");
+    elem.className = "fas fa-" + icon;
+    return elem;
+}
+
 (function () {
     "use strict";
     Blockly.HSV_SATURATION = 1;
@@ -28,8 +34,8 @@
 /**
  * Class representing a Ffau instance, including all components.
  */
-class Ffau {
 
+class Ffau {
     /**
      * Initialise the Ffau instance in the document
      */
@@ -58,9 +64,10 @@ class Ffau {
      * @param {HTMLElement} frame - The frame to put the editor in
      * @param {HTMLElement} toolbox - The XML toolbox
      * @param {object} [options] - Custom options for the Blockly editor. Ffau will apply some default options if this is not specified.
+     * @param {object} [settings] - Customisable options to be loaded into settings flyout.
      * @returns {*}
      */
-    renderBlockly(frame, toolbox, options) {
+    renderBlockly(frame, toolbox, settings, options) {
         // generate a random ID for the frame to avoid duplication
         frame.id = Ffau.generateID(frame, 'blockly');
 
@@ -86,6 +93,138 @@ class Ffau {
 
         // inject blockly
         this.ffauWorkspace = Blockly.inject(frame.id, editorOptions);
+
+        // add settings popout
+        this.openSettings = false;
+
+        let popout = document.createElement("div");
+        goog.style.setStyle(popout, {
+            "position": "absolute",
+            "right": "0",
+            "z-index": "251",
+            "top": "15px",
+            "background-color": "#757575",
+            "opacity": "0.4",
+            "padding": "2px 10px 2px 5px",
+            "border-radius": "10px 0 0 10px",
+            "cursor": "pointer"
+        });
+
+        document.getElementsByClassName("blocklyScrollbarBackground")[0].style.zIndex = "249";
+        document.getElementsByClassName("blocklyScrollbarHandle")[0].style.zIndex = "250";
+
+        popout.appendChild(fontAwesome("cog cog-icon"));
+        popout.getElementsByClassName('cog-icon')[0].style.color = 'black';
+
+        popout.style.transform = "rotate(0)";
+        popout.className = "settings-button";
+
+        popout.addEventListener("mouseover", () => {
+            $(".settings-button").animate({
+                "padding-right": "35px",
+                "opacity": this.openSettings ? "0.8" : "0.7",
+                "border-bottom-left-radius": "10"
+            }, 120, "easeOutQuart");
+
+            $({degrees: 0}).animate({degrees: 180}, {
+                "duration": 450,
+                "step": function (now) {
+                    $('.cog-icon').css(
+                        "transform",
+                        'rotate(' + now.toString() + 'deg)'
+                    );
+                },
+                "easing": "easeOutCirc"
+            });
+        });
+
+        popout.addEventListener("mouseleave", () => {
+            $(".settings-button").animate({
+                "padding-right": "10px",
+                "opacity": this.openSettings ? "0.8" : "0.4",
+                "border-bottom-left-radius": this.openSettings ? "0" : "10px"
+            }, 90, "easeInQuart");
+
+            $('.cog-icon').css("transform", "rotate(0)")
+        });
+
+        let settingsWindow = document.createElement("div");
+        goog.style.setStyle(settingsWindow, {
+            "width": "200px",
+            "height": "100%",
+            "top": "41px",
+            "background-color": "#242424",
+            "opacity": "0.8",
+            "position": "absolute",
+            "right": "-200px",
+            "z-index": 251,
+            "border-radius": "0 0 0 10px"
+        });
+
+        settingsWindow.className = "settings-window";
+
+        let settingsWindowFiller = document.createElement("div");
+        goog.style.setStyle(settingsWindowFiller, {
+            "width": "169px",
+            "height": "26px",
+            "top": "-26px",
+            "background-color": "#242424",
+            "opacity": "1",
+            "position": "relative",
+            "left": "31px",
+            "z-index": 18,
+            "border-radius": "0"
+        });
+
+        settingsWindow.appendChild(settingsWindowFiller);
+
+        popout.addEventListener("click", () => {
+            $(".settings-button").stop(true, true).finish();
+
+            if (this.openSettings) {
+                this.openSettings = false;
+
+                $(".settings-window").animate({
+                    "right": "-200px",
+                }, 120, "easeOutQuart");
+
+                $(".settings-button").animate({
+                    "right": "0px",
+                    "opacity": "0.4",
+                    "border-bottom-left-radius": "10px"
+                }, 120, "easeOutQuart", () => {
+                    $(".settings-button").stop(true, true).finish();
+
+                    document.getElementsByClassName("cog-icon")[0].style.color = "black";
+                    popout.style.paddingRight = "10px";
+                    popout.style.backgroundColor = "#757575";
+                });
+            } else {
+                this.openSettings = true;
+                //popout.style.paddingRight = "15px";
+                popout.style.backgroundColor = "#242424";
+
+                $(".settings-window").animate({
+                    "right": "0",
+                }, 120, "easeInQuart");
+
+                document.getElementsByClassName("cog-icon")[0].style.color = "#b5b5b5";
+
+                $(".settings-button").animate({
+                    "right": "169px",
+                    "padding-right": "10px",
+                    "opacity": "0.8",
+                    "border-bottom-left-radius": "0px"
+                }, 120, "easeInQuart", () => {
+                    $(".settings-button").stop(true, true).finish();
+                    popout.style.paddingRight = "10px";
+                });
+            }
+        });
+
+        let workspace = document.getElementsByClassName("injectionDiv")[0];
+        workspace.prepend(popout);
+        workspace.prepend(settingsWindow);
 
         // Return workspace info
         return this.ffauWorkspace;
