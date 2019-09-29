@@ -1,0 +1,44 @@
+.blocklyToolboxDiv {
+    overflow-y: scroll;
+    scrollbar-color: #555555 transparent;
+    scrollbar-width: 7px;
+}
+
+.blocklyToolboxDiv::-webkit-scrollbar {
+    width: 18px;
+    background-color: transparent;
+}
+
+.blocklyToolboxDiv::-webkit-scrollbar-track {
+    background-clip: padding-box;
+    border: 4px solid rgba(0, 0, 0, 0);
+    background-color: transparent;
+    width: 10px !important;
+}
+
+.blocklyToolboxDiv::-webkit-scrollbar-thumb {
+    background-clip: padding-box;
+    border: 4px solid rgba(0, 0, 0, 0);
+    width: 10px !important;
+    -webkit-border-radius: 12px;
+    border-radius: 12px;
+    background-color: #7d7d7d;
+}
+
+.blocklyToolboxDiv::-webkit-scrollbar-button {
+    width: 0;
+    height: 0;
+    display: none;
+}
+
+.blocklyToolboxDiv::-webkit-scrollbar-corner {
+    display: none;
+}
+
+.blocklyToolboxDiv::-webkit-scrollbar-thumb:hover {
+    background-clip: padding-box;
+    border: 4px solid rgba(0, 0, 0, 0);
+    -webkit-border-radius: 12px;
+    border-radius: 10px;
+    background-color: #666666;
+}
