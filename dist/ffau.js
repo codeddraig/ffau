@@ -19,7 +19,7 @@
 
 /* jshint esversion:6 */
 
-(function(){
+(function () {
     "use strict";
     Blockly.HSV_SATURATION = 1;
     Blockly.HSV_VALUE = 0.7;
@@ -28,12 +28,12 @@
 /**
  * Class representing a Ffau instance, including all components.
  */
-class Ffau{
+class Ffau {
 
     /**
      * Initialise the Ffau instance in the document
      */
-    constructor(){
+    constructor() {
         console.log("=========================");
         console.log('%c Ffau Editor ', 'background: #00d1b2; color: white;');
         console.log("A Blockly-based HTML editor made by the CodeDdraig organisation.");
@@ -48,7 +48,7 @@ class Ffau{
      * @param {string} objectType - The name of the component
      * @returns {string}
      */
-    static generateID(object, objectType){
+    static generateID(object, objectType) {
         return object.id || "ffau-" + objectType + "-" + Math.floor(Math.random() * 10000);
     }
 
@@ -60,7 +60,7 @@ class Ffau{
      * @param {object} [options] - Custom options for the Blockly editor. Ffau will apply some default options if this is not specified.
      * @returns {*}
      */
-    renderBlockly(frame, toolbox, options){
+    renderBlockly(frame, toolbox, options) {
         // generate a random ID for the frame to avoid duplication
         frame.id = Ffau.generateID(frame, 'blockly');
 
@@ -68,9 +68,9 @@ class Ffau{
             toolbox: toolbox
         };
 
-        if(options) {
+        if (options) {
             editorOptions = Object.assign(editorOptions, options);
-        }else{
+        } else {
             editorOptions = Object.assign(editorOptions, {
                 zoom: {
                     controls: true,
@@ -87,6 +87,7 @@ class Ffau{
         // inject blockly
         this.ffauWorkspace = Blockly.inject(frame.id, editorOptions);
 
+        // Return workspace info
         return this.ffauWorkspace;
     }
 
@@ -96,7 +97,7 @@ class Ffau{
      * @param {HTMLElement} frame - The frame to put the preview in
      * @returns {HTMLElement} - The generated iframe
      */
-    renderPreview(frame){
+    renderPreview(frame) {
         // generate a random id to avoid duplication
         frame.id = Ffau.generateID(frame, 'iframe');
 
@@ -116,7 +117,7 @@ class Ffau{
      * @param {string} [aceTheme=ace/theme/textmate] - The theme to use for Ace
      * @returns {object} - The editor object (you can call functions on this to customise Ace)
      */
-    renderCode(ace, frame, aceTheme){
+    renderCode(ace, frame, aceTheme) {
         // set the id to the current ID or a random one
         frame.id = Ffau.generateID(frame, 'ace');
 
@@ -141,28 +142,28 @@ class Ffau{
      *
      * @param {function} customFunction - a function to execute at the end of the change event. Gets passed the scope as a parameter.
      */
-    addEvent(customFunction){
+    addEvent(customFunction) {
         // add listener to workspace
-        this.ffauWorkspace.addChangeListener(function(){
+        this.ffauWorkspace.addChangeListener(function () {
             // generate the code using htmlGen from generator.js
             let code = htmlGen.workspaceToCode(this.ffauWorkspace);
 
             // if ace has been initialised (doesn't have to be)
-            if(this.editor){
+            if (this.editor) {
                 // set the ace editor value
-                this.editor.setValue(code, -1 /* set the cursor to -1 to stop highlighting everything */ );
+                this.editor.setValue(code, -1 /* set the cursor to -1 to stop highlighting everything */);
             }
 
             // if iframe has been initialised
-            if(this.iframe){
+            if (this.iframe) {
                 this.iframe.src = "data:text/html;charset=utf-8," + encodeURIComponent(code);
             }
 
-            if(typeof customFunction === "function"){
+            if (typeof customFunction === "function") {
                 customFunction(this);
             }
 
-        }.bind(this) /* bind parent scope */ );
+        }.bind(this) /* bind parent scope */);
     }
 
     /**
@@ -170,7 +171,7 @@ class Ffau{
      *
      * @returns {string}
      */
-    generateCode(){
+    generateCode() {
         // run generator
         return htmlGen.workspaceToCode(this.ffauWorkspace);
     }
@@ -180,7 +181,7 @@ class Ffau{
      *
      * @returns {string}
      */
-    generateXML(){
+    generateXML() {
         // workspace -> XML
         const dom = Blockly.Xml.workspaceToDom(this.ffauWorkspace);
         // XML -> string
@@ -193,7 +194,7 @@ class Ffau{
      * @param {string} [fileName=ffau-export.txt] - The name of the txt file
      * @returns {string} - The XML data as a string
      */
-    downloadXML(fileName){
+    downloadXML(fileName) {
         /* get the xml data from blockly */
         const data = this.generateXML();
 
@@ -216,7 +217,7 @@ class Ffau{
      *
      * @param {string} xmlString - The XML string to use
      */
-    setXML(xmlString){
+    setXML(xmlString) {
         // change the text to dom
         const dom = Blockly.Xml.textToDom(xmlString);
         // clear the workspace to avoid adding code on top
@@ -229,7 +230,7 @@ class Ffau{
     /**
      * Clears all blocks from the workspace without further confirmation
      */
-    clearWorkspace(){
+    clearWorkspace() {
         this.ffauWorkspace.clear();
     }
 }
