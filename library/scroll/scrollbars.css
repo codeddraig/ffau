@@ -1,3 +1,9 @@
+.blocklyToolboxDiv {
+    overflow-y: scroll;
+    scrollbar-color: #555555 transparent;
+    scrollbar-width: 7px;
+}
+
 .blocklyToolboxDiv::-webkit-scrollbar {
     width: 18px;
     background-color: transparent;

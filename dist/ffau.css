@@ -55,7 +55,7 @@
 
     box-shadow: 2px 0 30px -2px #000;
 
-    /*padding-bottom: 8px*/
+    padding-bottom: 8px !important;
 }
 
 .blocklySvg{
