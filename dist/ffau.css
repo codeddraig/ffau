@@ -181,8 +181,9 @@
 
 .settings-select {
     margin-top: 7px;
-    font-size: 15px;
-    padding-right: 12px;
+    font-size: 17px;
+    height: 30px;
+    padding-right: 16px;
     display: block;
 }
 

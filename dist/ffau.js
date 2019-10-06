@@ -32,9 +32,8 @@ function fontAwesome(icon) {
 }());
 
 /**
- * Class representing a Ffau instance, including all components.
+ * @class Class representing a Ffau instance, including all components.
  */
-
 class Ffau {
     /**
      * Initialise the Ffau instance in the document
@@ -59,12 +58,28 @@ class Ffau {
     }
 
     /**
+     * @typedef {"boolean" | "dropdown"} settingsType
+     */
+
+    /**
+     * @callback settingChangeCallback
+     * @param {string} newValue - The new value of the setting
+     **/
+
+    /**
      * Inject the blockly editor (should be called first)
      *
      * @param {HTMLElement} frame - The frame to put the editor in
      * @param {HTMLElement} toolbox - The XML toolbox
+     *
+     * @param {Object[]} [settings] - Customisable options to be loaded into settings flyout.
+     * @param {string} settings[].label - The label of the setting; the text to be displayed above it
+     * @param {settingsType} settings[].type - The format type of the setting
+     * @param {boolean} settings[].default - Required only if using type 'boolean' to specify default boolean value. If not specified, false is used.
+     * @param {Array<string[]>} [settings[].options] - Length: 2. Required only if using type 'dropdown' to specify dropdown values. The first item should be the human-readable name of the dropdown item; the second should be the machine value that gets returned to the callback. Omitting the second item will set the returned value to the plain-text one.
+     * @param {settingChangeCallback} settings[].callback - Will be called for each setting after settings menu is fully initialised with initial value, as well as whenever a setting is updated.
+     *
      * @param {object} [options] - Custom options for the Blockly editor. Ffau will apply some default options if this is not specified.
-     * @param {object} [settings] - Customisable options to be loaded into settings flyout.
      * @returns {*}
      */
     renderBlockly(frame, toolbox, settings, options) {
@@ -171,8 +186,8 @@ class Ffau {
 
                         setting.options.forEach(option => {
                             let optionElem = document.createElement("option");
-                            optionElem.value = option[1];
                             optionElem.innerText = option[0];
+                            optionElem.value = option.length > 0 ? option[1] : option[1];
                             elem.appendChild(optionElem);
                         });
 
@@ -187,7 +202,7 @@ class Ffau {
                         let input = document.createElement("input");
                         input.type = "checkbox";
                         input.className = "settings-checkbox";
-                        input.checked = true;
+                        input.checked = setting.default || false;
 
                         let span = document.createElement("span");
                         span.className = "settings-slider";
