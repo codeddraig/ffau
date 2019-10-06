@@ -95,135 +95,127 @@ class Ffau {
         this.ffauWorkspace = Blockly.inject(frame.id, editorOptions);
 
         // add settings popout
-        this.openSettings = false;
-
-        let popout = document.createElement("div");
-        goog.style.setStyle(popout, {
-            "position": "absolute",
-            "right": "0",
-            "z-index": "251",
-            "top": "15px",
-            "background-color": "#757575",
-            "opacity": "0.4",
-            "padding": "2px 10px 2px 5px",
-            "border-radius": "10px 0 0 10px",
-            "cursor": "pointer"
-        });
+        let callbacks = [];
 
         document.getElementsByClassName("blocklyScrollbarBackground")[0].style.zIndex = "249";
         document.getElementsByClassName("blocklyScrollbarHandle")[0].style.zIndex = "250";
 
+        let popout = document.createElement("div");
         popout.appendChild(fontAwesome("cog cog-icon"));
-        popout.getElementsByClassName('cog-icon')[0].style.color = 'black';
-
-        popout.style.transform = "rotate(0)";
-        popout.className = "settings-button";
-
-        popout.addEventListener("mouseover", () => {
-            $(".settings-button").animate({
-                "padding-right": "35px",
-                "opacity": this.openSettings ? "0.8" : "0.7",
-                "border-bottom-left-radius": "10"
-            }, 120, "easeOutQuart");
-
-            $({degrees: 0}).animate({degrees: 180}, {
-                "duration": 450,
-                "step": function (now) {
-                    $('.cog-icon').css(
-                        "transform",
-                        'rotate(' + now.toString() + 'deg)'
-                    );
-                },
-                "easing": "easeOutCirc"
-            });
-        });
-
-        popout.addEventListener("mouseleave", () => {
-            $(".settings-button").animate({
-                "padding-right": "10px",
-                "opacity": this.openSettings ? "0.8" : "0.4",
-                "border-bottom-left-radius": this.openSettings ? "0" : "10px"
-            }, 90, "easeInQuart");
-
-            $('.cog-icon').css("transform", "rotate(0)")
-        });
+        popout.className = "settings-button closed";
 
         let settingsWindow = document.createElement("div");
-        goog.style.setStyle(settingsWindow, {
-            "width": "200px",
-            "height": "100%",
-            "top": "41px",
-            "background-color": "#242424",
-            "opacity": "0.8",
-            "position": "absolute",
-            "right": "-200px",
-            "z-index": 251,
-            "border-radius": "0 0 0 10px"
-        });
-
-        settingsWindow.className = "settings-window";
+        settingsWindow.className = "settings-window closed";
 
         let settingsWindowFiller = document.createElement("div");
-        goog.style.setStyle(settingsWindowFiller, {
-            "width": "169px",
-            "height": "26px",
-            "top": "-26px",
-            "background-color": "#242424",
-            "opacity": "1",
-            "position": "relative",
-            "left": "31px",
-            "z-index": 18,
-            "border-radius": "0"
-        });
+        settingsWindowFiller.className = "settings-window-filler closed";
 
-        settingsWindow.appendChild(settingsWindowFiller);
+        popout.addEventListener('click', () => {
+            if (popout.classList.contains('closed')) {
+                popout.classList.remove('closed');
+                settingsWindow.classList.remove('closed');
+                settingsWindowFiller.classList.remove('closed');
 
-        popout.addEventListener("click", () => {
-            $(".settings-button").stop(true, true).finish();
+                popout.classList.add('opening');
+                settingsWindow.classList.add('opening');
+                settingsWindowFiller.classList.add('opening');
 
-            if (this.openSettings) {
-                this.openSettings = false;
+                window.setTimeout(() => {
+                    popout.classList.remove('opening');
+                    settingsWindow.classList.remove('opening');
+                    settingsWindowFiller.classList.remove('opening');
 
-                $(".settings-window").animate({
-                    "right": "-200px",
-                }, 120, "easeOutQuart");
-
-                $(".settings-button").animate({
-                    "right": "0px",
-                    "opacity": "0.4",
-                    "border-bottom-left-radius": "10px"
-                }, 120, "easeOutQuart", () => {
-                    $(".settings-button").stop(true, true).finish();
-
-                    document.getElementsByClassName("cog-icon")[0].style.color = "black";
-                    popout.style.paddingRight = "10px";
-                    popout.style.backgroundColor = "#757575";
-                });
+                    popout.classList.add('open');
+                    settingsWindow.classList.add('open');
+                    settingsWindowFiller.classList.add('open');
+                }, 120);
             } else {
-                this.openSettings = true;
-                //popout.style.paddingRight = "15px";
-                popout.style.backgroundColor = "#242424";
+                popout.classList.remove('open');
+                settingsWindow.classList.remove('open');
+                settingsWindowFiller.classList.remove('open');
 
-                $(".settings-window").animate({
-                    "right": "0",
-                }, 120, "easeInQuart");
+                popout.classList.add('closing');
+                settingsWindow.classList.add('closing');
+                settingsWindowFiller.classList.add('closing');
 
-                document.getElementsByClassName("cog-icon")[0].style.color = "#b5b5b5";
+                window.setTimeout(() => {
+                    popout.classList.remove('closing');
+                    settingsWindow.classList.remove('closing');
+                    settingsWindowFiller.classList.remove('closing');
 
-                $(".settings-button").animate({
-                    "right": "169px",
-                    "padding-right": "10px",
-                    "opacity": "0.8",
-                    "border-bottom-left-radius": "0px"
-                }, 120, "easeInQuart", () => {
-                    $(".settings-button").stop(true, true).finish();
-                    popout.style.paddingRight = "10px";
-                });
+                    popout.classList.add('closed');
+                    settingsWindow.classList.add('closed');
+                    settingsWindowFiller.classList.add('closed');
+                }, 220);
             }
         });
 
+        settingsWindow.appendChild(settingsWindowFiller);
+        settingsWindow.appendChild(popout);
+
+        let settingsList = document.createElement("ul");
+        settingsList.className = "settings-list";
+
+        if (settings) {
+            settings.forEach((setting, id) => {
+                let label = document.createElement("label");
+                label.setAttribute('for', "setting-" + id.toString());
+                label.className = "setting-label";
+                label.innerText = setting.label;
+
+                let elem = undefined;
+                switch (setting.type) {
+                    case "dropdown":
+                        elem = document.createElement("select");
+                        elem.className = "settings-select";
+
+                        setting.options.forEach(option => {
+                            let optionElem = document.createElement("option");
+                            optionElem.value = option[1];
+                            optionElem.innerText = option[0];
+                            elem.appendChild(optionElem);
+                        });
+
+                        elem.onchange = () => setting.callback(elem.value);
+                        callbacks.push(elem.onchange);
+                        break;
+
+                    case "boolean":
+                        elem = document.createElement("label");
+                        elem.className = "settings-checkbox-container";
+
+                        let input = document.createElement("input");
+                        input.type = "checkbox";
+                        input.className = "settings-checkbox";
+                        input.checked = true;
+
+                        let span = document.createElement("span");
+                        span.className = "settings-slider";
+
+                        elem.appendChild(input);
+                        elem.appendChild(span);
+
+                        input.onclick = () => setting.callback(input.checked);
+                        callbacks.push(input.onclick);
+                        break;
+                }
+
+                elem.id = "setting-" + id.toString();
+
+                let li = document.createElement("li");
+                li.appendChild(label);
+                li.appendChild(elem);
+
+                li.className = "settings-li";
+
+                settingsList.appendChild(li);
+            });
+        }
+
+        callbacks.forEach(c => c());
+        settingsWindow.appendChild(settingsList);
+
         let workspace = document.getElementsByClassName("injectionDiv")[0];
-        workspace.prepend(popout);
         workspace.prepend(settingsWindow);
 
         // Return workspace info
