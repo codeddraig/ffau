@@ -310,7 +310,7 @@ class Ffau {
         workspace.prepend(settingsWindow);
 
         window.addEventListener('click', (event) => {
-            if (!event.path.includes(settingsWindow)) {
+            if (!event.path.includes(settingsWindow) && settingsWindow.classList.contains("open")) {
                 this.closeSettingsMenu();
             }
         });
