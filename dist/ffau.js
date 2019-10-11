@@ -40,6 +40,10 @@ class Ffau {
      */
 
     /**
+     * @typedef {"panda" | "light" | "dark"} ffauTheme
+     */
+
+    /**
      * @typedef {Object[]} settingsParam - Customisable options to be loaded into settings flyout.
      * @param {string} settings[].label - The label of the setting; the text to be displayed above it
      * @param {string} settings[].name - The internal name of the setting. Can be used to refer to it when manually setting its value.
@@ -96,7 +100,7 @@ class Ffau {
         });
     }
 
-    openSettingsMenu(settings) {
+    openSettingsMenu() {
         let popout = document.getElementsByClassName("settings-button")[0];
         let settingsWindow = document.getElementsByClassName("settings-window")[0];
         let settingsWindowFiller = document.getElementsByClassName("settings-window-filler")[0];
@@ -109,6 +113,8 @@ class Ffau {
         settingsWindow.classList.add('opening');
         settingsWindowFiller.classList.add('opening');
 
+        popout.style.paddingRight = "10px !important";
+
         window.setTimeout(() => {
             popout.classList.remove('opening');
             settingsWindow.classList.remove('opening');
@@ -117,10 +123,12 @@ class Ffau {
             popout.classList.add('open');
             settingsWindow.classList.add('open');
             settingsWindowFiller.classList.add('open');
+
+            popout.style.paddingRight = "";
         }, 120);
     }
 
-    closeSettingsMenu(settings) {
+    closeSettingsMenu() {
         let popout = document.getElementsByClassName("settings-button")[0];
         let settingsWindow = document.getElementsByClassName("settings-window")[0];
         let settingsWindowFiller = document.getElementsByClassName("settings-window-filler")[0];
@@ -322,12 +330,13 @@ class Ffau {
      * @param {HTMLElement} frame - The frame to put the editor in
      * @param {HTMLElement} toolbox - The XML toolbox
      *
+     * @param {string} theme - The name of the theme to initiate Blockly with.
      * @param {settingsParam} [settings]
      *
      * @param {object} [options] - Custom options for the Blockly editor. Ffau will apply some default options if this is not specified.
      * @returns {*}
      */
-    renderBlockly(frame, toolbox, settings, options) {
+    renderBlockly(frame, toolbox, theme, settings, options) {
         // generate a random ID for the frame to avoid duplication
         frame.id = Ffau.generateID(frame, 'blockly');
 
@@ -354,12 +363,50 @@ class Ffau {
         // inject blockly
         this.ffauWorkspace = Blockly.inject(frame.id, editorOptions);
 
+        this.workspaceDiv = frame;
+        this.toolboxDiv = this.workspaceDiv.getElementsByClassName("blocklyToolboxDiv")[0];
+
         // add settings popout
         if (settings)
             this.addSettings(settings);
 
+        this.setTheme(theme);
+
         // Return workspace info
         return this.ffauWorkspace;
+    }
+
+    /**
+     *
+     * Checks if a theme name is a valid Ffau theme, using the CSS-based checking mechanics automatically added by `dist/compile_styles.py`.
+     *
+     * @param {string} className - The name of the theme
+     * @param {boolean} appendPrefix - Specifies the format of the theme name: if true, then a theme in a format like `panda` or `dark` is expected. If false, a full classname, like `blocklyThemePanda` or `blocklyThemeDark` is expected.
+     * @returns {boolean} - Whether or not the input refers to a real Ffau theme.
+     */
+    isFfauTheme(className, appendPrefix){
+        if (!appendPrefix) {
+            if (className.split("blocklyTheme").length > 1) {
+                className = className.split("blocklyTheme")[1].toLowerCase();
+            } else {
+                return false;
+            }
+        }
+
+        let testObj = document.createElement("p");
+        testObj.className = "verifyBlocklyTheme" + className[0].toUpperCase() + className.slice(1).toLowerCase();
+        testObj.style.display = "none";
+
+        document.body.appendChild(testObj);
+        const computedText = getComputedStyle(testObj, ':before')
+            .getPropertyValue('content');
+
+        const isGood = computedText.substr(1, computedText.length-2)
+            === 'verify-' + className.toLowerCase();
+
+        testObj.parentNode.removeChild(testObj);
+
+        return isGood;
     }
 
     /**
@@ -378,6 +425,32 @@ class Ffau {
         // save the frame for later use
         this.iframe = document.getElementById(frame.id + '-iframe');
         return this.iframe;
+    }
+
+    /**
+     * Set the theme of the Ffau
+     *
+     * @param {ffauTheme} theme - the name of the theme
+     */
+    setTheme(theme){
+        const themeClassName = "blocklyTheme" + theme[0].toUpperCase() + theme.slice(1).toLowerCase();
+
+        if (!this.isFfauTheme(theme, true)){
+            console.warn("Could not set Ffau theme '" + theme + "' as it is not listed in `dist/ffau.css`");
+            return false;
+        }
+
+        let injectionDiv = document.querySelector("div.injectionDiv");
+        const classList = injectionDiv.classList;
+        classList.forEach(className => {
+            if (this.isFfauTheme(className, false)) {
+                injectionDiv.classList.remove(className);
+            }
+        });
+        injectionDiv.classList.add(themeClassName);
+
+        this.theme = theme;
+        return true;
     }
 
     /**

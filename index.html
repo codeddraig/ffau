@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 
-<!--		Ffau - A blocky-based editor for teaching HTML, CSS and Javascript.
+<!--		Ffau - A Blockly-based editor for teaching HTML, CSS and Javascript.
 
 				Developed by Pal Kerecsenyi, Geza Kerecsenyi and Oli Plant.
-				Full details are avaliable at the Github repo: https://github.com/codeddraig/ffau
+				Full details are available at the Github repo: https://github.com/codeddraig/ffau
 				Ffau editor will not work without its libraries. The best way to get all
-					off thi data at once is to grab the latest release version from the
+					of this data at once is to grab the latest release version from the
 					Github repo.
 				Ffau is open source software. This means you can re-mix, share and use
 					it however you want, including for commercial purposes. However, you
@@ -27,15 +27,15 @@
     <script defer src="library/fontawesome/all.js"></script>
 
     <!-- google's blockly stuff first -->
-    <script src="library/blockly/google-blockly/blockly_compressed.js"></script>
-    <script src="library/blockly/google-blockly/msg/js/en.js"></script>
+    <script src="library/ffau/blockly/google-blockly/blockly_compressed.js"></script>
+    <script src="library/ffau/blockly/google-blockly/msg/js/en.js"></script>
 
     <!-- jquery -->
     <script src="library/jquery/jquery-3.2.1.js"></script>
 
     <!-- our blockly tweaks -->
-    <script src="library/blockly/html/blocks.js"></script>
-    <script src="library/blockly/html/generator.js"></script>
+    <script src="library/ffau/html/blocks.js"></script>
+    <script src="library/ffau/html/generator.js"></script>
 
     <!-- ace editor -->
     <script charset="utf-8" src="library/ace/src-noconflict/ace.js" type="text/javascript"></script>
@@ -51,7 +51,6 @@
     <!-- aesthetic CSS libraries -->
     <link href="https://cdn.jsdelivr.net/npm/magical-css@0.7.2/dist/magic.min.css" rel="stylesheet">
     <link href="library/layout.css" rel="stylesheet" type="text/css"/>
-    <link href="library/scroll/scrollbars.css" rel="stylesheet" type="text/css"/>
     <!-- /HEADER LIBRARIES -->
     <!--Let browser know website is optimized for mobile-->
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -490,7 +489,8 @@
     // initialise blockly
     ffau.renderBlockly(
         document.getElementById('blocklyDiv'),
-        document.getElementById('toolbox')
+        document.getElementById('toolbox'),
+        "dark"
     );
 
     // render preview
@@ -511,12 +511,12 @@
             label: "Theme",
             type: "dropdown",
             options: [
-                ["Panda", "0"],
-                ["Dark", "1"],
-                ["Light", "2"]
+                ["Panda", "panda"],
+                ["Dark", "dark"],
+                ["Light", "light"]
             ],
             callback: (value) => {
-                console.log(value);
+                ffau.setTheme(value);
             }
         },
         {
@@ -538,15 +538,6 @@
                         theme: "ace/theme/tomorrow_night"
                     });
                 }
-            }
-        },
-        {
-            name: "auto_save",
-            label: "Auto-save",
-            type: "boolean",
-            default: true,
-            callback: (value) => {
-                console.log(value);
             }
         },
         {
