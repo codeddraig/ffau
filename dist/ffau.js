@@ -101,9 +101,9 @@ class Ffau {
     }
 
     openSettingsMenu() {
-        let popout = document.getElementsByClassName("settings-button")[0];
-        let settingsWindow = document.getElementsByClassName("settings-window")[0];
-        let settingsWindowFiller = document.getElementsByClassName("settings-window-filler")[0];
+        let popout = this.workspaceDiv.getElementsByClassName("settings-button")[0];
+        let settingsWindow = this.workspaceDiv.getElementsByClassName("settings-window")[0];
+        let settingsWindowFiller = this.workspaceDiv.getElementsByClassName("settings-window-filler")[0];
 
         popout.classList.remove('closed');
         settingsWindow.classList.remove('closed');
@@ -129,9 +129,9 @@ class Ffau {
     }
 
     closeSettingsMenu() {
-        let popout = document.getElementsByClassName("settings-button")[0];
-        let settingsWindow = document.getElementsByClassName("settings-window")[0];
-        let settingsWindowFiller = document.getElementsByClassName("settings-window-filler")[0];
+        let popout = this.workspaceDiv.getElementsByClassName("settings-button")[0];
+        let settingsWindow = this.workspaceDiv.getElementsByClassName("settings-window")[0];
+        let settingsWindowFiller = this.workspaceDiv.getElementsByClassName("settings-window-filler")[0];
 
         popout.classList.remove('open');
         settingsWindow.classList.remove('open');
@@ -161,12 +161,14 @@ class Ffau {
         if (document.getElementById("blockly-settings")) {
             document.getElementById("blockly-settings").parentNode
                 .removeChild(document.getElementById("blockly-settings"));
+            console.warn("Removed pre-existing `blockly-settings` dialogue. Only one settings dialogue is supported" +
+                "per Ffau, and only one Ffau can have a settings dialogue on a given page!");
         }
 
         this.settings = [];
 
-        document.getElementsByClassName("blocklyScrollbarBackground")[0].style.zIndex = "249";
-        document.getElementsByClassName("blocklyScrollbarHandle")[0].style.zIndex = "250";
+        this.workspaceDiv.getElementsByClassName("blocklyScrollbarBackground")[0].style.zIndex = "249";
+        this.workspaceDiv.getElementsByClassName("blocklyScrollbarHandle")[0].style.zIndex = "250";
 
         let popout = document.createElement("div");
         popout.appendChild(fontAwesome("cog cog-icon"));
@@ -314,7 +316,7 @@ class Ffau {
         this.settings.forEach(c => c.callback());
         settingsWindow.appendChild(settingsList);
 
-        let workspace = document.getElementsByClassName("injectionDiv")[0];
+        let workspace = this.workspaceDiv.getElementsByClassName("injectionDiv")[0];
         workspace.prepend(settingsWindow);
 
         window.addEventListener('click', (event) => {
@@ -434,6 +436,8 @@ class Ffau {
      */
     setTheme(theme){
         const themeClassName = "blocklyTheme" + theme[0].toUpperCase() + theme.slice(1).toLowerCase();
+
+        if (theme === this.theme) return true;  // Save some processing/rendering effort.
 
         if (!this.isFfauTheme(theme, true)){
             console.warn("Could not set Ffau theme '" + theme + "' as it is not listed in `dist/ffau.css`");
