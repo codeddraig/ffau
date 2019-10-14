@@ -20,6 +20,7 @@
   },
   "homepage": "http://ffau.readthedocs.io/en/latest/",
   "devDependencies": {
+    "gulp": "^4.0.2",
     "jsdoc": "^3.5.5"
   }
 }

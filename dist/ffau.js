@@ -440,7 +440,7 @@ class Ffau {
             return false;
         }
 
-        let injectionDiv = document.querySelector("div.injectionDiv");
+        let injectionDiv = this.workspaceDiv.querySelector("div.injectionDiv");
         const classList = injectionDiv.classList;
         classList.forEach(className => {
             if (this.isFfauTheme(className, false)) {
