@@ -1,22 +1,3 @@
-/*
-        Ffau - A blocky-based editor for teaching HTML, CSS and Javascript.
-
-				Developed by Pal Kerecsenyi, Geza Kerecsenyi and Oli Plant.
-				Full details are avaliable at the Github repo: https://github.com/codeddraig/ffau
-				Ffau editor will not work without its libraries. The best way to get all
-					off this data at once is to grab the latest release version from the
-					Github repo.
-				Ffau is open source software. This means you can re-mix, share and use
-					it however you want, including for commercial purposes. However, you
-					MUST provide attribution to the original authors if you do this.
-				However, Ffau is provided with NO WARRANTY whatsoever, and by using this
-					software, you agree to the terms of the MIT License.
-
-				Copyright (c) 2017-19 The CodeDdraig Organisation
-
-				THIS IS VERSION 1.0.0
-*/
-
 .blocklyTreeRow {
     height: 40px;
     transition: background-color 0.1s linear;
@@ -30,7 +11,11 @@
     fill: #282828 !important;
 }
 
-.blocklyScrollbarBackground:hover + .blocklyScrollbarHandle, .blocklyScrollbarHandle:hover {
+.blocklyScrollbarBackground:hover + .blocklyScrollbarHandle {
+    fill: #1a1a1a !important;
+}
+
+.blocklyScrollbarHandle:hover {
     fill: #1a1a1a !important;
 }
 
@@ -40,7 +25,6 @@
     font-family: "Noto", "Roboto", sans-serif;
     color: white;
     vertical-align: middle;
-
     height: 20px;
     padding: 10px 0;
 }
@@ -58,11 +42,8 @@
 .blocklyToolboxDiv {
     min-width: 170px;
     overflow-x: visible;
-
     background-color: #242424 !important;
-
     box-shadow: 2px 0 30px -2px #000;
-
     padding-bottom: 8px !important;
 }
 
@@ -84,4 +65,8 @@
 
 .blocklyMainBackground {
     fill: #363636 !important;
+}
+
+.verifyBlocklyThemeDark::before {
+    content: 'verify-dark';
 }

@@ -1,5 +1,11 @@
 const fs = require("fs");
 
+let selectorChars = "abcdefghijklmnopqrstuvwxyz";
+selectorChars += selectorChars.toUpperCase();
+selectorChars += [...Array(26).keys()].join('');
+selectorChars += "_-.#:";
+selectorChars = selectorChars.split('');
+
 function compileStyles(cb) {
     Object.defineProperty(Array.prototype, 'flat', {
         value: function (depth = 1) {
@@ -9,12 +15,50 @@ function compileStyles(cb) {
         }
     });
 
+    function splitIfNotInString(string, character) {
+        let stringPoints = string.split(new RegExp("((['\"])(\\\\.|[^'\"])*\\2)"));
+        let charPoints = string
+            .split('')
+            .reduce((a, e, i) => e === character ? a.concat(i) : a, []);
+
+        let newStringPoints = [0];
+        for (let z = 0, point = stringPoints[0]; z < stringPoints.length; z++, point = stringPoints[z])
+            if (z % 4 === 0 || z % 4 === 1)
+                newStringPoints.push(point.length + newStringPoints.slice().pop());
+
+        newStringPoints = newStringPoints.map(_ => [_, _]).flat().slice(1, -1);
+        newStringPoints = newStringPoints.map((r, n) => n % 2 === 1
+            && [newStringPoints[n - 1], r])
+            .filter(z => z);
+        newStringPoints = newStringPoints.filter((_, z) => z % 2);
+
+        let goodCharPoints = charPoints.filter(e =>
+            newStringPoints.every(t =>
+                t[0] > e || e > t[1]
+            )
+        );
+
+        let selectors = [];
+
+        let lastPoint = 0;
+        goodCharPoints.forEach(point => {
+            selectors.push(
+                string.slice(lastPoint, point)
+            );
+
+            lastPoint = point + 1;
+        });
+        selectors.push(string.slice(lastPoint));
+
+        return selectors;
+    }
+
     function toJSON(filename) {
         let data = fs.readFileSync(filename);
 
         let css = " " + data;
 
-        let cssObj = {};
+        let cssObj = [];
 
         let matchSoFar = "";
         let bodySoFar = "";
@@ -29,62 +73,55 @@ function compileStyles(cb) {
             }
 
             if (!inComment) {
-                if (char === "'" || char === '"') {
-                    if (!inString && css[i - 1] !== "\\") {
+                if (char === "'" || char === '"')
+                    if (!inString && css[i - 1] !== "\\")
                         inString = char;
-                    } else if (char === inString) {
+                    else if (char === inString)
                         inString = false;
-                    }
-                }
 
                 if (!(css[i - 1] + char === "  " && !inString)) {
                     if (inBracket) {
                         bodySoFar += char;
+
                         if (char === "}") {
                             inBracket = false;
 
                             let selectorName = matchSoFar.replace(/{/g, "").trim();
-                            let stringPoints = selectorName.split(new RegExp("((['\"])(\\\\.|[^'\"])*\\2)"));
-                            let commaPoints = selectorName
-                                .split('')
-                                .reduce((a, e, i) => e === "," ? a.concat(i) : a, []);
-
-                            let newStringPoints = [0];
-                            for (let z = 0, point = stringPoints[0]; z < stringPoints.length; z++, point = stringPoints[z])
-                                if (z % 4 === 0 || z % 4 === 1)
-                                    newStringPoints.push(point.length + newStringPoints.slice().pop());
-
-                            newStringPoints = newStringPoints.map(_ => [_, _]).flat().slice(1, -1);
-                            newStringPoints = newStringPoints.map((r, n) => n % 2 === 1
-                                && [newStringPoints[n - 1], r])
-                                .filter(z => z);
-                            newStringPoints = newStringPoints.filter((_, z) => z % 2);
-
-                            let goodCommaPoints = commaPoints.filter(e =>
-                                newStringPoints.every(t => {
-                                    return t[0] > e || e > t[1];
-                                })
-                            );
-
-                            let selectors = [];
-
-                            let lastPoint = 0;
-                            goodCommaPoints.forEach(point => {
-                                selectors.push(
-                                    selectorName
-                                        .slice(lastPoint, point)
-                                        .replace(/(^[{ ]*)|([{ ]*$)/g, "")
-                                );
-
-                                lastPoint = point + 1;
-                            });
-                            selectors.push(selectorName.slice(lastPoint));
+                            let selectors = splitIfNotInString(selectorName, ",")
+                                .map(z => z.replace(/(^[{ ]*)|([{ ]*$)/g, ""));
 
                             selectors.forEach(selector => {
-                                cssObj[selector.replace(/{/g, "").trim()] = bodySoFar
-                                    .replace(/[\t\n\r]/g, "")
-                                    .slice(0, -1)
-                                    .trim();
+                                let selectorSplit = splitIfNotInString(
+                                    selector.replace(/{/g, "").trim(),
+                                    "."
+                                ).filter(z => z).map(z => "." + z);
+
+                                let newSelectorSplit = [];
+                                let skip = false;
+                                selectorSplit.forEach((v, w) => {
+                                    if (!skip)
+                                        if (w < selectorSplit.length - 1)
+                                            if (v.split("").every(c => selectorChars.includes(c)))
+                                                if (selectorSplit[w + 1].split("").every(c => selectorChars.includes(c))) {
+                                                    newSelectorSplit.push([v, selectorSplit[w + 1]]);
+                                                    skip = true;
+                                                } else
+                                                    newSelectorSplit.push([v]);
+                                            else
+                                                newSelectorSplit.push([v]);
+                                        else
+                                            newSelectorSplit.push([v]);
+                                    else
+                                        skip = false;
+                                });
+
+                                cssObj.push({
+                                    selectors: newSelectorSplit,
+                                    cssText: bodySoFar
+                                        .replace(/[\t\n\r]/g, "")
+                                        .slice(0, -1)
+                                        .trim()
+                                })
                             });
 
                             matchSoFar = "";
@@ -92,16 +129,14 @@ function compileStyles(cb) {
                         }
                     } else {
                         matchSoFar += char;
-                        if (char === "{") {
+                        if (char === "{")
                             inBracket = true;
-                        } else if (char === "\n") {
+                        else if (char === "\n")
                             matchSoFar = "";
-                        }
                     }
                 }
-            } else {
-                if (css[i - 1] + char === "*/") inComment = false;
-            }
+            } else if (css[i - 1] + char === "*/")
+                inComment = false;
         }
 
         return cssObj;
@@ -109,8 +144,8 @@ function compileStyles(cb) {
 
     function toCSS(cssObj) {
         let writeStr = "";
-        Array.from(Object.keys(cssObj)).forEach(selector => {
-            writeStr += selector + "{" + cssObj[selector] + "}";
+        cssObj.forEach(selector => {
+            writeStr += selector.selectors.map(b => b.join('')).join('') + "{" + selector.cssText + "}";
         });
 
         return writeStr.replace("( {2,})|(\n{2,})|(\t{2,})", "");
@@ -122,13 +157,12 @@ function compileStyles(cb) {
     function themify(list) {
         return list
             .map(f => "./src/themes/" + f)
-            .filter(f => fs.existsSync(f));
+            .filter(f => fs.existsSync(f) && f.endsWith(".css"));
     }
 
     let cssFiles = themify(
         fs.readdirSync("src/themes").filter(
             f =>
-                f.endsWith(".css") &&
                 !(
                     f.endsWith("__.css") &&
                     f.startsWith("__")
@@ -139,7 +173,6 @@ function compileStyles(cb) {
     let globalFiles = themify(
         fs.readdirSync("src/themes").filter(
             f =>
-                f.endsWith(".css") &&
                 (
                     f.endsWith("__.css") &&
                     f.startsWith("__")
@@ -163,31 +196,31 @@ function compileStyles(cb) {
 
     cssFiles.forEach(filename => {
         let json = toJSON(filename);
-        let newObj = Object.assign({}, json);
+        let newObj = json;
+
         let cssFileName = filename.split("/").slice().pop().slice(0, -4);
 
-        Array.from(Object.keys(json)).forEach(key => {
+        json.forEach((key, i) => {
             let newKey = key;
 
-            if (["blocklyToolboxDiv", "blocklyTreeRoot", "blocklyTreeRow", "blocklyHidden",
-                "blocklyTreeLabel", "blocklyTreeIcon", "blocklyTreeIconClosedLtr", "blocklyTreeIconNone",
-                "blocklyTreeSeparator", "blocklySvg", "blocklyWorkspace", "blocklyMainBackground",
-                "blocklyTrash", "blocklyBlockCanvas", "blocklyBubbleCanvas", "blocklyScrollbarBackground",
-                "blocklyZoom", "blocklyScrollbarVertical", "blocklyMainWorkspaceScrollbar", "blocklyScrollbarHandle",
-                "blocklyScrollbarHorizontal", "blocklyFlyout", "blocklyFlyoutBackground", "blocklyFlyoutScrollbar",
-                "blocklyBlockDragSurface", "blocklyWsDragSurface", "blocklyOverflowVisible", "blocklyWidgetDiv",
-                "blocklyTooltipDiv"]
-                .some(prefix => key.trim().startsWith(prefix))) {
-                newKey = "div.injectionDiv.blocklyTheme"
+            key.selectors.forEach((selector, b) => {
+                if ([".blocklyToolboxDiv", ".blocklyTreeRoot", ".blocklyTreeRow", ".blocklyHidden",
+                    ".blocklyTreeLabel", ".blocklyTreeIcon", ".blocklyTreeIconClosedLtr", ".blocklyTreeIconNone",
+                    ".blocklyTreeSeparator", ".blocklySvg", ".blocklyWorkspace", ".blocklyMainBackground",
+                    ".blocklyTrash", ".blocklyBlockCanvas", ".blocklyBubbleCanvas", ".blocklyScrollbarBackground",
+                    ".blocklyZoom", ".blocklyScrollbarVertical", ".blocklyMainWorkspaceScrollbar", ".blocklyScrollbarHandle",
+                    ".blocklyScrollbarHorizontal", ".blocklyFlyout", ".blocklyFlyoutBackground", ".blocklyFlyoutScrollbar",
+                    ".blocklyBlockDragSurface", ".blocklyWsDragSurface", ".blocklyOverflowVisible", ".blocklyWidgetDiv",
+                    ".blocklyTooltipDiv", ".blocklyText", ".themify"]
+                    .some(prefix => selector.some(g => g.startsWith(prefix)))) {
+                    newKey.selectors[b] = ["div.injectionDiv.blocklyTheme"
                     + cssFileName.charAt(0).toUpperCase()
                     + cssFileName.slice(1)
-                    + " " + key
-            }
+                    + " " + selector.join("")];
+                }
+            });
 
-            if (newKey !== key) {
-                newObj[newKey] = newObj[key];
-                delete newObj[key];
-            }
+            newObj[i] = newKey;
         });
 
         let cssStr = toCSS(newObj);
@@ -210,7 +243,7 @@ function compileStyles(cb) {
     fs.writeFile("./dist/ffau.css",
         writeStr
         , err => {
-            if (err) throw err;
+            if (err) throw "Write failed with error: \n" + err;
 
             console.log("Success! See `dist/ffau.css` for output code, or use:");
             console.log('\t<link href="dist/ffau.css" rel="stylesheet">');
