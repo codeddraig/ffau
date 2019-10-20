@@ -19,6 +19,12 @@
 
 /* jshint esversion:6 */
 
+/**
+ * Creates a Font Awesome icon from the name of the icon.
+ *
+ * @param icon
+ * @returns {HTMLElement} - the newly-created <i> FA node
+ */
 function fontAwesome(icon) {
     let elem = document.createElement("i");
     elem.className = "fas fa-" + icon;
