@@ -7,7 +7,7 @@
     background-color: unset !important;
 }
 
-.blocklyScrollbarHandle[name="ab\"c"][string='myStrin\"g'] {
+.blocklyScrollbarHandle {
     fill: #282828 !important;
 }
 

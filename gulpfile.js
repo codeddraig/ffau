@@ -211,13 +211,19 @@ function compileStyles(cb) {
                     ".blocklyZoom", ".blocklyScrollbarVertical", ".blocklyMainWorkspaceScrollbar", ".blocklyScrollbarHandle",
                     ".blocklyScrollbarHorizontal", ".blocklyFlyout", ".blocklyFlyoutBackground", ".blocklyFlyoutScrollbar",
                     ".blocklyBlockDragSurface", ".blocklyWsDragSurface", ".blocklyOverflowVisible", ".blocklyWidgetDiv",
-                    ".blocklyTooltipDiv", ".blocklyText", ".themify"]
-                    .some(prefix => selector.some(g => g.startsWith(prefix)))) {
+                    ".blocklyTooltipDiv", ".blocklyText"]
+                    .some(prefix => selector.some(g => g.startsWith(prefix))))
                     newKey.selectors[b] = ["div.injectionDiv.blocklyTheme"
                     + cssFileName.charAt(0).toUpperCase()
                     + cssFileName.slice(1)
                     + " " + selector.join("")];
-                }
+                newKey.selectors[b] = newKey.selectors[b].map(g =>
+                    g.startsWith(".themify") ?
+                        "div.injectionDiv.blocklyTheme"
+                        + cssFileName.charAt(0).toUpperCase()
+                        + cssFileName.slice(1) + " " :
+                        g
+                );
             });
 
             newObj[i] = newKey;

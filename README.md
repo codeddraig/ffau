@@ -191,7 +191,7 @@ Once you are done with your editing, compile all of the styles by running the co
 
 * Global stylesheets have a lower precedence than style files, unless `!important` or other manual priorities are stated.
 
-* There is no feature, currently, to use manual class names that get replaced with their theme-ified versions. However, a workaround is to use the `.themify` selector, which will note to the builder to append the relevant theme selector.
+* There is no feature, currently, to use manual class names that get replaced with their theme-ified versions. However, a workaround is to use the `.themify` selector, which will note to the builder to append the relevant theme selector, e.g `.themify .my-custom-class`. The settings dialogues can also be styled in this way, e.g `.themify .settings-button`.
 
 * Class names with escaped characters is **not** supported. The compiler will not crash, although some specific features like multi-class selectors (e.g `.write\&test.testing`) may be thrown off. There is no known available workaround.
 
