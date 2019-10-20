@@ -1,0 +1,1499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Class: Ffau</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href="styles/prettify-tomorrow.css" rel="stylesheet" type="text/css">
+    <link href="styles/jsdoc-default.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Class: Ffau</h1>
+
+
+    <section>
+
+        <header>
+
+            <h2><span class="attribs"><span class="type-signature"></span></span>Ffau<span
+                    class="signature">()</span><span class="type-signature"></span></h2>
+
+            <div class="class-description">Class representing a Ffau instance, including all components.</div>
+
+
+        </header>
+
+        <article>
+            <div class="container-overview">
+
+
+                <h2>Constructor</h2>
+
+
+                <h4 class="name" id="Ffau"><span class="type-signature"></span>new Ffau<span class="signature">()</span><span
+                        class="type-signature"></span></h4>
+
+
+                <div class="description">
+                    Initialise the Ffau instance in the document
+                </div>
+
+
+                <dl class="details">
+
+
+                    <dt class="tag-source">Source:</dt>
+                    <dd class="tag-source">
+                        <ul class="dummy">
+                            <li>
+                                <a href="ffau.js.html">ffau.js</a>, <a href="ffau.js.html#line37">line 37</a>
+                            </li>
+                        </ul>
+                    </dd>
+
+
+                </dl>
+
+
+            </div>
+
+
+            <h3 class="subsection-title">Methods</h3>
+
+
+            <h4 class="name" id=".generateID"><span class="type-signature">(static) </span>generateID<span
+                    class="signature">(object, objectType)</span><span class="type-signature"> &rarr; {string}</span>
+            </h4>
+
+
+            <div class="description">
+                Generate an ID for a ffau component
+            </div>
+
+
+            <h5>Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>object</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">HTMLElement</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The element to generate an ID for</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>objectType</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The name of the component</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="ffau.js.html">ffau.js</a>, <a href="ffau.js.html#line79">line 79</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5>Returns:</h5>
+
+
+            <dl>
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">string</span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="addEvent"><span class="type-signature"></span>addEvent<span class="signature">(customFunction)</span><span
+                    class="type-signature"></span></h4>
+
+
+            <div class="description">
+                Add the event listener for Blockly to generate a preview and code
+            </div>
+
+
+            <h5>Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>customFunction</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">function</span>
+
+
+                    </td>
+
+
+                    <td class="description last">a function to execute at the end of the change event. Gets passed the
+                        scope as a parameter.
+                    </td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="ffau.js.html">ffau.js</a>, <a href="ffau.js.html#line556">line 556</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h4 class="name" id="addSettings"><span class="type-signature"></span>addSettings<span class="signature">(settings, autoclose<span
+                    class="signature-attributes">opt</span>)</span><span class="type-signature"></span></h4>
+
+
+            <div class="description">
+                Add the settings popout to the Blockly container
+            </div>
+
+
+            <h5>Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th>Attributes</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>settings</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type"><a
+                                href="global.html#settingsDialogueType">settingsDialogueType</a></span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>autoclose</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">number</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last">0 means no auto-close, 1 means auto-close if focus shifts to elsewhere
+                        in editor, 2 means auto-close if focus shifts outside of editor, and 2 means to auto-close if
+                        focus leaves settings menu.
+                    </td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="ffau.js.html">ffau.js</a>, <a href="ffau.js.html#line213">line 213</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h4 class="name" id="clearWorkspace"><span class="type-signature"></span>clearWorkspace<span
+                    class="signature">()</span><span class="type-signature"></span></h4>
+
+
+            <div class="description">
+                Clears all blocks from the workspace without further confirmation
+            </div>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="ffau.js.html">ffau.js</a>, <a href="ffau.js.html#line644">line 644</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h4 class="name" id="closeSettingsMenu"><span class="type-signature"></span>closeSettingsMenu<span
+                    class="signature">(force<span class="signature-attributes">opt</span>)</span><span
+                    class="type-signature"></span></h4>
+
+
+            <div class="description">
+                Close the settings dialogue (if it exists)
+            </div>
+
+
+            <h5>Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th>Attributes</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>force</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last">Force the animation or not (default false) - if false, if the window is
+                        already closed nothing will happen. Otherwise, the animation will play assuming the window was
+                        open.
+                    </td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="ffau.js.html">ffau.js</a>, <a href="ffau.js.html#line152">line 152</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h4 class="name" id="downloadXML"><span class="type-signature"></span>downloadXML<span class="signature">(fileName<span
+                    class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {string}</span>
+            </h4>
+
+
+            <div class="description">
+                Downloads a txt file containing the XML data of the project, which can be used to save it locally.
+            </div>
+
+
+            <h5>Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th>Attributes</th>
+
+
+                    <th>Default</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>fileName</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="default">
+
+                        ffau-export.txt
+
+                    </td>
+
+
+                    <td class="description last">The name of the txt file</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="ffau.js.html">ffau.js</a>, <a href="ffau.js.html#line608">line 608</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5>Returns:</h5>
+
+
+            <div class="param-desc">
+                - The XML data as a string
+            </div>
+
+
+            <dl>
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">string</span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="generateCode"><span class="type-signature"></span>generateCode<span class="signature">()</span><span
+                    class="type-signature"> &rarr; {string}</span></h4>
+
+
+            <div class="description">
+                Return HTML code in string format
+            </div>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="ffau.js.html">ffau.js</a>, <a href="ffau.js.html#line585">line 585</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5>Returns:</h5>
+
+
+            <dl>
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">string</span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="generateXML"><span class="type-signature"></span>generateXML<span
+                    class="signature">()</span><span class="type-signature"> &rarr; {string}</span></h4>
+
+
+            <div class="description">
+                Return the XML block code in string format
+            </div>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="ffau.js.html">ffau.js</a>, <a href="ffau.js.html#line595">line 595</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5>Returns:</h5>
+
+
+            <dl>
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">string</span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="isFfauTheme"><span class="type-signature"></span>isFfauTheme<span class="signature">(className, appendPrefix)</span><span
+                    class="type-signature"> &rarr; {boolean}</span></h4>
+
+
+            <div class="description">
+                Checks if a theme name is a valid Ffau theme, using the CSS-based checking mechanics automatically added
+                by `dist/compile_styles.py`.
+            </div>
+
+
+            <h5>Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>className</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The name of the theme</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>appendPrefix</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+
+
+                    </td>
+
+
+                    <td class="description last">Specifies the format of the theme name: if true, then a theme in a
+                        format like `panda` or `dark` is expected. If false, a full classname, like `blocklyThemePanda`
+                        or `blocklyThemeDark` is expected.
+                    </td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="ffau.js.html">ffau.js</a>, <a href="ffau.js.html#line449">line 449</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5>Returns:</h5>
+
+
+            <div class="param-desc">
+                - Whether or not the input refers to a real Ffau theme.
+            </div>
+
+
+            <dl>
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">boolean</span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="openSettingsMenu"><span class="type-signature"></span>openSettingsMenu<span
+                    class="signature">(force<span class="signature-attributes">opt</span>)</span><span
+                    class="type-signature"></span></h4>
+
+
+            <div class="description">
+                Open the settings dialogue (if it exists)
+            </div>
+
+
+            <h5>Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th>Attributes</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>force</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">boolean</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last">Force the animation or not (default false) - if false, if the window is
+                        already open nothing will happen. Otherwise, the animation will play assuming the window was
+                        closed.
+                    </td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="ffau.js.html">ffau.js</a>, <a href="ffau.js.html#line110">line 110</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h4 class="name" id="removeSettings"><span class="type-signature"></span>removeSettings<span
+                    class="signature">()</span><span class="type-signature"> &rarr; {boolean}</span></h4>
+
+
+            <div class="description">
+                Removes the settings menu, or returns false if settings menu does not exist.
+            </div>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="ffau.js.html">ffau.js</a>, <a href="ffau.js.html#line191">line 191</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5>Returns:</h5>
+
+
+            <div class="param-desc">
+                success
+            </div>
+
+
+            <dl>
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">boolean</span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="renderBlockly"><span class="type-signature"></span>renderBlockly<span
+                    class="signature">(frame, toolbox, theme, settings<span class="signature-attributes">opt</span>, options<span
+                    class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {*}</span></h4>
+
+
+            <div class="description">
+                Inject the blockly editor (should be called first)
+            </div>
+
+
+            <h5>Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th>Attributes</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>frame</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">HTMLElement</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+
+                    </td>
+
+
+                    <td class="description last">The frame to put the editor in</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>toolbox</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">HTMLElement</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+
+                    </td>
+
+
+                    <td class="description last">The XML toolbox</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>theme</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+
+                    </td>
+
+
+                    <td class="description last">The name of the theme to initiate Blockly with.</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>settings</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type"><a
+                                href="global.html#settingsDialogueType">settingsDialogueType</a></span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last"></td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>options</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">object</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="description last">Custom options for the Blockly editor. Ffau will apply some default
+                        options if this is not specified.
+                    </td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="ffau.js.html">ffau.js</a>, <a href="ffau.js.html#line401">line 401</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5>Returns:</h5>
+
+
+            <dl>
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">*</span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="renderCode"><span class="type-signature"></span>renderCode<span class="signature">(ace, frame, aceTheme<span
+                    class="signature-attributes">opt</span>)</span><span class="type-signature"> &rarr; {object}</span>
+            </h4>
+
+
+            <div class="description">
+                Render the code preview
+            </div>
+
+
+            <h5>Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th>Attributes</th>
+
+
+                    <th>Default</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>ace</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">object</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+
+                    </td>
+
+
+                    <td class="default">
+
+                    </td>
+
+
+                    <td class="description last">The imported ace variable from the Ace library</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>frame</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">HTMLElement</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+
+                    </td>
+
+
+                    <td class="default">
+
+                    </td>
+
+
+                    <td class="description last">The frame to put the editor in</td>
+                </tr>
+
+
+                <tr>
+
+                    <td class="name"><code>aceTheme</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="attributes">
+
+                        &lt;optional><br>
+
+
+                    </td>
+
+
+                    <td class="default">
+
+                        ace/theme/textmate
+
+                    </td>
+
+
+                    <td class="description last">The theme to use for Ace</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="ffau.js.html">ffau.js</a>, <a href="ffau.js.html#line528">line 528</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5>Returns:</h5>
+
+
+            <div class="param-desc">
+                - The editor object (you can call functions on this to customise Ace)
+            </div>
+
+
+            <dl>
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">object</span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="renderPreview"><span class="type-signature"></span>renderPreview<span
+                    class="signature">(frame)</span><span class="type-signature"> &rarr; {HTMLElement}</span></h4>
+
+
+            <div class="description">
+                Render the iframe preview
+            </div>
+
+
+            <h5>Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>frame</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">HTMLElement</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The frame to put the preview in</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="ffau.js.html">ffau.js</a>, <a href="ffau.js.html#line480">line 480</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h5>Returns:</h5>
+
+
+            <div class="param-desc">
+                - The generated iframe
+            </div>
+
+
+            <dl>
+                <dt>
+                    Type
+                </dt>
+                <dd>
+
+                    <span class="param-type">HTMLElement</span>
+
+
+                </dd>
+            </dl>
+
+
+            <h4 class="name" id="setTheme"><span class="type-signature"></span>setTheme<span
+                    class="signature">(theme)</span><span class="type-signature"></span></h4>
+
+
+            <div class="description">
+                Set the theme of the Ffau
+            </div>
+
+
+            <h5>Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>theme</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type"><a href="global.html#ffauTheme">ffauTheme</a></span>
+
+
+                    </td>
+
+
+                    <td class="description last">the name of the theme</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="ffau.js.html">ffau.js</a>, <a href="ffau.js.html#line497">line 497</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+            <h4 class="name" id="setXML"><span class="type-signature"></span>setXML<span
+                    class="signature">(xmlString)</span><span class="type-signature"></span></h4>
+
+
+            <div class="description">
+                Set the Blockly workspace to a specified XML string
+            </div>
+
+
+            <h5>Parameters:</h5>
+
+
+            <table class="params">
+                <thead>
+                <tr>
+
+                    <th>Name</th>
+
+
+                    <th>Type</th>
+
+
+                    <th class="last">Description</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+
+                <tr>
+
+                    <td class="name"><code>xmlString</code></td>
+
+
+                    <td class="type">
+
+
+                        <span class="param-type">string</span>
+
+
+                    </td>
+
+
+                    <td class="description last">The XML string to use</td>
+                </tr>
+
+
+                </tbody>
+            </table>
+
+
+            <dl class="details">
+
+
+                <dt class="tag-source">Source:</dt>
+                <dd class="tag-source">
+                    <ul class="dummy">
+                        <li>
+                            <a href="ffau.js.html">ffau.js</a>, <a href="ffau.js.html#line631">line 631</a>
+                        </li>
+                    </ul>
+                </dd>
+
+
+            </dl>
+
+
+        </article>
+
+    </section>
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2>
+    <h3>Classes</h3>
+    <ul>
+        <li><a href="Ffau.html">Ffau</a></li>
+    </ul>
+    <h3><a href="global.html">Global</a></h3>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> on Sun Oct 20 2019 16:15:00
+    GMT+0100 (GMT Summer Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

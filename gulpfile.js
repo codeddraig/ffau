@@ -105,11 +105,8 @@ function compileStyles(cb) {
                                                 if (selectorSplit[w + 1].split("").every(c => selectorChars.includes(c))) {
                                                     newSelectorSplit.push([v, selectorSplit[w + 1]]);
                                                     skip = true;
-                                                } else
-                                                    newSelectorSplit.push([v]);
-                                            else
-                                                newSelectorSplit.push([v]);
-                                        else
+                                                }
+                                    if (!skip)
                                             newSelectorSplit.push([v]);
                                     else
                                         skip = false;
