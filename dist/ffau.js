@@ -208,9 +208,9 @@ class Ffau {
      * Add the settings popout to the Blockly container
      *
      * @param {settingsDialogueType} settings
-     * @param {number} [autoclose] - 0 means no auto-close, 1 means auto-close if focus shifts to elsewhere in editor, 2 means auto-close if focus shifts outside of editor, and 2 means to auto-close if focus leaves settings menu.
+     * @param {number} [autoClose] - 0 means no auto-close, 1 means auto-close if focus shifts to elsewhere in editor, 2 means auto-close if focus shifts outside of editor, and 2 means to auto-close if focus leaves settings menu.
      **/
-    addSettings(settings, autoclose) {
+    addSettings(settings, autoClose) {
         if (this.hasSettings)
             this.removeSettings();
 
@@ -364,7 +364,7 @@ class Ffau {
         let workspace = this.workspaceDiv.getElementsByClassName("injectionDiv")[0];
         workspace.prepend(settingsWindow);
 
-        switch (autoclose) {
+        switch (autoClose) {
             case 1:
                 window.addEventListener('click', (event) => {
                     if (!event.path.includes(settingsWindow) && event.path.includes(this.workspaceDiv))

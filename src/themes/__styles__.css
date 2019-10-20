@@ -19,7 +19,10 @@
 
 .cog-icon {
     color: rgba(0, 0, 0, 0.3);
-    transition: color 120ms ease-in 95ms, transform 300ms ease-out, -webkit-transform 300ms ease-out;
+    transition:
+            color 120ms ease-in 95ms,
+            transform 300ms ease-out,
+            -webkit-transform 300ms ease-out;
 }
 
 .settings-button.closed:hover > .cog-icon {
@@ -55,14 +58,24 @@
     z-index: 251;
     top: -26px;
     background-color: rgba(117, 117, 117, 0.4);
-    padding: 2px 10px 2px 5px;
+
+    padding-left: 5px;
+    padding-right: 10px;
+
     border-radius: 10px 0 0 10px;
     cursor: pointer;
+
     transform: rotate(0);
-    transition: background-color 90ms linear,
-    padding-right 90ms cubic-bezier(0.21, 0.9, 0.88, 0.72),
-    left 90ms cubic-bezier(0.21, 0.9, 0.88, 0.72),
-    border-radius 1ms linear 20ms;
+    transition:
+            background-color 90ms linear,
+            padding-right 90ms cubic-bezier(0.21, 0.9, 0.88, 0.72),
+            left 90ms cubic-bezier(0.21, 0.9, 0.88, 0.72),
+            border-radius 1ms linear 20ms;
+
+    height: 26px !important;
+
+    display: flex;
+    align-items: center;
 }
 
 .settings-window {
@@ -89,10 +102,12 @@
 }
 
 .settings-button.opening, .settings-button.opening:hover {
-    transition: background-color 90ms linear 95ms,
-    padding-right 145ms cubic-bezier(0.42, 0.11, 0.5, 1),
-    left 95ms cubic-bezier(0.42, 0.11, 0.5, 1) 20ms,
-    border-radius 1ms linear 20ms;
+    transition:
+            background-color 90ms linear 95ms,
+            padding-right 145ms cubic-bezier(0.42, 0.11, 0.5, 1),
+            left 95ms cubic-bezier(0.42, 0.11, 0.5, 1) 20ms,
+            border-radius 1ms linear 20ms;
+
     right: 0 !important;
     padding-right: 100px !important;
 }
