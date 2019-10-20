@@ -44,7 +44,7 @@ class Ffau {
      */
 
     /**
-     * @typedef {Object[]} settingsParam - Customisable options to be loaded into settings flyout.
+     * @typedef {Object[]} settingsDialogueType - Customisable options to be loaded into settings flyout.
      * @param {string} settings[].label - The label of the setting; the text to be displayed above it
      * @param {string} settings[].name - The internal name of the setting. Can be used to refer to it when manually setting its value.
      * @param {settingsType} settings[].type - The format type of the setting
@@ -81,26 +81,41 @@ class Ffau {
     }
 
     updateSettings(updaters) {
-        let updateList = Array.from(Object.keys(updaters));
-        updateList.forEach(e => {
-            let settingIndex = -1;
-            this.settings.forEach((s, i) => {
-                if (s.name === e) {
-                    settingIndex = i;
+        if (this.hasSettings) {
+            let updateList = Array.from(Object.keys(updaters));
+            updateList.forEach(e => {
+                let settingIndex = -1;
+                this.settings.forEach((s, i) => {
+                    if (s.name === e) {
+                        settingIndex = i;
+                    }
+                });
+
+                if (settingIndex === -1) {
+                    console.warn("Setting `" + e + "` is not defined; skipping.")
+                } else {
+                    this.settings[settingIndex].value = updaters[e];
+                    this.settings[settingIndex].propagateValue(updaters[e]);
+                    this.settings[settingIndex].callback(updaters[e]);
                 }
             });
-
-            if (settingIndex === -1) {
-                console.warn("Setting `" + e + "` is not defined; skipping.")
-            } else {
-                this.settings[settingIndex].value = updaters[e];
-                this.settings[settingIndex].propagateValue(updaters[e]);
-                this.settings[settingIndex].callback(updaters[e]);
-            }
-        });
+        }
     }
 
-    openSettingsMenu() {
+    /**
+     * Open the settings dialogue (if it exists)
+     *
+     * @param {boolean} [force] - Force the animation or not (default false) - if false, if the window is already open nothing will happen. Otherwise, the animation will play assuming the window was closed.
+     */
+    openSettingsMenu(force) {
+        if (!this.settingsDiv) {
+            console.warn("Cannot open settings dialogue as it has not yet been initialised.");
+            return false;
+        }
+
+        if (!force && this.settingsOpen)
+            return true;
+
         let popout = this.workspaceDiv.getElementsByClassName("settings-button")[0];
         let settingsWindow = this.workspaceDiv.getElementsByClassName("settings-window")[0];
         let settingsWindowFiller = this.workspaceDiv.getElementsByClassName("settings-window-filler")[0];
@@ -125,10 +140,24 @@ class Ffau {
             settingsWindowFiller.classList.add('open');
 
             popout.style.paddingRight = "";
+            this.settingsOpen = true;
         }, 120);
     }
 
-    closeSettingsMenu() {
+    /**
+     * Close the settings dialogue (if it exists)
+     *
+     * @param {boolean} [force] - Force the animation or not (default false) - if false, if the window is already closed nothing will happen. Otherwise, the animation will play assuming the window was open.
+     */
+    closeSettingsMenu(force) {
+        if (!this.settingsDiv) {
+            console.warn("Cannot close settings dialogue as it has not yet been initialised.");
+            return false;
+        }
+
+        if (!force && !this.settingsOpen)
+            return true;
+
         let popout = this.workspaceDiv.getElementsByClassName("settings-button")[0];
         let settingsWindow = this.workspaceDiv.getElementsByClassName("settings-window")[0];
         let settingsWindowFiller = this.workspaceDiv.getElementsByClassName("settings-window-filler")[0];
@@ -149,23 +178,44 @@ class Ffau {
             popout.classList.add('closed');
             settingsWindow.classList.add('closed');
             settingsWindowFiller.classList.add('closed');
+
+            this.settingsOpen = false;
         }, 220);
+    }
+
+    /**
+     * Removes the settings menu, or returns false if settings menu does not exist.
+     *
+     * @returns {boolean} success
+     */
+    removeSettings() {
+        if (this.hasSettings) {
+            this.settingsDiv.parentNode.removeChild(this.settingsDiv);
+
+            delete this.settingsDiv;
+            delete this.settings;
+            delete this.settingsOpen;
+
+            this.hasSettings = false;
+            return true;
+        } else {
+            console.warn("Cannot delete settings dialogue as it has not yet been initialised.");
+            return false;
+        }
     }
 
     /**
      * Add the settings popout to the Blockly container
      *
-     * @param {settingsParam} settings
+     * @param {settingsDialogueType} settings
+     * @param {number} [autoclose] - 0 means no auto-close, 1 means auto-close if focus shifts to elsewhere in editor, 2 means auto-close if focus shifts outside of editor, and 2 means to auto-close if focus leaves settings menu.
      **/
-    addSettings(settings) {
-        if (document.getElementById("blockly-settings")) {
-            document.getElementById("blockly-settings").parentNode
-                .removeChild(document.getElementById("blockly-settings"));
-            console.warn("Removed pre-existing `blockly-settings` dialogue. Only one settings dialogue is supported" +
-                "per Ffau, and only one Ffau can have a settings dialogue on a given page!");
-        }
+    addSettings(settings, autoclose) {
+        if (this.hasSettings)
+            this.removeSettings();
 
         this.settings = [];
+        this.hasSettings = true;
 
         this.workspaceDiv.getElementsByClassName("blocklyScrollbarBackground")[0].style.zIndex = "249";
         this.workspaceDiv.getElementsByClassName("blocklyScrollbarHandle")[0].style.zIndex = "250";
@@ -176,7 +226,7 @@ class Ffau {
 
         let settingsWindow = document.createElement("div");
         settingsWindow.className = "settings-window closed";
-        settingsWindow.id = "blockly-settings";
+        this.settingsDiv = settingsWindow;
 
         let settingsWindowFiller = document.createElement("div");
         settingsWindowFiller.className = "settings-window-filler closed";
@@ -187,11 +237,10 @@ class Ffau {
         settingsWindowFiller.appendChild(settingsHeader);
 
         popout.addEventListener('click', () => {
-            if (popout.classList.contains('closed')) {
-                this.openSettingsMenu()
-            } else {
-                this.closeSettingsMenu()
-            }
+            if (popout.classList.contains('closed'))
+                this.openSettingsMenu();
+            else
+                this.closeSettingsMenu();
         });
 
         settingsWindow.appendChild(settingsWindowFiller);
@@ -219,15 +268,13 @@ class Ffau {
                         elem.appendChild(optionElem);
                     });
 
-                    if (setting.default) {
+                    if (setting.default)
                         elem.value = setting.default;
-                    }
 
                     elem.onchange = () => {
                         this.settings.forEach((e, i) => {
-                            if (e.name === setting.label) {
+                            if (e.name === setting.label)
                                 this.settings[i].value = elem.value;
-                            }
                         });
                         setting.callback(elem.value);
                     };
@@ -259,9 +306,8 @@ class Ffau {
 
                     checkboxInput.onclick = () => {
                         this.settings.forEach((e, i) => {
-                            if (e.name === setting.label) {
+                            if (e.name === setting.label)
                                 this.settings[i].value = checkboxInput.checked;
-                            }
                         });
                         setting.callback(checkboxInput.checked);
                     };
@@ -284,9 +330,8 @@ class Ffau {
 
                     elem.onchange = () => {
                         this.settings.forEach((e, i) => {
-                            if (e.name === setting.label) {
+                            if (e.name === setting.label)
                                 this.settings[i].value = parseInt(elem.value);
-                            }
                         });
                         setting.callback(parseInt(elem.value));
                     };
@@ -319,11 +364,26 @@ class Ffau {
         let workspace = this.workspaceDiv.getElementsByClassName("injectionDiv")[0];
         workspace.prepend(settingsWindow);
 
-        window.addEventListener('click', (event) => {
-            if (!event.path.includes(settingsWindow) && settingsWindow.classList.contains("open")) {
-                this.closeSettingsMenu();
-            }
-        });
+        switch (autoclose) {
+            case 1:
+                window.addEventListener('click', (event) => {
+                    if (!event.path.includes(settingsWindow) && event.path.includes(this.workspaceDiv))
+                        this.closeSettingsMenu();
+                });
+                break;
+            case 2:
+                window.addEventListener('click', (event) => {
+                    if (!event.path.includes(this.workspaceDiv))
+                        this.closeSettingsMenu();
+                });
+                break;
+            case 3:
+                window.addEventListener('click', (event) => {
+                    if (!event.path.includes(settingsWindow))
+                        this.closeSettingsMenu();
+                });
+                break;
+        }
     }
 
     /**
@@ -333,7 +393,7 @@ class Ffau {
      * @param {HTMLElement} toolbox - The XML toolbox
      *
      * @param {string} theme - The name of the theme to initiate Blockly with.
-     * @param {settingsParam} [settings]
+     * @param {settingsDialogueType} [settings]
      *
      * @param {object} [options] - Custom options for the Blockly editor. Ffau will apply some default options if this is not specified.
      * @returns {*}

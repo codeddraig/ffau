@@ -153,7 +153,9 @@ Here's an example using all Ffau components and three blocks:
                 });
             }
         }
-    ]);
+    ], 
+        1 // Set loose auto-closing (auto-close settings menu if focus is shifted to elsewhere in editor)
+    );
 
 
     // renders iframe preview
