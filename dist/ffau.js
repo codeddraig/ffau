@@ -438,7 +438,7 @@ class Ffau {
         if (settings)
             this.addSettings(settings);
 
-        this.setTheme(theme);
+        this.setTheme(theme || "panda");
 
         // Return workspace info
         return this.ffauWorkspace;

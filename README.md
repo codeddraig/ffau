@@ -181,13 +181,15 @@ You can find documentation for all functions in the `Ffau` class at https://code
 
 ## Customisation
 
-If you wish to customise the styles of the Ffau, this can be done using the [Gulp](https://gulpjs.com/) builder which compiles all of your semantic files (for each theme) into a single, minified master CSS file to reduce the number of files you have to import manually.
+If you wish to customise the styles of the Ffau, this can be done using the [Gulp](https://gulpjs.com/) builder which compiles all of your semantic files (for each theme) into a single, partially-minified master CSS file to reduce the number of files you have to import manually.
 
 The raw source files for the themes can be found in `src/themes`. Any file given a name pre- and proceeded by double underscores, such as `__my_css_file__.css` ('global stylesheets') will simply be minified, given a header and otherwise left untouched in the compiled file. Any file without the underscores will be assumed to be a Ffau theme file. The name of the theme, when referenced by the Ffau JS library, will be the name of the file. For example, if you make a file `src/themes/my_theme.css`, you will then be able to do `ffau.setTheme("my_theme")` in your script.
 
 Once you are done with your editing, compile all of the styles by running the command `gulp` from the project root. This should run in less than 20ms, and place the output file `ffau.css` into `./dist`. 
 
 #### (Current) limitations
+    
+* The minification is less than ideal. This is not a priority, since the minification is not a crucial effect of the builder, but it is to be noted.
 
 * Global stylesheets have a lower precedence than style files, unless `!important` or other manual priorities are stated.
 
