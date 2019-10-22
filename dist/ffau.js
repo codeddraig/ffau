@@ -594,6 +594,56 @@ class Ffau {
     }
 
     /**
+     * Converts the code string into a Blockly XML string
+     *
+     * @param {string} code - the HTML source
+     * @returns {string} - the Blockly XML
+     */
+    codeToXML(code) {
+        let parallelTree = document.createElement("xml");
+        parallelTree.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
+
+        let tempId = Math.floor(Math.random() * 100000).toString();
+        while (code.indexOf(tempId) > -1)
+            tempId = Math.floor(Math.random() * 100000).toString();
+
+        let bodifiedCode = (" " + code)
+            .split(/((?<=[^\\]|^)(("((\\")|[^"])*[^\\]")|('((\\')|[^'])*[^\\]')))|((?<=([^\\]>)|^)((\\<)|([^<]))*[^\\](?=<))/g)
+            .filter((_, z) => z % 14 === 0 || (_ && (z % 14 === 1 || z % 14 === 9)))
+            .map((v, i) =>
+                i % 2 === 0 ?
+                    (!i ? v.substr(1) : v)
+                        .toLowerCase()
+                        .replace(/<\/?((html)|(head)|(body)|(style)|(base)|(link)|(meta)|(script)|(noscript))/,
+                            `$&Tag${tempId}`)
+                        .replace("<!DOCTYPE html>", "<doctypeTag></doctypeTag>")
+                    : v
+            )
+            .filter((_, z) => z ? z === 1 ? _ !== " " : true : _)
+            .join('');
+
+        console.log(bodifiedCode);
+
+        let domParser = new DOMParser();
+        let parsedHTML = domParser.parseFromString(bodifiedCode, "text/html").body;
+
+        console.log(parsedHTML);
+
+        const reconstruct = (parent) => {
+            Array.from(parent.childNodes).forEach(child => {
+                switch (child.nodeName) {
+
+                }
+
+                if (child.childNodes.length)
+                    reconstruct(child)
+            });
+        };
+
+        reconstruct(parsedHTML);
+    }
+
+    /**
      * Return the XML block code in string format
      *
      * @returns {string}
