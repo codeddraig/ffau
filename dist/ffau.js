@@ -529,9 +529,10 @@ class Ffau {
      * @param {object} ace - The imported ace variable from the Ace library
      * @param {HTMLElement} frame - The frame to put the editor in
      * @param {string} [aceTheme=ace/theme/textmate] - The theme to use for Ace
+     * @param {boolean} [readOnly] - Should the editor be read only?
      * @returns {object} - The editor object (you can call functions on this to customise Ace)
      */
-    renderCode(ace, frame, aceTheme) {
+    renderCode(ace, frame, aceTheme, readOnly) {
         // set the id to the current ID or a random one
         frame.id = Ffau.generateID(frame, 'ace');
 
@@ -546,7 +547,7 @@ class Ffau {
 
         // set other ace options
         editor.session.setMode("ace/mode/html");
-        editor.setReadOnly(true);
+        editor.setReadOnly(readOnly === undefined ? true : readOnly);
         editor.setValue("");
 
         // save editor for use in event listener
@@ -555,32 +556,39 @@ class Ffau {
     }
 
     /**
-     * Add the event listener for Blockly to generate a preview and code
+     * Add an event listener to Blockly or Ace to generate a preview and code
      *
-     * @param {function} customFunction - a function to execute at the end of the change event. Gets passed the scope as a parameter.
+     * @param {function} [customFunction] - a function to execute at the end of the change event. Gets passed the scope as a parameter.
+     * @param [scope] - whether to apply the event to "blockly" or "ace" (default "blockly")
+     * @param [event] - the name of the event (e.g "change") to trigger the callback on - required if `scope === "ace"`, is ignored otherwise
      */
-    addEvent(customFunction) {
+    addEvent(customFunction, scope, event) {
+        if (scope === "blockly" || !scope)
         // add listener to workspace
-        this.ffauWorkspace.addChangeListener(function () {
-            // generate the code using htmlGen from generator.js
-            let code = htmlGen.workspaceToCode(this.ffauWorkspace);
+            this.ffauWorkspace.addChangeListener(function () {
+                // generate the code using htmlGen from generator.js
+                let code = htmlGen.workspaceToCode(this.ffauWorkspace);
 
-            // if ace has been initialised (doesn't have to be)
-            if (this.editor) {
-                // set the ace editor value
-                this.editor.setValue(code, -1 /* set the cursor to -1 to stop highlighting everything */);
-            }
+                // if ace has been initialised (doesn't have to be)
+                if (this.editor) {
+                    // set the ace editor value
+                    this.editor.setValue(code, -1 /* set the cursor to -1 to stop highlighting everything */);
+                }
 
-            // if iframe has been initialised
-            if (this.iframe) {
-                this.iframe.src = "data:text/html;charset=utf-8," + encodeURIComponent(code);
-            }
+                // if iframe has been initialised
+                if (this.iframe) {
+                    this.iframe.src = "data:text/html;charset=utf-8," + encodeURIComponent(code);
+                }
 
-            if (typeof customFunction === "function") {
-                customFunction(this);
-            }
+                if (typeof customFunction === "function") {
+                    customFunction(this);
+                }
 
-        }.bind(this) /* bind parent scope */);
+            }.bind(this) /* bind parent scope */);
+        else if (scope === "ace")
+            this.editor.container.addEventListener(event, customFunction);
+        else
+            console.warn("Scope `" + scope + "` is not one of ['blockly', 'ace']")
     }
 
     /**
@@ -600,6 +608,10 @@ class Ffau {
      * @returns {string} - the Blockly XML
      */
     codeToXML(code) {
+        function idGen() {
+            return Array(20).fill(0).map(() => [..."`0123456789!£$%^&*()_-+=;@}]{[#~.>,<?|:;", ...[..."abcdefghijklmnopqrstuvwxyz"].map(z => [z, z.toUpperCase()]).flat()][Math.floor(Math.random() * 81)]).join('')
+        }
+
         let parallelTree = document.createElement("xml");
         parallelTree.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
 
@@ -614,7 +626,7 @@ class Ffau {
                 i % 2 === 0 ?
                     (!i ? v.substr(1) : v)
                         .toLowerCase()
-                        .replace(/<\/?((html)|(head)|(body)|(style)|(base)|(link)|(meta)|(script)|(noscript))/,
+                        .replace(/<\/?((html)|(head)|(body)|(style)|(base)|(link)|(meta)|(script)|(noscript))/g,
                             `$&Tag${tempId}`)
                         .replace("<!DOCTYPE html>", "<doctypeTag></doctypeTag>")
                     : v
@@ -629,18 +641,45 @@ class Ffau {
 
         console.log(parsedHTML);
 
-        const reconstruct = (parent) => {
+        const reconstruct = (parent, parallelParent) => {
+            let parallelChildren = [];
             Array.from(parent.childNodes).forEach(child => {
+                let newNode;
+                let childrenContainer;
                 switch (child.nodeName) {
+                    case `HEADTAG${tempId}`:
+                        newNode = document.createElement("block");
+                        newNode.setAttribute("type", "head");
+                        newNode.setAttribute("id", idGen());
 
+                        childrenContainer = document.createElement("statement");
+                        childrenContainer.setAttribute("name", "content");
+
+                        newNode.appendChild(childrenContainer);
+                        break;
                 }
 
                 if (child.childNodes.length)
-                    reconstruct(child)
+                    reconstruct(child, childrenContainer);
+
+                parallelChildren.push(newNode);
+            });
+
+            let newParent = parallelParent;
+            parallelChildren.forEach((child, i) => {
+                newParent.appendChild(child);
+
+                if (i < parallelChildren.length - 1) {
+                    let v = document.createElement("next");
+                    child.appendChild(v);
+                    newParent = v;
+                }
             });
         };
 
-        reconstruct(parsedHTML);
+        reconstruct(parsedHTML, parallelTree);
+
+        return parallelTree.outerHTML;
     }
 
     /**
