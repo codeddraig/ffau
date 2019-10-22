@@ -586,7 +586,10 @@ class Ffau {
 
             }.bind(this) /* bind parent scope */);
         else if (scope === "ace")
-            this.editor.container.addEventListener(event, customFunction);
+            if (event)
+                this.editor.container.addEventListener(event, customFunction);
+            else
+                this.editor.getSession().on('change', customFunction);
         else
             console.warn("Scope `" + scope + "` is not one of ['blockly', 'ace']")
     }
@@ -634,12 +637,8 @@ class Ffau {
             .filter((_, z) => z ? z === 1 ? _ !== " " : true : _)
             .join('');
 
-        console.log(bodifiedCode);
-
         let domParser = new DOMParser();
         let parsedHTML = domParser.parseFromString(bodifiedCode, "text/html").body;
-
-        console.log(parsedHTML);
 
         const reconstruct = (parent, parallelParent) => {
             let parallelChildren = [];
@@ -667,7 +666,10 @@ class Ffau {
 
             let newParent = parallelParent;
             parallelChildren.forEach((child, i) => {
-                newParent.appendChild(child);
+                if (child)
+                    newParent.appendChild(child);
+                else
+                    return false;
 
                 if (i < parallelChildren.length - 1) {
                     let v = document.createElement("next");

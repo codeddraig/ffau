@@ -508,18 +508,6 @@
 
     ffau.addEvent(); // Bind default update events
 
-    ffau.addEvent(() => { // Bind custom reverse-coding event
-        let newXML;
-
-        try {
-            newXML = ffau.codeToXML(ffau.editor.getValue()); // Ffau.codeToXML errors with invalid code
-        } catch (TypeError) {
-            newXML = ffau.generateXML(); // If there's an error, just use old XML
-        }
-
-        ffau.setXML(newXML);
-    }, "ace", "keydown");
-
     ffau.addSettings([
         {
             name: "theme",
