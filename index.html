@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 
-<!--		Ffau - A blocky-based editor for teaching HTML, CSS and Javascript.
+<!--		Ffau - A Blockly-based editor for teaching HTML, CSS and Javascript.
 
 				Developed by Pal Kerecsenyi, Geza Kerecsenyi and Oli Plant.
-				Full details are avaliable at the Github repo: https://github.com/codeddraig/ffau
+				Full details are available at the Github repo: https://github.com/codeddraig/ffau
 				Ffau editor will not work without its libraries. The best way to get all
-					off thi data at once is to grab the latest release version from the
+					of this data at once is to grab the latest release version from the
 					Github repo.
 				Ffau is open source software. This means you can re-mix, share and use
 					it however you want, including for commercial purposes. However, you
@@ -27,34 +27,33 @@
     <script defer src="library/fontawesome/all.js"></script>
 
     <!-- google's blockly stuff first -->
-    <script src="library/blockly/google-blockly/blockly_compressed.js"></script>
-    <script src="library/blockly/google-blockly/msg/js/en.js"></script>
+    <script src="blockly/blockly_compressed.js"></script>
+    <script src="blockly/msg/js/en.js"></script>
 
     <!-- jquery -->
     <script src="library/jquery/jquery-3.2.1.js"></script>
 
     <!-- our blockly tweaks -->
-    <script src="library/blockly/html/blocks.js"></script>
-    <script src="library/blockly/html/generator.js"></script>
+    <script src="library/ffau/blocks.js"></script>
+    <script src="library/ffau/generator.js"></script>
 
     <!-- ace editor -->
-    <script src="library/ace/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script charset="utf-8" src="library/ace/src-noconflict/ace.js" type="text/javascript"></script>
 
     <!-- ffau js file -->
     <script src="dist/ffau.js"></script>
     <!-- ffau css file -->
-    <link rel="stylesheet" href="dist/ffau.css">
+    <link href="dist/ffau.css" rel="stylesheet">
 
     <!-- tab switcher -->
     <script src="library/index.js"></script>
 
     <!-- aesthetic CSS libraries -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/magical-css@0.7.2/dist/magic.min.css">
-    <link type="text/css" rel="stylesheet" href="library/layout.css"/>
-    <link rel="stylesheet" type="text/css" href="library/scroll/scrollbars.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/magical-css@0.7.2/dist/magic.min.css" rel="stylesheet">
+    <link href="library/layout.css" rel="stylesheet" type="text/css"/>
     <!-- /HEADER LIBRARIES -->
     <!--Let browser know website is optimized for mobile-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Ffau Editor</title>
 </head>
 
@@ -66,7 +65,13 @@
     </ul>
     <ul class="nav-right">
         <li class="nav-item">
-            <a onclick="saveCode()" href="#!">
+            <a href="#!" onclick="resetTheme()">
+                <i class="fas fa-redo-alt"></i> Reset theme
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a href="#!" onclick="saveCode()">
                 <i class="fas fa-download"></i> Download
             </a>
         </li>
@@ -80,10 +85,10 @@
             </a>
         </li>
 
-        <input class="load" onchange="uploadCode()" id="loadText" type="file" style="display:none;">
+        <input class="load" id="loadText" onchange="uploadCode()" style="display:none;" type="file">
 
         <li class="nav-item">
-            <a onclick="clearCode()" href="#!">
+            <a href="#!" onclick="clearCode()">
                 <i class="fas fa-trash"></i> Clear Workspace
             </a>
         </li>
@@ -111,7 +116,7 @@
         <div class="col col7">
             <div id="blocklyDiv" style="height: 480px;"></div>
         </div>
-        <div id="preview" class="col col5">
+        <div class="col col5" id="preview">
             <div class="breadcrumb bottom">
                 <ul>
                     <li><a href="#!" onclick="showMePreview()">Preview</a></li>
@@ -132,8 +137,8 @@
 </footer>
 
 <xml id="toolbox" style="display: none;">
-    <category name="Structure" colour="210">
-        <category name="Page" colour="210">
+    <category colour="210" name="Structure">
+        <category colour="210" name="Page">
             <block type="html">
                 <value name="content">
                     <block type="body"></block>
@@ -158,7 +163,7 @@
             <block type="headertag"></block>
             <block type="footertag"></block>
         </category>
-        <category name="Layout" colour="210">
+        <category colour="210" name="Layout">
             <block type="divider"></block>
 
             <block type="divider">
@@ -176,7 +181,7 @@
         </category>
     </category>
 
-    <category name="Modifiers" colour="120">
+    <category colour="120" name="Modifiers">
         <block type="args"></block>
 
         <block type="args">
@@ -198,15 +203,15 @@
         <block type="emptyarg"></block>
     </category>
 
-    <category name="Style" colour="290">
-        <category name="Structure" colour="290">
+    <category colour="290" name="Style">
+        <category colour="290" name="Structure">
             <block type="style"></block>
             <block type="stylearg"></block>
             <block type="linkhead"></block>
             <block type="cssitem"></block>
         </category>
-        <category name="Items" colour="290">
-            <category name="Text" colour="290">
+        <category colour="290" name="Items">
+            <category colour="290" name="Text">
                 <label text="Font"></label>
                 <block type="fontfamily"></block>
                 <block type="fontsize"></block>
@@ -230,7 +235,7 @@
                 <block type="letterspacing"></block>
             </category>
 
-            <category name="Arrangement" colour="290">
+            <category colour="290" name="Arrangement">
                 <label text="Display"></label>
                 <block type="margin"></block>
                 <block type="padding"></block>
@@ -244,7 +249,7 @@
                 <block type="widthheight"></block>
             </category>
 
-            <category name="Design" colour="290">
+            <category colour="290" name="Design">
                 <label text="Colours"></label>
                 <block type="color_picker"></block>
                 <block type="hex_picker"></block>
@@ -270,7 +275,7 @@
                 </block>
             </category>
 
-            <category name="Borders" colour="290">
+            <category colour="290" name="Borders">
                 <block type="border-new">
                     <value name="color">
                         <block type="color_picker"></block>
@@ -285,7 +290,7 @@
                 <block type="borderrad"></block>
             </category>
 
-            <category name="Transitions" colour="270">
+            <category colour="270" name="Transitions">
                 <block type="transition">
                     <value name="timing-function">
                         <block type="transitiontimingdropdown"></block>
@@ -302,7 +307,7 @@
         </category>
     </category>
     <sep></sep>
-    <category name="Text" colour="65">
+    <category colour="65" name="Text">
         <block type="emptytext"></block>
         <block type="span">
             <value name="content">
@@ -330,8 +335,8 @@
             </value>
         </block>
     </category>
-    <category name="Organisation" colour="20">
-        <category name="Tables" colour="20">
+    <category colour="20" name="Organisation">
+        <category colour="20" name="Tables">
             <block type="table">
                 <value name="content">
                     <block type="tablerow"></block>
@@ -355,7 +360,7 @@
                 </value>
             </block>
         </category>
-        <category name="Lists" colour="20">
+        <category colour="20" name="Lists">
             <block type="unorderedlist">
                 <value name="content">
                     <block type="listitem">
@@ -380,7 +385,7 @@
                 </value>
             </block>
         </category>
-        <category name="Summary" colour="20">
+        <category colour="20" name="Summary">
             <block type="details"></block>
             <block type="summary">
                 <value name="content">
@@ -389,7 +394,7 @@
             </block>
         </category>
     </category>
-    <category name="Forms" colour="160">
+    <category colour="160" name="Forms">
         <block type="form"></block>
         <block type="input"></block>
         <block type="label">
@@ -398,7 +403,7 @@
             </value>
         </block>
     </category>
-    <category name="Media" colour="330">
+    <category colour="330" name="Media">
         <block type="image"></block>
         <block type="audio"></block>
         <block type="video"></block>
@@ -406,8 +411,8 @@
 
     <sep></sep>
 
-    <category name="Snippets" colour="#ff7575">
-        <category name="Google Charts" colour="#ff7575">
+    <category colour="#ff7575" name="Snippets">
+        <category colour="#ff7575" name="Google Charts">
             <block type="chart">
                 <value name="data">
                     <block type="chart_row">
@@ -472,7 +477,7 @@
             <block type="chart_column"></block>
         </category>
 
-        <category name="Gumshoe (scrollspy)" colour="#ff7575">
+        <category colour="#ff7575" name="Gumshoe (scrollspy)">
             <block type="scrollspy"></block>
         </category>
     </category>
@@ -484,7 +489,8 @@
     // initialise blockly
     ffau.renderBlockly(
         document.getElementById('blocklyDiv'),
-        document.getElementById('toolbox')
+        document.getElementById('toolbox'),
+        "dark"
     );
 
     // render preview
@@ -495,14 +501,74 @@
     // render code
     ffau.renderCode(
         ace,
-        document.getElementById('code-output')
+        document.getElementById('code-output'),
+        "textmate"
     );
+
+    ffau.addSettings([
+        {
+            name: "theme",
+            label: "Theme",
+            type: "dropdown",
+            options: [
+                ["Panda", "panda"],
+                ["Dark", "dark"],
+                ["Light", "light"]
+            ],
+            callback: (value) => {
+                ffau.setTheme(value);
+            }
+        },
+        {
+            name: "ace_theme",
+            label: "Editor theme",
+            type: "dropdown",
+            default: "1",
+            options: [
+                ["Light", "0"],
+                ["Dark", "1"]
+            ],
+            callback: (value) => {
+                if (value === "0") {
+                    ffau.editor.setOptions({
+                        theme: "ace/theme/dawn"
+                    });
+                } else {
+                    ffau.editor.setOptions({
+                        theme: "ace/theme/tomorrow_night"
+                    });
+                }
+            }
+        },
+        {
+            name: "font_size",
+            label: "Ace font size",
+            type: "numeric",
+            default: "16",
+            callback: (value) => {
+                ffau.editor.setOptions({
+                    fontSize: value
+                });
+            }
+        }
+    ]);
 
     // add event listener
     ffau.addEvent();
 
+    function resetTheme() {
+        // reset the theme to the original
+        ffau.updateSettings({
+            random_setting: "test",
+            ace_theme: "1"
+        });
+    }
+
     function saveCode() {
         // download as text file with default name
+        ffau.updateSettings({
+            auto_save: false
+        });
         ffau.downloadXML();
     }
 

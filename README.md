@@ -99,8 +99,64 @@ Here's an example using all Ffau components and three blocks:
     // must come first, renders the Blockly interface
     ffau.renderBlockly(
         document.getElementById("blockly"), // container to put blockly in
-        document.getElementById("toolbox") // XML toolbox
+        document.getElementById("toolbox"), // XML toolbox
+        "panda", // Optional - the name of the theme to default to.
     );
+    
+    // Add settings dialogue - a button that appears on the right 
+    // hand side of the Ffau and opens into a window providing
+    // implementation-specific options and callbacks to update
+    // the linked options, e.g a theme switcher or auto-save toggle.
+    ffau.addSettings([
+        {
+            name: "theme",
+            label: "Theme",
+            type: "dropdown",
+            options: [
+                ["Panda", "panda"],
+                ["Dark", "dark"],
+                ["Light", "light"]
+            ],
+            callback: (value) => {
+                ffau.setTheme(value); // Set the theme for the Ffau editor
+            }
+        },
+        {
+            name: "ace_theme",
+            label: "Editor theme",
+            type: "dropdown",
+            default: "1",
+            options: [
+                ["Light", "0"],
+                ["Dark", "1"]
+            ],
+            callback: (value) => {         // Set the theme for the Ace editor
+                if (value === "0") {
+                    ffau.editor.setOptions({
+                        theme: "ace/theme/dawn"
+                    });
+                } else {
+                    ffau.editor.setOptions({
+                        theme: "ace/theme/tomorrow_night"
+                    });
+                }
+            }
+        },
+        {
+            name: "font_size",
+            label: "Ace font size",
+            type: "numeric",
+            default: "16",
+            callback: (value) => {         // Set Ace editor font size/demonstrate numeric input
+                ffau.editor.setOptions({
+                    fontSize: value
+                });
+            }
+        }
+    ], 
+        1 // Set loose auto-closing (auto-close settings menu if focus is shifted to elsewhere in editor)
+    );
+
 
     // renders iframe preview
     ffau.renderPreview(
@@ -121,7 +177,27 @@ Here's an example using all Ffau components and three blocks:
 </script>
 ```
 
-You can find documentation for all functions in the `Ffau` class at https://codeddraig.github.io/ffau/docs/Ffau.html.
+You can find documentation for all functions in the `Ffau` class at https://codeddraig.github.io/ffau/docs/Ffau.html. **More examples of further customisations can be found in [the example file](index.html)**, which includes further demonstrations of the settings dialogue and theme switching.
+
+## Customisation
+
+If you wish to customise the styles of the Ffau, this can be done using the [Gulp](https://gulpjs.com/) builder which compiles all of your semantic files (for each theme) into a single, partially-minified master CSS file to reduce the number of files you have to import manually.
+
+The raw source files for the themes can be found in `src/themes`. Any file given a name pre- and proceeded by double underscores, such as `__my_css_file__.css` ('global stylesheets') will simply be minified, given a header and otherwise left untouched in the compiled file. Any file without the underscores will be assumed to be a Ffau theme file. The name of the theme, when referenced by the Ffau JS library, will be the name of the file. For example, if you make a file `src/themes/my_theme.css`, you will then be able to do `ffau.setTheme("my_theme")` in your script.
+
+Once you are done with your editing, compile all of the styles by running the command `gulp` from the project root. This should run in less than 20ms, and place the output file `ffau.css` into `./dist`. 
+
+#### (Current) limitations
+    
+* The minification is less than ideal. This is not a priority, since the minification is not a crucial effect of the builder, but it is to be noted.
+
+* Global stylesheets have a lower precedence than style files, unless `!important` or other manual priorities are stated.
+
+* There is no feature, currently, to use manual class names that get replaced with their theme-ified versions. However, a workaround is to use the `.themify` selector, which will note to the builder to append the relevant theme selector, e.g `.themify .my-custom-class`. The settings dialogues can also be styled in this way, e.g `.themify .settings-button`.
+
+* Class names with escaped characters is **not** supported. The compiler will not crash, although some specific features like multi-class selectors (e.g `.write\&test.testing`) may be thrown off. There is no known available workaround.
+
+* The build operation will overwrite any pre-existing file of the same name without warning. If you are testing, save backups of the stylesheets if you are not using an IDE that supports history management/UNDO.
 
 ## Export
 Ffau can save your blocks to a text file in the browser (with the extension '.txt') and import them to re-assemble your blocks. Files exported from Ffau can be imported to CodeDragon (https://codedragon.org), and vice-versa.
