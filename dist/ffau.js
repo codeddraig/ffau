@@ -612,15 +612,15 @@ class Ffau {
      */
     codeToXML(code) {
         function idGen() {
-            return Array(20).fill(0).map(() => [..."`0123456789!£$%^&*()_-+=;@}]{[#~.>,<?|:;", ...[..."abcdefghijklmnopqrstuvwxyz"].map(z => [z, z.toUpperCase()]).flat()][Math.floor(Math.random() * 81)]).join('')
+            return Array(20).fill(0).map(() => [..."`0123456789{}!$./,()*[]`", ...[..."abcdefghijklmnopqrstuvwxyz"].map(z => [z, z.toUpperCase()]).flat()][Math.floor(Math.random() * 81)]).join('')
         }
 
         let parallelTree = document.createElement("xml");
         parallelTree.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
 
-        let tempId = Math.floor(Math.random() * 100000).toString();
+        let tempId = (Math.floor(Math.random() * 90000) + 10000).toString();
         while (code.indexOf(tempId) > -1)
-            tempId = Math.floor(Math.random() * 100000).toString();
+            tempId = (Math.floor(Math.random() * 90000) + 10000).toString();
 
         let bodifiedCode = (" " + code)
             .split(/((?<=[^\\]|^)(("((\\")|[^"])*[^\\]")|('((\\')|[^'])*[^\\]')))|((?<=([^\\]>)|^)((\\<)|([^<]))*[^\\](?=<))/g)
@@ -647,8 +647,11 @@ class Ffau {
                 let childrenContainer;
                 switch (child.nodeName) {
                     case `HEADTAG${tempId}`:
+                    case `HTMLTAG${tempId}`:
+                    case `BODYTAG${tempId}`:
+                    case `STYLETAG${tempId}`:
                         newNode = document.createElement("block");
-                        newNode.setAttribute("type", "head");
+                        newNode.setAttribute("type", child.nodeName.slice(0, -8).toLowerCase());
                         newNode.setAttribute("id", idGen());
 
                         childrenContainer = document.createElement("statement");
@@ -656,6 +659,61 @@ class Ffau {
 
                         newNode.appendChild(childrenContainer);
                         break;
+                }
+
+                let attributes = Array.from(child.attributes).map(e => [e.name, e.value]);
+                if (attributes.length) {
+                    let attrInput = document.createElement("value");
+                    attrInput.setAttribute("name", "modifier");
+
+                    let attrContainer = document.createElement("block");
+                    attrContainer.setAttribute("type", "args");
+                    attrContainer.setAttribute("id", idGen());
+
+                    let attrStatement = document.createElement("statement");
+                    attrStatement.setAttribute("name", "content");
+
+                    let attrParent = attrStatement;
+                    attributes.forEach((attr, z) => {
+                        let attrName = document.createElement("block");
+                        attrName.setAttribute("id", idGen());
+
+                        if (attr[0] === "class" || attr[0] === "id" || attr[0] === "align") {
+                            attrName.setAttribute("type", attr[0]);
+
+                            let attrValue = document.createElement("field");
+                            attrValue.setAttribute("name", "content");
+                            attrValue.innerText = attr[1];
+
+                            attrName.appendChild(attrValue);
+                        } else {
+                            attrName.setAttribute("type", "emptyarg");
+
+                            let attrProperty = document.createElement("field");
+                            attrProperty.setAttribute("name", "property");
+                            attrProperty.innerText = attr[0];
+
+                            let attrValue = document.createElement("field");
+                            attrValue.setAttribute("name", "value");
+                            attrValue.innerText = attr[1];
+
+                            attrName.appendChild(attrProperty);
+                            attrName.appendChild(attrValue);
+                        }
+
+                        attrParent.appendChild(attrName);
+
+                        if (z < attributes.length - 1) {
+                            let v = document.createElement("next");
+                            attrName.appendChild(v);
+
+                            attrParent = v;
+                        }
+                    });
+
+                    attrContainer.appendChild(attrStatement);
+                    attrInput.appendChild(attrContainer);
+                    newNode.appendChild(attrInput);
                 }
 
                 if (child.childNodes.length)
@@ -680,6 +738,11 @@ class Ffau {
         };
 
         reconstruct(parsedHTML, parallelTree);
+        console.log(parallelTree);
+
+        parallelTree.querySelectorAll("*").forEach(e => {
+            if (e.nodeName === "STATEMENT" && !e.childElementCount) e.parentNode.removeChild(e);
+        });
 
         return parallelTree.outerHTML;
     }
