@@ -659,9 +659,44 @@ class Ffau {
 
                         newNode.appendChild(childrenContainer);
                         break;
+
+                    case `H1`:
+                    case `H2`:
+                    case `H3`:
+                    case `H4`:
+                    case `H5`:
+                    case `H6`:
+                        newNode = document.createElement("block");
+                        newNode.setAttribute("type", "header");
+                        newNode.setAttribute("id", idGen());
+
+                        let size = document.createElement("field");
+                        size.setAttribute("name", "size");
+                        size.innerText = child.nodeName.substr(1);
+
+                        newNode.appendChild(size);
+
+                        childrenContainer = document.createElement("statement");
+                        childrenContainer.setAttribute("name", "content");
+
+                        newNode.appendChild(childrenContainer);
+                        break;
+
+                    case "#text":
+                        newNode = document.createElement("block");
+                        newNode.setAttribute("type", "emptytext");
+                        newNode.setAttribute("id", idGen());
+
+                        let textContent = document.createElement("field");
+                        textContent.setAttribute("name", "content");
+                        textContent.innerText = child.textContent;
+
+                        newNode.appendChild(textContent);
+
+                        break;
                 }
 
-                let attributes = Array.from(child.attributes).map(e => [e.name, e.value]);
+                let attributes = Array.from(child.attributes || []).map(e => [e.name, e.value]);
                 if (attributes.length) {
                     let attrInput = document.createElement("value");
                     attrInput.setAttribute("name", "modifier");
