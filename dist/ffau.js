@@ -670,12 +670,61 @@ class Ffau {
         function constructStyleTree(selectors, initialParent) {
             let parent = initialParent;
             selectors.forEach((selector, m) => {
+                function colorBlock() {
+                    let colorValue = document.createElement("value");
+                    colorValue.setAttribute("name", "value");
+
+                    let colorBlock = document.createElement("block");
+                    colorBlock.setAttribute("id", idGen());
+
+                    if (/#(?:[0-9a-fA-F]{3}){1,2}/g.test(selector[1].trim())) {
+                        valueField.parentNode.removeChild(valueField);
+                        valueField.setAttribute("name", "color");
+
+                        colorBlock.setAttribute("type", "hex_picker");
+
+                        colorBlock.appendChild(valueField);
+                        colorValue.appendChild(colorBlock);
+                    } else if (/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)/g.test(selector[1].trim())) {
+                        valueField.parentNode.removeChild(valueField);
+                        valueField.setAttribute("name", "a");
+
+                        colorBlock.setAttribute("type", "rgba_picker");
+
+                        let r = document.createElement("field");
+                        r.setAttribute("name", "r");
+
+                        let g = document.createElement("field");
+                        g.setAttribute("name", "g");
+
+                        let b = document.createElement("field");
+                        b.setAttribute("name", "b");
+
+                        r.innerText = selector[1].split(",")[0].trim().replace(/^rgba?\(/g, "").trim();
+                        g.innerText = selector[1].split(",")[1].trim();
+                        b.innerText = selector[1].split(",")[2].trim();
+
+                        colorBlock.appendChild(r);
+                        colorBlock.appendChild(g);
+                        colorBlock.appendChild(b);
+
+                        if (selector[1].split(",").length === 4) {
+                            valueField.innerText = selector[1].split(",")[3].trim().replace(/\)$/g, "");
+                            colorBlock.appendChild(valueField);
+                        }
+
+                        colorValue.appendChild(colorBlock);
+                    }
+
+                    styleBlock.appendChild(colorValue);
+                }
+
                 let styleBlock = document.createElement("block");
                 styleBlock.setAttribute("id", idGen());
 
                 let valueField = document.createElement("field");
                 valueField.setAttribute("name", "content");
-                valueField.innerText = selector[1];
+                valueField.innerText = selector[1].trim().replace(/^#/g, "");
 
                 styleBlock.appendChild(valueField);
                 parent.appendChild(styleBlock);
@@ -686,6 +735,10 @@ class Ffau {
                         break;
                     case 'background-image':
                         styleBlock.setAttribute("type", "bgimage");
+                        break;
+                    case 'color':
+                        styleBlock.setAttribute("type", "color-new");
+                        colorBlock();
                         break;
                     default:
                         styleBlock.setAttribute("type", "othercss");
