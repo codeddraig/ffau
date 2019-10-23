@@ -719,6 +719,10 @@ class Ffau {
         while (code.indexOf(tempId) > -1)
             tempId = (Math.floor(Math.random() * 90000) + 10000).toString();
 
+        let tagId = (Math.floor(Math.random() * 90000) + 10000).toString();
+        while (code.indexOf(tagId) > -1 || tagId === tempId)
+            tagId = (Math.floor(Math.random() * 90000) + 10000).toString();
+
         let bodifiedCode = (" " + code)
             .split(/((?<=[^\\]|^)(("((\\")|[^"])*[^\\]")|('((\\')|[^'])*[^\\]')))|((?<=([^\\]>)|^)((\\<)|([^<]))*[^\\](?=<))/g)
             .filter((_, z) => z % 14 === 0 || (_ && (z % 14 === 1 || z % 14 === 9)))
@@ -729,10 +733,33 @@ class Ffau {
                         .replace(/<\/?((html)|(head)|(body)|(style)|(base)|(link)|(meta)|(script)|(noscript))/g,
                             `$&Tag${tempId}`)
                         .replace("<!DOCTYPE html>", "<doctypeTag></doctypeTag>")
-                    : v
-            )
+                    : v)
             .filter((_, z) => z ? z === 1 ? _ !== " " : true : _)
+            .join('')
+            .split(/(?<=<\/?[a-zA-Z0-9]+(?: *[a-zA-Z]+(?:=(?:(?:"(?:\\.|[^"])*")|(?:'(?:\\.|[^'])*')|(?:[0-9]|(?:true|false))))?)* *\/?>(?:\\.|[^<])*)/g)
+            .reduce((v, e) =>
+                ((e.length - 1) ?
+                    v.push(e) : (typeof v[v.length - 1] === "string" ? v.push([e]) : v[v.length - 1][0] += e))
+                && v
+                , [])
+            .flat()
+            .reduce((v, e) =>
+                (e[0] === "<" ? v.push(e) : v[v.length - 1] += e)
+                && v
+                , [])
+            .map(t =>
+                t.replace(/^<([a-zA-Z0-9]+.*)\/ *>/g, `${tagId}$&${tagId}`)
+                    .split(tagId)
+                    .filter(e => e)
+                    .map(m =>
+                        /^<([a-zA-Z0-9]+.*)\/ *>/g.test(m) ?
+                            [m.trim().split(/(\/ *>)(?!.*\/ *>)/g)[0].substr(1).trim()]
+                                .map(u => `<${u}></${u.split(" ")[0]}>`)
+                            : m)
+                    .join(''))
             .join('');
+
+        console.log(bodifiedCode);
 
         let domParser = new DOMParser();
         let parsedHTML = domParser.parseFromString(bodifiedCode, "text/html").body;
@@ -755,6 +782,26 @@ class Ffau {
                         childrenContainer.setAttribute("name", "content");
 
                         newNode.appendChild(childrenContainer);
+                        break;
+
+                    case `METATAG${tempId}`:
+                        newNode = document.createElement("block");
+                        newNode.setAttribute("id", idGen());
+
+                        if (child.getAttribute("name") === "viewport") {
+                            newNode.setAttribute("type", "metaviewport");
+                            child.removeAttribute("name");
+                        } else if (child.hasAttribute("charset")) {
+                            newNode.setAttribute("type", "metacharset");
+
+                            let charsetField = document.createElement("field");
+                            charsetField.setAttribute("name", "value");
+                            charsetField.innerText = child.getAttribute("charset");
+
+                            newNode.appendChild(charsetField);
+
+                            child.removeAttribute("charset");
+                        }
                         break;
 
                     case `H1`:
@@ -813,7 +860,6 @@ class Ffau {
                                 parallelChildren.push(selectorBlock);
                             });
                         }
-
                         break;
                 }
 
