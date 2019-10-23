@@ -611,6 +611,103 @@ class Ffau {
      * @returns {string} - the Blockly XML
      */
     codeToXML(code) {
+        function extractStyleSheet(styleSheetString, hasSelectors) {
+            function extractStyles(styleString) {
+                let uniqueId = (Math.floor(Math.random() * 900000) + 100000).toString();
+                while (styleString.indexOf(uniqueId) > -1)
+                    uniqueId = (Math.floor(Math.random() * 900000) + 100000).toString();
+
+                let stringSplit = (" " + styleString)
+                    .split(/(?<=[^\\]|^)(("((\\")|[^"])*[^\\]")|('((\\')|[^'])*[^\\]'))/g)
+                    .filter((_, z) => z % 8 === 0 || z % 8 === 1);
+                stringSplit[0] = stringSplit[0].substr(1);
+
+                stringSplit = stringSplit
+                    .map((e, _) => _ % 2 ? e : e.replace(/:/g, uniqueId).split(/;/g))
+                    .flat();
+
+                let stylePairs = [];
+                let thisStylePair = "";
+                stringSplit.forEach(string => {
+                    if (string.includes(uniqueId)) {
+                        stylePairs.push(thisStylePair.split(uniqueId).map(e => e.trim()));
+                        thisStylePair = string;
+                    } else
+                        thisStylePair += string;
+                });
+                stylePairs.push(thisStylePair.split(uniqueId).map(e => e.trim()));
+
+                return stylePairs.filter(e => e.length - 1);
+            }
+
+            if (!hasSelectors)
+                return extractStyles(styleSheetString);
+            else {
+                let uniqueId = (Math.floor(Math.random() * 9000000) + 1000000).toString();
+                while (styleSheetString.indexOf(uniqueId) > -1)
+                    uniqueId = (Math.floor(Math.random() * 9000000) + 1000000).toString();
+
+                let selectors = (" " + styleSheetString)
+                    .split(/(?<=[^\\]|^)(("((\\")|[^"])*[^\\]")|('((\\')|[^'])*[^\\]'))/g)
+                    .filter((_, z) => z % 8 === 0 || z % 8 === 1);
+                selectors[0] = selectors[0].substr(1);
+
+                selectors = selectors
+                    .map((e, _) => _ % 2 ? e : e.replace(/[}{]/g, uniqueId))
+                    .flat()
+                    .join('')
+                    .split(uniqueId)
+                    .reduce((r, e, i) =>
+                        (i % 2 ? r[r.length - 1].push(e) : r.push([e])) && r
+                        , [])
+                    .filter(e => e.filter(e => e.length).length)
+                    .map(e => [e[0].trim(), extractStyles(e[1])]);
+
+                return selectors;
+            }
+        }
+
+        function constructStyleTree(selectors, initialParent) {
+            let parent = initialParent;
+            selectors.forEach((selector, m) => {
+                let styleBlock = document.createElement("block");
+                styleBlock.setAttribute("id", idGen());
+
+                let valueField = document.createElement("field");
+                valueField.setAttribute("name", "content");
+                valueField.innerText = selector[1];
+
+                styleBlock.appendChild(valueField);
+                parent.appendChild(styleBlock);
+
+                switch (selector[0]) {
+                    case 'font-size':
+                        styleBlock.setAttribute("type", "fontsize");
+                        break;
+                    case 'background-image':
+                        styleBlock.setAttribute("type", "bgimage");
+                        break;
+                    default:
+                        styleBlock.setAttribute("type", "othercss");
+                        valueField.setAttribute("name", "value");
+
+                        let propertyField = document.createElement("field");
+                        propertyField.setAttribute("name", "property");
+                        propertyField.innerText = selector[0];
+
+                        styleBlock.appendChild(propertyField);
+                        break;
+                }
+
+                if (m < selectors.length - 1) {
+                    let t = document.createElement("next");
+                    styleBlock.appendChild(t);
+
+                    parent = t;
+                }
+            });
+        }
+
         function idGen() {
             return Array(20).fill(0).map(() => [..."`0123456789{}!$./,()*[]`", ...[..."abcdefghijklmnopqrstuvwxyz"].map(z => [z, z.toUpperCase()]).flat()][Math.floor(Math.random() * 81)]).join('')
         }
@@ -683,15 +780,39 @@ class Ffau {
                         break;
 
                     case "#text":
-                        newNode = document.createElement("block");
-                        newNode.setAttribute("type", "emptytext");
-                        newNode.setAttribute("id", idGen());
+                        if (child.parentNode.nodeName !== `STYLETAG${tempId}`) {
+                            newNode = document.createElement("block");
+                            newNode.setAttribute("type", "emptytext");
+                            newNode.setAttribute("id", idGen());
 
-                        let textContent = document.createElement("field");
-                        textContent.setAttribute("name", "content");
-                        textContent.innerText = child.textContent;
+                            let textContent = document.createElement("field");
+                            textContent.setAttribute("name", "content");
+                            textContent.innerText = child.textContent;
 
-                        newNode.appendChild(textContent);
+                            newNode.appendChild(textContent);
+                        } else {
+                            let selectors = extractStyleSheet(child.textContent, true);
+                            console.log(selectors);
+
+                            selectors.forEach(selector => {
+                                let selectorBlock = document.createElement("block");
+                                selectorBlock.setAttribute("type", "cssitem");
+                                selectorBlock.setAttribute("id", idGen());
+
+                                let selectorField = document.createElement("field");
+                                selectorField.setAttribute("name", "selector");
+                                selectorField.innerText = selector[0];
+
+                                let selectorContent = document.createElement("statement");
+                                selectorContent.setAttribute("name", "content");
+
+                                constructStyleTree(selector[1], selectorContent);
+
+                                selectorBlock.appendChild(selectorField);
+                                selectorBlock.appendChild(selectorContent);
+                                parallelChildren.push(selectorBlock);
+                            });
+                        }
 
                         break;
                 }
@@ -721,6 +842,15 @@ class Ffau {
                             attrValue.innerText = attr[1];
 
                             attrName.appendChild(attrValue);
+                        } else if (attr[0] === "style") {
+                            attrName.setAttribute("type", "stylearg");
+                            let statement = document.createElement("statement");
+                            statement.setAttribute("name", "content");
+
+                            let selectors = extractStyleSheet(attr[1], false);
+                            constructStyleTree(selectors, statement);
+
+                            attrName.appendChild(statement);
                         } else {
                             attrName.setAttribute("type", "emptyarg");
 
@@ -754,7 +884,8 @@ class Ffau {
                 if (child.childNodes.length)
                     reconstruct(child, childrenContainer);
 
-                parallelChildren.push(newNode);
+                if (newNode)
+                    parallelChildren.push(newNode);
             });
 
             let newParent = parallelParent;
