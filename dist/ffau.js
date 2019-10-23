@@ -712,6 +712,19 @@ class Ffau {
             return Array(20).fill(0).map(() => [..."`0123456789{}!$./,()*[]`", ...[..."abcdefghijklmnopqrstuvwxyz"].map(z => [z, z.toUpperCase()]).flat()][Math.floor(Math.random() * 81)]).join('')
         }
 
+        String.prototype.closeTag = function (tagName) {
+            let openTagRE = new RegExp(`((?<!${nonStringId}(?:'(?:\\.|[^'])*)|(?:"(?:\\.|[^"])*))< *${tagName}(?:(?:${nonStringId}.*?${nonStringId})|[^>])*?>(?!< *\/ *${tagName}))`, "g");
+
+            return this.split(/((?:"(\\.|[^"])*")|(?:'(\\.|[^'])*'))/g)
+                .filter((_, i) => i % 4 < 2).map((_, i) => i % 2 ? _ : nonStringId + _ + nonStringId)
+                .join("")
+                .split(openTagRE)
+                .map(e => e.replace(new RegExp(nonStringId, "g"), ""))
+                .filter(e => e)
+                .map(e => openTagRE.test(e) ? `${e.trim().slice(0, -1)}/>`.replace(/\/\/ *>$/g, "\/>") : e)
+                .join("")
+        };
+
         let parallelTree = document.createElement("xml");
         parallelTree.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
 
@@ -722,6 +735,10 @@ class Ffau {
         let tagId = (Math.floor(Math.random() * 90000) + 10000).toString();
         while (code.indexOf(tagId) > -1 || tagId === tempId)
             tagId = (Math.floor(Math.random() * 90000) + 10000).toString();
+
+        let nonStringId = (Math.floor(Math.random() * 90000) + 10000).toString();
+        while (code.indexOf(nonStringId) > -1 || nonStringId === tempId || nonStringId === tagId)
+            nonStringId = (Math.floor(Math.random() * 90000) + 10000).toString();
 
         let bodifiedCode = (" " + code)
             .split(/((?<=[^\\]|^)(("((\\")|[^"])*[^\\]")|('((\\')|[^'])*[^\\]')))|((?<=([^\\]>)|^)((\\<)|([^<]))*[^\\](?=<))/g)
@@ -735,7 +752,9 @@ class Ffau {
                         .replace("<!DOCTYPE html>", "<doctypeTag></doctypeTag>")
                     : v)
             .filter((_, z) => z ? z === 1 ? _ !== " " : true : _)
-            .join('')
+            .join("")
+            .closeTag(`metaTag${tempId}`)
+            .closeTag(`img`)
             .split(/(?<=<\/?[a-zA-Z0-9]+(?: *[a-zA-Z]+(?:=(?:(?:"(?:\\.|[^"])*")|(?:'(?:\\.|[^'])*')|(?:[0-9]|(?:true|false))))?)* *\/?>(?:\\.|[^<])*)/g)
             .reduce((v, e) =>
                 ((e.length - 1) ?
@@ -861,6 +880,9 @@ class Ffau {
                             });
                         }
                         break;
+
+                    default:
+                        return false;
                 }
 
                 let attributes = Array.from(child.attributes || []).map(e => [e.name, e.value]);
@@ -958,6 +980,7 @@ class Ffau {
 
         return parallelTree.outerHTML;
     }
+
 
     /**
      * Return the XML block code in string format
