@@ -630,7 +630,6 @@ htmlGen['hex_picker'] = function (block) {
 };
 
 htmlGen['color_picker'] = function (block) {
-    console.log("DOG");
     return looseEscape(Blockly.FieldColour.TITLES[Blockly.FieldColour.COLOURS.indexOf(block.getFieldValue('color'))]);
 };
 
