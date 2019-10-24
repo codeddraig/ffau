@@ -714,7 +714,9 @@ class Ffau {
                         }
 
                         colorValue.appendChild(colorBlock);
-                    }
+                    } /*else {
+                        if (Blockly.selector[1].trim())
+                    }*/
 
                     styleBlock.appendChild(colorValue);
                 }

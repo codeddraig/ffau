@@ -778,7 +778,6 @@ Blockly.Blocks['colordropdown'] = {
                     ]
                 }
             ],
-            "extensions": ["html_color_names"],
             "previousStatement": "stylecontent",
             "nextStatement": "stylecontent",
             "colour": 290,
