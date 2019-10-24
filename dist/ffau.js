@@ -40,6 +40,8 @@ function fontAwesome(icon) {
 const colorNames = ['AliceBlue', 'AntiqueWhite', 'Aqua', 'Aquamarine', 'Azure', 'Beige', 'Bisque', 'Black', 'BlanchedAlmond', 'Blue', 'BlueViolet', 'Brown', 'BurlyWood', 'CadetBlue', 'Chartreuse', 'Chocolate', 'Coral', 'CornflowerBlue', 'Cornsilk', 'Crimson', 'Cyan', 'DarkBlue', 'DarkCyan', 'DarkGoldenRod', 'DarkGray', 'DarkGrey', 'DarkGreen', 'DarkKhaki', 'DarkMagenta', 'DarkOliveGreen', 'DarkOrange', 'DarkOrchid', 'DarkRed', 'DarkSalmon', 'DarkSeaGreen', 'DarkSlateBlue', 'DarkSlateGray', 'DarkSlateGrey', 'DarkTurquoise', 'DarkViolet', 'DeepPink', 'DeepSkyBlue', 'DimGray', 'DimGrey', 'DodgerBlue', 'FireBrick', 'FloralWhite', 'ForestGreen', 'Fuchsia', 'Gainsboro', 'GhostWhite', 'Gold', 'GoldenRod', 'Gray', 'Grey', 'Green', 'GreenYellow', 'HoneyDew', 'HotPink', 'IndianRed', 'Indigo', 'Ivory', 'Khaki', 'Lavender', 'LavenderBlush', 'LawnGreen', 'LemonChiffon', 'LightBlue', 'LightCoral', 'LightCyan', 'LightGoldenRodYellow', 'LightGray', 'LightGrey', 'LightGreen', 'LightPink', 'LightSalmon', 'LightSeaGreen', 'LightSkyBlue', 'LightSlateGray', 'LightSlateGrey', 'LightSteelBlue', 'LightYellow', 'Lime', 'LimeGreen', 'Linen', 'Magenta', 'Maroon', 'MediumAquaMarine', 'MediumBlue', 'MediumOrchid', 'MediumPurple', 'MediumSeaGreen', 'MediumSlateBlue', 'MediumSpringGreen', 'MediumTurquoise', 'MediumVioletRed', 'MidnightBlue', 'MintCream', 'MistyRose', 'Moccasin', 'NavajoWhite', 'Navy', 'OldLace', 'Olive', 'OliveDrab', 'Orange', 'OrangeRed', 'Orchid', 'PaleGoldenRod', 'PaleGreen', 'PaleTurquoise', 'PaleVioletRed', 'PapayaWhip', 'PeachPuff', 'Peru', 'Pink', 'Plum', 'PowderBlue', 'Purple', 'RebeccaPurple', 'Red', 'RosyBrown', 'RoyalBlue', 'SaddleBrown', 'Salmon', 'SandyBrown', 'SeaGreen', 'SeaShell', 'Sienna', 'Silver', 'SkyBlue', 'SlateBlue', 'SlateGray', 'SlateGrey', 'Snow', 'SpringGreen', 'SteelBlue', 'Tan', 'Teal', 'Thistle', 'Tomato', 'Turquoise', 'Violet', 'Wheat', 'White', 'WhiteSmoke', 'Yellow', 'YellowGreen'].map(e => e.toLowerCase());
 const colorValues = ['f0f8ff', 'faebd7', '00ffff', '7fffd4', 'f0ffff', 'f5f5dc', 'ffe4c4', '000000', 'ffebcd', '0000ff', '8a2be2', 'a52a2a', 'deb887', '5f9ea0', '7fff00', 'd2691e', 'ff7f50', '6495ed', 'fff8dc', 'dc143c', '00ffff', '00008b', '008b8b', 'b8860b', 'a9a9a9', 'a9a9a9', '006400', 'bdb76b', '8b008b', '556b2f', 'ff8c00', '9932cc', '8b0000', 'e9967a', '8fbc8f', '483d8b', '2f4f4f', '2f4f4f', '00ced1', '9400d3', 'ff1493', '00bfff', '696969', '696969', '1e90ff', 'b22222', 'fffaf0', '228b22', 'ff00ff', 'dcdcdc', 'f8f8ff', 'ffd700', 'daa520', '808080', '808080', '008000', 'adff2f', 'f0fff0', 'ff69b4', 'cd5c5c', '4b0082', 'fffff0', 'f0e68c', 'e6e6fa', 'fff0f5', '7cfc00', 'fffacd', 'add8e6', 'f08080', 'e0ffff', 'fafad2', 'd3d3d3', 'd3d3d3', '90ee90', 'ffb6c1', 'ffa07a', '20b2aa', '87cefa', '778899', '778899', 'b0c4de', 'ffffe0', '00ff00', '32cd32', 'faf0e6', 'ff00ff', '800000', '66cdaa', '0000cd', 'ba55d3', '9370db', '3cb371', '7b68ee', '00fa9a', '48d1cc', 'c71585', '191970', 'f5fffa', 'ffe4e1', 'ffe4b5', 'ffdead', '000080', 'fdf5e6', '808000', '6b8e23', 'ffa500', 'ff4500', 'da70d6', 'eee8aa', '98fb98', 'afeeee', 'db7093', 'ffefd5', 'ffdab9', 'cd853f', 'ffc0cb', 'dda0dd', 'b0e0e6', '800080', '663399', 'ff0000', 'bc8f8f', '4169e1', '8b4513', 'fa8072', 'f4a460', '2e8b57', 'fff5ee', 'a0522d', 'c0c0c0', '87ceeb', '6a5acd', '708090', '708090', 'fffafa', '00ff7f', '4682b4', 'd2b48c', '008080', 'd8bfd8', 'ff6347', '40e0d0', 'ee82ee', 'f5deb3', 'ffffff', 'f5f5f5', 'ffff00', '9acd32'];
 
+const cssUnits = ["em", "ex", "ch", "rem", "vw", "vh", "vmin", "vmax", "%", "cm", "mm", "in", "px", "pt", "pc"];
+
 /**
  * @class Class representing a Ffau instance, including all components.
  */
@@ -610,7 +612,7 @@ class Ffau {
     /**
      * Converts the code string into a Blockly XML string
      *
-     * @param {string} code - the HTML source
+     * @param {string} code - the HTML source code string
      * @returns {string} - the Blockly XML
      */
     codeToXML(code) {
@@ -671,28 +673,30 @@ class Ffau {
         }
 
         function constructStyleTree(selectors, initialParent) {
+            console.log(selectors);
+
             let parent = initialParent;
             selectors.forEach((selector, m) => {
-                function mapColorLikeBlock() {
+                function mapColorLikeBlock(colorStr, valueName) {
                     let colorValue = document.createElement("value");
-                    colorValue.setAttribute("name", "value");
+                    colorValue.setAttribute("name", valueName);
 
                     let colorBlock = document.createElement("block");
                     colorBlock.setAttribute("id", idGen());
 
-                    if (/#(?:[0-9a-fA-F]{3}){1,2}/g.test(selector[1].trim())) {
+                    if (/#(?:[0-9a-fA-F]{3}){1,2}/g.test(colorStr.trim())) {
                         valueField.parentNode.removeChild(valueField);
                         valueField.setAttribute("name", "color");
-                        valueField.innerText = selector[1].trim().replace(/^#/g, "");
+                        valueField.innerText = colorStr.trim().replace(/^#/g, "");
 
                         colorBlock.setAttribute("type", "hex_picker");
 
                         colorBlock.appendChild(valueField);
                         colorValue.appendChild(colorBlock);
-                    } else if (/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)/g.test(selector[1].trim())) {
+                    } else if (/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)/g.test(colorStr.trim())) {
                         valueField.parentNode.removeChild(valueField);
                         valueField.setAttribute("name", "a");
-                        valueField.innerText = selector[1].trim().replace(/^#/g, "");
+                        valueField.innerText = colorStr.trim().replace(/^#/g, "");
 
                         colorBlock.setAttribute("type", "rgba_picker");
 
@@ -705,35 +709,34 @@ class Ffau {
                         let b = document.createElement("field");
                         b.setAttribute("name", "b");
 
-                        r.innerText = selector[1].split(",")[0].trim().replace(/^rgba?\(/g, "").trim();
-                        g.innerText = selector[1].split(",")[1].trim();
-                        b.innerText = selector[1].split(",")[2].trim();
+                        r.innerText = colorStr.split(",")[0].trim().replace(/^rgba?\(/g, "").trim();
+                        g.innerText = colorStr.split(",")[1].trim();
+                        b.innerText = colorStr.split(",")[2].trim();
 
                         colorBlock.appendChild(r);
                         colorBlock.appendChild(g);
                         colorBlock.appendChild(b);
 
-                        if (selector[1].split(",").length === 4) {
-                            valueField.innerText = selector[1].split(",")[3].trim().replace(/\)$/g, "");
+                        if (colorStr.split(",").length === 4) {
+                            valueField.innerText = colorStr.split(",")[3].trim().replace(/\)$/g, "");
                             colorBlock.appendChild(valueField);
                         }
 
                         colorValue.appendChild(colorBlock);
                     } else {
-                        if (Blockly.FieldColour.TITLES.includes(selector[1].trim())) {
+                        if (Blockly.FieldColour.TITLES.includes(colorStr.trim())) {
                             valueField.parentNode.removeChild(valueField);
                             colorBlock.setAttribute("type", "color_picker");
 
                             valueField.setAttribute("name", "color");
                             valueField.innerHTML = Blockly.FieldColour.COLOURS[
-                                Blockly.FieldColour.TITLES.indexOf(selector[1].trim())
+                                Blockly.FieldColour.TITLES.indexOf(colorStr.trim())
                                 ];
 
                             colorBlock.appendChild(valueField);
                             colorValue.appendChild(colorBlock);
                         } else {
-                            selector[1] = "#" + colorValues[colorNames.indexOf(selector[1].toLowerCase())];
-                            mapColorLikeBlock();
+                            mapColorLikeBlock("#" + colorValues[colorNames.indexOf(colorStr.toLowerCase())]);
                         }
                     }
 
@@ -744,7 +747,6 @@ class Ffau {
                 styleBlock.setAttribute("id", idGen());
 
                 let valueField = document.createElement("field");
-                valueField.setAttribute("name", "content");
                 valueField.innerText = selector[1].trim().replace(/^#/g, "");
 
                 styleBlock.appendChild(valueField);
@@ -752,14 +754,76 @@ class Ffau {
 
                 switch (selector[0]) {
                     case 'font-size':
+                        valueField.setAttribute("name", "value");
                         styleBlock.setAttribute("type", "fontsize");
                         break;
                     case 'background-image':
+                        valueField.setAttribute("name", "content");
                         styleBlock.setAttribute("type", "bgimage");
                         break;
+                    case 'font-family':
+                        valueField.setAttribute("name", "value");
+                        styleBlock.setAttribute("type", "fontfamily");
+                        break;
+                    case 'font-weight':
+                        valueField.setAttribute("name", "weight");
+                        styleBlock.setAttribute("type", "fontweight");
+                        break;
                     case 'color':
-                        styleBlock.setAttribute("type", "color-new");
-                        mapColorLikeBlock();
+                        if (["initial", "inherit"].includes(selector[1])) {
+                            valueField.setAttribute("name", "color");
+                            styleBlock.setAttribute("type", "colordropdown");
+                        } else {
+                            valueField.setAttribute("name", "content");
+                            styleBlock.setAttribute("type", "color-new");
+                            mapColorLikeBlock(selector[1], "value");
+                        }
+                        break;
+                    case 'text-shadow':
+                        valueField.setAttribute("name", "color");
+                        styleBlock.setAttribute("type", "textshadow-new");
+
+                        let splitStr = selector[1].split(" ").map(e => e.trim()).filter(e => e);
+
+                        if (splitStr.length === 2) {
+                            splitStr.push("0px");
+                            splitStr.push("white");
+                        } else {
+                            if (splitStr[2] === "0" || cssUnits.some(e => splitStr[2].endsWith(e)))
+                                splitStr.push("white");
+                            else
+                                splitStr.splice(2, 0, "0");
+                        }
+
+                        let xOffsetField = document.createElement("field");
+                        xOffsetField.setAttribute("name", "xoffset");
+                        xOffsetField.innerText = splitStr[0];
+
+                        let yOffsetField = document.createElement("field");
+                        yOffsetField.setAttribute("name", "yoffset");
+                        yOffsetField.innerText = splitStr[1];
+
+                        let blurField = document.createElement("field");
+                        blurField.setAttribute("name", "blur");
+                        blurField.innerText = splitStr[2];
+
+                        styleBlock.appendChild(xOffsetField);
+                        styleBlock.appendChild(yOffsetField);
+                        styleBlock.appendChild(blurField);
+
+                        mapColorLikeBlock(splitStr[3], "color");
+                        break;
+                    case 'text-transform':
+                        valueField.setAttribute("name", "value");
+                        styleBlock.setAttribute("type", "texttransform");
+                        break;
+                    case 'text-align':
+                        valueField.setAttribute("name", "value");
+                        styleBlock.setAttribute("type", "textalign");
+                        break;
+                    case 'letter-spacing':
+                        valueField.setAttribute("name", "value");
+                        styleBlock.setAttribute("type", "letterspacing");
                         break;
                     default:
                         styleBlock.setAttribute("type", "othercss");
@@ -939,9 +1003,69 @@ class Ffau {
                                 selectorBlock.setAttribute("type", "cssitem");
                                 selectorBlock.setAttribute("id", idGen());
 
+                                let openBracketId = (Math.floor(Math.random() * 90000) + 10000).toString();
+                                while (code.includes(openBracketId))
+                                    openBracketId = (Math.floor(Math.random() * 90000) + 10000).toString();
+
+                                let closeBracketId = (Math.floor(Math.random() * 90000) + 10000).toString();
+                                while (code.includes(closeBracketId) || openBracketId === closeBracketId)
+                                    closeBracketId = (Math.floor(Math.random() * 90000) + 10000).toString();
+
+                                let selectorSections = selector[0]
+                                    .toLowerCase()
+                                    .split(/((?:(?<=').*(?='))|(?:(?<=").*(?="))|(?:(?<=\()[^'"]*(?=\))))/g)
+                                    .map((e, i) => i % 2 ?
+                                        encodeURIComponent(
+                                            e.replace(/\(/g, openBracketId)
+                                                .replace(/\)/g, closeBracketId)
+                                        ) : e
+                                    )
+                                    .join("")
+                                    .split(/(?<!:):(?=hover|focus|:before|:after|not\()(?![^(]*\))/g)
+                                    .map(e =>
+                                        decodeURIComponent(e)
+                                            .replace(new RegExp(openBracketId, "g"), '(')
+                                            .replace(new RegExp(closeBracketId, "g"), ')')
+                                    );
+
                                 let selectorField = document.createElement("field");
                                 selectorField.setAttribute("name", "selector");
-                                selectorField.innerText = selector[0];
+                                selectorField.innerText = selectorSections[0];
+
+                                if (selectorSections.length - 1) {
+                                    let modifierValue = document.createElement("value");
+                                    modifierValue.setAttribute("name", "modifier");
+
+                                    let selectorParent = modifierValue;
+                                    selectorSections.slice(1).forEach((section, j) => {
+                                        let newMod = document.createElement("block");
+                                        newMod.setAttribute("id", idGen());
+
+                                        let contentField = document.createElement("field");
+                                        contentField.setAttribute("name", "content");
+                                        newMod.appendChild(contentField);
+
+                                        if (section.slice(0, 4) === "not(") {
+                                            newMod.setAttribute("type", "cssnot");
+                                            contentField.innerText = section.slice(4, -1);
+                                        } else {
+                                            newMod.setAttribute("type", "cssevents");
+                                            contentField.innerText = section;
+                                        }
+
+                                        selectorParent.appendChild(newMod);
+
+                                        if (j < selectorSections.length - 2) {
+                                            let nextMod = document.createElement("value");
+                                            nextMod.setAttribute("name", "modifier");
+                                            newMod.appendChild(nextMod);
+
+                                            selectorParent = nextMod;
+                                        }
+                                    });
+
+                                    selectorBlock.appendChild(modifierValue);
+                                }
 
                                 let selectorContent = document.createElement("statement");
                                 selectorContent.setAttribute("name", "content");
