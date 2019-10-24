@@ -630,7 +630,8 @@ htmlGen['hex_picker'] = function (block) {
 };
 
 htmlGen['color_picker'] = function (block) {
-    return looseEscape(block.getFieldValue('color'));
+    console.log("DOG");
+    return looseEscape(Blockly.FieldColour.TITLES[Blockly.FieldColour.COLOURS.indexOf(block.getFieldValue('color'))]);
 };
 
 htmlGen['audio'] = function (block) {
@@ -707,7 +708,7 @@ htmlGen['script'] = function (block) {
 
 htmlGen['chart'] = function (block) {
     var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC).trim();
-    var attributes = (block_modifier ? " " + block_modifier.trim() : "")
+    var attributes = (block_modifier ? " " + block_modifier.trim() : "");
     var data = htmlGen.statementToCode(block, 'data', htmlGen.ORDER_ATOMIC);
     var title = looseEscape(block.getFieldValue('title'));
     var subtitle = looseEscape(block.getFieldValue('subtitle'));
@@ -748,7 +749,7 @@ htmlGen['chart'] = function (block) {
         subtitle: '${subtitle}'
       },
       orientation: '${chartOrientation}'
-    }
+    };
       
     var chart = new google.${chartLibrary}.${chartType}(document.getElementById('${divId}'));
     chart.draw(data, ${chartOptions});

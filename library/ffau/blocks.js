@@ -778,6 +778,7 @@ Blockly.Blocks['colordropdown'] = {
                     ]
                 }
             ],
+            "extensions": ["html_color_names"],
             "previousStatement": "stylecontent",
             "nextStatement": "stylecontent",
             "colour": 290,
@@ -3558,3 +3559,29 @@ Blockly.Blocks['scrollspy'] = {
         });
     }
 };
+
+Blockly.FieldColour.COLOURS = [
+    'FFFFFF', 'DCDCDC', 'C0C0C0', 'A9A9A9', '808080', '696969', '708090', '000000',
+    'FFA07A', 'FA8072', 'E9967A', 'F08080', 'CD5C5C', 'DC143C', 'FF0000', '8B0000',
+    'FFF8DC', 'FFE4C4', 'D2B48C', 'F4A460', 'DAA520', 'FF7F50', 'A0522D', '8B4513',
+    'FFDEAD', 'F5DEB3', 'DEB887', 'B8860B', 'CD853F', 'D2691E', 'A52A2A', '800000',
+    'FFFACD', 'FFDAB9', 'EEE8AA', 'F0E68C', 'FFFF00', 'FFD700', 'FFA500', 'FF4500',
+    '98FB98', '90EE90', '00FF7F', '00FF00', '9ACD32', '32CD32', '008000', '006400',
+    'AFEEEE', '7FFFD4', '40E0D0', '66CDAA', '20B2AA', '5F9EA0', '008B8B', '008080',
+    'ADD8E6', '87CEEB', '00BFFF', '4169E1', '0000FF', '0000FF', '00008B', '000080',
+    'E6E6FA', '9370DB', '8A2BE2', '9932CC', '663399', '4B0082', '8B008B', '800080',
+    'FFC0CB', 'FFB6C1', 'DB7093', 'FF69B4', 'FF00FF', 'FF1493', 'C71585', 'BC8F8F'
+].map(e => "#" + e.toLowerCase());
+Blockly.FieldColour.TITLES = [
+    'white', 'gainsboro', 'silver', 'darkgray', 'gray', 'dimgray', 'slategray', 'black',
+    'lightsalmon', 'salmon', 'darksalmon', 'lightcoral', 'indianred', 'crimson', 'red', 'darkred',
+    'cornsilk', 'bisque', 'tan', 'sandybrown', 'goldenrod', 'coral', 'sienna', 'saddlebrown',
+    'navajowhite', 'wheat', 'burlywood', 'darkgoldenrod', 'peru', 'chocolate', 'brown', 'maroon',
+    'lemonchiffon', 'peachpuff', 'palegoldenrod', 'khaki', 'yellow', 'gold', 'orange', 'orangered',
+    'palegreen', 'lightgreen', 'springgreen', 'yellowgreen', 'limegreen', 'green', 'darkgreen',
+    'paleturquoise', 'aquamarine', 'turquoise', 'mediumaquamarine', 'lightseagreen', 'cadetblue', 'darkcyan', 'teal',
+    'lightblue', 'skyblue', 'deepskyblue', 'royalblue', 'blue', 'mediumblue', 'darkblue', 'navy',
+    'lavender', 'mediumpurple', 'blueviolet', 'darkorchid', 'rebeccapurple', 'indigo', 'darkmagenta', 'purple',
+    'pink', 'lightpink', 'palevioletred', 'hotpink', 'fuchsia', 'deeppink', 'mediumvioletred', 'rosybrown'
+];
+Blockly.FieldColour.COLUMNS = 8;
