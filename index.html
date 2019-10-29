@@ -118,10 +118,11 @@
         </div>
         <div class="col col5" id="preview">
             <div class="breadcrumb bottom">
-                <ul>
+                <ul style="display:inline-block; margin-right:10%;">
                     <li><a href="#!" onclick="showMePreview()">Preview</a></li>
                     <li><a href="#!" onclick="showMeCode()">Real code</a></li>
                 </ul>
+                <button onclick="toggleEditMode()">Toggle edit mode</button>
             </div>
 
             <div id="preview-frame"></div>
@@ -558,6 +559,25 @@
 
     // add event listener
     ffau.addEvent();
+
+    ffau.addEvent(() => {
+        if (ffau.editMode) {
+            try {
+                console.time("Set code XML");
+                ffau.setXML(ffau.codeToXML(ffau.editor.getValue()));
+                console.timeEnd("Set code XML");
+            } catch (e) {
+                console.log("bad");
+            }
+        }
+    }, 'ace');
+
+    ffau.workspaceDiv.onfocus = () => ffau.editMode = 0;
+    ffau.editor.container.onfocus = () => ffau.editMode = 1;
+
+    function toggleEditMode() {
+        ffau.toggleEditMode();
+    }
 
     function resetTheme() {
         // reset the theme to the original

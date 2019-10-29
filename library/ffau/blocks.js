@@ -1870,7 +1870,7 @@ Blockly.Blocks['border-new'] = {
 Blockly.Blocks['borderedge-new'] = {
     init: function () {
         this.jsonInit({
-            "message0": "border- %1 : %2 px %3 %4",
+            "message0": "border- %1 : %2 px %3 %4 ;",
             "args0": [
                 {
                     "type": "field_dropdown",

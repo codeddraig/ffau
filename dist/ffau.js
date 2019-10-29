@@ -560,6 +560,15 @@ class Ffau {
         return this.editor;
     }
 
+    toggleEditMode() {
+        this.editMode = this.editMode ? 0 : 1;
+
+        if (this.editMode)
+            this.aceCallbackFunction();
+        else
+            this.editorCallbackFunction();
+    }
+
     /**
      * Add an event listener to Blockly or Ace to generate a preview and code
      *
@@ -568,34 +577,36 @@ class Ffau {
      * @param [event] - the name of the event (e.g "change") to trigger the callback on - required if `scope === "ace"`, is ignored otherwise
      */
     addEvent(customFunction, scope, event) {
-        if (scope === "blockly" || !scope)
-        // add listener to workspace
-            this.ffauWorkspace.addChangeListener(function () {
-                // generate the code using htmlGen from generator.js
-                let code = htmlGen.workspaceToCode(this.ffauWorkspace);
+        if (scope === "blockly" || !scope) {
+            // add listener to workspace
+            this.editorCallbackFunction = function () {
+                if (!this.editMode) {
+                    // generate the code using htmlGen from generator.js
+                    let code = htmlGen.workspaceToCode(this.ffauWorkspace);
 
-                // if ace has been initialised (doesn't have to be)
-                if (this.editor) {
+                    // if ace has been initialised (doesn't have to be)
+                    if (this.editor)
                     // set the ace editor value
-                    this.editor.setValue(code, -1 /* set the cursor to -1 to stop highlighting everything */);
-                }
+                        this.editor.setValue(code, -1 /* set the cursor to -1 to stop highlighting everything */);
 
-                // if iframe has been initialised
-                if (this.iframe) {
-                    this.iframe.src = "data:text/html;charset=utf-8," + encodeURIComponent(code);
-                }
+                    // if iframe has been initialised
+                    if (this.iframe)
+                        this.iframe.src = "data:text/html;charset=utf-8," + encodeURIComponent(code);
 
-                if (typeof customFunction === "function") {
-                    customFunction(this);
+                    if (typeof customFunction === "function")
+                        customFunction(this);
                 }
+            };
 
-            }.bind(this) /* bind parent scope */);
-        else if (scope === "ace")
+            this.ffauWorkspace.addChangeListener(this.editorCallbackFunction.bind(this) /* bind parent scope */);
+        } else if (scope === "ace") {
+            this.aceCallbackFunction = customFunction;
+
             if (event)
                 this.editor.container.addEventListener(event, customFunction);
             else
                 this.editor.getSession().on('change', customFunction);
-        else
+        } else
             console.warn("Scope `" + scope + "` is not one of ['blockly', 'ace']")
     }
 
@@ -616,11 +627,34 @@ class Ffau {
      * @returns {string} - the Blockly XML
      */
     codeToXML(code) {
+        let idList = [];
+        let replacerIds = [];
+
+        function getReplacerId() {
+            let replacerId = (Math.floor(Math.random() * 90000) + 10000).toString();
+            while (code.includes(replacerId) || replacerIds.includes(replacerId))
+                replacerId = (Math.floor(Math.random() * 90000) + 10000).toString();
+
+            replacerIds.push(replacerId);
+            return replacerId;
+        }
+
+        function getId() {
+            function idGen() {
+                return Array(20).fill(0).map(() => [..."`0123456789{}!$./,()*[]`ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"][Math.floor(Math.random() * 81)]).join('')
+            }
+
+            let id = idGen();
+            while (idList.includes(id))
+                id = idGen();
+
+            idList.push(id);
+            return id;
+        }
+
         function extractStyleSheet(styleSheetString, hasSelectors) {
             function extractStyles(styleString) {
-                let uniqueId = (Math.floor(Math.random() * 900000) + 100000).toString();
-                while (styleString.includes(uniqueId))
-                    uniqueId = (Math.floor(Math.random() * 900000) + 100000).toString();
+                let uniqueId = getReplacerId();
 
                 let stringSplit = (" " + styleString)
                     .split(/(?<=[^\\]|^)(("((\\")|[^"])*[^\\]")|('((\\')|[^'])*[^\\]'))/g)
@@ -648,9 +682,7 @@ class Ffau {
             if (!hasSelectors)
                 return extractStyles(styleSheetString);
             else {
-                let uniqueId = (Math.floor(Math.random() * 9000000) + 1000000).toString();
-                while (styleSheetString.includes(uniqueId))
-                    uniqueId = (Math.floor(Math.random() * 9000000) + 1000000).toString();
+                let uniqueId = getReplacerId();
 
                 let selectors = (" " + styleSheetString)
                     .split(/(?<=[^\\]|^)(("((\\")|[^"])*[^\\]")|('((\\')|[^'])*[^\\]'))/g)
@@ -673,8 +705,6 @@ class Ffau {
         }
 
         function constructStyleTree(selectors, initialParent) {
-            console.log(selectors);
-
             let parent = initialParent;
             selectors.forEach((selector, m) => {
                 function mapColorLikeBlock(colorStr, valueName) {
@@ -682,7 +712,7 @@ class Ffau {
                     colorValue.setAttribute("name", valueName);
 
                     let colorBlock = document.createElement("block");
-                    colorBlock.setAttribute("id", idGen());
+                    colorBlock.setAttribute("id", getId());
 
                     if (/#(?:[0-9a-fA-F]{3}){1,2}/g.test(colorStr.trim())) {
                         valueField.parentNode.removeChild(valueField);
@@ -743,8 +773,65 @@ class Ffau {
                     styleBlock.appendChild(colorValue);
                 }
 
+                function directionVariant(blockType, tagBase) {
+                    if (selector[0] === tagBase + "-left" ||
+                        selector[0] === tagBase + "-top" ||
+                        selector[0] === tagBase + "-right" ||
+                        selector[0] === tagBase + "-bottom") {
+                        valueField.setAttribute("name", "value");
+                        styleBlock.setAttribute("type", blockType);
+
+                        let marginDirectionField = document.createElement("field");
+                        marginDirectionField.setAttribute("name", "direction");
+                        marginDirectionField.innerText = selector[0].split("-")[1];
+
+                        styleBlock.appendChild(marginDirectionField);
+                    } else {
+                        let tags = selector[1].split(" ");
+
+                        if (tags.length === 3) tags.push(tags[1]);
+                        if (tags.length === 2) tags = tags.map(e => [e, e]).flat();
+                        if (tags.length === 1) tags = tags.map(e => [e, e, e, e]).flat();
+
+                        valueField.setAttribute("name", "value");
+                        styleBlock.setAttribute("type", blockType);
+
+                        valueField.innerText = tags[0];
+
+                        let leftTagField = document.createElement("field");
+                        leftTagField.setAttribute("name", "direction");
+                        leftTagField.innerText = "top";
+
+                        styleBlock.appendChild(leftTagField);
+
+                        let tagParent = styleBlock;
+                        tags.slice(1).forEach((tag, f) => {
+                            let tagNext1 = document.createElement("next");
+
+                            let tagBlock2 = document.createElement("block");
+                            tagBlock2.setAttribute("id", getId());
+                            tagBlock2.setAttribute("type", blockType);
+
+                            let tagVal2 = document.createElement("field");
+                            tagVal2.setAttribute("name", "value");
+                            tagVal2.innerText = tag;
+
+                            let nextTagField = document.createElement("field");
+                            nextTagField.setAttribute("name", "direction");
+                            nextTagField.innerText = ["right", "bottom", "left"][f];
+
+                            tagBlock2.appendChild(tagVal2);
+                            tagBlock2.appendChild(nextTagField);
+                            tagNext1.appendChild(tagBlock2);
+                            tagParent.appendChild(tagNext1);
+
+                            tagParent = tagBlock2;
+                        });
+                    }
+                }
+
                 let styleBlock = document.createElement("block");
-                styleBlock.setAttribute("id", idGen());
+                styleBlock.setAttribute("id", getId());
 
                 let valueField = document.createElement("field");
                 valueField.innerText = selector[1].trim().replace(/^#/g, "");
@@ -825,6 +912,33 @@ class Ffau {
                         valueField.setAttribute("name", "value");
                         styleBlock.setAttribute("type", "letterspacing");
                         break;
+                    case 'margin-top':
+                    case 'margin-bottom':
+                    case 'margin-left':
+                    case 'margin-right':
+                    case 'margin':
+                        directionVariant('margin', 'margin');
+                        break;
+                    case 'padding-top':
+                    case 'padding-bottom':
+                    case 'padding-left':
+                    case 'padding-right':
+                    case 'padding':
+                        directionVariant('padding', 'padding');
+                        break;
+                    case 'display':
+                        valueField.setAttribute("name", "content");
+                        styleBlock.setAttribute("type", "display");
+                        break;
+
+                    case 'float':
+                        valueField.setAttribute("name", "content");
+                        styleBlock.setAttribute("type", "float");
+                        break;
+                    case 'vertical-align':
+                        valueField.setAttribute("name", "align");
+                        styleBlock.setAttribute("type", "verticalalign");
+                        break;
                     default:
                         styleBlock.setAttribute("type", "othercss");
                         valueField.setAttribute("name", "value");
@@ -846,10 +960,6 @@ class Ffau {
             });
         }
 
-        function idGen() {
-            return Array(20).fill(0).map(() => [..."`0123456789{}!$./,()*[]`", ...[..."abcdefghijklmnopqrstuvwxyz"].map(z => [z, z.toUpperCase()]).flat()][Math.floor(Math.random() * 81)]).join('')
-        }
-
         String.prototype.closeTag = function (tagName) {
             let openTagRE = new RegExp(`((?<!${nonStringId}(?:'(?:\\.|[^'])*)|(?:"(?:\\.|[^"])*))< *${tagName}(?:(?:${nonStringId}.*?${nonStringId})|[^>])*?>(?!< *\/ *${tagName}))`, "g");
 
@@ -866,17 +976,9 @@ class Ffau {
         let parallelTree = document.createElement("xml");
         parallelTree.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
 
-        let tempId = (Math.floor(Math.random() * 90000) + 10000).toString();
-        while (code.includes(tempId))
-            tempId = (Math.floor(Math.random() * 90000) + 10000).toString();
-
-        let tagId = (Math.floor(Math.random() * 90000) + 10000).toString();
-        while (code.includes(tagId) || tagId === tempId)
-            tagId = (Math.floor(Math.random() * 90000) + 10000).toString();
-
-        let nonStringId = (Math.floor(Math.random() * 90000) + 10000).toString();
-        while (code.includes(nonStringId) || nonStringId === tempId || nonStringId === tagId)
-            nonStringId = (Math.floor(Math.random() * 90000) + 10000).toString();
+        let tempId = getReplacerId();
+        let tagId = getReplacerId();
+        let nonStringId = getReplacerId();
 
         let bodifiedCode = (" " + code)
             .split(/((?<=[^\\]|^)(("((\\")|[^"])*[^\\]")|('((\\')|[^'])*[^\\]')))|((?<=([^\\]>)|^)((\\<)|([^<]))*[^\\](?=<))/g)
@@ -916,14 +1018,16 @@ class Ffau {
                     .join(''))
             .join('');
 
-        console.log(bodifiedCode);
-
         let domParser = new DOMParser();
         let parsedHTML = domParser.parseFromString(bodifiedCode, "text/html").body;
 
         const reconstruct = (parent, parallelParent) => {
             let parallelChildren = [];
-            Array.from(parent.childNodes).forEach(child => {
+            let iterArray = Array.from(parent.childNodes);
+
+            for (let i = 0, child = iterArray[0]; i < iterArray.length; i++, child = iterArray[i]) {
+                child.innerHTML ? child.innerHTML = child.innerHTML.trim() : child.textContent = child.textContent.trim();
+
                 let newNode;
                 let childrenContainer;
                 switch (child.nodeName) {
@@ -933,7 +1037,7 @@ class Ffau {
                     case `STYLETAG${tempId}`:
                         newNode = document.createElement("block");
                         newNode.setAttribute("type", child.nodeName.slice(0, -8).toLowerCase());
-                        newNode.setAttribute("id", idGen());
+                        newNode.setAttribute("id", getId());
 
                         childrenContainer = document.createElement("statement");
                         childrenContainer.setAttribute("name", "content");
@@ -943,7 +1047,7 @@ class Ffau {
 
                     case `METATAG${tempId}`:
                         newNode = document.createElement("block");
-                        newNode.setAttribute("id", idGen());
+                        newNode.setAttribute("id", getId());
 
                         if (child.getAttribute("name") === "viewport") {
                             newNode.setAttribute("type", "metaviewport");
@@ -969,7 +1073,7 @@ class Ffau {
                     case `H6`:
                         newNode = document.createElement("block");
                         newNode.setAttribute("type", "header");
-                        newNode.setAttribute("id", idGen());
+                        newNode.setAttribute("id", getId());
 
                         let size = document.createElement("field");
                         size.setAttribute("name", "size");
@@ -987,7 +1091,7 @@ class Ffau {
                         if (child.parentNode.nodeName !== `STYLETAG${tempId}`) {
                             newNode = document.createElement("block");
                             newNode.setAttribute("type", "emptytext");
-                            newNode.setAttribute("id", idGen());
+                            newNode.setAttribute("id", getId());
 
                             let textContent = document.createElement("field");
                             textContent.setAttribute("name", "content");
@@ -996,24 +1100,18 @@ class Ffau {
                             newNode.appendChild(textContent);
                         } else {
                             let selectors = extractStyleSheet(child.textContent, true);
-                            console.log(selectors);
 
                             selectors.forEach(selector => {
                                 let selectorBlock = document.createElement("block");
                                 selectorBlock.setAttribute("type", "cssitem");
-                                selectorBlock.setAttribute("id", idGen());
+                                selectorBlock.setAttribute("id", getId());
 
-                                let openBracketId = (Math.floor(Math.random() * 90000) + 10000).toString();
-                                while (code.includes(openBracketId))
-                                    openBracketId = (Math.floor(Math.random() * 90000) + 10000).toString();
-
-                                let closeBracketId = (Math.floor(Math.random() * 90000) + 10000).toString();
-                                while (code.includes(closeBracketId) || openBracketId === closeBracketId)
-                                    closeBracketId = (Math.floor(Math.random() * 90000) + 10000).toString();
+                                let openBracketId = getReplacerId();
+                                let closeBracketId = getReplacerId();
 
                                 let selectorSections = selector[0]
                                     .toLowerCase()
-                                    .split(/((?:(?<=').*(?='))|(?:(?<=").*(?="))|(?:(?<=\()[^'"]*(?=\))))/g)
+                                    .split(/((?:(?<=')(?:\\.|[^'])*(?='))|(?:(?<=")(?:\\.|[^"])*(?="))|(?:(?<=\()[^'"]*(?=\))))/g)
                                     .map((e, i) => i % 2 ?
                                         encodeURIComponent(
                                             e.replace(/\(/g, openBracketId)
@@ -1039,7 +1137,7 @@ class Ffau {
                                     let selectorParent = modifierValue;
                                     selectorSections.slice(1).forEach((section, j) => {
                                         let newMod = document.createElement("block");
-                                        newMod.setAttribute("id", idGen());
+                                        newMod.setAttribute("id", getId());
 
                                         let contentField = document.createElement("field");
                                         contentField.setAttribute("name", "content");
@@ -1080,17 +1178,23 @@ class Ffau {
                         break;
 
                     default:
-                        return false;
+                        continue;
                 }
 
-                let attributes = Array.from(child.attributes || []).map(e => [e.name, e.value]);
+                let attributes = Array.from(child.attributes || [])
+                    .map(e => [e.name, e.value])
+                    .filter(e => !e.some(
+                        v => (/[<>]/g).test(v) ||
+                            (new RegExp(`((html)|(head)|(body)|(style)|(base)|(link)|(meta)|(script)|(noscript))tag${tempId}`, "g"))
+                                .test(v)
+                    ));
                 if (attributes.length) {
                     let attrInput = document.createElement("value");
                     attrInput.setAttribute("name", "modifier");
 
                     let attrContainer = document.createElement("block");
                     attrContainer.setAttribute("type", "args");
-                    attrContainer.setAttribute("id", idGen());
+                    attrContainer.setAttribute("id", getId());
 
                     let attrStatement = document.createElement("statement");
                     attrStatement.setAttribute("name", "content");
@@ -1098,14 +1202,14 @@ class Ffau {
                     let attrParent = attrStatement;
                     attributes.forEach((attr, z) => {
                         let attrName = document.createElement("block");
-                        attrName.setAttribute("id", idGen());
+                        attrName.setAttribute("id", getId());
 
                         if (attr[0] === "class" || attr[0] === "id" || attr[0] === "align") {
                             attrName.setAttribute("type", attr[0]);
 
                             let attrValue = document.createElement("field");
                             attrValue.setAttribute("name", "content");
-                            attrValue.innerText = attr[1];
+                            attrValue.innerText = attr[1].trim() || "true";
 
                             attrName.appendChild(attrValue);
                         } else if (attr[0] === "style") {
@@ -1126,7 +1230,7 @@ class Ffau {
 
                             let attrValue = document.createElement("field");
                             attrValue.setAttribute("name", "value");
-                            attrValue.innerText = attr[1];
+                            attrValue.innerText = attr[1].trim() || "true";
 
                             attrName.appendChild(attrProperty);
                             attrName.appendChild(attrValue);
@@ -1152,7 +1256,7 @@ class Ffau {
 
                 if (newNode)
                     parallelChildren.push(newNode);
-            });
+            }
 
             let newParent = parallelParent;
             parallelChildren.forEach((child, i) => {
@@ -1170,11 +1274,12 @@ class Ffau {
         };
 
         reconstruct(parsedHTML, parallelTree);
-        console.log(parallelTree);
 
         parallelTree.querySelectorAll("*").forEach(e => {
             if (e.nodeName === "STATEMENT" && !e.childElementCount) e.parentNode.removeChild(e);
         });
+
+        console.log(parallelTree);
 
         return parallelTree.outerHTML;
     }
