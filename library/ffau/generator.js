@@ -213,8 +213,8 @@ htmlGen['textshadow-new'] = function (block) {
 };
 
 htmlGen['boxshadow-new'] = function (block) {
-    var x = fullEscape(block.getFieldValue('x-offset'));
-    var y = fullEscape(block.getFieldValue('y-offset'));
+    var x = fullEscape(block.getFieldValue('xoffset'));
+    var y = fullEscape(block.getFieldValue('yoffset'));
     var blur = fullEscape(block.getFieldValue('blur'));
 
     var color = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC).trim();
@@ -347,7 +347,7 @@ htmlGen['border-new'] = function (block) {
     var type = block.getFieldValue('type');
     var color = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC).trim();
 
-    return 'border: ' + width + 'px ' + type + ' ' + color + ';\n';
+    return 'border: ' + width + ' ' + type + ' ' + color + ';\n';
 };
 
 htmlGen['borderedge-new'] = function (block) {
@@ -356,7 +356,7 @@ htmlGen['borderedge-new'] = function (block) {
     var type = block.getFieldValue('type');
     var color = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC).trim();
 
-    return `border-${edge}: ${width}px ${type} ${color};\n`;
+    return `border-${edge}: ${width} ${type} ${color};\n`;
 };
 
 htmlGen['border'] = function (block) {
@@ -399,18 +399,16 @@ htmlGen['bordercol'] = function (block) {
     return code;
 };
 
-htmlGen['widthheightnum'] = function (block) {
-    var option = block.getFieldValue('option');
+htmlGen['width'] = function (block) {
     var size = block.getFieldValue('size');
 
-    return option + ': ' + fullEscape(size) + ';\n';
+    return 'width: ' + fullEscape(size) + ';\n';
 };
 
-htmlGen['widthheight'] = function (block) {
-    var option = block.getFieldValue('option');
-    var value = block.getFieldValue('value');
+htmlGen['height'] = function (block) {
+    var size = block.getFieldValue('size');
 
-    return option + ': ' + value + ';\n';
+    return 'height: ' + fullEscape(size) + ';\n';
 };
 
 htmlGen['float'] = function (block) {

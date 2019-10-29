@@ -765,9 +765,8 @@ class Ffau {
 
                             colorBlock.appendChild(valueField);
                             colorValue.appendChild(colorBlock);
-                        } else {
+                        } else if (colorNames.indexOf(colorStr.toLowerCase()) > -1)
                             mapColorLikeBlock("#" + colorValues[colorNames.indexOf(colorStr.toLowerCase())]);
-                        }
                     }
 
                     styleBlock.appendChild(colorValue);
@@ -844,10 +843,6 @@ class Ffau {
                         valueField.setAttribute("name", "value");
                         styleBlock.setAttribute("type", "fontsize");
                         break;
-                    case 'background-image':
-                        valueField.setAttribute("name", "content");
-                        styleBlock.setAttribute("type", "bgimage");
-                        break;
                     case 'font-family':
                         valueField.setAttribute("name", "value");
                         styleBlock.setAttribute("type", "fontfamily");
@@ -867,8 +862,14 @@ class Ffau {
                         }
                         break;
                     case 'text-shadow':
-                        valueField.setAttribute("name", "color");
-                        styleBlock.setAttribute("type", "textshadow-new");
+                    case 'box-shadow':
+                        if (selector[0] === "box-shadow") {
+                            valueField.setAttribute("name", "color");
+                            styleBlock.setAttribute("type", "boxshadow-new");
+                        } else {
+                            valueField.setAttribute("name", "color");
+                            styleBlock.setAttribute("type", "textshadow-new");
+                        }
 
                         let splitStr = selector[1].split(" ").map(e => e.trim()).filter(e => e);
 
@@ -930,7 +931,39 @@ class Ffau {
                         valueField.setAttribute("name", "content");
                         styleBlock.setAttribute("type", "display");
                         break;
+                    case 'overflow':
+                    case 'overflow-x':
+                    case 'overflow-y':
+                        valueField.setAttribute("name", "content");
+                        styleBlock.setAttribute("type", "overflow");
 
+                        let directionField = document.createElement("field");
+                        directionField.setAttribute("name", "direction");
+                        directionField.innerText = (selector[0] + "-x").split("-")[1];
+
+                        styleBlock.appendChild(directionField);
+
+                        if (selector[0] === "overflow") {
+                            let overflowYBlock = document.createElement("block");
+                            overflowYBlock.setAttribute("id", getId());
+                            overflowYBlock.setAttribute("type", "overflow");
+
+                            let overflowYField = document.createElement("field");
+                            overflowYField.innerText = selector[1].trim().replace(/^#/g, "");
+                            overflowYField.setAttribute("name", "content");
+
+                            let directionYField = document.createElement("field");
+                            directionYField.setAttribute("name", "direction");
+                            directionYField.innerText = "y";
+
+                            overflowYBlock.appendChild(overflowYField);
+                            overflowYBlock.appendChild(directionYField);
+
+                            let next = document.createElement("next");
+                            next.appendChild(overflowYBlock);
+                            styleBlock.appendChild(next);
+                        }
+                        break;
                     case 'float':
                         valueField.setAttribute("name", "content");
                         styleBlock.setAttribute("type", "float");
@@ -938,6 +971,87 @@ class Ffau {
                     case 'vertical-align':
                         valueField.setAttribute("name", "align");
                         styleBlock.setAttribute("type", "verticalalign");
+                        break;
+                    case 'width':
+                        valueField.setAttribute("name", "size");
+                        styleBlock.setAttribute("type", "width");
+                        break;
+                    case 'height':
+                        valueField.setAttribute("name", "size");
+                        styleBlock.setAttribute("type", "height");
+                        break;
+                    case 'background-color':
+                        valueField.setAttribute("name", "value");
+                        styleBlock.setAttribute("type", "bgcolor-new");
+                        mapColorLikeBlock(selector[1], "value");
+                        break;
+                    case 'background-image':
+                        valueField.setAttribute("name", "content");
+                        styleBlock.setAttribute("type", "bgimage");
+
+                        valueField.innerText =
+                            (
+                                (selector[1].split(/(url\(['"])/g)[2]
+                                    || "")
+                                    .split(/(['"]\))/g).reverse()[2]
+                                || "url"
+                            ).replace(/^['"]|['"]$/g, "");
+                        break;
+                    case 'background-position':
+                    case 'background-repeat':
+                    case 'background-size':
+                        valueField.setAttribute("name", "content");
+                        styleBlock.setAttribute("type", `bg${selector[0].split("-")[1]}`);
+                        break;
+                    case 'cursor':
+                        valueField.setAttribute("name", "content");
+                        styleBlock.setAttribute("type", "cursor");
+                        break;
+                    case 'border-left':
+                    case 'border-bottom':
+                    case 'border-top':
+                    case 'border-right':
+                    case 'border':
+                        valueField.setAttribute("name", "color");
+                        styleBlock.setAttribute("type", "border-new");
+
+                        valueField.innerText = selector[1].trim().split(" ")[2] || "";
+
+                        let widthField = document.createElement("field");
+                        widthField.setAttribute("name", "width");
+                        widthField.innerText = selector[1].trim().split(" ")[0] || "10px";
+
+                        let styleField = document.createElement("field");
+                        styleField.setAttribute("name", "type");
+                        styleField.innerText = selector[1].trim().split(" ")[1] || "none";
+
+                        styleBlock.appendChild(widthField);
+                        styleBlock.appendChild(styleField);
+
+                        if (selector[0] !== "border") {
+                            styleBlock.setAttribute("type", "borderedge-new");
+
+                            let sideField = document.createElement("field");
+                            sideField.setAttribute("name", "edge");
+                            sideField.innerText = selector[0].split("-")[1];
+
+                            styleBlock.appendChild(sideField);
+                        }
+
+                        mapColorLikeBlock(valueField.innerHTML, "color");
+                        break;
+                    case "border-collapse":
+                        valueField.setAttribute("name", "value");
+                        styleBlock.setAttribute("type", "bordercol");
+
+                        if (selector[1] === "collapse")
+                            valueField.innerText = "TRUE";
+                        else if (selector[1] === "separate")
+                            valueField.innerText = "FALSE";
+                        break;
+                    case "border-radius":
+                        valueField.setAttribute("name", "content");
+                        styleBlock.setAttribute("type", "borderrad");
                         break;
                     default:
                         styleBlock.setAttribute("type", "othercss");

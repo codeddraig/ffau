@@ -959,12 +959,12 @@ Blockly.Blocks['boxshadow-new'] = {
             "args0": [
                 {
                     "type": "field_input",
-                    "name": "x-offset",
+                    "name": "xoffset",
                     "text": "x-offset"
                 },
                 {
                     "type": "field_input",
-                    "name": "y-offset",
+                    "name": "yoffset",
                     "text": "y-offset"
                 },
                 {
@@ -1802,7 +1802,7 @@ Blockly.Blocks['borderedge'] = {
 Blockly.Blocks['border-new'] = {
     init: function () {
         this.jsonInit({
-            "message0": 'border: %1 px %2 %3 ;',
+            "message0": 'border: %1 %2 %3 ;',
             "args0": [
                 {
                     "type": "field_number",
@@ -1870,7 +1870,7 @@ Blockly.Blocks['border-new'] = {
 Blockly.Blocks['borderedge-new'] = {
     init: function () {
         this.jsonInit({
-            "message0": "border- %1 : %2 px %3 %4 ;",
+            "message0": "border- %1 : %2 %3 %4 ;",
             "args0": [
                 {
                     "type": "field_dropdown",
@@ -2213,26 +2213,12 @@ Blockly.Blocks['linkhead'] = {
     }
 };
 
-//Width height number selector
-Blockly.Blocks['widthheightnum'] = {
+//Width number selector
+Blockly.Blocks['width'] = {
     init: function () {
         this.jsonInit({
-            "message0": '%1 : %2;',
+            "message0": 'width : %1;',
             "args0": [
-                {
-                    "type": "field_dropdown",
-                    "name": "option",
-                    "options": [
-                        [
-                            "width",
-                            "width"
-                        ],
-                        [
-                            "height",
-                            "height"
-                        ]
-                    ]
-                },
                 {
                     "type": "field_input",
                     "name": "size",
@@ -2242,55 +2228,28 @@ Blockly.Blocks['widthheightnum'] = {
             "previousStatement": "stylecontent",
             "nextStatement": "stylecontent",
             "colour": 290,
-            "tooltip": "CSS Width/height",
+            "tooltip": "CSS Width",
             "helpUrl": "https://www.w3schools.com/css/css_dimension.asp"
         });
     }
 };
 
-//Width height number selector
-Blockly.Blocks['widthheight'] = {
+//Height number selector
+Blockly.Blocks['height'] = {
     init: function () {
         this.jsonInit({
-            "message0": '%1 : %2 ;',
+            "message0": 'height : %1;',
             "args0": [
                 {
-                    "type": "field_dropdown",
-                    "name": "option",
-                    "options": [
-                        [
-                            "width",
-                            "width"
-                        ],
-                        [
-                            "height",
-                            "height"
-                        ]
-                    ]
-                },
-                {
-                    "type": "field_dropdown",
-                    "name": "value",
-                    "options": [
-                        [
-                            "auto",
-                            "auto"
-                        ],
-                        [
-                            "initial",
-                            "initial"
-                        ],
-                        [
-                            "inherit",
-                            "inherit"
-                        ]
-                    ]
+                    "type": "field_input",
+                    "name": "size",
+                    "text": "100%"
                 }
             ],
             "previousStatement": "stylecontent",
             "nextStatement": "stylecontent",
             "colour": 290,
-            "tooltip": "CSS Width/height",
+            "tooltip": "CSS Height",
             "helpUrl": "https://www.w3schools.com/css/css_dimension.asp"
         });
     }
@@ -2327,7 +2286,7 @@ Blockly.Blocks['float'] = {
 Blockly.Blocks['verticalalign'] = {
     init: function () {
         this.jsonInit({
-            "message0": "vertical-align: %1",
+            "message0": "vertical-align: %1;",
             "args0": [
                 {
                     "type": "field_dropdown",
