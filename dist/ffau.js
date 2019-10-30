@@ -786,7 +786,7 @@ class Ffau {
 
                         styleBlock.appendChild(marginDirectionField);
                     } else {
-                        let tags = selector[1].split(" ");
+                        let tags = selector[1].split(/ +/g);
 
                         if (tags.length === 3) tags.push(tags[1]);
                         if (tags.length === 2) tags = tags.map(e => [e, e]).flat();
@@ -871,7 +871,7 @@ class Ffau {
                             styleBlock.setAttribute("type", "textshadow-new");
                         }
 
-                        let splitStr = selector[1].split(" ").map(e => e.trim()).filter(e => e);
+                        let splitStr = selector[1].split(/ +/g).map(e => e.trim()).filter(e => e);
 
                         if (splitStr.length === 2) {
                             splitStr.push("0px");
@@ -1015,15 +1015,15 @@ class Ffau {
                         valueField.setAttribute("name", "color");
                         styleBlock.setAttribute("type", "border-new");
 
-                        valueField.innerText = selector[1].trim().split(" ")[2] || "";
+                        valueField.innerText = selector[1].trim().split(/ +/g)[2] || "";
 
                         let widthField = document.createElement("field");
                         widthField.setAttribute("name", "width");
-                        widthField.innerText = selector[1].trim().split(" ")[0] || "10px";
+                        widthField.innerText = selector[1].trim().split(/ +/g)[0] || "10px";
 
                         let styleField = document.createElement("field");
                         styleField.setAttribute("name", "type");
-                        styleField.innerText = selector[1].trim().split(" ")[1] || "none";
+                        styleField.innerText = selector[1].trim().split(/ +/g)[1] || "none";
 
                         styleBlock.appendChild(widthField);
                         styleBlock.appendChild(styleField);
@@ -1052,6 +1052,73 @@ class Ffau {
                     case "border-radius":
                         valueField.setAttribute("name", "content");
                         styleBlock.setAttribute("type", "borderrad");
+                        break;
+                    case "transition":
+                        valueField.parentNode.removeChild(valueField);
+                        styleBlock.setAttribute("type", "transition");
+
+                        let property = selector[1].split(/ +/g)[0];
+                        let duration = selector[1].split(/ +/g)[1].replace(/([s ])*/g, "");
+                        let delay = selector[1].split(/ +/g)[2].replace(/([s ])*/g, "") || "0";
+                        let timing = selector[1].split(/ +/g).slice(3).join("") || "linear";
+
+                        let transitionPropertyField = document.createElement("field");
+                        let transitionDurationField = document.createElement("field");
+                        let transitionDelayField = document.createElement("field");
+                        let transitionTimingField = document.createElement("value");
+
+                        transitionPropertyField.setAttribute("name", "transition-property");
+                        transitionDurationField.setAttribute("name", "duration");
+                        transitionDelayField.setAttribute("name", "delay");
+                        transitionTimingField.setAttribute("name", "timing-function");
+
+                        transitionPropertyField.innerText = property.trim();
+                        transitionDurationField.innerText = duration.trim();
+                        transitionDelayField.innerText = delay.trim();
+
+                        let timingBlock = document.createElement("block");
+                        timingBlock.setAttribute("id", getId());
+                        if (timing.startsWith("cubic-bezier(")) {
+                            timingBlock.setAttribute("type", "transitiontimingbezier");
+
+                            let bez1 = document.createElement("field");
+                            let bez2 = document.createElement("field");
+                            let bez3 = document.createElement("field");
+                            let bez4 = document.createElement("field");
+
+                            bez1.setAttribute("name", "bez1");
+                            bez2.setAttribute("name", "bez2");
+                            bez3.setAttribute("name", "bez3");
+                            bez4.setAttribute("name", "bez4");
+
+                            let bezPointList = timing.trim().split("cubic-bezier(").slice(1).join("")
+                                .replace(/\)/g, "")
+                                .split(",");
+                            bez1.innerText = bezPointList[0].trim();
+                            bez2.innerText = bezPointList[1].trim();
+                            bez3.innerText = bezPointList[2].trim();
+                            bez4.innerText = bezPointList[3].trim();
+
+                            timingBlock.appendChild(bez1);
+                            timingBlock.appendChild(bez2);
+                            timingBlock.appendChild(bez3);
+                            timingBlock.appendChild(bez4);
+                        } else {
+                            timingBlock.setAttribute("type", "transitiontimingdropdown");
+
+                            let functionNameField = document.createElement("field");
+                            functionNameField.setAttribute("name", "function");
+                            functionNameField.innerText = timing.trim();
+
+                            timingBlock.appendChild(functionNameField);
+                        }
+
+                        transitionTimingField.appendChild(timingBlock);
+
+                        styleBlock.appendChild(transitionPropertyField);
+                        styleBlock.appendChild(transitionDurationField);
+                        styleBlock.appendChild(transitionDelayField);
+                        styleBlock.appendChild(transitionTimingField);
                         break;
                     default:
                         styleBlock.setAttribute("type", "othercss");
@@ -1297,7 +1364,7 @@ class Ffau {
                 }
 
                 let attributes = Array.from(child.attributes || [])
-                    .map(e => [e.name, e.value])
+                    .map(e => [e.name, e.value.trim()])
                     .filter(e => !e.some(
                         v => (/[<>]/g).test(v) ||
                             (new RegExp(`((html)|(head)|(body)|(style)|(base)|(link)|(meta)|(script)|(noscript))tag${tempId}`, "g"))
