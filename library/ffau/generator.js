@@ -82,10 +82,51 @@ htmlGen.finish = function (code) {
     return code;
 };
 
+htmlGen.suffixLines = function (text, suffix) {
+    return text.replace(/(?!\n$)\n/g, suffix + "\n") + suffix;
+};
+
+// Called with each block/statement to pass onwards custom mapping
 htmlGen.scrub_ = function (block, code) {
+    function appendCommentCode(comment) {
+        commentCode += `<!--${comment.includes("\n") ?
+            "\n\t" + comment.trim().split("\n").map(z => "\t" + z).join('\n').trim() + "\n"
+            : comment}-->\n`
+    }
+
+    var commentCode = '';
+    // Only collect comments for blocks that aren't inline.
+    console.log(block);
+    if ((!block.outputConnection || !block.outputConnection.targetConnection)
+        && (block.parentBlock_ ?
+            (!block.parentBlock_.outputConnection || !block.parentBlock_.outputConnection.targetConnection) : true)
+    ) {
+        // Collect comment for this block.
+        var comment = block.getCommentText();
+        if (comment) {
+            comment = Blockly.utils.wrap(comment,
+                htmlGen.COMMENT_WRAP - 3).replace(/\n*$|^\n*/g, "");
+            appendCommentCode(comment);
+        }
+        // Collect comments for all value arguments.
+        // Don't collect comments for nested statements.
+        for (var i = 0; i < block.inputList.length; i++) {
+            if (block.inputList[i].type === Blockly.INPUT_VALUE) {
+                var childBlock = block.inputList[i].connection.targetBlock();
+                if (childBlock && childBlock.type !== "style" && childBlock.type !== "stylearg") {
+                    var thisComment = htmlGen.allNestedComments(childBlock)
+                        .replace(/\n*$|^\n*/g, "");
+                    if (thisComment)
+                        appendCommentCode(thisComment)
+                }
+            }
+        }
+    }
+
     var nextBlock = block.nextConnection && block.nextConnection.targetBlock();
     var nextCode = htmlGen.blockToCode(nextBlock);
-    return code + nextCode;
+
+    return commentCode + code + nextCode;
 };
 
 htmlGen['html'] = function (block) {
@@ -113,7 +154,7 @@ htmlGen['metaviewport'] = function (block) {
 
 htmlGen['title'] = function (block) {
     var value = block.getFieldValue('value');
-    var code = `<title>${ looseEscape(value) }</title>\n`;
+    var code = `<title>${looseEscape(value)}</title>\n`;
     return code;
 };
 
@@ -253,7 +294,7 @@ htmlGen['textalign'] = function (block) {
 
 htmlGen['letterspacing'] = function (block) {
     var value = block.getFieldValue('value');
-    return `letter-spacing: ${ fullEscape(value) };\n`;
+    return `letter-spacing: ${fullEscape(value)};\n`;
 };
 
 htmlGen['margin'] = function (block) {
@@ -427,7 +468,7 @@ htmlGen['transition'] = function (block) {
     var delay = fullEscape(block.getFieldValue('delay'));
     var timing = htmlGen.statementToCode(block, 'timing-function', htmlGen.ORDER_ATOMIC);
 
-    return `transition-property: ${property};\ntransition-duration: ${duration};\ntransition-delay: ${delay};\ntransition-timing-function: ${timing};\n`;
+    return `transition-property: ${property};\ntransition-duration: ${duration};\ntransition-delay: ${delay};\ntransition-timing-function: ${timing.trim()};\n`;
 };
 
 htmlGen['transitiontimingdropdown'] = function (block) {

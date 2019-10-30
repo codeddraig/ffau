@@ -1100,10 +1100,9 @@ class Ffau {
             .map((v, i) =>
                 i % 2 === 0 ?
                     (!i ? v.substr(1) : v)
-                        .toLowerCase()
-                        .replace(/<\/?((html)|(head)|(body)|(style)|(base)|(link)|(meta)|(script)|(noscript))/g,
-                            `$&Tag${tempId}`)
-                        .replace("<!DOCTYPE html>", "<doctypeTag></doctypeTag>")
+                        .replace(/<\/?((html)|(head)|(body)|(style)|(base)|(link)|(meta)|(script)|(noscript))(?=.*(>|(= *)))/gi,
+                            z => `${z.toLowerCase()}Tag${tempId}`)
+                        .replace(/<!DOCTYPE html>/gi, "<doctypeTag></doctypeTag>")
                     : v)
             .filter((_, z) => z ? z === 1 ? _ !== " " : true : _)
             .join("")
@@ -1119,7 +1118,7 @@ class Ffau {
             .reduce((v, e) =>
                 (e[0] === "<" ? v.push(e) : v[v.length - 1] += e)
                 && v
-                , [])
+                , [""])
             .map(t =>
                 t.replace(/^<([a-zA-Z0-9]+.*)\/ *>/g, `${tagId}$&${tagId}`)
                     .split(tagId)
@@ -1135,11 +1134,10 @@ class Ffau {
         let domParser = new DOMParser();
         let parsedHTML = domParser.parseFromString(bodifiedCode, "text/html").body;
 
-        const reconstruct = (parent, parallelParent) => {
+        const reconstruct = (parent, parallelParent, isTopLevel) => {
             let parallelChildren = [];
-            let iterArray = Array.from(parent.childNodes);
 
-            for (let i = 0, child = iterArray[0]; i < iterArray.length; i++, child = iterArray[i]) {
+            for (let i = 0, child = parent.childNodes[0]; i < parent.childNodes.length; i++, child = parent.childNodes[i]) {
                 child.innerHTML ? child.innerHTML = child.innerHTML.trim() : child.textContent = child.textContent.trim();
 
                 let newNode;
@@ -1202,14 +1200,17 @@ class Ffau {
                         break;
 
                     case "#text":
-                        if (child.parentNode.nodeName !== `STYLETAG${tempId}`) {
+                        if (child.parentNode.nodeName !== `STYLETAG${tempId}` && child.textContent.trim()) {
+                            if (child.textContent.includes("\n"))
+                                child.splitText(child.textContent.indexOf("\n") + 1);
+
                             newNode = document.createElement("block");
                             newNode.setAttribute("type", "emptytext");
                             newNode.setAttribute("id", getId());
 
                             let textContent = document.createElement("field");
                             textContent.setAttribute("name", "content");
-                            textContent.innerText = child.textContent;
+                            textContent.innerText = child.textContent.replace(/\n*$/g, "");
 
                             newNode.appendChild(textContent);
                         } else {
@@ -1379,7 +1380,7 @@ class Ffau {
                 else
                     return false;
 
-                if (i < parallelChildren.length - 1) {
+                if (i < parallelChildren.length - 1 && !isTopLevel) {
                     let v = document.createElement("next");
                     child.appendChild(v);
                     newParent = v;
@@ -1387,7 +1388,7 @@ class Ffau {
             });
         };
 
-        reconstruct(parsedHTML, parallelTree);
+        reconstruct(parsedHTML, parallelTree, true);
 
         parallelTree.querySelectorAll("*").forEach(e => {
             if (e.nodeName === "STATEMENT" && !e.childElementCount) e.parentNode.removeChild(e);

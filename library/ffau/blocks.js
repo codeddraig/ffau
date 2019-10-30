@@ -1805,7 +1805,7 @@ Blockly.Blocks['border-new'] = {
             "message0": 'border: %1 %2 %3 ;',
             "args0": [
                 {
-                    "type": "field_number",
+                    "type": "field_input",
                     "name": "width",
                     "value": 5,
                     "min": 0
@@ -1895,7 +1895,7 @@ Blockly.Blocks['borderedge-new'] = {
                     ]
                 },
                 {
-                    "type": "field_number",
+                    "type": "field_input",
                     "name": "width",
                     "value": 0
                 },

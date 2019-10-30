@@ -564,9 +564,10 @@
         if (ffau.editMode) {
             try {
                 ffau.setXML(ffau.codeToXML(ffau.editor.getValue()));
+                ffau.ffauWorkspace.cleanUp();
                 ffau.ffauWorkspace.scrollCenter();
             } catch (e) {
-                console.log("bad");
+                ffau.clearWorkspace();
             }
         }
     }, 'ace');
