@@ -14,7 +14,7 @@
 
 				Copyright (c) 2017-19 The CodeDdraig Organisation
 
-				THIS IS VERSION 1.0.0
+				THIS IS VERSION 1.2.2
 */
 
 function hexEscape(str) {
@@ -652,19 +652,23 @@ htmlGen['audio'] = function (block) {
     }
 
     var type;
+    var url;
     switch (source) {
         case "8bit.ogg":
+            url = 'https://firebasestorage.googleapis.com/v0/b/cdr-app-firebase.appspot.com/o/8bit.ogg?alt=media&token=be7cc7aa-08b2-4ca4-95bd-677111139c8f';
             type = "audio/ogg";
             break;
         case "classical.mp3":
+            url = 'https://firebasestorage.googleapis.com/v0/b/cdr-app-firebase.appspot.com/o/classical.mp3?alt=media&token=f9a9f301-5dd2-4c3d-8857-f9883b584070';
             type = "audio/mpeg";
             break;
         case "happy.wav":
+            url = 'https://firebasestorage.googleapis.com/v0/b/cdr-app-firebase.appspot.com/o/happy.wav?alt=media&token=a7fcd6f6-7f5d-40c4-b172-c135471244b1';
             type = "audio/wav";
             break;
     }
 
-    code += '>\n<source src="https://www.codedragon.org/library/media/' + source + '" type="' + type + '">\n</audio>\n';
+    code += '>\n<source src="' + url + '" type="' + type + '">\n</audio>\n';
     return code;
 };
 
@@ -689,10 +693,10 @@ htmlGen['video'] = function (block) {
     var type = "video/mp4";
     switch (source) {
         case "bbb":
-            source = "https://www.codedragon.org/library/media/bigbuckbunny_trail_720p.mp4";
+            source = "https://firebasestorage.googleapis.com/v0/b/cdr-app-firebase.appspot.com/o/bigbuckbunny_trail_720p.mp4?alt=media&token=4795c3dd-9271-4801-96da-34da2f0c65d7";
             break;
         case "ld":
-            source = "https://www.codedragon.org/library/media/llamadrama_720p.mp4";
+            source = "https://firebasestorage.googleapis.com/v0/b/cdr-app-firebase.appspot.com/o/llamadrama_720p.mp4?alt=media&token=5ce29fab-e766-44d1-bc99-481ee2fc63cd";
             break;
     }
     code += '>\n<source src="' + source + '" type="' + type + '">\n</video>\n';
