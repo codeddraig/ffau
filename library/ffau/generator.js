@@ -86,38 +86,57 @@ htmlGen.suffixLines = function (text, suffix) {
     return text.replace(/(?!\n$)\n/g, suffix + "\n") + suffix;
 };
 
+htmlGen.getAncestors = function (block, ancestors) {
+    if (block.parentBlock_) {
+        ancestors.push(block.parentBlock_);
+        ancestors.push(htmlGen.getAncestors(block.parentBlock_, ancestors));
+    }
+
+    return ancestors.filter(e => e.length === undefined);
+};
+
 // Called with each block/statement to pass onwards custom mapping
 htmlGen.scrub_ = function (block, code) {
-    function appendCommentCode(comment) {
-        commentCode += `<!--${comment.includes("\n") ?
+    function appendCommentCode(comment, prefix, suffix) {
+        commentCode += `${prefix}${comment.includes("\n") ?
             "\n\t" + comment.trim().split("\n").map(z => "\t" + z).join('\n').trim() + "\n"
-            : comment}-->\n`
+            : comment}${suffix}\n`
     }
 
     var commentCode = '';
-    // Only collect comments for blocks that aren't inline.
-    console.log(block);
-    if ((!block.outputConnection || !block.outputConnection.targetConnection)
-        && (block.parentBlock_ ?
-            (!block.parentBlock_.outputConnection || !block.parentBlock_.outputConnection.targetConnection) : true)
-    ) {
-        // Collect comment for this block.
+
+    if (!htmlGen.getAncestors(block, []).map(e => e.type).includes("stylearg")) {
         var comment = block.getCommentText();
-        if (comment) {
-            comment = Blockly.utils.wrap(comment,
-                htmlGen.COMMENT_WRAP - 3).replace(/\n*$|^\n*/g, "");
-            appendCommentCode(comment);
-        }
-        // Collect comments for all value arguments.
-        // Don't collect comments for nested statements.
-        for (var i = 0; i < block.inputList.length; i++) {
-            if (block.inputList[i].type === Blockly.INPUT_VALUE) {
-                var childBlock = block.inputList[i].connection.targetBlock();
-                if (childBlock && childBlock.type !== "style" && childBlock.type !== "stylearg") {
-                    var thisComment = htmlGen.allNestedComments(childBlock)
-                        .replace(/\n*$|^\n*/g, "");
-                    if (thisComment)
-                        appendCommentCode(thisComment)
+        if (htmlGen.getAncestors(block, []).map(e => e.type).includes("style")) {
+            if (comment) {
+                comment = Blockly.utils.wrap(comment,
+                    htmlGen.COMMENT_WRAP - 3).replace(/\n*$|^\n*/g, "");
+                appendCommentCode(comment, "/*", "*/");
+            }
+        } else {
+            // Only collect comments for blocks that aren't inline.
+            if ((!block.outputConnection || !block.outputConnection.targetConnection)
+                && (block.parentBlock_ ?
+                    (!block.parentBlock_.outputConnection || !block.parentBlock_.outputConnection.targetConnection) : true)
+            ) {
+                // Collect comment for this block.
+                if (comment) {
+                    comment = Blockly.utils.wrap(comment,
+                        htmlGen.COMMENT_WRAP - 3).replace(/\n*$|^\n*/g, "");
+                    appendCommentCode(comment, "<!--", "-->");
+                }
+                // Collect comments for all value arguments.
+                // Don't collect comments for nested statements.
+                for (var i = 0; i < block.inputList.length; i++) {
+                    if (block.inputList[i].type === Blockly.INPUT_VALUE) {
+                        var childBlock = block.inputList[i].connection.targetBlock();
+                        if (childBlock && childBlock.type !== "style" && childBlock.type !== "stylearg") {
+                            var thisComment = htmlGen.allNestedComments(childBlock)
+                                .replace(/\n*$|^\n*/g, "");
+                            if (thisComment)
+                                appendCommentCode(thisComment, "<!--", "-->")
+                        }
+                    }
                 }
             }
         }
