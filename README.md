@@ -29,28 +29,45 @@ The Ffau editor is made to be easily addable to any existing project. There are 
 git clone https://github.com/codeddraig/ffau.git
 ```
 
-2. Import our libraries in a specific order. Due to Blockly being our main dependency, you have to import our assets quite specifically. Here's a perfect example (we'll assume you've cloned Ffau into `./assets/ffau`):
+2. Get all of the required modules, incl. Blockly
+
+```
+git submodule update --init blockly
+```
+
+_(optional):_
+```
+npm install
+```
+
+3. Build the styles (see below for details):
+
+```
+gulp
+```
+
+4. Import our libraries in a specific order. Due to Blockly being our main dependency, you have to import our assets quite specifically. Here's a perfect example (we'll assume you've cloned Ffau into `./assets/ffau`):
 
 ```html
 <head>
     <!-- google's blockly stuff first -->
-    <script src="assets/ffau/library/blockly/google-blockly/blockly_compressed.js"></script>
-    <script src="assets/ffau/library/blockly/google-blockly/msg/js/en.js"></script>
+    <script src="blockly/google-blockly/blockly_compressed.js"></script>
+    <script src="blockly/google-blockly/msg/js/en.js"></script>
 
     <!-- jquery (you probably already have it imported, but make sure you've got at least v3.2.1) -->
-    <script src="assets/ffau/library/jquery/jquery-3.2.1.js"></script>
+    <script src="library/jquery/jquery-3.2.1.js"></script>
 
     <!-- our blockly blocks and generators -->
-    <script src="assets/ffau/library/blockly/html/blocks.js"></script>
-    <script src="assets/ffau/library/blockly/html/generator.js"></script>
+    <script src="library/ffau/blocks.js"></script>
+    <script src="library/ffau//generator.js"></script>
 
     <!-- ace editor (optional: if you want a syntax-highlighted code preview) -->
     <script src="assets/ffau/library/ace/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 
     <!-- ffau css -->
-    <link rel="stylesheet" href="assets/ffau/dist/ffau.css">
+    <link rel="stylesheet" href="dist/ffau.css">
     <!-- ffau js last -->
-    <script src="assets/ffau/dist/ffau.js"></script>
+    <script src="dist/ffau.js"></script>
 </head>
 
 <body>
@@ -64,7 +81,7 @@ git clone https://github.com/codeddraig/ffau.git
 </body>
 ```
 
-3. Add the toolbox and pick which Ffau components you want to use. We won't explain how the toolbox works in too much detail, but it's simply a bit of XML that defines which blocks should go in your toolbox, and how to arrange them.
+5. Add the toolbox and pick which Ffau components you want to use. We won't explain how the toolbox works in too much detail, but it's simply a bit of XML that defines which blocks should go in your toolbox, and how to arrange them.
 
 **See BLOCKS.md for a full list of XML blocks**
 
