@@ -639,7 +639,7 @@ class Ffau {
             return replacerId;
         }
 
-        function getId() {
+        function getBlockId() {
             function idGen() {
                 return Array(20).fill(0).map(() => [..."`0123456789{}!$./,()*[]`ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"][Math.floor(Math.random() * 81)]).join('')
             }
@@ -706,13 +706,14 @@ class Ffau {
 
         function constructStyleTree(selectors, initialParent) {
             let parent = initialParent;
+            let forceParent = false;
             selectors.forEach((selector, m) => {
                 function mapColorLikeBlock(colorStr, valueName) {
                     let colorValue = document.createElement("value");
                     colorValue.setAttribute("name", valueName);
 
                     let colorBlock = document.createElement("block");
-                    colorBlock.setAttribute("id", getId());
+                    colorBlock.setAttribute("id", getBlockId());
 
                     if (/#(?:[0-9a-fA-F]{3}){1,2}/g.test(colorStr.trim())) {
                         valueField.parentNode.removeChild(valueField);
@@ -808,7 +809,7 @@ class Ffau {
                             let tagNext1 = document.createElement("next");
 
                             let tagBlock2 = document.createElement("block");
-                            tagBlock2.setAttribute("id", getId());
+                            tagBlock2.setAttribute("id", getBlockId());
                             tagBlock2.setAttribute("type", blockType);
 
                             let tagVal2 = document.createElement("field");
@@ -826,11 +827,17 @@ class Ffau {
 
                             tagParent = tagBlock2;
                         });
+
+                        let newForceParent = document.createElement("next");
+                        tagParent.appendChild(newForceParent);
+
+                        parent = newForceParent;
+                        forceParent = true;
                     }
                 }
 
                 let styleBlock = document.createElement("block");
-                styleBlock.setAttribute("id", getId());
+                styleBlock.setAttribute("id", getBlockId());
 
                 let valueField = document.createElement("field");
                 valueField.innerText = selector[1].trim().replace(/^#/g, "");
@@ -945,7 +952,7 @@ class Ffau {
 
                         if (selector[0] === "overflow") {
                             let overflowYBlock = document.createElement("block");
-                            overflowYBlock.setAttribute("id", getId());
+                            overflowYBlock.setAttribute("id", getBlockId());
                             overflowYBlock.setAttribute("type", "overflow");
 
                             let overflowYField = document.createElement("field");
@@ -1057,68 +1064,92 @@ class Ffau {
                         valueField.parentNode.removeChild(valueField);
                         styleBlock.setAttribute("type", "transition");
 
-                        let property = selector[1].split(/ +/g)[0];
-                        let duration = selector[1].split(/ +/g)[1].replace(/([s ])*/g, "");
-                        let delay = selector[1].split(/ +/g)[2].replace(/([s ])*/g, "") || "0";
-                        let timing = selector[1].split(/ +/g).slice(3).join("") || "linear";
+                        let allSections = selector[1].split(/(?<!\(),(?![^(]*[)])/g).map(e => e.trim());
+                        console.log(selector[1], allSections);
 
-                        let transitionPropertyField = document.createElement("field");
-                        let transitionDurationField = document.createElement("field");
-                        let transitionDelayField = document.createElement("field");
-                        let transitionTimingField = document.createElement("value");
+                        let transitionParent = styleBlock;
+                        allSections.forEach((transitionElem, c) => {
+                            let property = transitionElem.split(/ +/g)[0];
+                            let duration = transitionElem.split(/ +/g)[1].replace(/([s ])*/g, "");
+                            let delay = transitionElem.split(/ +/g)[2].replace(/([s ])*/g, "") || "0";
+                            let timing = transitionElem.split(/ +/g).slice(3).join("") || "linear";
 
-                        transitionPropertyField.setAttribute("name", "transition-property");
-                        transitionDurationField.setAttribute("name", "duration");
-                        transitionDelayField.setAttribute("name", "delay");
-                        transitionTimingField.setAttribute("name", "timing-function");
+                            let transitionPropertyField = document.createElement("field");
+                            let transitionDurationField = document.createElement("field");
+                            let transitionDelayField = document.createElement("field");
+                            let transitionTimingField = document.createElement("value");
 
-                        transitionPropertyField.innerText = property.trim();
-                        transitionDurationField.innerText = duration.trim();
-                        transitionDelayField.innerText = delay.trim();
+                            transitionPropertyField.setAttribute("name", "transition-property");
+                            transitionDurationField.setAttribute("name", "duration");
+                            transitionDelayField.setAttribute("name", "delay");
+                            transitionTimingField.setAttribute("name", "timing-function");
 
-                        let timingBlock = document.createElement("block");
-                        timingBlock.setAttribute("id", getId());
-                        if (timing.startsWith("cubic-bezier(")) {
-                            timingBlock.setAttribute("type", "transitiontimingbezier");
+                            transitionPropertyField.innerText = property.trim();
+                            transitionDurationField.innerText = duration.trim();
+                            transitionDelayField.innerText = delay.trim();
 
-                            let bez1 = document.createElement("field");
-                            let bez2 = document.createElement("field");
-                            let bez3 = document.createElement("field");
-                            let bez4 = document.createElement("field");
+                            let timingBlock = document.createElement("block");
+                            timingBlock.setAttribute("id", getBlockId());
+                            if (timing.startsWith("cubic-bezier(")) {
+                                timingBlock.setAttribute("type", "transitiontimingbezier");
 
-                            bez1.setAttribute("name", "bez1");
-                            bez2.setAttribute("name", "bez2");
-                            bez3.setAttribute("name", "bez3");
-                            bez4.setAttribute("name", "bez4");
+                                let bez1 = document.createElement("field");
+                                let bez2 = document.createElement("field");
+                                let bez3 = document.createElement("field");
+                                let bez4 = document.createElement("field");
 
-                            let bezPointList = timing.trim().split("cubic-bezier(").slice(1).join("")
-                                .replace(/\)/g, "")
-                                .split(",");
-                            bez1.innerText = bezPointList[0].trim();
-                            bez2.innerText = bezPointList[1].trim();
-                            bez3.innerText = bezPointList[2].trim();
-                            bez4.innerText = bezPointList[3].trim();
+                                bez1.setAttribute("name", "bez1");
+                                bez2.setAttribute("name", "bez2");
+                                bez3.setAttribute("name", "bez3");
+                                bez4.setAttribute("name", "bez4");
 
-                            timingBlock.appendChild(bez1);
-                            timingBlock.appendChild(bez2);
-                            timingBlock.appendChild(bez3);
-                            timingBlock.appendChild(bez4);
-                        } else {
-                            timingBlock.setAttribute("type", "transitiontimingdropdown");
+                                let bezPointList = timing.trim().split("cubic-bezier(").slice(1).join("")
+                                    .replace(/\)/g, "")
+                                    .split(",");
+                                bez1.innerText = bezPointList[0].trim();
+                                bez2.innerText = bezPointList[1].trim();
+                                bez3.innerText = bezPointList[2].trim();
+                                bez4.innerText = bezPointList[3].trim();
 
-                            let functionNameField = document.createElement("field");
-                            functionNameField.setAttribute("name", "function");
-                            functionNameField.innerText = timing.trim();
+                                timingBlock.appendChild(bez1);
+                                timingBlock.appendChild(bez2);
+                                timingBlock.appendChild(bez3);
+                                timingBlock.appendChild(bez4);
+                            } else {
+                                timingBlock.setAttribute("type", "transitiontimingdropdown");
 
-                            timingBlock.appendChild(functionNameField);
-                        }
+                                let functionNameField = document.createElement("field");
+                                functionNameField.setAttribute("name", "function");
+                                functionNameField.innerText = timing.trim();
 
-                        transitionTimingField.appendChild(timingBlock);
+                                timingBlock.appendChild(functionNameField);
+                            }
 
-                        styleBlock.appendChild(transitionPropertyField);
-                        styleBlock.appendChild(transitionDurationField);
-                        styleBlock.appendChild(transitionDelayField);
-                        styleBlock.appendChild(transitionTimingField);
+                            transitionTimingField.appendChild(timingBlock);
+
+                            transitionParent.appendChild(transitionPropertyField);
+                            transitionParent.appendChild(transitionDurationField);
+                            transitionParent.appendChild(transitionDelayField);
+                            transitionParent.appendChild(transitionTimingField);
+
+                            let newTransitionParent = document.createElement("next");
+                            transitionParent.appendChild(newTransitionParent);
+
+                            if (c < allSections.length - 1) {
+                                let newTransitionBlock = document.createElement("block");
+                                newTransitionBlock.setAttribute("id", getBlockId());
+                                newTransitionBlock.setAttribute("type", "transition");
+                                newTransitionParent.appendChild(newTransitionBlock);
+
+                                transitionParent = newTransitionBlock;
+                            } else {
+                                transitionParent = newTransitionParent;
+                            }
+                        });
+
+                        parent = transitionParent;
+                        forceParent = true;
+
                         break;
                     default:
                         styleBlock.setAttribute("type", "othercss");
@@ -1133,10 +1164,14 @@ class Ffau {
                 }
 
                 if (m < selectors.length - 1) {
-                    let t = document.createElement("next");
-                    styleBlock.appendChild(t);
+                    if (!forceParent) {
+                        let t = document.createElement("next");
+                        styleBlock.appendChild(t);
 
-                    parent = t;
+                        parent = t;
+                    } else {
+                        forceParent = false;
+                    }
                 }
             });
         }
@@ -1216,7 +1251,7 @@ class Ffau {
                     case `STYLETAG${tempId}`:
                         newNode = document.createElement("block");
                         newNode.setAttribute("type", child.nodeName.slice(0, -8).toLowerCase());
-                        newNode.setAttribute("id", getId());
+                        newNode.setAttribute("id", getBlockId());
 
                         childrenContainer = document.createElement("statement");
                         childrenContainer.setAttribute("name", "content");
@@ -1226,7 +1261,7 @@ class Ffau {
 
                     case `METATAG${tempId}`:
                         newNode = document.createElement("block");
-                        newNode.setAttribute("id", getId());
+                        newNode.setAttribute("id", getBlockId());
 
                         if (child.getAttribute("name") === "viewport") {
                             newNode.setAttribute("type", "metaviewport");
@@ -1252,7 +1287,7 @@ class Ffau {
                     case `H6`:
                         newNode = document.createElement("block");
                         newNode.setAttribute("type", "header");
-                        newNode.setAttribute("id", getId());
+                        newNode.setAttribute("id", getBlockId());
 
                         let size = document.createElement("field");
                         size.setAttribute("name", "size");
@@ -1273,7 +1308,7 @@ class Ffau {
 
                             newNode = document.createElement("block");
                             newNode.setAttribute("type", "emptytext");
-                            newNode.setAttribute("id", getId());
+                            newNode.setAttribute("id", getBlockId());
 
                             let textContent = document.createElement("field");
                             textContent.setAttribute("name", "content");
@@ -1286,7 +1321,7 @@ class Ffau {
                             selectors.forEach(selector => {
                                 let selectorBlock = document.createElement("block");
                                 selectorBlock.setAttribute("type", "cssitem");
-                                selectorBlock.setAttribute("id", getId());
+                                selectorBlock.setAttribute("id", getBlockId());
 
                                 let openBracketId = getReplacerId();
                                 let closeBracketId = getReplacerId();
@@ -1319,7 +1354,7 @@ class Ffau {
                                     let selectorParent = modifierValue;
                                     selectorSections.slice(1).forEach((section, j) => {
                                         let newMod = document.createElement("block");
-                                        newMod.setAttribute("id", getId());
+                                        newMod.setAttribute("id", getBlockId());
 
                                         let contentField = document.createElement("field");
                                         contentField.setAttribute("name", "content");
@@ -1376,7 +1411,7 @@ class Ffau {
 
                     let attrContainer = document.createElement("block");
                     attrContainer.setAttribute("type", "args");
-                    attrContainer.setAttribute("id", getId());
+                    attrContainer.setAttribute("id", getBlockId());
 
                     let attrStatement = document.createElement("statement");
                     attrStatement.setAttribute("name", "content");
@@ -1384,7 +1419,7 @@ class Ffau {
                     let attrParent = attrStatement;
                     attributes.forEach((attr, z) => {
                         let attrName = document.createElement("block");
-                        attrName.setAttribute("id", getId());
+                        attrName.setAttribute("id", getBlockId());
 
                         if (attr[0] === "class" || attr[0] === "id" || attr[0] === "align") {
                             attrName.setAttribute("type", attr[0]);
