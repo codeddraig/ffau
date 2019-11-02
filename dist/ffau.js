@@ -662,7 +662,7 @@ class Ffau {
                 stringSplit[0] = stringSplit[0].substr(1);
 
                 stringSplit = stringSplit
-                    .map((e, _) => _ % 2 ? e : e.replace(/:/g, uniqueId).split(/;/g))
+                    .map((e, _) => _ % 2 ? e : e.replace(/:/g, uniqueId).split(/[;\n]/g))
                     .flat();
 
                 let stylePairs = [];
@@ -1176,7 +1176,7 @@ class Ffau {
             });
         }
 
-        String.prototype.closeTag = function (tagName) {
+        String.prototype.closeTag = function (tagName, closeId) {
             let openTagRE = new RegExp(`((?<!${nonStringId}(?:'(?:\\.|[^'])*)|(?:"(?:\\.|[^"])*))< *${tagName}(?:(?:${nonStringId}.*?${nonStringId})|[^>])*?>(?!< *\/ *${tagName}))`, "g");
 
             return this.split(/((?:"(\\.|[^"])*")|(?:'(\\.|[^'])*'))/g)
@@ -1185,7 +1185,7 @@ class Ffau {
                 .split(openTagRE)
                 .map(e => e.replace(new RegExp(nonStringId, "g"), ""))
                 .filter(e => e)
-                .map(e => openTagRE.test(e) ? `${e.trim().slice(0, -1)}/>`.replace(/\/\/ *>$/g, "\/>") : e)
+                .map(e => openTagRE.test(e) ? `${e.trim().slice(0, -1)}/>`.replace(/\/\/ *>$/g, "\/>").replace(new RegExp(tagName, "g"), tagName + closeId) : e)
                 .join("")
         };
 
@@ -1195,6 +1195,9 @@ class Ffau {
         let tempId = getReplacerId();
         let tagId = getReplacerId();
         let nonStringId = getReplacerId();
+
+        let closeId = getReplacerId();
+        let slashedId = getReplacerId();
 
         let bodifiedCode = (" " + code)
             .split(/((?<=[^\\]|^)(("((\\")|[^"])*[^\\]")|('((\\')|[^'])*[^\\]')))|((?<=([^\\]>)|^)((\\<)|([^<]))*[^\\](?=<))/g)
@@ -1208,8 +1211,8 @@ class Ffau {
                     : v)
             .filter((_, z) => z ? z === 1 ? _ !== " " : true : _)
             .join("")
-            .closeTag(`metaTag${tempId}`)
-            .closeTag(`img`)
+            .closeTag(`metaTag${tempId}`, closeId)
+            .closeTag(`img`, closeId)
             .split(/(?<=<\/?[a-zA-Z0-9]+(?: *[a-zA-Z]+(?:=(?:(?:"(?:\\.|[^"])*")|(?:'(?:\\.|[^'])*')|(?:[0-9]|(?:true|false))))?)* *\/?>(?:\\.|[^<])*)/g)
             .reduce((v, e) =>
                 ((e.length - 1) ?
@@ -1228,13 +1231,41 @@ class Ffau {
                     .map(m =>
                         /^<([a-zA-Z0-9]+.*)\/ *>/g.test(m) ?
                             [m.trim().split(/(\/ *>)(?!.*\/ *>)/g)[0].substr(1).trim()]
-                                .map(u => `<${u}></${u.split(" ")[0]}>`)
+                                .map(u => `<${
+                                    (u.split(" ")[0] + slashedId + " " + u.split(" ").slice(1).join(" "))
+                                        .replace(new RegExp(closeId + slashedId, "g"), closeId)
+                                }></${
+                                    (u.split(" ")[0] + slashedId)
+                                        .replace(new RegExp(closeId + slashedId, "g"), closeId)
+                                }>`)
                             : m)
                     .join(''))
             .join('');
 
         let domParser = new DOMParser();
         let parsedHTML = domParser.parseFromString(bodifiedCode, "text/html").body;
+
+        console.log(slashedId);
+        Array.from(parsedHTML.getElementsByTagName(`styleTag${tempId}`))
+            .forEach(e =>
+                e.innerText = encodeURIComponent(
+                    e.innerHTML
+                        .replace(new RegExp(`Tag${tempId}`, "gi"), "")
+                        .replace(new RegExp(`(< *([^\\/ >]*${slashedId})(?=[> ]).*?>)\s*<\\/ *\\2 *>`, "gi"),
+                            (match, fullTag) => fullTag.trim().slice(0, -1) + "/>"
+                        )
+                        .replace(new RegExp(`(< *([^\\/ >]*${closeId})(?=[> ]).*?>)\s*<\\/ *\\2 *>`, "gi"),
+                            (match, fullTag) => fullTag.trim().slice(0, -1) + ">"
+                        )
+                )
+                    .replace(new RegExp(slashedId, "g"), "")
+                    .replace(new RegExp(closeId, "g"), "")
+            );
+
+        console.log(parsedHTML);
+        parsedHTML.innerHTML = parsedHTML.innerHTML
+            .replace(new RegExp(slashedId, "g"), "")
+            .replace(new RegExp(closeId, "g"), "");
 
         const reconstruct = (parent, parallelParent, isTopLevel) => {
             let parallelChildren = [];
@@ -1316,7 +1347,9 @@ class Ffau {
 
                             newNode.appendChild(textContent);
                         } else {
-                            let selectors = extractStyleSheet(child.textContent, true);
+                            let selectors = extractStyleSheet(decodeURIComponent(child.textContent), true)
+                                .filter(e => e[0]);
+                            console.log(selectors);
 
                             selectors.forEach(selector => {
                                 let selectorBlock = document.createElement("block");
