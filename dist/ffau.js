@@ -1177,7 +1177,7 @@ class Ffau {
         }
 
         String.prototype.closeTag = function (tagName, closeId) {
-            let openTagRE = new RegExp(`((?<!${nonStringId}(?:'(?:\\.|[^'])*)|(?:"(?:\\.|[^"])*))< *${tagName}(?:(?:${nonStringId}.*?${nonStringId})|[^>])*?>(?!< *\/ *${tagName}))`, "g");
+            let openTagRE = new RegExp(`((?<!${nonStringId}(?:'(?:\\.|[^'])*')|(?:"(?:\\.|[^"])*"))< *${tagName}(?:(?:${nonStringId}.*?${nonStringId})|[^>])*?[^/] *>(?!< *\/ *${tagName}))`, "g");
 
             return this.split(/((?:"(\\.|[^"])*")|(?:'(\\.|[^'])*'))/g)
                 .filter((_, i) => i % 4 < 2).map((_, i) => i % 2 ? _ : nonStringId + _ + nonStringId)
@@ -1201,11 +1201,13 @@ class Ffau {
 
         let bodifiedCode = (" " + code)
             .split(/((?<=[^\\]|^)(("((\\")|[^"])*[^\\]")|('((\\')|[^'])*[^\\]')))|((?<=([^\\]>)|^)((\\<)|([^<]))*[^\\](?=<))/g)
-            .filter((_, z) => z % 14 === 0 || (_ && (z % 14 === 1 || z % 14 === 9)))
+            .filter((_, z) => z % 14 === 0 || (_ && (z % 14 === 1 || z % 14 === 9)));
+        console.log(bodifiedCode);
+        bodifiedCode = bodifiedCode
             .map((v, i) =>
                 i % 2 === 0 ?
                     (!i ? v.substr(1) : v)
-                        .replace(/<\/?((html)|(head)|(body)|(style)|(base)|(link)|(meta)|(script)|(noscript))(?=.*(>|(= *)))/gi,
+                        .replace(/< *\/? *((html)|(head)|(body)|(base)|(link)|(meta)|(script)|(noscript))(?=.*(>|(= *)))/gi,
                             z => `${z.toLowerCase()}Tag${tempId}`)
                         .replace(/<!DOCTYPE html>/gi, "<doctypeTag></doctypeTag>")
                     : v)
@@ -1232,7 +1234,11 @@ class Ffau {
                         /^<([a-zA-Z0-9]+.*)\/ *>/g.test(m) ?
                             [m.trim().split(/(\/ *>)(?!.*\/ *>)/g)[0].substr(1).trim()]
                                 .map(u => `<${
-                                    (u.split(" ")[0] + slashedId + " " + u.split(" ").slice(1).join(" "))
+                                    (
+                                        u.split(" ")[0] + slashedId
+                                        + (u.split(" ").length - 1 ? " " : "")
+                                        + u.split(" ").slice(1).join(" ")
+                                    )
                                         .replace(new RegExp(closeId + slashedId, "g"), closeId)
                                 }></${
                                     (u.split(" ")[0] + slashedId)
@@ -1242,30 +1248,31 @@ class Ffau {
                     .join(''))
             .join('');
 
+        console.log(bodifiedCode);
         let domParser = new DOMParser();
-        let parsedHTML = domParser.parseFromString(bodifiedCode, "text/html").body;
+        let parsedHTML = domParser.parseFromString("<body>" + bodifiedCode + "</body>", "text/html").body;
 
-        console.log(slashedId);
-        Array.from(parsedHTML.getElementsByTagName(`styleTag${tempId}`))
-            .forEach(e =>
-                e.innerText = encodeURIComponent(
-                    e.innerHTML
-                        .replace(new RegExp(`Tag${tempId}`, "gi"), "")
-                        .replace(new RegExp(`(< *([^\\/ >]*${slashedId})(?=[> ]).*?>)\s*<\\/ *\\2 *>`, "gi"),
-                            (match, fullTag) => fullTag.trim().slice(0, -1) + "/>"
-                        )
-                        .replace(new RegExp(`(< *([^\\/ >]*${closeId})(?=[> ]).*?>)\s*<\\/ *\\2 *>`, "gi"),
-                            (match, fullTag) => fullTag.trim().slice(0, -1) + ">"
-                        )
-                )
-                    .replace(new RegExp(slashedId, "g"), "")
-                    .replace(new RegExp(closeId, "g"), "")
+        Array.from(parsedHTML.getElementsByTagName("style")).forEach(e => {
+            e.innerText = e.innerText.replace(new RegExp(tempId, "g"), "");
+
+            console.log(e.innerText);
+
+            e.innerText = e.innerText.replace(new RegExp(
+                `< *([^ ]*?)${closeId}(.*?)>< *\\/(?:\\1)${closeId} *>`, "g"),
+                "<$1$2>"
             );
 
-        console.log(parsedHTML);
+            e.innerText = e.innerText.replace(new RegExp(
+                `< *([^ ]*?)${slashedId}(.*?)>< *\\/(?:\\1)${slashedId} *>`, "g"),
+                "<$1$2/>"
+            );
+        });
+
         parsedHTML.innerHTML = parsedHTML.innerHTML
             .replace(new RegExp(slashedId, "g"), "")
             .replace(new RegExp(closeId, "g"), "");
+
+        console.log(parsedHTML);
 
         const reconstruct = (parent, parallelParent, isTopLevel) => {
             let parallelChildren = [];
@@ -1279,9 +1286,19 @@ class Ffau {
                     case `HEADTAG${tempId}`:
                     case `HTMLTAG${tempId}`:
                     case `BODYTAG${tempId}`:
-                    case `STYLETAG${tempId}`:
                         newNode = document.createElement("block");
                         newNode.setAttribute("type", child.nodeName.slice(0, -8).toLowerCase());
+                        newNode.setAttribute("id", getBlockId());
+
+                        childrenContainer = document.createElement("statement");
+                        childrenContainer.setAttribute("name", "content");
+
+                        newNode.appendChild(childrenContainer);
+                        break;
+
+                    case `STYLE`:
+                        newNode = document.createElement("block");
+                        newNode.setAttribute("type", "style");
                         newNode.setAttribute("id", getBlockId());
 
                         childrenContainer = document.createElement("statement");
@@ -1333,7 +1350,7 @@ class Ffau {
                         break;
 
                     case "#text":
-                        if (child.parentNode.nodeName !== `STYLETAG${tempId}` && child.textContent.trim()) {
+                        if (child.parentNode.nodeName !== `STYLE` && child.textContent.trim()) {
                             if (child.textContent.includes("\n"))
                                 child.splitText(child.textContent.indexOf("\n") + 1);
 
@@ -1349,7 +1366,6 @@ class Ffau {
                         } else {
                             let selectors = extractStyleSheet(decodeURIComponent(child.textContent), true)
                                 .filter(e => e[0]);
-                            console.log(selectors);
 
                             selectors.forEach(selector => {
                                 let selectorBlock = document.createElement("block");
@@ -1468,6 +1484,7 @@ class Ffau {
                             statement.setAttribute("name", "content");
 
                             let selectors = extractStyleSheet(attr[1], false);
+                            console.log(selectors);
                             constructStyleTree(selectors, statement);
 
                             attrName.appendChild(statement);
