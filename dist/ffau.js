@@ -1203,9 +1203,9 @@ class Ffau {
         let closeId = getReplacerId();
         let slashedId = getReplacerId();
 
-        let headTags = ["br", "hr", "tr", "td", "th", "table", "header", "html", "head", "body", "base", "link", "meta",
-            "script", "title", "noscript"]; // "header" is here to override "head" - do not remove!
-        let headExp = "(" + headTags.join(")|(") + ")";
+        let overrideTags = ["br", "hr", "tr", "td", "th", "table", "header", "html", "head", "body", "base", "link", "meta",
+            "script", "title", "noscript"];
+        let overrideExp = "(" + overrideTags.join(")|(") + ")";
 
         let bodifiedCode = (" " + code)
             .split(/((?<=[^\\]|^)(("((\\")|[^"])*[^\\]")|('((\\')|[^'])*[^\\]')))|((?<=([^\\]>)|^)((\\<)|([^<]))*[^\\](?=<))/g)
@@ -1213,7 +1213,7 @@ class Ffau {
             .map((v, i) =>
                 i % 2 === 0 ?
                     (!i ? v.substr(1) : v)
-                        .replace(new RegExp(`< *\\/? *(${headExp})(?=.*(>|(= *)))`, "gi"),
+                        .replace(new RegExp(`< *\\/? *(${overrideExp})(?=.*(>|(= *)))`, "gi"),
                             z => `${z.toLowerCase()}Tag${tempId}`)
                         .replace(/<!DOCTYPE html>/gi, "<doctypeTag></doctypeTag>")
                     : v)
@@ -1281,6 +1281,8 @@ class Ffau {
 
         const reconstruct = (parent, parallelParent, isTopLevel) => {
             let parallelChildren = [];
+
+            let comment = false;
 
             for (let i = 0, child = parent.childNodes[0]; i < parent.childNodes.length; i++, child = parent.childNodes[i]) {
                 child.innerHTML ? child.innerHTML = child.innerHTML.trim() : child.textContent = child.textContent.trim();
@@ -1655,8 +1657,24 @@ class Ffau {
                         }
                         break;
 
+                    case "#comment":
+                        comment = child.textContent;
+
+                        continue;
+                        break;
+
                     default:
                         continue;
+                }
+
+                if (comment && newNode) {
+                    let commentTag = document.createElement("comment");
+                    commentTag.setAttribute("pinned", "false");
+
+                    commentTag.innerText = comment.toString();
+                    newNode.appendChild(commentTag);
+
+                    comment = false;
                 }
 
                 if (childrenPreHandled)
@@ -1667,7 +1685,7 @@ class Ffau {
                     .map(e => [e.name, e.value.trim()])
                     .filter(e => !e.some(
                         v => (/[<>]/g).test(v) ||
-                            (new RegExp(`(${headExp})tag${tempId}`, "g"))
+                            (new RegExp(`(${overrideExp})tag${tempId}`, "g"))
                                 .test(v)
                     ));
                 if (attributes.length) {
