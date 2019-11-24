@@ -652,6 +652,11 @@ class Ffau {
             return id;
         }
 
+        function evalBooleanAttr(attrVal) {
+            return attrVal === null ? "false" :
+                (attrVal.toLowerCase() === "false" ? "false" : "true");
+        }
+
         function extractStyleSheet(styleSheetString, hasSelectors) {
             function extractStyles(styleString) {
                 let uniqueId = getReplacerId();
@@ -1065,7 +1070,6 @@ class Ffau {
                         styleBlock.setAttribute("type", "transition");
 
                         let allSections = selector[1].split(/(?<!\(),(?![^(]*[)])/g).map(e => e.trim());
-                        console.log(selector[1], allSections);
 
                         let transitionParent = styleBlock;
                         allSections.forEach((transitionElem, c) => {
@@ -1199,15 +1203,17 @@ class Ffau {
         let closeId = getReplacerId();
         let slashedId = getReplacerId();
 
+        let headTags = ["br", "hr", "tr", "td", "th", "table", "header", "html", "head", "body", "base", "link", "meta",
+            "script", "title", "noscript"]; // "header" is here to override "head" - do not remove!
+        let headExp = "(" + headTags.join(")|(") + ")";
+
         let bodifiedCode = (" " + code)
             .split(/((?<=[^\\]|^)(("((\\")|[^"])*[^\\]")|('((\\')|[^'])*[^\\]')))|((?<=([^\\]>)|^)((\\<)|([^<]))*[^\\](?=<))/g)
-            .filter((_, z) => z % 14 === 0 || (_ && (z % 14 === 1 || z % 14 === 9)));
-        console.log(bodifiedCode);
-        bodifiedCode = bodifiedCode
+            .filter((_, z) => z % 14 === 0 || (_ && (z % 14 === 1 || z % 14 === 9)))
             .map((v, i) =>
                 i % 2 === 0 ?
                     (!i ? v.substr(1) : v)
-                        .replace(/< *\/? *((html)|(head)|(body)|(base)|(link)|(meta)|(script)|(noscript))(?=.*(>|(= *)))/gi,
+                        .replace(new RegExp(`< *\\/? *(${headExp})(?=.*(>|(= *)))`, "gi"),
                             z => `${z.toLowerCase()}Tag${tempId}`)
                         .replace(/<!DOCTYPE html>/gi, "<doctypeTag></doctypeTag>")
                     : v)
@@ -1215,6 +1221,8 @@ class Ffau {
             .join("")
             .closeTag(`metaTag${tempId}`, closeId)
             .closeTag(`img`, closeId)
+            .closeTag(`hr${tempId}`, closeId)
+            .closeTag(`br${tempId}`, closeId)
             .split(/(?<=<\/?[a-zA-Z0-9]+(?: *[a-zA-Z]+(?:=(?:(?:"(?:\\.|[^"])*")|(?:'(?:\\.|[^'])*')|(?:[0-9]|(?:true|false))))?)* *\/?>(?:\\.|[^<])*)/g)
             .reduce((v, e) =>
                 ((e.length - 1) ?
@@ -1248,14 +1256,11 @@ class Ffau {
                     .join(''))
             .join('');
 
-        console.log(bodifiedCode);
         let domParser = new DOMParser();
         let parsedHTML = domParser.parseFromString("<body>" + bodifiedCode + "</body>", "text/html").body;
 
         Array.from(parsedHTML.getElementsByTagName("style")).forEach(e => {
             e.innerText = e.innerText.replace(new RegExp(tempId, "g"), "");
-
-            console.log(e.innerText);
 
             e.innerText = e.innerText.replace(new RegExp(
                 `< *([^ ]*?)${closeId}(.*?)>< *\\/(?:\\1)${closeId} *>`, "g"),
@@ -1266,13 +1271,13 @@ class Ffau {
                 `< *([^ ]*?)${slashedId}(.*?)>< *\\/(?:\\1)${slashedId} *>`, "g"),
                 "<$1$2/>"
             );
+
+            e.innerText = e.innerText.replace(/(?<!\\)\/\*(?:.|\n)*?(?<!\\)\*\//g, "")
         });
 
         parsedHTML.innerHTML = parsedHTML.innerHTML
             .replace(new RegExp(slashedId, "g"), "")
             .replace(new RegExp(closeId, "g"), "");
-
-        console.log(parsedHTML);
 
         const reconstruct = (parent, parallelParent, isTopLevel) => {
             let parallelChildren = [];
@@ -1282,29 +1287,28 @@ class Ffau {
 
                 let newNode;
                 let childrenContainer;
+                let childrenPreHandled = false;
+
+                function template_EmptyStatement(blockType, statementName) {
+                    newNode = document.createElement("block");
+                    newNode.setAttribute("type", blockType);
+                    newNode.setAttribute("id", getBlockId());
+
+                    childrenContainer = document.createElement("statement");
+                    childrenContainer.setAttribute("name", statementName ? statementName : "content");
+
+                    newNode.appendChild(childrenContainer);
+                }
+
                 switch (child.nodeName) {
                     case `HEADTAG${tempId}`:
                     case `HTMLTAG${tempId}`:
                     case `BODYTAG${tempId}`:
-                        newNode = document.createElement("block");
-                        newNode.setAttribute("type", child.nodeName.slice(0, -8).toLowerCase());
-                        newNode.setAttribute("id", getBlockId());
-
-                        childrenContainer = document.createElement("statement");
-                        childrenContainer.setAttribute("name", "content");
-
-                        newNode.appendChild(childrenContainer);
+                        template_EmptyStatement(child.nodeName.slice(0, -8).toLowerCase());
                         break;
 
                     case `STYLE`:
-                        newNode = document.createElement("block");
-                        newNode.setAttribute("type", "style");
-                        newNode.setAttribute("id", getBlockId());
-
-                        childrenContainer = document.createElement("statement");
-                        childrenContainer.setAttribute("name", "content");
-
-                        newNode.appendChild(childrenContainer);
+                        template_EmptyStatement("style");
                         break;
 
                     case `METATAG${tempId}`:
@@ -1333,20 +1337,228 @@ class Ffau {
                     case `H4`:
                     case `H5`:
                     case `H6`:
-                        newNode = document.createElement("block");
-                        newNode.setAttribute("type", "header");
-                        newNode.setAttribute("id", getBlockId());
+                        template_EmptyStatement("header");
 
                         let size = document.createElement("field");
                         size.setAttribute("name", "size");
                         size.innerText = child.nodeName.substr(1);
 
                         newNode.appendChild(size);
+                        break;
 
-                        childrenContainer = document.createElement("statement");
-                        childrenContainer.setAttribute("name", "content");
+                    case `TITLETAG${tempId}`:
+                        newNode = document.createElement("block");
+                        newNode.setAttribute("type", "title");
+                        newNode.setAttribute("id", getBlockId());
 
-                        newNode.appendChild(childrenContainer);
+                        let title = document.createElement("field");
+                        title.setAttribute("name", "value");
+                        title.innerText = child.innerText;
+
+                        childrenPreHandled = true;
+
+                        newNode.appendChild(title);
+                        break;
+
+                    case `HEADERTAG${tempId}`:
+                        template_EmptyStatement("headertag");
+                        break;
+
+                    case `FOOTER`:
+                        template_EmptyStatement("footertag");
+                        break;
+
+                    case 'DIV':
+                        template_EmptyStatement("divider");
+                        break;
+
+                    case `HRTAG${tempId}`:
+                    case `BRTAG${tempId}`:
+                        newNode = document.createElement("block");
+                        newNode.setAttribute("type", child.nodeName.startsWith('BR') ? 'linebreak' : 'hline');
+                        newNode.setAttribute("id", getBlockId());
+                        break;
+
+                    case 'P':
+                        template_EmptyStatement("paragraph");
+                        break;
+
+                    case 'SPAN':
+                        template_EmptyStatement("span");
+                        break;
+
+                    case 'A':
+                        template_EmptyStatement("link");
+
+                        let href;
+                        if (child.hasAttribute("href")) {
+                            href = child.getAttribute("href");
+                            child.removeAttribute("href");
+                        } else
+                            href = "#!";
+
+                        let targetField = document.createElement("field");
+                        targetField.setAttribute("name", "target");
+                        targetField.innerText = href;
+
+                        newNode.appendChild(targetField);
+                        break;
+
+                    case 'STRONG':
+                    case 'EM':
+                    case 'MARK':
+                    case 'SMALL':
+                    case 'BIG':
+                    case 'DEL':
+                    case 'INS':
+                    case 'SUB':
+                    case 'SUP':
+                    case 'CODE':
+                    case 'Q':
+                    case 'ASIDE':
+                    case 'BLOCKQUOTE':
+                    case 'LEGEND':
+                    case 'CITE':
+                        template_EmptyStatement("textmod");
+
+                        let modField = document.createElement("field");
+                        modField.setAttribute("name", "type");
+                        modField.innerText = child.nodeName.toLowerCase();
+
+                        newNode.appendChild(modField);
+                        break;
+
+                    case `TABLETAG${tempId}`:
+                        template_EmptyStatement("table");
+                        break;
+
+                    case `TRTAG${tempId}`:
+                        template_EmptyStatement("tablerow");
+                        break;
+
+                    case `THTAG${tempId}`:
+                        template_EmptyStatement("tableheading");
+                        break;
+
+                    case `TDTAG${tempId}`:
+                        template_EmptyStatement("tabledata");
+                        break;
+
+                    case `OL`:
+                        template_EmptyStatement("orderedlist");
+                        break;
+
+                    case `UL`:
+                        template_EmptyStatement("unorderedlist");
+                        break;
+
+                    case `LI`:
+                        template_EmptyStatement("listitem");
+                        break;
+
+                    case `DETAILS`:
+                    case `SUMMARY`:
+                        template_EmptyStatement(child.nodeName.toLowerCase());
+                        break;
+
+                    case `FORM`:
+                        template_EmptyStatement("form");
+                        break;
+
+                    case `INPUT`:
+                        newNode = document.createElement("block");
+                        newNode.setAttribute("type", "input");
+                        newNode.setAttribute("id", getBlockId());
+
+                        let inputType = document.createElement("field");
+                        inputType.setAttribute("name", "type");
+                        inputType.innerText = child.getAttribute("type") || "submit";
+
+                        let valueField = document.createElement("field");
+                        valueField.setAttribute("name", "value");
+                        valueField.innerText = child.getAttribute("value") || "";
+
+                        let placeholderField = document.createElement("field");
+                        placeholderField.setAttribute("name", "placeholder");
+                        placeholderField.innerText = child.getAttribute("placeholder") || "";
+
+                        let nameField = document.createElement("field");
+                        nameField.setAttribute("name", "name");
+                        nameField.innerText = child.getAttribute("name") || "";
+
+                        newNode.appendChild(inputType);
+                        newNode.appendChild(valueField);
+                        newNode.appendChild(placeholderField);
+                        newNode.appendChild(nameField);
+
+                        child.removeAttribute("type");
+                        child.removeAttribute("value");
+                        child.removeAttribute("placeholder");
+                        child.removeAttribute("name");
+                        break;
+
+                    case `LABEL`:
+                        template_EmptyStatement("label");
+
+                        let forField = document.createElement("field");
+                        forField.setAttribute("name", "for");
+                        forField.innerText = child.getAttribute("for") || "for";
+
+                        newNode.appendChild(forField);
+
+                        child.removeAttribute("for");
+                        break;
+
+                    case `IMG`:
+                        template_EmptyStatement("image");
+
+                        let imgSrcField = document.createElement("field");
+                        imgSrcField.setAttribute("name", "source");
+                        imgSrcField.innerText = child.getAttribute("src") || "http://";
+
+                        newNode.appendChild(imgSrcField);
+
+                        child.removeAttribute("src");
+                        break;
+
+                    case `AUDIO`:
+                    case `VIDEO`:
+                        template_EmptyStatement(child.nodeName.toLowerCase());
+
+                        let audioSrcField = document.createElement("field");
+                        audioSrcField.setAttribute("name", "source");
+
+                        if (child.nodeName === "AUDIO")
+                            audioSrcField.innerText = ["8bit.ogg", "classical.mp3", "happy.wav"]
+                                .includes(child.getAttribute("src")) ? child.getAttribute("src") : "8bit.ogg";
+                        else {
+                            let index = ["bigbuckbunny.mp4", "llamadrama.mp4"].indexOf(child.getAttribute("src"));
+
+                            audioSrcField.innerText = index > -1 ?
+                                ["bbb", "ld"][index] : "bbb";
+                        }
+
+                        let loopField = document.createElement("field");
+                        loopField.setAttribute("name", "loop");
+                        loopField.innerText = evalBooleanAttr(child.getAttribute("loop"));
+
+                        let autoplayField = document.createElement("field");
+                        autoplayField.setAttribute("name", "autoplay");
+                        autoplayField.innerText = evalBooleanAttr(child.getAttribute("autoplay"));
+
+                        let controlsField = document.createElement("field");
+                        controlsField.setAttribute("name", "controls");
+                        controlsField.innerText = evalBooleanAttr(child.getAttribute("controls"));
+
+                        newNode.appendChild(audioSrcField);
+                        newNode.appendChild(loopField);
+                        newNode.appendChild(autoplayField);
+                        newNode.appendChild(controlsField);
+
+                        child.removeAttribute("src");
+                        child.removeAttribute("loop");
+                        child.removeAttribute("autoplay");
+                        child.removeAttribute("controls");
                         break;
 
                     case "#text":
@@ -1364,7 +1576,7 @@ class Ffau {
 
                             newNode.appendChild(textContent);
                         } else {
-                            let selectors = extractStyleSheet(decodeURIComponent(child.textContent), true)
+                            let selectors = extractStyleSheet(child.textContent, true)
                                 .filter(e => e[0]);
 
                             selectors.forEach(selector => {
@@ -1447,11 +1659,15 @@ class Ffau {
                         continue;
                 }
 
+                if (childrenPreHandled)
+                    while (child.firstChild)
+                        child.removeChild(child.firstChild);
+
                 let attributes = Array.from(child.attributes || [])
                     .map(e => [e.name, e.value.trim()])
                     .filter(e => !e.some(
                         v => (/[<>]/g).test(v) ||
-                            (new RegExp(`((html)|(head)|(body)|(style)|(base)|(link)|(meta)|(script)|(noscript))tag${tempId}`, "g"))
+                            (new RegExp(`(${headExp})tag${tempId}`, "g"))
                                 .test(v)
                     ));
                 if (attributes.length) {
@@ -1484,7 +1700,6 @@ class Ffau {
                             statement.setAttribute("name", "content");
 
                             let selectors = extractStyleSheet(attr[1], false);
-                            console.log(selectors);
                             constructStyleTree(selectors, statement);
 
                             attrName.appendChild(statement);
@@ -1545,8 +1760,6 @@ class Ffau {
         parallelTree.querySelectorAll("*").forEach(e => {
             if (e.nodeName === "STATEMENT" && !e.childElementCount) e.parentNode.removeChild(e);
         });
-
-        console.log(parallelTree);
 
         return parallelTree.outerHTML;
     }

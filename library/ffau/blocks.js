@@ -236,7 +236,6 @@ Blockly.Blocks['divider'] = {
             "args0": [
                 {
                     "type": "input_value",
-
                     "name": "modifier",
                     "check": "attributes"
                 },
