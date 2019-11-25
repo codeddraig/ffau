@@ -1783,11 +1783,12 @@ class Ffau {
                     newNode.appendChild(attrInput);
                 }
 
-                if (child.childNodes.length)
+                if (child.childNodes.length && childrenContainer)
                     reconstruct(child, childrenContainer);
 
                 if (newNode)
                     parallelChildren.push(newNode);
+                parallelChildren.push(newNode);
             }
 
             let newParent = parallelParent;
