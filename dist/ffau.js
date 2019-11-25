@@ -779,20 +779,20 @@ class Ffau {
                 }
 
                 function directionVariant(blockType, tagBase) {
-                    if (selector[0] === tagBase + "-left" ||
-                        selector[0] === tagBase + "-top" ||
-                        selector[0] === tagBase + "-right" ||
-                        selector[0] === tagBase + "-bottom") {
+                    if (filteredSelector[0] === tagBase + "-left" ||
+                        filteredSelector[0] === tagBase + "-top" ||
+                        filteredSelector[0] === tagBase + "-right" ||
+                        filteredSelector[0] === tagBase + "-bottom") {
                         valueField.setAttribute("name", "value");
                         styleBlock.setAttribute("type", blockType);
 
                         let marginDirectionField = document.createElement("field");
                         marginDirectionField.setAttribute("name", "direction");
-                        marginDirectionField.innerText = selector[0].split("-")[1];
+                        marginDirectionField.innerText = filteredSelector[0].split("-")[1];
 
                         styleBlock.appendChild(marginDirectionField);
                     } else {
-                        let tags = selector[1].split(/ +/g);
+                        let tags = filteredSelector[1].split(/ +/g);
 
                         if (tags.length === 3) tags.push(tags[1]);
                         if (tags.length === 2) tags = tags.map(e => [e, e]).flat();
@@ -841,16 +841,31 @@ class Ffau {
                     }
                 }
 
+                let comments = (selector.join('').match(/(?<!\\)\/\*(?:.|\n)*?(?<!\\)\*\//g) || [])
+                    .map(e => e.trim().replace(/(?:^\/\*)|(?:\*\/$)/g, ""))
+                    .filter(e => e)
+                    .join('    ')
+                    .trim();
+                let filteredSelector = selector.map(e => e.replace(/(?<!\\)\/\*(?:.|\n)*?(?<!\\)\*\//g, '').trim());
+
                 let styleBlock = document.createElement("block");
                 styleBlock.setAttribute("id", getBlockId());
 
+                if (comments) {
+                    let commentTag = document.createElement("comment");
+                    commentTag.setAttribute("pinned", "false");
+                    commentTag.innerText = comments;
+
+                    styleBlock.appendChild(commentTag);
+                }
+
                 let valueField = document.createElement("field");
-                valueField.innerText = selector[1].trim().replace(/^#/g, "");
+                valueField.innerText = filteredSelector[1].trim().replace(/^#/g, "");
 
                 styleBlock.appendChild(valueField);
                 parent.appendChild(styleBlock);
 
-                switch (selector[0]) {
+                switch (filteredSelector[0]) {
                     case 'font-size':
                         valueField.setAttribute("name", "value");
                         styleBlock.setAttribute("type", "fontsize");
@@ -864,18 +879,18 @@ class Ffau {
                         styleBlock.setAttribute("type", "fontweight");
                         break;
                     case 'color':
-                        if (["initial", "inherit"].includes(selector[1])) {
+                        if (["initial", "inherit"].includes(filteredSelector[1])) {
                             valueField.setAttribute("name", "color");
                             styleBlock.setAttribute("type", "colordropdown");
                         } else {
                             valueField.setAttribute("name", "content");
                             styleBlock.setAttribute("type", "color-new");
-                            mapColorLikeBlock(selector[1], "value");
+                            mapColorLikeBlock(filteredSelector[1], "value");
                         }
                         break;
                     case 'text-shadow':
                     case 'box-shadow':
-                        if (selector[0] === "box-shadow") {
+                        if (filteredSelector[0] === "box-shadow") {
                             valueField.setAttribute("name", "color");
                             styleBlock.setAttribute("type", "boxshadow-new");
                         } else {
@@ -883,7 +898,7 @@ class Ffau {
                             styleBlock.setAttribute("type", "textshadow-new");
                         }
 
-                        let splitStr = selector[1].split(/ +/g).map(e => e.trim()).filter(e => e);
+                        let splitStr = filteredSelector[1].split(/ +/g).map(e => e.trim()).filter(e => e);
 
                         if (splitStr.length === 2) {
                             splitStr.push("0px");
@@ -951,17 +966,17 @@ class Ffau {
 
                         let directionField = document.createElement("field");
                         directionField.setAttribute("name", "direction");
-                        directionField.innerText = (selector[0] + "-x").split("-")[1];
+                        directionField.innerText = (filteredSelector[0] + "-x").split("-")[1];
 
                         styleBlock.appendChild(directionField);
 
-                        if (selector[0] === "overflow") {
+                        if (filteredSelector[0] === "overflow") {
                             let overflowYBlock = document.createElement("block");
                             overflowYBlock.setAttribute("id", getBlockId());
                             overflowYBlock.setAttribute("type", "overflow");
 
                             let overflowYField = document.createElement("field");
-                            overflowYField.innerText = selector[1].trim().replace(/^#/g, "");
+                            overflowYField.innerText = filteredSelector[1].trim().replace(/^#/g, "");
                             overflowYField.setAttribute("name", "content");
 
                             let directionYField = document.createElement("field");
@@ -995,7 +1010,7 @@ class Ffau {
                     case 'background-color':
                         valueField.setAttribute("name", "value");
                         styleBlock.setAttribute("type", "bgcolor-new");
-                        mapColorLikeBlock(selector[1], "value");
+                        mapColorLikeBlock(filteredSelector[1], "value");
                         break;
                     case 'background-image':
                         valueField.setAttribute("name", "content");
@@ -1003,7 +1018,7 @@ class Ffau {
 
                         valueField.innerText =
                             (
-                                (selector[1].split(/(url\(['"])/g)[2]
+                                (filteredSelector[1].split(/(url\(['"])/g)[2]
                                     || "")
                                     .split(/(['"]\))/g).reverse()[2]
                                 || "url"
@@ -1013,7 +1028,7 @@ class Ffau {
                     case 'background-repeat':
                     case 'background-size':
                         valueField.setAttribute("name", "content");
-                        styleBlock.setAttribute("type", `bg${selector[0].split("-")[1]}`);
+                        styleBlock.setAttribute("type", `bg${filteredSelector[0].split("-")[1]}`);
                         break;
                     case 'cursor':
                         valueField.setAttribute("name", "content");
@@ -1027,25 +1042,25 @@ class Ffau {
                         valueField.setAttribute("name", "color");
                         styleBlock.setAttribute("type", "border-new");
 
-                        valueField.innerText = selector[1].trim().split(/ +/g)[2] || "";
+                        valueField.innerText = filteredSelector[1].trim().split(/ +/g)[2] || "";
 
                         let widthField = document.createElement("field");
                         widthField.setAttribute("name", "width");
-                        widthField.innerText = selector[1].trim().split(/ +/g)[0] || "10px";
+                        widthField.innerText = filteredSelector[1].trim().split(/ +/g)[0] || "10px";
 
                         let styleField = document.createElement("field");
                         styleField.setAttribute("name", "type");
-                        styleField.innerText = selector[1].trim().split(/ +/g)[1] || "none";
+                        styleField.innerText = filteredSelector[1].trim().split(/ +/g)[1] || "none";
 
                         styleBlock.appendChild(widthField);
                         styleBlock.appendChild(styleField);
 
-                        if (selector[0] !== "border") {
+                        if (filteredSelector[0] !== "border") {
                             styleBlock.setAttribute("type", "borderedge-new");
 
                             let sideField = document.createElement("field");
                             sideField.setAttribute("name", "edge");
-                            sideField.innerText = selector[0].split("-")[1];
+                            sideField.innerText = filteredSelector[0].split("-")[1];
 
                             styleBlock.appendChild(sideField);
                         }
@@ -1056,9 +1071,9 @@ class Ffau {
                         valueField.setAttribute("name", "value");
                         styleBlock.setAttribute("type", "bordercol");
 
-                        if (selector[1] === "collapse")
+                        if (filteredSelector[1] === "collapse")
                             valueField.innerText = "TRUE";
-                        else if (selector[1] === "separate")
+                        else if (filteredSelector[1] === "separate")
                             valueField.innerText = "FALSE";
                         break;
                     case "border-radius":
@@ -1069,7 +1084,7 @@ class Ffau {
                         valueField.parentNode.removeChild(valueField);
                         styleBlock.setAttribute("type", "transition");
 
-                        let allSections = selector[1].split(/(?<!\(),(?![^(]*[)])/g).map(e => e.trim());
+                        let allSections = filteredSelector[1].split(/(?<!\(),(?![^(]*[)])/g).map(e => e.trim());
 
                         let transitionParent = styleBlock;
                         allSections.forEach((transitionElem, c) => {
@@ -1161,7 +1176,7 @@ class Ffau {
 
                         let propertyField = document.createElement("field");
                         propertyField.setAttribute("name", "property");
-                        propertyField.innerText = selector[0];
+                        propertyField.innerText = filteredSelector[0];
 
                         styleBlock.appendChild(propertyField);
                         break;
@@ -1271,8 +1286,6 @@ class Ffau {
                 `< *([^ ]*?)${slashedId}(.*?)>< *\\/(?:\\1)${slashedId} *>`, "g"),
                 "<$1$2/>"
             );
-
-            e.innerText = e.innerText.replace(/(?<!\\)\/\*(?:.|\n)*?(?<!\\)\*\//g, "")
         });
 
         parsedHTML.innerHTML = parsedHTML.innerHTML
@@ -1577,7 +1590,7 @@ class Ffau {
                             textContent.innerText = child.textContent.replace(/\n*$/g, "");
 
                             newNode.appendChild(textContent);
-                        } else {
+                        } else if (child.parentNode.nodeName === `STYLE`) {
                             let selectors = extractStyleSheet(child.textContent, true)
                                 .filter(e => e[0]);
 
@@ -1588,6 +1601,21 @@ class Ffau {
 
                                 let openBracketId = getReplacerId();
                                 let closeBracketId = getReplacerId();
+
+                                let comments = (selector[0].match(/(?<!\\)\/\*(?:.|\n)*?(?<!\\)\*\//g) || [])
+                                    .map(e => e.trim().replace(/(?:^\/\*)|(?:\*\/$)/g, ""))
+                                    .filter(e => e)
+                                    .join('    ')
+                                    .trim();
+                                selector[0] = selector[0].replace(/(?<!\\)\/\*(?:.|\n)*?(?<!\\)\*\//g, '').trim();
+
+                                if (comments) {
+                                    let commentTag = document.createElement("comment");
+                                    commentTag.setAttribute("pinned", "false");
+                                    commentTag.innerText = comments;
+
+                                    selectorBlock.appendChild(commentTag);
+                                }
 
                                 let selectorSections = selector[0]
                                     .toLowerCase()
@@ -1659,9 +1687,7 @@ class Ffau {
 
                     case "#comment":
                         comment = child.textContent;
-
                         continue;
-                        break;
 
                     default:
                         continue;
