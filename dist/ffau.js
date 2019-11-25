@@ -846,7 +846,11 @@ class Ffau {
                     .filter(e => e)
                     .join('    ')
                     .trim();
-                let filteredSelector = selector.map(e => e.replace(/(?<!\\)\/\*(?:.|\n)*?(?<!\\)\*\//g, '').trim());
+                let filteredSelector = selector.map(e =>
+                    e.replace(/(?<!\\)\/\*(?:.|\n)*?(?<!\\)\*\//g, '')
+                        .replace(/\\\/\*/g, "/*")
+                        .trim()
+                );
 
                 let styleBlock = document.createElement("block");
                 styleBlock.setAttribute("id", getBlockId());
@@ -1607,7 +1611,9 @@ class Ffau {
                                     .filter(e => e)
                                     .join('    ')
                                     .trim();
-                                selector[0] = selector[0].replace(/(?<!\\)\/\*(?:.|\n)*?(?<!\\)\*\//g, '').trim();
+                                selector[0] = selector[0].replace(/(?<!\\)\/\*(?:.|\n)*?(?<!\\)\*\//g, '')
+                                    .replace(/\\\/\*/g, "/*")
+                                    .trim();
 
                                 if (comments) {
                                     let commentTag = document.createElement("comment");
