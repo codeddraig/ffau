@@ -630,6 +630,8 @@ class Ffau {
         let idList = [];
         let replacerIds = [];
 
+        let cssCommentRegExp = /(?<=^[^"]*?("[^"]*?")*[^"]*?)((?<!\\)\/\*[^*]*?[^\\]\*\/)/g;
+
         function getReplacerId() {
             let replacerId = (Math.floor(Math.random() * 90000) + 10000).toString();
             while (code.includes(replacerId) || replacerIds.includes(replacerId))
@@ -841,13 +843,13 @@ class Ffau {
                     }
                 }
 
-                let comments = (selector.join('').match(/(?<!\\)\/\*(?:.|\n)*?(?<!\\)\*\//g) || [])
+                let comments = (selector.join('').match(cssCommentRegExp) || [])
                     .map(e => e.trim().replace(/(?:^\/\*)|(?:\*\/$)/g, ""))
                     .filter(e => e)
                     .join('    ')
                     .trim();
                 let filteredSelector = selector.map(e =>
-                    e.replace(/(?<!\\)\/\*(?:.|\n)*?(?<!\\)\*\//g, '')
+                    e.replace(cssCommentRegExp, '')
                         .replace(/\\\/\*/g, "/*")
                         .trim()
                 );
@@ -1606,12 +1608,12 @@ class Ffau {
                                 let openBracketId = getReplacerId();
                                 let closeBracketId = getReplacerId();
 
-                                let comments = (selector[0].match(/(?<!\\)\/\*(?:.|\n)*?(?<!\\)\*\//g) || [])
+                                let comments = (selector[0].match(cssCommentRegExp) || [])
                                     .map(e => e.trim().replace(/(?:^\/\*)|(?:\*\/$)/g, ""))
                                     .filter(e => e)
                                     .join('    ')
                                     .trim();
-                                selector[0] = selector[0].replace(/(?<!\\)\/\*(?:.|\n)*?(?<!\\)\*\//g, '')
+                                selector[0] = selector[0].replace(cssCommentRegExp, '')
                                     .replace(/\\\/\*/g, "/*")
                                     .trim();
 

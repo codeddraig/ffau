@@ -137,7 +137,10 @@
                     <li><a href="#!" onclick="showMePreview()">Preview</a></li>
                     <li><a href="#!" onclick="showMeCode()">Real code</a></li>
                 </ul>
-                <button class="toggle-edit-mode" onclick="toggleEditMode()">Toggle edit mode</button>
+                <button class="toggle-edit-mode" onclick="toggleEditMode()">
+                    <i class="fas fa-mouse-pointer" id="mode-icon" style="color: #00a4ff"></i>&nbsp;&nbsp;Toggle edit
+                    mode
+                </button>
             </div>
 
             <div id="preview-frame"></div>
@@ -580,7 +583,6 @@
                 ffau.ffauWorkspace.cleanUp();
                 ffau.ffauWorkspace.scrollCenter();
             } catch (e) {
-                console.log(e);
                 ffau.clearWorkspace();
             }
         }
@@ -591,6 +593,12 @@
 
     function toggleEditMode() {
         ffau.toggleEditMode();
+
+        let icon = document.getElementById("mode-icon");
+        if (icon.classList.contains("fa-code"))
+            icon.classList.replace("fa-code", "fa-mouse-pointer");
+        else
+            icon.classList.replace("fa-mouse-pointer", "fa-code");
     }
 
     function resetTheme() {
