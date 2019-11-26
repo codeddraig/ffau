@@ -1806,8 +1806,7 @@ Blockly.Blocks['border-new'] = {
                 {
                     "type": "field_input",
                     "name": "width",
-                    "value": 5,
-                    "min": 0
+                    "text": "10px",
                 },
                 {
                     "type": "field_dropdown",
@@ -1896,7 +1895,7 @@ Blockly.Blocks['borderedge-new'] = {
                 {
                     "type": "field_input",
                     "name": "width",
-                    "value": 0
+                    "text": "10px"
                 },
                 {
                     "type": "field_dropdown",
