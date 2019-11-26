@@ -116,7 +116,7 @@ class Ffau {
     /**
      * Open the settings dialogue (if it exists)
      *
-     * @param {boolean} [force] - Force the animation or not (default false) - if false, if the window is already open nothing will happen. Otherwise, the animation will play assuming the window was closed.
+     * @param {boolean} [force=false] - Force the animation or not - if false, if the window is already open nothing will happen. Otherwise, the animation will play assuming the window was closed.
      */
     openSettingsMenu(force) {
         if (!this.settingsDiv) {
@@ -158,7 +158,7 @@ class Ffau {
     /**
      * Close the settings dialogue (if it exists)
      *
-     * @param {boolean} [force] - Force the animation or not (default false) - if false, if the window is already closed nothing will happen. Otherwise, the animation will play assuming the window was open.
+     * @param {boolean} [force=false] - Force the animation or not - if false, if the window is already closed nothing will happen. Otherwise, the animation will play assuming the window was open.
      */
     closeSettingsMenu(force) {
         if (!this.settingsDiv) {
@@ -560,7 +560,13 @@ class Ffau {
         return this.editor;
     }
 
+    /**
+     * Toggle boolean value of ffau.editMode
+     */
     toggleEditMode() {
+        /**
+         * @property {boolean} - `true` is code/typing mode; false is block mode
+         */
         this.editMode = this.editMode ? 0 : 1;
 
         if (this.editMode)
@@ -573,8 +579,8 @@ class Ffau {
      * Add an event listener to Blockly or Ace to generate a preview and code
      *
      * @param {function} [customFunction] - a function to execute at the end of the change event. Gets passed the scope as a parameter.
-     * @param [scope] - whether to apply the event to "blockly" or "ace" (default "blockly")
-     * @param [event] - the name of the event (e.g "change") to trigger the callback on - required if `scope === "ace"`, is ignored otherwise
+     * @param {string} [scope=blockly] - whether to apply the event to "blockly" or "ace"
+     * @param {string} [event] - the name of the event (e.g "change") to trigger the callback on - required if `scope === "ace"`, is ignored otherwise
      */
     addEvent(customFunction, scope, event) {
         if (scope === "blockly" || !scope) {
@@ -600,7 +606,7 @@ class Ffau {
 
             this.ffauWorkspace.addChangeListener(this.editorCallbackFunction.bind(this) /* bind parent scope */);
         } else if (scope === "ace") {
-            this.aceCallbackFunction = customFunction;
+            this.aceCallbackFunction = () => customFunction();
 
             if (event)
                 this.editor.container.addEventListener(event, customFunction);
