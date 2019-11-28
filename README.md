@@ -1,7 +1,7 @@
 <h1 align="center">FFAU</h1>
 <p align="center"><img src="https://img.shields.io/badge/version-0.3.1-brightgreen.svg"></p>
 <p align="center">Ffau - A blocky-based editor for teaching HTML, CSS and Javascript.</p>
-<p align="center">Developed by Pal Kerecsenyi, Geza Kerecsenyi and Oli Plant.</p>
+<p align="center">Developed by Pal Kerecsenyi and Geza Kerecsenyi.</p>
 
 ## Information
 General contact: **contact@codedragon.org**
@@ -23,34 +23,41 @@ Copyright (c) 2017-19 The CodeDdraig Organisation
 ## Setup
 The Ffau editor is made to be easily addable to any existing project. There are 4 main steps to setting the Ffau up for a simple project like the one linked above.
 
-1. Clone this repo into your project's equivalent of the `assets` directory - any nice, static place will do.
+1. Find the latest version on jsDelivr (this version: 1.2.2)
+
+2. _(optional):_
+```
+npm install
+```
+
+3. Build the styles (see below for details):
 
 ```
-git clone https://github.com/codeddraig/ffau.git
+gulp
 ```
 
-2. Import our libraries in a specific order. Due to Blockly being our main dependency, you have to import our assets quite specifically. Here's a perfect example (we'll assume you've cloned Ffau into `./assets/ffau`):
+4. Import our libraries in a specific order, using the jsDelivr links:
 
 ```html
 <head>
     <!-- google's blockly stuff first -->
-    <script src="assets/ffau/library/blockly/google-blockly/blockly_compressed.js"></script>
-    <script src="assets/ffau/library/blockly/google-blockly/msg/js/en.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/blockly@0a497a1c54f9c84e5a7c0c1e6d2427eec15e4827/blockly_compressed.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/blockly@0a497a1c54f9c84e5a7c0c1e6d2427eec15e4827/msg/js/en.js"></script>
 
     <!-- jquery (you probably already have it imported, but make sure you've got at least v3.2.1) -->
-    <script src="assets/ffau/library/jquery/jquery-3.2.1.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
 
     <!-- our blockly blocks and generators -->
-    <script src="assets/ffau/library/blockly/html/blocks.js"></script>
-    <script src="assets/ffau/library/blockly/html/generator.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@codeddraig/ffau-editor@1.2.2/library/ffau/blocks.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@codeddraig/ffau-editor@1.2.2/library/ffau/generator.js"></script>
 
     <!-- ace editor (optional: if you want a syntax-highlighted code preview) -->
-    <script src="assets/ffau/library/ace/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.4.7/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 
     <!-- ffau css -->
-    <link rel="stylesheet" href="assets/ffau/dist/ffau.css">
+    <script src="https://cdn.jsdelivr.net/npm/@codeddraig/ffau-editor@1.2.2/dist/ffau.css"></script>
     <!-- ffau js last -->
-    <script src="assets/ffau/dist/ffau.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@codeddraig/ffau-editor@1.2.2/dist/ffau.min.js"></script>
 </head>
 
 <body>
@@ -64,7 +71,7 @@ git clone https://github.com/codeddraig/ffau.git
 </body>
 ```
 
-3. Add the toolbox and pick which Ffau components you want to use. We won't explain how the toolbox works in too much detail, but it's simply a bit of XML that defines which blocks should go in your toolbox, and how to arrange them.
+5. Add the toolbox and pick which Ffau components you want to use. We won't explain how the toolbox works in too much detail, but it's simply a bit of XML that defines which blocks should go in your toolbox, and how to arrange them.
 
 **See BLOCKS.md for a full list of XML blocks**
 
@@ -271,8 +278,6 @@ Handles syntax highlighting in the "Real Code" tab.
 Our project is inspired by, but not a direct clone of, the blockly-html project (https://github.com/bwinf/blockly-html) by the BWNIF (Bundesweit Informatik Nachwuchs Fördern), a German organisation which seeks to further development in Computer Science among children. Also, we note some similarities to the amazing EduBlocks project (https://github.com/AllAboutCode/EduBlocks) by Joshua Lowe, which performs a similar function to that of this library, but for Python, rather than the web.
 
 ## Developers
-
-### Oli Plant // https://github.com/ddevlop
 
 ### Pal Kerecsenyi // https://github.com/palkerecsenyi
 
