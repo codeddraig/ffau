@@ -273,6 +273,16 @@ htmlGen['textshadow-new'] = function (block) {
 };
 
 htmlGen['boxshadow-new'] = function (block) {
+    var x = fullEscape(block.getFieldValue('x-offset'));
+    var y = fullEscape(block.getFieldValue('y-offset'));
+    var blur = fullEscape(block.getFieldValue('blur'));
+
+    var color = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC).trim();
+
+    return `box-shadow: ${x} ${y} ${blur} ${color};\n`;
+};
+
+htmlGen['boxshadow-2'] = function (block) {
     var x = fullEscape(block.getFieldValue('xoffset'));
     var y = fullEscape(block.getFieldValue('yoffset'));
     var blur = fullEscape(block.getFieldValue('blur'));
@@ -469,6 +479,20 @@ htmlGen['height'] = function (block) {
     var size = block.getFieldValue('size');
 
     return 'height: ' + fullEscape(size) + ';\n';
+};
+
+htmlGen['widthheightnum'] = function (block) {
+    var option = block.getFieldValue('option');
+    var size = block.getFieldValue('size');
+
+    return option + ': ' + fullEscape(size) + ';\n';
+};
+
+htmlGen['widthheight'] = function (block) {
+    var option = block.getFieldValue('option');
+    var value = block.getFieldValue('value');
+
+    return option + ': ' + value + ';\n';
 };
 
 htmlGen['float'] = function (block) {

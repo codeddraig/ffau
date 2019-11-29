@@ -958,6 +958,42 @@ Blockly.Blocks['boxshadow-new'] = {
             "args0": [
                 {
                     "type": "field_input",
+                    "name": "x-offset",
+                    "text": "x-offset"
+                },
+                {
+                    "type": "field_input",
+                    "name": "y-offset",
+                    "text": "y-offset"
+                },
+                {
+                    "type": "field_input",
+                    "name": "blur",
+                    "text": "blur"
+                },
+                {
+                    "type": "input_value",
+                    "name": "color",
+                    "check": "color"
+                }
+            ],
+            "previousStatement": "stylecontent",
+            "nextStatement": "stylecontent",
+            "colour": 290,
+            "tooltip": "CSS box shadow",
+            "helpUrl": "https://www.w3schools.com/cssref/css3_pr_box-shadow.asp"
+        })
+    }
+};
+
+// Box-shadow
+Blockly.Blocks['boxshadow-2'] = {
+    init: function () {
+        this.jsonInit({
+            "message0": "box-shadow: %1 %2 %3 %4 ;",
+            "args0": [
+                {
+                    "type": "field_input",
                     "name": "xoffset",
                     "text": "x-offset"
                 },
@@ -2207,6 +2243,89 @@ Blockly.Blocks['linkhead'] = {
             "colour": 290,
             "tooltip": "Import CSS Library",
             "helpUrl": ""
+        });
+    }
+};
+
+//Width height number selector
+Blockly.Blocks['widthheightnum'] = {
+    init: function () {
+        this.jsonInit({
+            "message0": '%1 : %2;',
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "option",
+                    "options": [
+                        [
+                            "width",
+                            "width"
+                        ],
+                        [
+                            "height",
+                            "height"
+                        ]
+                    ]
+                },
+                {
+                    "type": "field_input",
+                    "name": "size",
+                    "text": "100%"
+                }
+            ],
+            "previousStatement": "stylecontent",
+            "nextStatement": "stylecontent",
+            "colour": 290,
+            "tooltip": "CSS Width/height",
+            "helpUrl": "https://www.w3schools.com/css/css_dimension.asp"
+        });
+    }
+};
+
+//Width height number selector
+Blockly.Blocks['widthheight'] = {
+    init: function () {
+        this.jsonInit({
+            "message0": '%1 : %2 ;',
+            "args0": [
+                {
+                    "type": "field_dropdown",
+                    "name": "option",
+                    "options": [
+                        [
+                            "width",
+                            "width"
+                        ],
+                        [
+                            "height",
+                            "height"
+                        ]
+                    ]
+                },
+                {
+                    "type": "field_dropdown",
+                    "name": "value",
+                    "options": [
+                        [
+                            "auto",
+                            "auto"
+                        ],
+                        [
+                            "initial",
+                            "initial"
+                        ],
+                        [
+                            "inherit",
+                            "inherit"
+                        ]
+                    ]
+                }
+            ],
+            "previousStatement": "stylecontent",
+            "nextStatement": "stylecontent",
+            "colour": 290,
+            "tooltip": "CSS Width/height",
+            "helpUrl": "https://www.w3schools.com/css/css_dimension.asp"
         });
     }
 };

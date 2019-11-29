@@ -904,7 +904,7 @@ class Ffau {
                     case 'box-shadow':
                         if (filteredSelector[0] === "box-shadow") {
                             valueField.setAttribute("name", "color");
-                            styleBlock.setAttribute("type", "boxshadow-new");
+                            styleBlock.setAttribute("type", "boxshadow-2");
                         } else {
                             valueField.setAttribute("name", "color");
                             styleBlock.setAttribute("type", "textshadow-new");
