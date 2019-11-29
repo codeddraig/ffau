@@ -55,21 +55,6 @@
     <!--Let browser know website is optimized for mobile-->
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>Ffau Editor</title>
-
-    <style>
-        .toggle-edit-mode {
-            font-family: Roboto, Noto, sans-serif;
-            background: none;
-            border: none;
-            float: right;
-            cursor: pointer;
-            margin: 20px;
-            color: #00a78e;
-            font-size: 16px;
-            vertical-align: middle;
-            display: inline-block;
-        }
-    </style>
 </head>
 
 <body>
@@ -129,22 +114,22 @@
 
     <div class="row"> <!-- row -->
         <div class="col col7">
-            <div id="blocklyDiv" style="height: 480px;"></div>
+            <div id="blocklyDiv"></div>
         </div>
         <div class="col col5" id="preview">
             <div class="breadcrumb bottom">
-                <ul style="display:inline-block; margin-right:10%;">
+                <ul class="tab-switcher">
                     <li><a href="#!" onclick="showMePreview()">Preview</a></li>
                     <li><a href="#!" onclick="showMeCode()">Real code</a></li>
                 </ul>
                 <button class="toggle-edit-mode" onclick="toggleEditMode()">
-                    <i class="fas fa-mouse-pointer" id="mode-icon" style="color: #00a4ff"></i>&nbsp;&nbsp;Toggle edit
+                    <i class="fas fa-mouse-pointer" id="mode-icon"></i>&nbsp;&nbsp;Toggle edit
                     mode
                 </button>
             </div>
 
             <div id="preview-frame"></div>
-            <div id="code-output" style="display: none;"></div>
+            <div id="code-output"></div>
         </div>
     </div>
 </div>
