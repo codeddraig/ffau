@@ -91,6 +91,11 @@ class Ffau {
         return object.id || "ffau-" + objectType + "-" + Math.floor(Math.random() * 10000);
     }
 
+    /**
+     * Manually changes the value of a setting in the settings menu
+     *
+     * @param {object} updaters - `settingName: newSettingValue` format
+     */
     updateSettings(updaters) {
         if (this.hasSettings) {
             let updateList = Array.from(Object.keys(updaters));
@@ -636,72 +641,86 @@ class Ffau {
         let idList = [];
         let replacerIds = [];
 
+        // Regexp to identify CSS comments
         let cssCommentRegExp = /(?<=^[^"]*?("[^"]*?")*[^"]*?)((?<!\\)\/\*[^*]*?[^\\]\*\/)/g;
 
-        function getReplacerId() {
+        // Generate a unique 5 digit ID that is not present in the code that we can use as markers in the string
+        const getReplacerId = () => {
             let replacerId = (Math.floor(Math.random() * 90000) + 10000).toString();
-            while (code.includes(replacerId) || replacerIds.includes(replacerId))
+            while (code.includes(replacerId) || replacerIds.includes(replacerId)) // Keep generating ID until not in string and unique
                 replacerId = (Math.floor(Math.random() * 90000) + 10000).toString();
 
-            replacerIds.push(replacerId);
+            replacerIds.push(replacerId); // Save ID to DB to avoid reusage
             return replacerId;
-        }
+        };
 
-        function getBlockId() {
+        // Generate an ID for a Blockly block
+        const getBlockId = () => {
+            // Helper function to generate 20 character ID
             function idGen() {
                 return Array(20).fill(0).map(() => [..."`0123456789{}!$./,()*[]`ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"][Math.floor(Math.random() * 81)]).join('')
             }
 
             let id = idGen();
-            while (idList.includes(id))
+            while (idList.includes(id)) // Keep generating IDs until one is unique
                 id = idGen();
 
-            idList.push(id);
+            idList.push(id); // Save to DB to avoid future reusage
             return id;
-        }
+        };
 
-        function evalBooleanAttr(attrVal) {
-            return attrVal === null ? "false" :
-                (attrVal.toLowerCase() === "false" ? "false" : "true");
-        }
+        // Helper function to avoid repeating logic for parsing boolean attributes, which could have values of either
+        // "true", "false", "", or null.
+        const evalBooleanAttr = attrVal => {
+            return attrVal === null ? "false" : // If it's not declared, it's false
+                (attrVal.toLowerCase() === "false" ? "false" : "true"); // If it's any value other than 'false' it's true
+        };
 
-        function extractStyleSheet(styleSheetString, hasSelectors) {
-            function extractStyles(styleString) {
-                let uniqueId = getReplacerId();
+        // Helper function to generate a JSON-ified selector list and/or a `property: value` format
+        const extractStyleSheet = (styleSheetString, hasSelectors) => {
+            // Function to extract style keys in a `property: value` format
+            const extractStyles = styleString => {
+                let uniqueId = getReplacerId(); // Store an ID to use to mark where the colons are
 
-                let stringSplit = (" " + styleString)
-                    .split(/(?<=[^\\]|^)(("((\\")|[^"])*[^\\]")|('((\\')|[^'])*[^\\]'))/g)
+                let stringSplit = (" " + styleString) // Add a space to make the RegExp work
+                    .split(/(?<=[^\\]|^)(("((\\")|[^"])*[^\\]")|('((\\')|[^'])*[^\\]'))/g) // Find all of the points where there are strings
                     .filter((_, z) => z % 8 === 0 || z % 8 === 1);
-                stringSplit[0] = stringSplit[0].substr(1);
+                stringSplit[0] = stringSplit[0].substr(1); // Ignore the first character (the space we just added)
 
+                // Split by all of the colons _not_ in strings
                 stringSplit = stringSplit
                     .map((e, _) => _ % 2 ? e : e.replace(/:/g, uniqueId).split(/[;\n]/g))
                     .flat();
 
+                // Map to [property, value] pairs
                 let stylePairs = [];
                 let thisStylePair = "";
                 stringSplit.forEach(string => {
-                    if (string.includes(uniqueId)) {
-                        stylePairs.push(thisStylePair.split(uniqueId).map(e => e.trim()));
+                    if (string.includes(uniqueId)) { // If this is the property bit
+                        stylePairs.push(thisStylePair.split(uniqueId).map(e => e.trim())); // Trim up to colon
                         thisStylePair = string;
                     } else
-                        thisStylePair += string;
+                        thisStylePair += string; // Otherwise, continue to the semicolon
                 });
-                stylePairs.push(thisStylePair.split(uniqueId).map(e => e.trim()));
+                stylePairs.push(thisStylePair.split(uniqueId).map(e => e.trim())); // Split by colon
 
+                // Filter out empty arrays, to get [[property, value], [property, value]...] format
                 return stylePairs.filter(e => e.length - 1);
-            }
+            };
 
             if (!hasSelectors)
+            // If there are no selectors to be handled, we just use the helper function to split it up into property-value pairs
                 return extractStyles(styleSheetString);
-            else {
-                let uniqueId = getReplacerId();
+            else { // If there are selectors:
+                let uniqueId = getReplacerId(); // Get ID to mark string points
 
+                // Get string points
                 let selectors = (" " + styleSheetString)
                     .split(/(?<=[^\\]|^)(("((\\")|[^"])*[^\\]")|('((\\')|[^'])*[^\\]'))/g)
                     .filter((_, z) => z % 8 === 0 || z % 8 === 1);
                 selectors[0] = selectors[0].substr(1);
 
+                // Find all selector openings not in strings
                 selectors = selectors
                     .map((e, _) => _ % 2 ? e : e.replace(/[}{]/g, uniqueId))
                     .flat()
@@ -711,23 +730,37 @@ class Ffau {
                         (i % 2 ? r[r.length - 1].push(e) : r.push([e])) && r
                         , [])
                     .filter(e => e.filter(e => e.length).length)
-                    .map(e => [e[0].trim(), extractStyles(e[1])]);
+                    .map(e => [e[0].trim(), extractStyles(e[1])]); // Extract property/value pairs for each given selector
 
                 return selectors;
             }
-        }
+        };
 
-        function constructStyleTree(selectors, initialParent) {
+        // Helper function to convert list of selectors to XML elements appended to a given parent (style attribute or selector block)
+        const constructStyleTree = (properties, initialParent) => {
+            // Set a parent which we will always append the next block to - this starts as the given elem, but changes
+            // to be nested <next> tags in the Blockly XML
             let parent = initialParent;
             let forceParent = false;
-            selectors.forEach((selector, m) => {
-                function mapColorLikeBlock(colorStr, valueName) {
+
+            // Go through each `property: value` pair
+            properties.forEach((commentedPropPair, m) => {
+                // This variable will be used to reference the current block, and can be varied in two ways, either
+                // through calling a function or manually. This is declared with a specific name so that every function
+                // knows what to adjust (hence the weird function scoping)
+                let styleBlock = document.createElement("block");
+
+                // Helper function to add color selector to given field in current block
+                const mapColorLikeBlock = (colorStr, valueName) => {
+                    // Create the field to put the color block in
                     let colorValue = document.createElement("value");
                     colorValue.setAttribute("name", valueName);
 
+                    // Create the color block
                     let colorBlock = document.createElement("block");
                     colorBlock.setAttribute("id", getBlockId());
 
+                    // Handle HEX code with hex picker block
                     if (/#(?:[0-9a-fA-F]{3}){1,2}/g.test(colorStr.trim())) {
                         valueField.parentNode.removeChild(valueField);
                         valueField.setAttribute("name", "color");
@@ -737,7 +770,9 @@ class Ffau {
 
                         colorBlock.appendChild(valueField);
                         colorValue.appendChild(colorBlock);
-                    } else if (/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)/g.test(colorStr.trim())) {
+                    }
+                    // Handle RGB(A) with RGB picker
+                    else if (/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)/g.test(colorStr.trim())) {
                         valueField.parentNode.removeChild(valueField);
                         valueField.setAttribute("name", "a");
                         valueField.innerText = colorStr.trim().replace(/^#/g, "");
@@ -767,7 +802,10 @@ class Ffau {
                         }
 
                         colorValue.appendChild(colorBlock);
-                    } else {
+                    }
+                    // Handle colour names
+                    else {
+                        // If this colour name happens to be one of the visual color picker colors, use that
                         if (Blockly.FieldColour.TITLES.includes(colorStr.trim())) {
                             valueField.parentNode.removeChild(valueField);
                             colorBlock.setAttribute("type", "color_picker");
@@ -779,31 +817,39 @@ class Ffau {
 
                             colorBlock.appendChild(valueField);
                             colorValue.appendChild(colorBlock);
-                        } else if (colorNames.indexOf(colorStr.toLowerCase()) > -1)
+                        }
+                        // Otherwise, just map it to the corresponding HEX code of the colour name
+                        else if (colorNames.indexOf(colorStr.toLowerCase()) > -1)
                             mapColorLikeBlock("#" + colorValues[colorNames.indexOf(colorStr.toLowerCase())]);
                     }
 
                     styleBlock.appendChild(colorValue);
-                }
+                };
 
-                function directionVariant(blockType, tagBase) {
-                    if (filteredSelector[0] === tagBase + "-left" ||
-                        filteredSelector[0] === tagBase + "-top" ||
-                        filteredSelector[0] === tagBase + "-right" ||
-                        filteredSelector[0] === tagBase + "-bottom") {
+                // Helper function to automatically create `-left` `-right` etc. block (to which other fields can be added)
+                const directionVariant = (blockType, tagBase) => {
+                    // If the property name has the direction on the end, use a single block with that direction selected
+                    if (propPair[0] === tagBase + "-left" ||
+                        propPair[0] === tagBase + "-top" ||
+                        propPair[0] === tagBase + "-right" ||
+                        propPair[0] === tagBase + "-bottom") {
                         valueField.setAttribute("name", "value");
                         styleBlock.setAttribute("type", blockType);
 
                         let marginDirectionField = document.createElement("field");
                         marginDirectionField.setAttribute("name", "direction");
-                        marginDirectionField.innerText = filteredSelector[0].split("-")[1];
+                        marginDirectionField.innerText = propPair[0].split("-")[1];
 
                         styleBlock.appendChild(marginDirectionField);
-                    } else {
-                        let tags = filteredSelector[1].split(/ +/g);
+                    } else { // If not, add in multiple blocks (one for -left, -right, etc.) to simulate behaviour of e.g `padding:`
+                        // as opposed to `padding-left:`
+                        let tags = propPair[1].split(/ +/g);
 
+                        // If there's three, just repeat the `right` on the `left`
                         if (tags.length === 3) tags.push(tags[1]);
+                        // If there's two, repeat `top` on `bottom` and `right` on `left`
                         if (tags.length === 2) tags = tags.map(e => [e, e]).flat();
+                        // If there's only one, repeat it four times
                         if (tags.length === 1) tags = tags.map(e => [e, e, e, e]).flat();
 
                         valueField.setAttribute("name", "value");
@@ -818,6 +864,7 @@ class Ffau {
                         styleBlock.appendChild(leftTagField);
 
                         let tagParent = styleBlock;
+                        // Manually override block insertion system to add in multiple blocks at once
                         tags.slice(1).forEach((tag, f) => {
                             let tagNext1 = document.createElement("next");
 
@@ -847,22 +894,24 @@ class Ffau {
                         parent = newForceParent;
                         forceParent = true;
                     }
-                }
+                };
 
-                let comments = (selector.join('').match(cssCommentRegExp) || [])
+                // Extract CSS comments
+                let comments = (commentedPropPair.join('').match(cssCommentRegExp) || [])
                     .map(e => e.trim().replace(/(?:^\/\*)|(?:\*\/$)/g, ""))
                     .filter(e => e)
                     .join('    ')
                     .trim();
-                let filteredSelector = selector.map(e =>
+                // Remove them from the resulting code
+                let propPair = commentedPropPair.map(e =>
                     e.replace(cssCommentRegExp, '')
                         .replace(/\\\/\*/g, "/*")
                         .trim()
                 );
 
-                let styleBlock = document.createElement("block");
                 styleBlock.setAttribute("id", getBlockId());
 
+                // Add comments in as Blockly comments
                 if (comments) {
                     let commentTag = document.createElement("comment");
                     commentTag.setAttribute("pinned", "false");
@@ -871,13 +920,16 @@ class Ffau {
                     styleBlock.appendChild(commentTag);
                 }
 
+                // Set the `value` of the block to be the text (for now). This can be overwritten by some blocks later,
+                // e.g to use color blocks or to parse multiple values separately.
                 let valueField = document.createElement("field");
-                valueField.innerText = filteredSelector[1].trim().replace(/^#/g, "");
+                valueField.innerText = propPair[1].trim().replace(/^#/g, "");
 
                 styleBlock.appendChild(valueField);
                 parent.appendChild(styleBlock);
 
-                switch (filteredSelector[0]) {
+                // Go through each type of CSS property, and give the corresponding CDr block name and any other options
+                switch (propPair[0]) {
                     case 'font-size':
                         valueField.setAttribute("name", "value");
                         styleBlock.setAttribute("type", "fontsize");
@@ -891,18 +943,18 @@ class Ffau {
                         styleBlock.setAttribute("type", "fontweight");
                         break;
                     case 'color':
-                        if (["initial", "inherit"].includes(filteredSelector[1])) {
+                        if (["initial", "inherit"].includes(propPair[1])) {
                             valueField.setAttribute("name", "color");
                             styleBlock.setAttribute("type", "colordropdown");
                         } else {
                             valueField.setAttribute("name", "content");
                             styleBlock.setAttribute("type", "color-new");
-                            mapColorLikeBlock(filteredSelector[1], "value");
+                            mapColorLikeBlock(propPair[1], "value");
                         }
                         break;
                     case 'text-shadow':
                     case 'box-shadow':
-                        if (filteredSelector[0] === "box-shadow") {
+                        if (propPair[0] === "box-shadow") {
                             valueField.setAttribute("name", "color");
                             styleBlock.setAttribute("type", "boxshadow-2");
                         } else {
@@ -910,7 +962,7 @@ class Ffau {
                             styleBlock.setAttribute("type", "textshadow-new");
                         }
 
-                        let splitStr = filteredSelector[1].split(/ +/g).map(e => e.trim()).filter(e => e);
+                        let splitStr = propPair[1].split(/ +/g).map(e => e.trim()).filter(e => e);
 
                         if (splitStr.length === 2) {
                             splitStr.push("0px");
@@ -978,17 +1030,17 @@ class Ffau {
 
                         let directionField = document.createElement("field");
                         directionField.setAttribute("name", "direction");
-                        directionField.innerText = (filteredSelector[0] + "-x").split("-")[1];
+                        directionField.innerText = (propPair[0] + "-x").split("-")[1];
 
                         styleBlock.appendChild(directionField);
 
-                        if (filteredSelector[0] === "overflow") {
+                        if (propPair[0] === "overflow") {
                             let overflowYBlock = document.createElement("block");
                             overflowYBlock.setAttribute("id", getBlockId());
                             overflowYBlock.setAttribute("type", "overflow");
 
                             let overflowYField = document.createElement("field");
-                            overflowYField.innerText = filteredSelector[1].trim().replace(/^#/g, "");
+                            overflowYField.innerText = propPair[1].trim().replace(/^#/g, "");
                             overflowYField.setAttribute("name", "content");
 
                             let directionYField = document.createElement("field");
@@ -1022,7 +1074,7 @@ class Ffau {
                     case 'background-color':
                         valueField.setAttribute("name", "value");
                         styleBlock.setAttribute("type", "bgcolor-new");
-                        mapColorLikeBlock(filteredSelector[1], "value");
+                        mapColorLikeBlock(propPair[1], "value");
                         break;
                     case 'background-image':
                         valueField.setAttribute("name", "content");
@@ -1030,7 +1082,7 @@ class Ffau {
 
                         valueField.innerText =
                             (
-                                (filteredSelector[1].split(/(url\(['"])/g)[2]
+                                (propPair[1].split(/(url\(['"])/g)[2]
                                     || "")
                                     .split(/(['"]\))/g).reverse()[2]
                                 || "url"
@@ -1040,7 +1092,7 @@ class Ffau {
                     case 'background-repeat':
                     case 'background-size':
                         valueField.setAttribute("name", "content");
-                        styleBlock.setAttribute("type", `bg${filteredSelector[0].split("-")[1]}`);
+                        styleBlock.setAttribute("type", `bg${propPair[0].split("-")[1]}`);
                         break;
                     case 'cursor':
                         valueField.setAttribute("name", "content");
@@ -1054,25 +1106,25 @@ class Ffau {
                         valueField.setAttribute("name", "color");
                         styleBlock.setAttribute("type", "border-new");
 
-                        valueField.innerText = filteredSelector[1].trim().split(/ +/g)[2] || "";
+                        valueField.innerText = propPair[1].trim().split(/ +/g)[2] || "";
 
                         let widthField = document.createElement("field");
                         widthField.setAttribute("name", "width");
-                        widthField.innerText = filteredSelector[1].trim().split(/ +/g)[0] || "10px";
+                        widthField.innerText = propPair[1].trim().split(/ +/g)[0] || "10px";
 
                         let styleField = document.createElement("field");
                         styleField.setAttribute("name", "type");
-                        styleField.innerText = filteredSelector[1].trim().split(/ +/g)[1] || "none";
+                        styleField.innerText = propPair[1].trim().split(/ +/g)[1] || "none";
 
                         styleBlock.appendChild(widthField);
                         styleBlock.appendChild(styleField);
 
-                        if (filteredSelector[0] !== "border") {
+                        if (propPair[0] !== "border") {
                             styleBlock.setAttribute("type", "borderedge-new");
 
                             let sideField = document.createElement("field");
                             sideField.setAttribute("name", "edge");
-                            sideField.innerText = filteredSelector[0].split("-")[1];
+                            sideField.innerText = propPair[0].split("-")[1];
 
                             styleBlock.appendChild(sideField);
                         }
@@ -1083,9 +1135,9 @@ class Ffau {
                         valueField.setAttribute("name", "value");
                         styleBlock.setAttribute("type", "bordercol");
 
-                        if (filteredSelector[1] === "collapse")
+                        if (propPair[1] === "collapse")
                             valueField.innerText = "TRUE";
-                        else if (filteredSelector[1] === "separate")
+                        else if (propPair[1] === "separate")
                             valueField.innerText = "FALSE";
                         break;
                     case "border-radius":
@@ -1096,7 +1148,7 @@ class Ffau {
                         valueField.parentNode.removeChild(valueField);
                         styleBlock.setAttribute("type", "transition");
 
-                        let allSections = filteredSelector[1].split(/(?<!\(),(?![^(]*[)])/g).map(e => e.trim());
+                        let allSections = propPair[1].split(/(?<!\(),(?![^(]*[)])/g).map(e => e.trim());
 
                         let transitionParent = styleBlock;
                         allSections.forEach((transitionElem, c) => {
@@ -1183,46 +1235,61 @@ class Ffau {
 
                         break;
                     default:
+                        // If it is not recognised, fall back to the default blank `property: value` block
                         styleBlock.setAttribute("type", "othercss");
                         valueField.setAttribute("name", "value");
 
                         let propertyField = document.createElement("field");
                         propertyField.setAttribute("name", "property");
-                        propertyField.innerText = filteredSelector[0];
+                        propertyField.innerText = propPair[0];
 
                         styleBlock.appendChild(propertyField);
                         break;
                 }
 
-                if (m < selectors.length - 1) {
+                // Append each item to the previous item's <next> tag
+                if (m < properties.length - 1) {
                     if (!forceParent) {
                         let t = document.createElement("next");
                         styleBlock.appendChild(t);
 
                         parent = t;
-                    } else {
+                    } else
                         forceParent = false;
-                    }
                 }
             });
-        }
+        };
 
+        /*
+         Helper method to replace a given tag name without a closing tag to be self-closing, e.g:
+                  "<div><img src='http'></div>".closeTag("img", "12345")
+         becomes
+                  "<div><img12345 src='http' /></div>"
+
+         It is assigned to the string prototype to make code a little neater as opposed to using a function
+        */
         String.prototype.closeTag = function (tagName, closeId) {
             let openTagRE = new RegExp(`((?<!${nonStringId}(?:'(?:\\.|[^'])*')|(?:"(?:\\.|[^"])*"))< *${tagName}(?:(?:${nonStringId}.*?${nonStringId})|[^>])*?[^/] *>(?!< *\/ *${tagName}))`, "g");
 
+            // Find all strings
             return this.split(/((?:"(\\.|[^"])*")|(?:'(\\.|[^'])*'))/g)
                 .filter((_, i) => i % 4 < 2).map((_, i) => i % 2 ? _ : nonStringId + _ + nonStringId)
                 .join("")
                 .split(openTagRE)
+                // Mark where the strings are
                 .map(e => e.replace(new RegExp(nonStringId, "g"), ""))
                 .filter(e => e)
+                // Replace every instance of tag not in a string with the self-closing version + the marker ID
                 .map(e => openTagRE.test(e) ? `${e.trim().slice(0, -1)}/>`.replace(/\/\/ *>$/g, "\/>").replace(new RegExp(tagName, "g"), tagName + closeId) : e)
                 .join("")
         };
 
+        // Create a new DOM element, which we will use to reconstruct the HTML node-by-node, but as Blockly XML instead of
+        // HTML-style XML.
         let parallelTree = document.createElement("xml");
         parallelTree.setAttribute("xmlns", "http://www.w3.org/1999/xhtml");
 
+        // Generate unique IDs to be used as markers in a variety of places
         let tempId = getReplacerId();
         let tagId = getReplacerId();
         let nonStringId = getReplacerId();
@@ -1230,15 +1297,20 @@ class Ffau {
         let closeId = getReplacerId();
         let slashedId = getReplacerId();
 
+        // Save a list of tags (in order) to be replaced with a slightly altered name, to ensure they end up in the <body>
+        // of DOMParser. This is because DOMParser automatically inserts a proper `<html><head></head><body></body></html>`
+        // structure, from which we need to be able to read out what was actually typed by the user.
         let overrideTags = ["br", "hr", "tr", "td", "th", "table", "header", "html", "head", "body", "base", "link", "meta",
             "script", "title", "noscript"];
         let overrideExp = "(" + overrideTags.join(")|(") + ")";
 
         let bodifiedCode = (" " + code)
+        // Find all of the strings
             .split(/((?<=[^\\]|^)(("((\\")|[^"])*[^\\]")|('((\\')|[^'])*[^\\]')))|((?<=([^\\]>)|^)((\\<)|([^<]))*[^\\](?=<))/g)
             .filter((_, z) => z % 14 === 0 || (_ && (z % 14 === 1 || z % 14 === 9)))
             .map((v, i) =>
                 i % 2 === 0 ?
+                    // Replace tags with new name to ensure they end up in the `<body>`
                     (!i ? v.substr(1) : v)
                         .replace(new RegExp(`< *\\/? *(${overrideExp})(?=.*(>|(= *)))`, "gi"),
                             z => `${z.toLowerCase()}Tag${tempId}`)
@@ -1246,10 +1318,12 @@ class Ffau {
                     : v)
             .filter((_, z) => z ? z === 1 ? _ !== " " : true : _)
             .join("")
+            // Replace certain unclosed tags with self-closing versions
             .closeTag(`metaTag${tempId}`, closeId)
             .closeTag(`img`, closeId)
             .closeTag(`hr${tempId}`, closeId)
             .closeTag(`br${tempId}`, closeId)
+            // Extract all of the tags...
             .split(/(?<=<\/?[a-zA-Z0-9]+(?: *[a-zA-Z]+(?:=(?:(?:"(?:\\.|[^"])*")|(?:'(?:\\.|[^'])*')|(?:[0-9]|(?:true|false))))?)* *\/?>(?:\\.|[^<])*)/g)
             .reduce((v, e) =>
                 ((e.length - 1) ?
@@ -1261,7 +1335,11 @@ class Ffau {
                 (e[0] === "<" ? v.push(e) : v[v.length - 1] += e)
                 && v
                 , [""])
+            // And for each of them...
             .map(t =>
+                // Replace self-closing tags with their expanded version (e.g `<div/>` becomes `<div></div>`, and incl.
+                // previous code `<img>` becomes `<img/>` which here becomes `<img></img>`. Also, insert an ID to note
+                // that the tag was originally slashed before it was expanded
                 t.replace(/^<([a-zA-Z0-9]+.*)\/ *>/g, `${tagId}$&${tagId}`)
                     .split(tagId)
                     .filter(e => e)
@@ -1274,6 +1352,8 @@ class Ffau {
                                         + (u.split(" ").length - 1 ? " " : "")
                                         + u.split(" ").slice(1).join(" ")
                                     )
+                                    // If something was both changed to be self-closing, then expanded, we only need to
+                                    // mark that is was changed to be self-closing: the fact it was then expanded is obvious
                                         .replace(new RegExp(closeId + slashedId, "g"), closeId)
                                 }></${
                                     (u.split(" ")[0] + slashedId)
@@ -1283,9 +1363,11 @@ class Ffau {
                     .join(''))
             .join('');
 
+        // Use DOMParser to generate a DOM tree from our filtered/niceified string
         let domParser = new DOMParser();
         let parsedHTML = domParser.parseFromString("<body>" + bodifiedCode + "</body>", "text/html").body;
 
+        // Un-close any tags inside <style> tags, because there we're meant to be parsing them as strings, not as HTML
         Array.from(parsedHTML.getElementsByTagName("style")).forEach(e => {
             e.innerText = e.innerText.replace(new RegExp(tempId, "g"), "");
 
@@ -1300,23 +1382,31 @@ class Ffau {
             );
         });
 
+        // Get rid of the marker IDs left in the code
         parsedHTML.innerHTML = parsedHTML.innerHTML
             .replace(new RegExp(slashedId, "g"), "")
             .replace(new RegExp(closeId, "g"), "");
 
+        // Recursive function to map each DOM node to a node in the XML tree
         const reconstruct = (parent, parallelParent, isTopLevel) => {
+            // List of children we need to append to the current parent in the XML
             let parallelChildren = [];
 
+            // Store any comments we need to append to this parent
             let comment = false;
 
+            // Go through each child of the DOM node
             for (let i = 0, child = parent.childNodes[0]; i < parent.childNodes.length; i++, child = parent.childNodes[i]) {
+                // Trim the text inside the node
                 child.innerHTML ? child.innerHTML = child.innerHTML.trim() : child.textContent = child.textContent.trim();
 
                 let newNode;
                 let childrenContainer;
                 let childrenPreHandled = false;
 
-                function template_EmptyStatement(blockType, statementName) {
+                // Function to quickly replace `newNode` with an empty statement block of a given type, which can
+                // also be adjusted with extra fields manually.
+                const template_EmptyStatement = (blockType, statementName) => {
                     newNode = document.createElement("block");
                     newNode.setAttribute("type", blockType);
                     newNode.setAttribute("id", getBlockId());
@@ -1325,8 +1415,9 @@ class Ffau {
                     childrenContainer.setAttribute("name", statementName ? statementName : "content");
 
                     newNode.appendChild(childrenContainer);
-                }
+                };
 
+                // Go through each block, and apply its individual conditions
                 switch (child.nodeName) {
                     case `HEADTAG${tempId}`:
                     case `HTMLTAG${tempId}`:
@@ -1589,10 +1680,12 @@ class Ffau {
                         break;
 
                     case "#text":
+                        // If it's a normal text node
                         if (child.parentNode.nodeName !== `STYLE` && child.textContent.trim()) {
                             if (child.textContent.includes("\n"))
                                 child.splitText(child.textContent.indexOf("\n") + 1);
 
+                            // Just insert the text block for each line in there
                             newNode = document.createElement("block");
                             newNode.setAttribute("type", "emptytext");
                             newNode.setAttribute("id", getBlockId());
@@ -1602,10 +1695,12 @@ class Ffau {
                             textContent.innerText = child.textContent.replace(/\n*$/g, "");
 
                             newNode.appendChild(textContent);
-                        } else if (child.parentNode.nodeName === `STYLE`) {
+                        } else if (child.parentNode.nodeName === `STYLE`) { // If the text node is the child of a style block
+                            // Get the selectors/prop-val pairs
                             let selectors = extractStyleSheet(child.textContent, true)
                                 .filter(e => e[0]);
 
+                            // Map each selector
                             selectors.forEach(selector => {
                                 let selectorBlock = document.createElement("block");
                                 selectorBlock.setAttribute("type", "cssitem");
@@ -1614,6 +1709,7 @@ class Ffau {
                                 let openBracketId = getReplacerId();
                                 let closeBracketId = getReplacerId();
 
+                                // Get the comments on the selector blocks and handle them separately
                                 let comments = (selector[0].match(cssCommentRegExp) || [])
                                     .map(e => e.trim().replace(/(?:^\/\*)|(?:\*\/$)/g, ""))
                                     .filter(e => e)
@@ -1631,6 +1727,7 @@ class Ffau {
                                     selectorBlock.appendChild(commentTag);
                                 }
 
+                                // Extract the pseudoselectors and handle them with their respective blocks
                                 let selectorSections = selector[0]
                                     .toLowerCase()
                                     .split(/((?:(?<=')(?:\\.|[^'])*(?='))|(?:(?<=")(?:\\.|[^"])*(?="))|(?:(?<=\()[^'"]*(?=\))))/g)
@@ -1690,6 +1787,7 @@ class Ffau {
                                 let selectorContent = document.createElement("statement");
                                 selectorContent.setAttribute("name", "content");
 
+                                // Build the property-value pairs with the CSS blocks into this selector block
                                 constructStyleTree(selector[1], selectorContent);
 
                                 selectorBlock.appendChild(selectorField);
@@ -1700,6 +1798,7 @@ class Ffau {
                         break;
 
                     case "#comment":
+                        // Store the last comment above a given block
                         comment = child.textContent;
                         continue;
 
@@ -1707,6 +1806,7 @@ class Ffau {
                         continue;
                 }
 
+                // Add the comment as a direct child node to the block node (not a child block)
                 if (comment && newNode) {
                     let commentTag = document.createElement("comment");
                     commentTag.setAttribute("pinned", "false");
@@ -1721,6 +1821,7 @@ class Ffau {
                     while (child.firstChild)
                         child.removeChild(child.firstChild);
 
+                // Extract the attributes
                 let attributes = Array.from(child.attributes || [])
                     .map(e => [e.name, e.value.trim()])
                     .filter(e => !e.some(
@@ -1729,6 +1830,7 @@ class Ffau {
                                 .test(v)
                     ));
                 if (attributes.length) {
+                    // If there are attributes, add on the attribute modifier value block
                     let attrInput = document.createElement("value");
                     attrInput.setAttribute("name", "modifier");
 
@@ -1744,6 +1846,7 @@ class Ffau {
                         let attrName = document.createElement("block");
                         attrName.setAttribute("id", getBlockId());
 
+                        // Handle each attribute type individually
                         if (attr[0] === "class" || attr[0] === "id" || attr[0] === "align") {
                             attrName.setAttribute("type", attr[0]);
 
@@ -1753,6 +1856,7 @@ class Ffau {
 
                             attrName.appendChild(attrValue);
                         } else if (attr[0] === "style") {
+                            // For style attributes, just extract the style sheet and build it into the style arg block
                             attrName.setAttribute("type", "stylearg");
                             let statement = document.createElement("statement");
                             statement.setAttribute("name", "content");
@@ -1762,6 +1866,7 @@ class Ffau {
 
                             attrName.appendChild(statement);
                         } else {
+                            // If it is an unknown type, use the custom modifier block
                             attrName.setAttribute("type", "emptyarg");
 
                             let attrProperty = document.createElement("field");
@@ -1778,6 +1883,7 @@ class Ffau {
 
                         attrParent.appendChild(attrName);
 
+                        // Append all of the attributes to the attribute value block
                         if (z < attributes.length - 1) {
                             let v = document.createElement("next");
                             attrName.appendChild(v);
@@ -1791,14 +1897,16 @@ class Ffau {
                     newNode.appendChild(attrInput);
                 }
 
+                // Continue mapping with the child nodes of this node, until no remaining nodes are left, and pass on
+                // that this child is the parent
                 if (child.childNodes.length && childrenContainer)
                     reconstruct(child, childrenContainer);
 
                 if (newNode)
-                    parallelChildren.push(newNode);
-                parallelChildren.push(newNode);
+                    parallelChildren.push(newNode); // Save this node to be appended to the parent
             }
 
+            // Append everything we've mapped from the DOM parent to the XML parent, using the proper `<next>` tags
             let newParent = parallelParent;
             parallelChildren.forEach((child, i) => {
                 if (child)
@@ -1806,6 +1914,7 @@ class Ffau {
                 else
                     return false;
 
+                // Nest the <next> tag in the previous child
                 if (i < parallelChildren.length - 1 && !isTopLevel) {
                     let v = document.createElement("next");
                     child.appendChild(v);
@@ -1814,12 +1923,15 @@ class Ffau {
             });
         };
 
+        // Start the reconstruction at the top of the DOM tree
         reconstruct(parsedHTML, parallelTree, true);
 
+        // Remove empty <statement>s to speed up processing/avoid possible Blockly errors
         parallelTree.querySelectorAll("*").forEach(e => {
             if (e.nodeName === "STATEMENT" && !e.childElementCount) e.parentNode.removeChild(e);
         });
 
+        // Return the new XML tree as a string
         return parallelTree.outerHTML;
     }
 
