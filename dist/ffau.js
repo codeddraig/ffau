@@ -1080,12 +1080,16 @@ class Ffau {
                         valueField.setAttribute("name", "content");
                         styleBlock.setAttribute("type", "bgimage");
 
+                        // Overwrite default text of input
                         valueField.innerText =
-                            (
+                            (   // Remove the initial `url(`
                                 (propPair[1].split(/(url\(['"])/g)[2]
                                     || "")
+                                // Remove the end bracket
                                     .split(/(['"]\))/g).reverse()[2]
+                                // Fall back to `url` if no URL is present
                                 || "url"
+                                // Remove the speech marks around the URL
                             ).replace(/^['"]|['"]$/g, "");
                         break;
                     case 'background-position':
@@ -1148,6 +1152,7 @@ class Ffau {
                         valueField.parentNode.removeChild(valueField);
                         styleBlock.setAttribute("type", "transition");
 
+                        // Get all of the transition properties
                         let allSections = propPair[1].split(/(?<!\(),(?![^(]*[)])/g).map(e => e.trim());
 
                         let transitionParent = styleBlock;

@@ -17,6 +17,49 @@
 				THIS IS VERSION 1.2.2
 */
 
+function parseTransitions(block) {
+    var stmt = "";
+    var transitions = [];
+    var index = -1;
+    var thisBlock = block.childBlocks_[0];
+    while (thisBlock) {
+        var blockText = htmlGen.blockToCode(thisBlock);
+        if (thisBlock.getNextBlock())
+            blockText = blockText.slice(0,
+                -htmlGen.blockToCode(thisBlock.getNextBlock()).length
+            );
+
+        if (thisBlock.type !== "transition")
+            stmt += "\t" + blockText;
+        else {
+            if (transitions.length === 0)
+                index = stmt.length;
+
+            var split = blockText.trim().split(" ");
+            transitions.push({
+                duration: split[0],
+                property: split[1],
+                delay: split[2],
+                timingFunction: split[3]
+            });
+        }
+
+        thisBlock = thisBlock.getNextBlock();
+    }
+
+    if (transitions.length) {
+        var reducedStr = transitions.reduce((a, e) =>
+                `${a},\n\t\t${e.property} ${e.duration} ${e.timingFunction} ${e.delay}`
+            , "");
+
+        var transitionStr = `\ttransition: ${reducedStr.trim().substr(1)};\n`;
+
+        stmt = stmt.substr(0, index) + transitionStr + stmt.substr(index);
+    }
+
+    return stmt;
+}
+
 function hexEscape(str) {
     return str.replace(/[^A-Fa-f0-9]/, "").substring(0, 8).toLowerCase();
 }
@@ -220,12 +263,13 @@ htmlGen['style'] = function (block) {
 };
 
 htmlGen['stylearg'] = function (block) {
-    var statement = htmlGen.statementToCode(block, 'content').trim();
+    var statement = parseTransitions(block).trim();
     return 'style="' + statement + '" ';
 };
 
 htmlGen['cssitem'] = function (block) {
-    var stmt = htmlGen.statementToCode(block, 'content');
+    var stmt = parseTransitions(block);
+
     var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
     mod = mod.split(' ').join(''); // remove spaces
 
@@ -506,12 +550,15 @@ htmlGen['verticalalign'] = function (block) {
 };
 
 htmlGen['transition'] = function (block) {
-    var property = fullEscape(block.getFieldValue('transition-property'));
-    var duration = fullEscape(block.getFieldValue('duration'));
-    var delay = fullEscape(block.getFieldValue('delay'));
-    var timing = htmlGen.statementToCode(block, 'timing-function', htmlGen.ORDER_ATOMIC);
+    var property = fullEscape(block.getFieldValue('transition-property')).trim();
+    var duration = fullEscape(block.getFieldValue('duration')).trim();
+    var delay = fullEscape(block.getFieldValue('delay')).trim();
+    var timing = htmlGen.statementToCode(block, 'timing-function', htmlGen.ORDER_ATOMIC).trim();
 
-    return `transition-property: ${property};\ntransition-duration: ${duration};\ntransition-delay: ${delay};\ntransition-timing-function: ${timing.trim()};\n`;
+    if (!this.parentBlock_)
+        return `transition-property: ${property};\ntransition-duration: ${duration};\ntransition-delay: ${delay};\ntransition-timing-function: ${timing.trim()};\n`;
+    else
+        return `${duration} ${property} ${delay} ${timing}`;
 };
 
 htmlGen['transitiontimingdropdown'] = function (block) {
