@@ -1156,12 +1156,15 @@ class Ffau {
                         let allSections = propPair[1].split(/(?<!\(),(?![^(]*[)])/g).map(e => e.trim());
 
                         let transitionParent = styleBlock;
+                        // Go through each transition property
                         allSections.forEach((transitionElem, c) => {
+                            // Get the sections for each transition property
                             let property = transitionElem.split(/ +/g)[0];
                             let duration = transitionElem.split(/ +/g)[1].replace(/([s ])*/g, "");
                             let delay = transitionElem.split(/ +/g)[2].replace(/([s ])*/g, "") || "0";
                             let timing = transitionElem.split(/ +/g).slice(3).join("") || "linear";
 
+                            // Create a field to store their values in the Blockly block
                             let transitionPropertyField = document.createElement("field");
                             let transitionDurationField = document.createElement("field");
                             let transitionDelayField = document.createElement("field");
@@ -1172,15 +1175,20 @@ class Ffau {
                             transitionDelayField.setAttribute("name", "delay");
                             transitionTimingField.setAttribute("name", "timing-function");
 
+                            // Populate the blocks, except transition-timing-function (see below)
                             transitionPropertyField.innerText = property.trim();
                             transitionDurationField.innerText = duration.trim();
                             transitionDelayField.innerText = delay.trim();
 
                             let timingBlock = document.createElement("block");
                             timingBlock.setAttribute("id", getBlockId());
+
+                            // If we're using a custom bezier, parse that first
                             if (timing.startsWith("cubic-bezier(")) {
+                                // Create the cubic bezier blocks
                                 timingBlock.setAttribute("type", "transitiontimingbezier");
 
+                                // Create the fields for them
                                 let bez1 = document.createElement("field");
                                 let bez2 = document.createElement("field");
                                 let bez3 = document.createElement("field");
@@ -1191,9 +1199,11 @@ class Ffau {
                                 bez3.setAttribute("name", "bez3");
                                 bez4.setAttribute("name", "bez4");
 
+                                // Split up the bezier string into each coordinate
                                 let bezPointList = timing.trim().split("cubic-bezier(").slice(1).join("")
                                     .replace(/\)/g, "")
                                     .split(",");
+                                // Put the coordinates into respective fields
                                 bez1.innerText = bezPointList[0].trim();
                                 bez2.innerText = bezPointList[1].trim();
                                 bez3.innerText = bezPointList[2].trim();
@@ -1203,9 +1213,11 @@ class Ffau {
                                 timingBlock.appendChild(bez2);
                                 timingBlock.appendChild(bez3);
                                 timingBlock.appendChild(bez4);
-                            } else {
+                            } else { // If we're using a preset function name
+                                // Use the dropdown block
                                 timingBlock.setAttribute("type", "transitiontimingdropdown");
 
+                                // Set the text in the dropdown block to the name of the function
                                 let functionNameField = document.createElement("field");
                                 functionNameField.setAttribute("name", "function");
                                 functionNameField.innerText = timing.trim();
@@ -1215,6 +1227,7 @@ class Ffau {
 
                             transitionTimingField.appendChild(timingBlock);
 
+                            // Add all of the fields to the transition block
                             transitionParent.appendChild(transitionPropertyField);
                             transitionParent.appendChild(transitionDurationField);
                             transitionParent.appendChild(transitionDelayField);
@@ -1223,6 +1236,7 @@ class Ffau {
                             let newTransitionParent = document.createElement("next");
                             transitionParent.appendChild(newTransitionParent);
 
+                            // Manually insert the new blocks (if there are multiple transition properties)
                             if (c < allSections.length - 1) {
                                 let newTransitionBlock = document.createElement("block");
                                 newTransitionBlock.setAttribute("id", getBlockId());
@@ -1735,15 +1749,20 @@ class Ffau {
                                 // Extract the pseudoselectors and handle them with their respective blocks
                                 let selectorSections = selector[0]
                                     .toLowerCase()
+                                    // Get the strings in the selector
                                     .split(/((?:(?<=')(?:\\.|[^'])*(?='))|(?:(?<=")(?:\\.|[^"])*(?="))|(?:(?<=\()[^'"]*(?=\))))/g)
                                     .map((e, i) => i % 2 ?
+                                        // Encode everything in a string, meaning that colons are escaped too (so will not be matched)
                                         encodeURIComponent(
                                             e.replace(/\(/g, openBracketId)
                                                 .replace(/\)/g, closeBracketId)
                                         ) : e
                                     )
                                     .join("")
+                                    // Get all of the visible selector sections (those in strings, e.g `input[type="::before"]`
+                                    // are escaped, so not matched here
                                     .split(/(?<!:):(?=hover|focus|:before|:after|not\()(?![^(]*\))/g)
+                                    // Unescape everything
                                     .map(e =>
                                         decodeURIComponent(e)
                                             .replace(new RegExp(openBracketId, "g"), '(')
@@ -1754,7 +1773,9 @@ class Ffau {
                                 selectorField.setAttribute("name", "selector");
                                 selectorField.innerText = selectorSections[0];
 
+                                // If there are add-ons required to the selector
                                 if (selectorSections.length - 1) {
+                                    // Add the value into the selector block into which we can append the pseudo-block
                                     let modifierValue = document.createElement("value");
                                     modifierValue.setAttribute("name", "modifier");
 
@@ -1763,12 +1784,16 @@ class Ffau {
                                         let newMod = document.createElement("block");
                                         newMod.setAttribute("id", getBlockId());
 
+                                        // Add a universal field which we can fill with the contents, regardless of
+                                        // what type of block (`not` or the dropdown) it will end up being
                                         let contentField = document.createElement("field");
                                         contentField.setAttribute("name", "content");
                                         newMod.appendChild(contentField);
 
+                                        // Determine the type of block we need
                                         if (section.slice(0, 4) === "not(") {
                                             newMod.setAttribute("type", "cssnot");
+                                            // Add in the text we want in the not
                                             contentField.innerText = section.slice(4, -1);
                                         } else {
                                             newMod.setAttribute("type", "cssevents");
@@ -1777,6 +1802,8 @@ class Ffau {
 
                                         selectorParent.appendChild(newMod);
 
+                                        // Create a new block, which is a modifier of this block, hence 'chaining' them
+                                        // to one another
                                         if (j < selectorSections.length - 2) {
                                             let nextMod = document.createElement("value");
                                             nextMod.setAttribute("name", "modifier");
