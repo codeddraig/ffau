@@ -49,7 +49,7 @@ function parseTransitions(block) {
 
     if (transitions.length) {
         var reducedStr = transitions.reduce((a, e) =>
-                `${a},\n\t\t${e.property} ${e.duration} ${e.timingFunction} ${e.delay}`
+                `${a},\n\t\t${e.property} ${e.duration}s ${e.timingFunction} ${e.delay}s`
             , "");
 
         var transitionStr = `\ttransition: ${reducedStr.trim().substr(1)};\n`;
