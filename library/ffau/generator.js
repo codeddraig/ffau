@@ -556,12 +556,12 @@ htmlGen['transition'] = function (block) {
     var property = fullEscape(block.getFieldValue('transition-property')).trim();
     var duration = fullEscape(block.getFieldValue('duration')).trim();
     var delay = fullEscape(block.getFieldValue('delay')).trim();
-    var timing = htmlGen.statementToCode(block, 'timing-function', htmlGen.ORDER_ATOMIC).trim();
+    var timing = (htmlGen.statementToCode(block, 'timing-function', htmlGen.ORDER_ATOMIC) || "linear").trim();
 
     if (!this.parentBlock_) {
         return `transition-property: ${property};\ntransition-duration: ${duration};\ntransition-delay: ${delay};\ntransition-timing-function: ${timing.trim()};\n`;
     } else {
-        return `${duration} ${property} ${delay} ${timing}`;
+        return `${duration} ${property} ${delay} ${encodeURIComponent(timing)}`;
     }
 };
 
