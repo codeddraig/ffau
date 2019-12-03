@@ -23,7 +23,7 @@ Copyright (c) 2017-19 The CodeDdraig Organisation
 ## Setup
 The Ffau editor is made to be easily addable to any existing project. There are 4 main steps to setting the Ffau up for a simple project like the one linked above.
 
-1. Find the latest version on jsDelivr (this version: 1.2.2)
+1. Find the latest version on jsDelivr (this version: 2.0.0)
 
 2. _(optional):_
 ```
@@ -48,16 +48,16 @@ gulp
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
 
     <!-- our blockly blocks and generators -->
-    <script src="https://cdn.jsdelivr.net/npm/@codeddraig/ffau-editor@1.2.2/library/ffau/blocks.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@codeddraig/ffau-editor@1.2.2/library/ffau/generator.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@codeddraig/ffau-editor@2.0.0/library/ffau/blocks.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@codeddraig/ffau-editor@2.0.0/library/ffau/generator.js"></script>
 
     <!-- ace editor (optional: if you want a syntax-highlighted code preview) -->
     <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.4.7/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 
     <!-- ffau css -->
-    <script src="https://cdn.jsdelivr.net/npm/@codeddraig/ffau-editor@1.2.2/dist/ffau.css"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@codeddraig/ffau-editor@2.0.0/dist/ffau.css"></script>
     <!-- ffau js last -->
-    <script src="https://cdn.jsdelivr.net/npm/@codeddraig/ffau-editor@1.2.2/dist/ffau.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@codeddraig/ffau-editor@2.0.0/dist/ffau.min.js"></script>
 </head>
 
 <body>
