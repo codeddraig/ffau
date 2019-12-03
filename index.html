@@ -114,18 +114,22 @@
 
     <div class="row"> <!-- row -->
         <div class="col col7">
-            <div id="blocklyDiv" style="height: 480px;"></div>
+            <div id="blocklyDiv"></div>
         </div>
         <div class="col col5" id="preview">
             <div class="breadcrumb bottom">
-                <ul>
+                <ul class="tab-switcher">
                     <li><a href="#!" onclick="showMePreview()">Preview</a></li>
                     <li><a href="#!" onclick="showMeCode()">Real code</a></li>
                 </ul>
+                <button class="toggle-edit-mode" onclick="toggleEditMode()">
+                    <i class="fas fa-mouse-pointer" id="mode-icon"></i>&nbsp;&nbsp;Toggle edit
+                    mode
+                </button>
             </div>
 
             <div id="preview-frame"></div>
-            <div id="code-output" style="display: none;"></div>
+            <div id="code-output"></div>
         </div>
     </div>
 </div>
@@ -245,8 +249,8 @@
                 <block type="verticalalign"></block>
 
                 <label text="Dimensions"></label>
-                <block type="widthheightnum"></block>
-                <block type="widthheight"></block>
+                <block type="width"></block>
+                <block type="height"></block>
             </category>
 
             <category colour="290" name="Design">
@@ -448,14 +452,12 @@
                         <value name="content">
                             <block type="stylearg">
                                 <value name="content">
-                                    <block type="widthheightnum">
-                                        <field name="option">height</field>
+                                    <block type="height">
                                         <field name="size">300px</field>
                                     </block>
                                 </value>
                                 <value name="content">
-                                    <block type="widthheightnum">
-                                        <field name="option">width</field>
+                                    <block type="width">
                                         <field name="size">400px</field>
                                     </block>
                                 </value>
@@ -499,11 +501,14 @@
     );
 
     // render code
-    ffau.renderCode(
+    let aceSession = ffau.renderCode(
         ace,
         document.getElementById('code-output'),
-        "textmate"
-    );
+        "textmate",
+        false // Make it non read-only to allow for reverse coding
+    ).session;
+
+    ffau.addEvent(); // Bind default update events
 
     ffau.addSettings([
         {
@@ -553,8 +558,33 @@
         }
     ]);
 
-    // add event listener
+    // add default event listener
     ffau.addEvent();
+
+    ffau.addEvent(() => {
+        if (ffau.editMode) {
+            try {
+                ffau.setXML(ffau.codeToXML(ffau.editor.getValue()));
+                ffau.ffauWorkspace.cleanUp();
+                ffau.ffauWorkspace.scrollCenter();
+            } catch (e) {
+                ffau.clearWorkspace();
+            }
+        }
+    }, 'ace');
+
+    ffau.workspaceDiv.onfocus = () => ffau.editMode = 0;
+    ffau.editor.container.onfocus = () => ffau.editMode = 1;
+
+    function toggleEditMode() {
+        ffau.toggleEditMode();
+
+        let icon = document.getElementById("mode-icon");
+        if (icon.classList.contains("fa-code"))
+            icon.classList.replace("fa-code", "fa-mouse-pointer");
+        else
+            icon.classList.replace("fa-mouse-pointer", "fa-code");
+    }
 
     function resetTheme() {
         // reset the theme to the original

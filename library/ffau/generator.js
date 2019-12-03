@@ -17,6 +17,51 @@
 				THIS IS VERSION 1.2.2
 */
 
+function parseTransitions(block) {
+    var stmt = "";
+    var transitions = [];
+    var index = -1;
+    var thisBlock = block.childBlocks_[0];
+    while (thisBlock) {
+        var blockText = htmlGen.blockToCode(thisBlock);
+        if (thisBlock.getNextBlock()) {
+            blockText = blockText.slice(0,
+                -htmlGen.blockToCode(thisBlock.getNextBlock()).length
+            );
+        }
+
+        if (thisBlock.type !== "transition") {
+            stmt += "\t" + blockText;
+        } else {
+            if (transitions.length === 0) {
+                index = stmt.length;
+            }
+
+            var split = blockText.trim().split(" ");
+            transitions.push({
+                duration: decodeURIComponent(split[0]),
+                property: decodeURIComponent(split[1]),
+                delay: decodeURIComponent(split[2]),
+                timingFunction: decodeURIComponent(split[3])
+            });
+        }
+
+        thisBlock = thisBlock.getNextBlock();
+    }
+
+    if (transitions.length) {
+        var reducedStr = transitions.reduce((a, e) =>
+                `${a},\n\t\t${e.property} ${e.duration}s ${e.timingFunction} ${e.delay}s`
+            , "");
+
+        var transitionStr = `\ttransition: ${reducedStr.trim().substr(1)};\n`;
+
+        stmt = stmt.substr(0, index) + transitionStr + stmt.substr(index);
+    }
+
+    return stmt;
+}
+
 function hexEscape(str) {
     return str.replace(/[^A-Fa-f0-9]/, "").substring(0, 8).toLowerCase();
 }
@@ -82,10 +127,71 @@ htmlGen.finish = function (code) {
     return code;
 };
 
+htmlGen.suffixLines = function (text, suffix) {
+    return text.replace(/(?!\n$)\n/g, suffix + "\n") + suffix;
+};
+
+htmlGen.getAncestors = function (block, ancestors) {
+    if (block.parentBlock_) {
+        ancestors.push(block.parentBlock_);
+        ancestors.push(htmlGen.getAncestors(block.parentBlock_, ancestors));
+    }
+
+    return ancestors.filter(e => e.length === undefined);
+};
+
+// Called with each block/statement to pass onwards custom mapping
 htmlGen.scrub_ = function (block, code) {
+    const appendCommentCode = (comment, prefix, suffix) => {
+        commentCode += `${prefix}${comment.includes("\n") ?
+            "\n\t" + comment.trim().split("\n").map(z => "\t" + z).join('\n').trim() + "\n"
+            : comment}${suffix}\n`
+    };
+
+    var commentCode = '';
+
+    if (!htmlGen.getAncestors(block, []).map(e => e.type).includes("stylearg")) {
+        var comment = block.getCommentText();
+        if (htmlGen.getAncestors(block, []).map(e => e.type).includes("style")) {
+            if (comment) {
+                comment = Blockly.utils.wrap(comment,
+                    htmlGen.COMMENT_WRAP - 3).replace(/\n*$|^\n*/g, "");
+                appendCommentCode(comment, "/*", "*/");
+            }
+        } else {
+            // Only collect comments for blocks that aren't inline.
+            if ((!block.outputConnection || !block.outputConnection.targetConnection)
+                && (block.parentBlock_ ?
+                    (!block.parentBlock_.outputConnection || !block.parentBlock_.outputConnection.targetConnection) : true)
+            ) {
+                // Collect comment for this block.
+                if (comment) {
+                    comment = Blockly.utils.wrap(comment,
+                        htmlGen.COMMENT_WRAP - 3).replace(/\n*$|^\n*/g, "");
+                    appendCommentCode(comment, "<!--", "-->");
+                }
+                // Collect comments for all value arguments.
+                // Don't collect comments for nested statements.
+                for (var i = 0; i < block.inputList.length; i++) {
+                    if (block.inputList[i].type === Blockly.INPUT_VALUE) {
+                        var childBlock = block.inputList[i].connection.targetBlock();
+                        if (childBlock && childBlock.type !== "style" && childBlock.type !== "stylearg") {
+                            var thisComment = htmlGen.allNestedComments(childBlock)
+                                .replace(/\n*$|^\n*/g, "");
+                            if (thisComment) {
+                                appendCommentCode(thisComment, "<!--", "-->")
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     var nextBlock = block.nextConnection && block.nextConnection.targetBlock();
     var nextCode = htmlGen.blockToCode(nextBlock);
-    return code + nextCode;
+
+    return commentCode + code + nextCode;
 };
 
 htmlGen['html'] = function (block) {
@@ -113,7 +219,7 @@ htmlGen['metaviewport'] = function (block) {
 
 htmlGen['title'] = function (block) {
     var value = block.getFieldValue('value');
-    var code = `<title>${ looseEscape(value) }</title>\n`;
+    var code = `<title>${looseEscape(value)}</title>\n`;
     return code;
 };
 
@@ -160,12 +266,13 @@ htmlGen['style'] = function (block) {
 };
 
 htmlGen['stylearg'] = function (block) {
-    var statement = htmlGen.statementToCode(block, 'content').trim();
+    var statement = parseTransitions(block).trim();
     return 'style="' + statement + '" ';
 };
 
 htmlGen['cssitem'] = function (block) {
-    var stmt = htmlGen.statementToCode(block, 'content');
+    var stmt = parseTransitions(block);
+
     var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
     mod = mod.split(' ').join(''); // remove spaces
 
@@ -222,6 +329,16 @@ htmlGen['boxshadow-new'] = function (block) {
     return `box-shadow: ${x} ${y} ${blur} ${color};\n`;
 };
 
+htmlGen['boxshadow-2'] = function (block) {
+    var x = fullEscape(block.getFieldValue('xoffset'));
+    var y = fullEscape(block.getFieldValue('yoffset'));
+    var blur = fullEscape(block.getFieldValue('blur'));
+
+    var color = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC).trim();
+
+    return `box-shadow: ${x} ${y} ${blur} ${color};\n`;
+};
+
 htmlGen['textshadow'] = function (block) {
     var x = fullEscape(block.getFieldValue('xoffset'));
     var y = fullEscape(block.getFieldValue('yoffset'));
@@ -253,7 +370,7 @@ htmlGen['textalign'] = function (block) {
 
 htmlGen['letterspacing'] = function (block) {
     var value = block.getFieldValue('value');
-    return `letter-spacing: ${ fullEscape(value) };\n`;
+    return `letter-spacing: ${fullEscape(value)};\n`;
 };
 
 htmlGen['margin'] = function (block) {
@@ -347,7 +464,7 @@ htmlGen['border-new'] = function (block) {
     var type = block.getFieldValue('type');
     var color = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC).trim();
 
-    return 'border: ' + width + 'px ' + type + ' ' + color + ';\n';
+    return 'border: ' + width + ' ' + type + ' ' + color + ';\n';
 };
 
 htmlGen['borderedge-new'] = function (block) {
@@ -356,7 +473,7 @@ htmlGen['borderedge-new'] = function (block) {
     var type = block.getFieldValue('type');
     var color = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC).trim();
 
-    return `border-${edge}: ${width}px ${type} ${color};\n`;
+    return `border-${edge}: ${width} ${type} ${color};\n`;
 };
 
 htmlGen['border'] = function (block) {
@@ -399,6 +516,18 @@ htmlGen['bordercol'] = function (block) {
     return code;
 };
 
+htmlGen['width'] = function (block) {
+    var size = block.getFieldValue('size');
+
+    return 'width: ' + fullEscape(size) + ';\n';
+};
+
+htmlGen['height'] = function (block) {
+    var size = block.getFieldValue('size');
+
+    return 'height: ' + fullEscape(size) + ';\n';
+};
+
 htmlGen['widthheightnum'] = function (block) {
     var option = block.getFieldValue('option');
     var size = block.getFieldValue('size');
@@ -424,12 +553,16 @@ htmlGen['verticalalign'] = function (block) {
 };
 
 htmlGen['transition'] = function (block) {
-    var property = fullEscape(block.getFieldValue('transition-property'));
-    var duration = fullEscape(block.getFieldValue('duration'));
-    var delay = fullEscape(block.getFieldValue('delay'));
-    var timing = htmlGen.statementToCode(block, 'timing-function', htmlGen.ORDER_ATOMIC);
+    var property = fullEscape(block.getFieldValue('transition-property')).trim();
+    var duration = fullEscape(block.getFieldValue('duration')).trim();
+    var delay = fullEscape(block.getFieldValue('delay')).trim();
+    var timing = htmlGen.statementToCode(block, 'timing-function', htmlGen.ORDER_ATOMIC).trim();
 
-    return `transition-property: ${property};\ntransition-duration: ${duration}s;\ntransition-delay: ${delay}s;\ntransition-timing-function: ${timing};\n`;
+    if (!this.parentBlock_) {
+        return `transition-property: ${property};\ntransition-duration: ${duration};\ntransition-delay: ${delay};\ntransition-timing-function: ${timing.trim()};\n`;
+    } else {
+        return `${duration} ${property} ${delay} ${timing}`;
+    }
 };
 
 htmlGen['transitiontimingdropdown'] = function (block) {
@@ -630,7 +763,7 @@ htmlGen['hex_picker'] = function (block) {
 };
 
 htmlGen['color_picker'] = function (block) {
-    return looseEscape(block.getFieldValue('color'));
+    return looseEscape(Blockly.FieldColour.TITLES[Blockly.FieldColour.COLOURS.indexOf(block.getFieldValue('color'))]);
 };
 
 htmlGen['audio'] = function (block) {
@@ -711,7 +844,7 @@ htmlGen['script'] = function (block) {
 
 htmlGen['chart'] = function (block) {
     var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC).trim();
-    var attributes = (block_modifier ? " " + block_modifier.trim() : "")
+    var attributes = (block_modifier ? " " + block_modifier.trim() : "");
     var data = htmlGen.statementToCode(block, 'data', htmlGen.ORDER_ATOMIC);
     var title = looseEscape(block.getFieldValue('title'));
     var subtitle = looseEscape(block.getFieldValue('subtitle'));
@@ -752,7 +885,7 @@ htmlGen['chart'] = function (block) {
         subtitle: '${subtitle}'
       },
       orientation: '${chartOrientation}'
-    }
+    };
       
     var chart = new google.${chartLibrary}.${chartType}(document.getElementById('${divId}'));
     chart.draw(data, ${chartOptions});

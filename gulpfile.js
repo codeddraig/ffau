@@ -15,7 +15,7 @@ function compileStyles(cb) {
                 return flat.concat(
                     (Array.isArray(toFlatten) && (depth > 1)) ? // If the remaining depth is greater than one
                         toFlatten.flat(depth - 1) : // Recurse on, with the next depth level
-                        toFlatten  // Otherwise, return the array...
+                        toFlatten  // Otherwise, return the array
                 ); //                 flattened into just the pure items by .concat()
             }, []);
         }
