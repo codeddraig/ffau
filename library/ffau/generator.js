@@ -37,10 +37,10 @@ function parseTransitions(block) {
 
             var split = blockText.trim().split(" ");
             transitions.push({
-                duration: split[0],
-                property: split[1],
-                delay: split[2],
-                timingFunction: split[3]
+                duration: decodeURIComponent(split[0]),
+                property: decodeURIComponent(split[1]),
+                delay: decodeURIComponent(split[2]),
+                timingFunction: decodeURIComponent(split[3])
             });
         }
 
