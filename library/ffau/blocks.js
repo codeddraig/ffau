@@ -14,7 +14,7 @@
 
 				Copyright (c) 2017-19 The CodeDdraig Organisation
 
-				THIS IS VERSION 1.0.0
+				THIS IS VERSION 2.0.0
 */
 
 //Script tag
@@ -236,7 +236,6 @@ Blockly.Blocks['divider'] = {
             "args0": [
                 {
                     "type": "input_value",
-
                     "name": "modifier",
                     "check": "attributes"
                 },
@@ -965,6 +964,42 @@ Blockly.Blocks['boxshadow-new'] = {
                 {
                     "type": "field_input",
                     "name": "y-offset",
+                    "text": "y-offset"
+                },
+                {
+                    "type": "field_input",
+                    "name": "blur",
+                    "text": "blur"
+                },
+                {
+                    "type": "input_value",
+                    "name": "color",
+                    "check": "color"
+                }
+            ],
+            "previousStatement": "stylecontent",
+            "nextStatement": "stylecontent",
+            "colour": 290,
+            "tooltip": "CSS box shadow",
+            "helpUrl": "https://www.w3schools.com/cssref/css3_pr_box-shadow.asp"
+        })
+    }
+};
+
+// Box-shadow
+Blockly.Blocks['boxshadow-2'] = {
+    init: function () {
+        this.jsonInit({
+            "message0": "box-shadow: %1 %2 %3 %4 ;",
+            "args0": [
+                {
+                    "type": "field_input",
+                    "name": "xoffset",
+                    "text": "x-offset"
+                },
+                {
+                    "type": "field_input",
+                    "name": "yoffset",
                     "text": "y-offset"
                 },
                 {
@@ -1802,13 +1837,12 @@ Blockly.Blocks['borderedge'] = {
 Blockly.Blocks['border-new'] = {
     init: function () {
         this.jsonInit({
-            "message0": 'border: %1 px %2 %3 ;',
+            "message0": 'border: %1 %2 %3 ;',
             "args0": [
                 {
-                    "type": "field_number",
+                    "type": "field_input",
                     "name": "width",
-                    "value": 5,
-                    "min": 0
+                    "text": "10px",
                 },
                 {
                     "type": "field_dropdown",
@@ -1870,7 +1904,7 @@ Blockly.Blocks['border-new'] = {
 Blockly.Blocks['borderedge-new'] = {
     init: function () {
         this.jsonInit({
-            "message0": "border- %1 : %2 px %3 %4",
+            "message0": "border- %1 : %2 %3 %4 ;",
             "args0": [
                 {
                     "type": "field_dropdown",
@@ -1895,9 +1929,9 @@ Blockly.Blocks['borderedge-new'] = {
                     ]
                 },
                 {
-                    "type": "field_number",
+                    "type": "field_input",
                     "name": "width",
-                    "value": 0
+                    "text": "10px"
                 },
                 {
                     "type": "field_dropdown",
@@ -2296,6 +2330,48 @@ Blockly.Blocks['widthheight'] = {
     }
 };
 
+//Width number selector
+Blockly.Blocks['width'] = {
+    init: function () {
+        this.jsonInit({
+            "message0": 'width : %1;',
+            "args0": [
+                {
+                    "type": "field_input",
+                    "name": "size",
+                    "text": "100%"
+                }
+            ],
+            "previousStatement": "stylecontent",
+            "nextStatement": "stylecontent",
+            "colour": 290,
+            "tooltip": "CSS Width",
+            "helpUrl": "https://www.w3schools.com/css/css_dimension.asp"
+        });
+    }
+};
+
+//Height number selector
+Blockly.Blocks['height'] = {
+    init: function () {
+        this.jsonInit({
+            "message0": 'height : %1;',
+            "args0": [
+                {
+                    "type": "field_input",
+                    "name": "size",
+                    "text": "100%"
+                }
+            ],
+            "previousStatement": "stylecontent",
+            "nextStatement": "stylecontent",
+            "colour": 290,
+            "tooltip": "CSS Height",
+            "helpUrl": "https://www.w3schools.com/css/css_dimension.asp"
+        });
+    }
+};
+
 // Float (CSS-version of 'align')
 Blockly.Blocks['float'] = {
     init: function () {
@@ -2327,7 +2403,7 @@ Blockly.Blocks['float'] = {
 Blockly.Blocks['verticalalign'] = {
     init: function () {
         this.jsonInit({
-            "message0": "vertical-align: %1",
+            "message0": "vertical-align: %1;",
             "args0": [
                 {
                     "type": "field_dropdown",
@@ -3558,3 +3634,29 @@ Blockly.Blocks['scrollspy'] = {
         });
     }
 };
+
+Blockly.FieldColour.COLOURS = [
+    'FFFFFF', 'DCDCDC', 'C0C0C0', 'A9A9A9', '808080', '696969', '708090', '000000',
+    'FFA07A', 'FA8072', 'E9967A', 'F08080', 'CD5C5C', 'DC143C', 'FF0000', '8B0000',
+    'FFF8DC', 'FFE4C4', 'D2B48C', 'F4A460', 'DAA520', 'FF7F50', 'A0522D', '8B4513',
+    'FFDEAD', 'F5DEB3', 'DEB887', 'B8860B', 'CD853F', 'D2691E', 'A52A2A', '800000',
+    'FFFACD', 'FFDAB9', 'EEE8AA', 'F0E68C', 'FFFF00', 'FFD700', 'FFA500', 'FF4500',
+    '98FB98', '90EE90', '00FF7F', '00FF00', '9ACD32', '32CD32', '008000', '006400',
+    'AFEEEE', '7FFFD4', '40E0D0', '66CDAA', '20B2AA', '5F9EA0', '008B8B', '008080',
+    'ADD8E6', '87CEEB', '00BFFF', '4169E1', '0000FF', '0000FF', '00008B', '000080',
+    'E6E6FA', '9370DB', '8A2BE2', '9932CC', '663399', '4B0082', '8B008B', '800080',
+    'FFC0CB', 'FFB6C1', 'DB7093', 'FF69B4', 'FF00FF', 'FF1493', 'C71585', 'BC8F8F'
+].map(e => "#" + e.toLowerCase());
+Blockly.FieldColour.TITLES = [
+    'white', 'gainsboro', 'silver', 'darkgray', 'gray', 'dimgray', 'slategray', 'black',
+    'lightsalmon', 'salmon', 'darksalmon', 'lightcoral', 'indianred', 'crimson', 'red', 'darkred',
+    'cornsilk', 'bisque', 'tan', 'sandybrown', 'goldenrod', 'coral', 'sienna', 'saddlebrown',
+    'navajowhite', 'wheat', 'burlywood', 'darkgoldenrod', 'peru', 'chocolate', 'brown', 'maroon',
+    'lemonchiffon', 'peachpuff', 'palegoldenrod', 'khaki', 'yellow', 'gold', 'orange', 'orangered',
+    'palegreen', 'lightgreen', 'springgreen', 'yellowgreen', 'limegreen', 'green', 'darkgreen',
+    'paleturquoise', 'aquamarine', 'turquoise', 'mediumaquamarine', 'lightseagreen', 'cadetblue', 'darkcyan', 'teal',
+    'lightblue', 'skyblue', 'deepskyblue', 'royalblue', 'blue', 'mediumblue', 'darkblue', 'navy',
+    'lavender', 'mediumpurple', 'blueviolet', 'darkorchid', 'rebeccapurple', 'indigo', 'darkmagenta', 'purple',
+    'pink', 'lightpink', 'palevioletred', 'hotpink', 'fuchsia', 'deeppink', 'mediumvioletred', 'rosybrown'
+];
+Blockly.FieldColour.COLUMNS = 8;

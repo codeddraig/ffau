@@ -1,7 +1,7 @@
 <h1 align="center">FFAU</h1>
 <p align="center"><img src="https://img.shields.io/badge/version-0.3.1-brightgreen.svg"></p>
 <p align="center">Ffau - A blocky-based editor for teaching HTML, CSS and Javascript.</p>
-<p align="center">Developed by Pal Kerecsenyi, Geza Kerecsenyi and Oli Plant.</p>
+<p align="center">Developed by Pal Kerecsenyi and Geza Kerecsenyi.</p>
 
 ## Information
 General contact: **contact@codedragon.org**
@@ -23,34 +23,30 @@ Copyright (c) 2017-19 The CodeDdraig Organisation
 ## Setup
 The Ffau editor is made to be easily addable to any existing project. There are 4 main steps to setting the Ffau up for a simple project like the one linked above.
 
-1. Clone this repo into your project's equivalent of the `assets` directory - any nice, static place will do.
+1. Find the latest version on jsDelivr (this version: 2.0.0)
 
-```
-git clone https://github.com/codeddraig/ffau.git
-```
-
-2. Import our libraries in a specific order. Due to Blockly being our main dependency, you have to import our assets quite specifically. Here's a perfect example (we'll assume you've cloned Ffau into `./assets/ffau`):
+2. Import our libraries in a specific order, using the jsDelivr links:
 
 ```html
 <head>
     <!-- google's blockly stuff first -->
-    <script src="assets/ffau/library/blockly/google-blockly/blockly_compressed.js"></script>
-    <script src="assets/ffau/library/blockly/google-blockly/msg/js/en.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/blockly@0a497a1c54f9c84e5a7c0c1e6d2427eec15e4827/blockly_compressed.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/blockly@0a497a1c54f9c84e5a7c0c1e6d2427eec15e4827/msg/js/en.js"></script>
 
     <!-- jquery (you probably already have it imported, but make sure you've got at least v3.2.1) -->
-    <script src="assets/ffau/library/jquery/jquery-3.2.1.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
 
     <!-- our blockly blocks and generators -->
-    <script src="assets/ffau/library/blockly/html/blocks.js"></script>
-    <script src="assets/ffau/library/blockly/html/generator.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@codeddraig/ffau-editor@2.0.0/library/ffau/blocks.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@codeddraig/ffau-editor@2.0.0/library/ffau/generator.min.js"></script>
 
     <!-- ace editor (optional: if you want a syntax-highlighted code preview) -->
-    <script src="assets/ffau/library/ace/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.4.7/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
 
     <!-- ffau css -->
-    <link rel="stylesheet" href="assets/ffau/dist/ffau.css">
+    <script src="https://cdn.jsdelivr.net/npm/@codeddraig/ffau-editor@2.0.0/dist/ffau.css"></script>
     <!-- ffau js last -->
-    <script src="assets/ffau/dist/ffau.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@codeddraig/ffau-editor@2.0.0/dist/ffau.min.js"></script>
 </head>
 
 <body>
@@ -189,7 +185,7 @@ Once you are done with your editing, compile all of the styles by running the co
 
 #### (Current) limitations
     
-* The minification is less than ideal. This is not a priority, since the minification is not a crucial effect of the builder, but it is to be noted.
+* The minification is not perfect. This is not a priority, since the minification is not a crucial effect of the builder, but it is to be noted.
 
 * Global stylesheets have a lower precedence than style files, unless `!important` or other manual priorities are stated.
 
@@ -202,6 +198,47 @@ Once you are done with your editing, compile all of the styles by running the co
 ## Export
 Ffau can save your blocks to a text file in the browser (with the extension '.txt') and import them to re-assemble your blocks. Files exported from Ffau can be imported to CodeDragon (https://codedragon.org), and vice-versa.
 
+## Reverse-coding
+Our Blockly implementation has one added method `Ffau.codeToXml`, which takes a single argument of HTML/CSS source code, and returns the XML source which can be loaded into Blockly. Using `Ffau.addEvent()`, we can implement a 'reverse-coding' system which allows us to toggle between the editing modes (blocks or text):
+
+```javascript
+ffau.addEvent(() => {
+        if (ffau.editMode) { // Check if we are in typing mode
+            try {
+                ffau.setXML(
+                    ffau.codeToXML(
+                        ffau.editor.getValue() // Get the text in the Ace editor
+                    )                          // Call `Ffau.codeToXML` to get XML source
+                );                             // Pass source to Blockly
+
+                // Clean up blocks (omitting this will result in all of the blocks being overlayed)
+                ffau.ffauWorkspace.cleanUp();
+                ffau.ffauWorkspace.scrollCenter(); // The rearranged blocks may have a different center, so re-center the view
+            } catch (e) { // Ffau.codeToXML can throw errors with invalid or empty HTML
+                ffau.clearWorkspace(); // in this case, just revert to a blank workspace
+            }
+        }
+    }, 'ace'); // Add as an event to Ace editor as defined in latest `Ffau.renderCode` call or manually (`ffau.editor = ace`)
+```
+
+Note the use of `ffau.editMode` - this is a simple boolean property which is either true or false to represent typing and block mode respectively. This can be toggled using `Ffau.toggleEditMode()`
+
+#### Features
+
+The reverse-coding implementation supports:
+
+- Basic HTML, including tags, nesting, and attributes.
+- Non-standard HTML expansion, e.g allowing for self-closing tags and implicit tags (e.g <img>, which doesn't have a closing tag or a self-closing slash)
+- HTML & CSS comments
+- CSS, including selectors (with fancy pseudoselectors being rendered as their separate blocks), properties and values, as well as the HTML `style` attribute
+- CSS colours, chosen to best fit entered text (e.g if `red` is entered, which is in the color picker, the color picker is used; if `mintgreen` is entered, the HEX picker will be used instead)
+- Coding mode can be toggled, to trigger natively-supported reverse-coding events.
+- Proper, rigorous string interpolation in HTML and CSS
+
+### Limitations
+
+The only feature *not supported by reverse coding* is *snippets* - take care that toggling the edit mode twice in a row will remove all snippets from the workspace.
+
 ## Bugs
 To report problems or potential additions, please feel free to visit the 'issues' section of this repo. For security issues, please email us at: **contact@codedragon.org**.
 
@@ -212,7 +249,7 @@ This project would not be possible without the following amazing libraries. We a
 The JavaScript library which handles DOM transversals and event handling with far more grace and ease than pure JavaScript. It is also a requirement for other libraries used in this project.
 
 ### Blockly by Google (https://github.com/google/blockly)
-A magic library which you should have heard of by now. It creates the whole drag-and-drop block system, which is the basis for this entire system!
+A magic library which you may have heard of by now. It creates the whole drag-and-drop block system (excluding the reverse-coding system), which is the basis for this entire system!
 
 ### Magic.css by Pal Kerecsenyi (https://github.com/palkerecsenyi/magic)
 CSS library for everything but the editor itself. Developed by one of our own team!
@@ -227,11 +264,9 @@ Handles syntax highlighting in the "Real Code" tab.
 **Trailer for "Big Buck Bunny"** and **"Llama Drama, Episode 1"**.
 
 ## Inspiration
-Our project is inspired by, but not a direct clone of, the blockly-html project (https://github.com/bwinf/blockly-html) by the BWNIF (Bundesweit Informatik Nachwuchs Fördern), a German organisation which seeks to further development in Computer Science among children. Also, we owe some of our inspiration to the EduBlocks project (https://github.com/AllAboutCode/EduBlocks) by Joshua Lowe, which performs a similar function to our work, but for Python, rather than the web.
+Our project is inspired by, but not a direct clone of, the blockly-html project (https://github.com/bwinf/blockly-html) by the BWNIF (Bundesweit Informatik Nachwuchs Fördern), a German organisation which seeks to further development in Computer Science among children. Also, we note some similarities to the amazing EduBlocks project (https://github.com/AllAboutCode/EduBlocks) by Joshua Lowe, which performs a similar function to that of this library, but for Python, rather than the web.
 
 ## Developers
-
-### Oli Plant // https://github.com/ddevlop
 
 ### Pal Kerecsenyi // https://github.com/palkerecsenyi
 
