@@ -25,18 +25,7 @@ The Ffau editor is made to be easily addable to any existing project. There are 
 
 1. Find the latest version on jsDelivr (this version: 2.0.0)
 
-2. _(optional):_
-```
-npm install
-```
-
-3. Build the styles (see below for details):
-
-```
-gulp
-```
-
-4. Import our libraries in a specific order, using the jsDelivr links:
+2. Import our libraries in a specific order, using the jsDelivr links:
 
 ```html
 <head>
@@ -48,8 +37,8 @@ gulp
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
 
     <!-- our blockly blocks and generators -->
-    <script src="https://cdn.jsdelivr.net/npm/@codeddraig/ffau-editor@2.0.0/library/ffau/blocks.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@codeddraig/ffau-editor@2.0.0/library/ffau/generator.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@codeddraig/ffau-editor@2.0.0/library/ffau/blocks.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@codeddraig/ffau-editor@2.0.0/library/ffau/generator.min.js"></script>
 
     <!-- ace editor (optional: if you want a syntax-highlighted code preview) -->
     <script src="https://cdn.jsdelivr.net/npm/ace-builds@1.4.7/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
@@ -71,7 +60,7 @@ gulp
 </body>
 ```
 
-5. Add the toolbox and pick which Ffau components you want to use. We won't explain how the toolbox works in too much detail, but it's simply a bit of XML that defines which blocks should go in your toolbox, and how to arrange them.
+3. Add the toolbox and pick which Ffau components you want to use. We won't explain how the toolbox works in too much detail, but it's simply a bit of XML that defines which blocks should go in your toolbox, and how to arrange them.
 
 **See BLOCKS.md for a full list of XML blocks**
 
