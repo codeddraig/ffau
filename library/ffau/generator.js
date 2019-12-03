@@ -24,16 +24,18 @@ function parseTransitions(block) {
     var thisBlock = block.childBlocks_[0];
     while (thisBlock) {
         var blockText = htmlGen.blockToCode(thisBlock);
-        if (thisBlock.getNextBlock())
+        if (thisBlock.getNextBlock()) {
             blockText = blockText.slice(0,
                 -htmlGen.blockToCode(thisBlock.getNextBlock()).length
             );
+        }
 
-        if (thisBlock.type !== "transition")
+        if (thisBlock.type !== "transition") {
             stmt += "\t" + blockText;
-        else {
-            if (transitions.length === 0)
+        } else {
+            if (transitions.length === 0) {
                 index = stmt.length;
+            }
 
             var split = blockText.trim().split(" ");
             transitions.push({
@@ -140,11 +142,11 @@ htmlGen.getAncestors = function (block, ancestors) {
 
 // Called with each block/statement to pass onwards custom mapping
 htmlGen.scrub_ = function (block, code) {
-    function appendCommentCode(comment, prefix, suffix) {
+    const appendCommentCode = (comment, prefix, suffix) => {
         commentCode += `${prefix}${comment.includes("\n") ?
             "\n\t" + comment.trim().split("\n").map(z => "\t" + z).join('\n').trim() + "\n"
             : comment}${suffix}\n`
-    }
+    };
 
     var commentCode = '';
 
@@ -176,8 +178,9 @@ htmlGen.scrub_ = function (block, code) {
                         if (childBlock && childBlock.type !== "style" && childBlock.type !== "stylearg") {
                             var thisComment = htmlGen.allNestedComments(childBlock)
                                 .replace(/\n*$|^\n*/g, "");
-                            if (thisComment)
+                            if (thisComment) {
                                 appendCommentCode(thisComment, "<!--", "-->")
+                            }
                         }
                     }
                 }
@@ -555,10 +558,11 @@ htmlGen['transition'] = function (block) {
     var delay = fullEscape(block.getFieldValue('delay')).trim();
     var timing = htmlGen.statementToCode(block, 'timing-function', htmlGen.ORDER_ATOMIC).trim();
 
-    if (!this.parentBlock_)
+    if (!this.parentBlock_) {
         return `transition-property: ${property};\ntransition-duration: ${duration};\ntransition-delay: ${delay};\ntransition-timing-function: ${timing.trim()};\n`;
-    else
+    } else {
         return `${duration} ${property} ${delay} ${timing}`;
+    }
 };
 
 htmlGen['transitiontimingdropdown'] = function (block) {

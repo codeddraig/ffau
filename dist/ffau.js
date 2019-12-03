@@ -129,8 +129,9 @@ class Ffau {
             return false;
         }
 
-        if (!force && this.settingsOpen)
+        if (!force && this.settingsOpen) {
             return true;
+        }
 
         let popout = this.workspaceDiv.getElementsByClassName("settings-button")[0];
         let settingsWindow = this.workspaceDiv.getElementsByClassName("settings-window")[0];
@@ -171,8 +172,9 @@ class Ffau {
             return false;
         }
 
-        if (!force && !this.settingsOpen)
+        if (!force && !this.settingsOpen) {
             return true;
+        }
 
         let popout = this.workspaceDiv.getElementsByClassName("settings-button")[0];
         let settingsWindow = this.workspaceDiv.getElementsByClassName("settings-window")[0];
@@ -227,8 +229,9 @@ class Ffau {
      * @param {number} [autoClose] - 0 means no auto-close, 1 means auto-close if focus shifts to elsewhere in editor, 2 means auto-close if focus shifts outside of editor, and 2 means to auto-close if focus leaves settings menu.
      **/
     addSettings(settings, autoClose) {
-        if (this.hasSettings)
+        if (this.hasSettings) {
             this.removeSettings();
+        }
 
         this.settings = [];
         this.hasSettings = true;
@@ -253,10 +256,11 @@ class Ffau {
         settingsWindowFiller.appendChild(settingsHeader);
 
         popout.addEventListener('click', () => {
-            if (popout.classList.contains('closed'))
+            if (popout.classList.contains('closed')) {
                 this.openSettingsMenu();
-            else
+            } else {
                 this.closeSettingsMenu();
+            }
         });
 
         settingsWindow.appendChild(settingsWindowFiller);
@@ -284,13 +288,15 @@ class Ffau {
                         elem.appendChild(optionElem);
                     });
 
-                    if (setting.default)
+                    if (setting.default) {
                         elem.value = setting.default;
+                    }
 
                     elem.onchange = () => {
                         this.settings.forEach((e, i) => {
-                            if (e.name === setting.label)
+                            if (e.name === setting.label) {
                                 this.settings[i].value = elem.value;
+                            }
                         });
                         setting.callback(elem.value);
                     };
@@ -322,8 +328,9 @@ class Ffau {
 
                     checkboxInput.onclick = () => {
                         this.settings.forEach((e, i) => {
-                            if (e.name === setting.label)
+                            if (e.name === setting.label) {
                                 this.settings[i].value = checkboxInput.checked;
+                            }
                         });
                         setting.callback(checkboxInput.checked);
                     };
@@ -346,8 +353,9 @@ class Ffau {
 
                     elem.onchange = () => {
                         this.settings.forEach((e, i) => {
-                            if (e.name === setting.label)
+                            if (e.name === setting.label) {
                                 this.settings[i].value = parseInt(elem.value);
+                            }
                         });
                         setting.callback(parseInt(elem.value));
                     };
@@ -383,20 +391,23 @@ class Ffau {
         switch (autoClose) {
             case 1:
                 window.addEventListener('click', (event) => {
-                    if (!event.path.includes(settingsWindow) && event.path.includes(this.workspaceDiv))
+                    if (!event.path.includes(settingsWindow) && event.path.includes(this.workspaceDiv)) {
                         this.closeSettingsMenu();
+                    }
                 });
                 break;
             case 2:
                 window.addEventListener('click', (event) => {
-                    if (!event.path.includes(this.workspaceDiv))
+                    if (!event.path.includes(this.workspaceDiv)) {
                         this.closeSettingsMenu();
+                    }
                 });
                 break;
             case 3:
                 window.addEventListener('click', (event) => {
-                    if (!event.path.includes(settingsWindow))
+                    if (!event.path.includes(settingsWindow)) {
                         this.closeSettingsMenu();
+                    }
                 });
                 break;
         }
@@ -445,8 +456,9 @@ class Ffau {
         this.toolboxDiv = this.workspaceDiv.getElementsByClassName("blocklyToolboxDiv")[0];
 
         // add settings popout
-        if (settings)
+        if (settings) {
             this.addSettings(settings);
+        }
 
         this.setTheme(theme || "panda");
 
@@ -574,10 +586,11 @@ class Ffau {
          */
         this.editMode = this.editMode ? 0 : 1;
 
-        if (this.editMode)
+        if (this.editMode) {
             this.aceCallbackFunction();
-        else
+        } else {
             this.editorCallbackFunction();
+        }
     }
 
     /**
@@ -596,16 +609,18 @@ class Ffau {
                     let code = htmlGen.workspaceToCode(this.ffauWorkspace);
 
                     // if ace has been initialised (doesn't have to be)
-                    if (this.editor)
-                    // set the ace editor value
+                    if (this.editor) { // set the ace editor value
                         this.editor.setValue(code, -1 /* set the cursor to -1 to stop highlighting everything */);
+                    }
 
                     // if iframe has been initialised
-                    if (this.iframe)
+                    if (this.iframe) {
                         this.iframe.src = "data:text/html;charset=utf-8," + encodeURIComponent(code);
+                    }
 
-                    if (typeof customFunction === "function")
+                    if (typeof customFunction === "function") {
                         customFunction(this);
+                    }
                 }
             };
 
@@ -613,12 +628,14 @@ class Ffau {
         } else if (scope === "ace") {
             this.aceCallbackFunction = () => customFunction();
 
-            if (event)
+            if (event) {
                 this.editor.container.addEventListener(event, customFunction);
-            else
+            } else {
                 this.editor.getSession().on('change', customFunction);
-        } else
+            }
+        } else {
             console.warn("Scope `" + scope + "` is not one of ['blockly', 'ace']")
+        }
     }
 
     /**
@@ -708,10 +725,10 @@ class Ffau {
                 return stylePairs.filter(e => e.length - 1);
             };
 
-            if (!hasSelectors)
             // If there are no selectors to be handled, we just use the helper function to split it up into property-value pairs
+            if (!hasSelectors) {
                 return extractStyles(styleSheetString);
-            else { // If there are selectors:
+            } else { // If there are selectors:
                 let uniqueId = getReplacerId(); // Get ID to mark string points
 
                 // Get string points
@@ -819,8 +836,9 @@ class Ffau {
                             colorValue.appendChild(colorBlock);
                         }
                         // Otherwise, just map it to the corresponding HEX code of the colour name
-                        else if (colorNames.indexOf(colorStr.toLowerCase()) > -1)
+                        else if (colorNames.indexOf(colorStr.toLowerCase()) > -1) {
                             mapColorLikeBlock("#" + colorValues[colorNames.indexOf(colorStr.toLowerCase())]);
+                        }
                     }
 
                     styleBlock.appendChild(colorValue);
@@ -968,10 +986,11 @@ class Ffau {
                             splitStr.push("0px");
                             splitStr.push("white");
                         } else {
-                            if (splitStr[2] === "0" || cssUnits.some(e => splitStr[2].endsWith(e)))
+                            if (splitStr[2] === "0" || cssUnits.some(e => splitStr[2].endsWith(e))) {
                                 splitStr.push("white");
-                            else
+                            } else {
                                 splitStr.splice(2, 0, "0");
+                            }
                         }
 
                         let xOffsetField = document.createElement("field");
@@ -1139,10 +1158,11 @@ class Ffau {
                         valueField.setAttribute("name", "value");
                         styleBlock.setAttribute("type", "bordercol");
 
-                        if (propPair[1] === "collapse")
+                        if (propPair[1] === "collapse") {
                             valueField.innerText = "TRUE";
-                        else if (propPair[1] === "separate")
+                        } else if (propPair[1] === "separate") {
                             valueField.innerText = "FALSE";
+                        }
                         break;
                     case "border-radius":
                         valueField.setAttribute("name", "content");
@@ -1665,10 +1685,10 @@ class Ffau {
                         let audioSrcField = document.createElement("field");
                         audioSrcField.setAttribute("name", "source");
 
-                        if (child.nodeName === "AUDIO")
+                        if (child.nodeName === "AUDIO") {
                             audioSrcField.innerText = ["8bit.ogg", "classical.mp3", "happy.wav"]
                                 .includes(child.getAttribute("src")) ? child.getAttribute("src") : "8bit.ogg";
-                        else {
+                        } else {
                             let index = ["bigbuckbunny.mp4", "llamadrama.mp4"].indexOf(child.getAttribute("src"));
 
                             audioSrcField.innerText = index > -1 ?
@@ -1701,8 +1721,9 @@ class Ffau {
                     case "#text":
                         // If it's a normal text node
                         if (child.parentNode.nodeName !== `STYLE` && child.textContent.trim()) {
-                            if (child.textContent.includes("\n"))
+                            if (child.textContent.includes("\n")) {
                                 child.splitText(child.textContent.indexOf("\n") + 1);
+                            }
 
                             // Just insert the text block for each line in there
                             newNode = document.createElement("block");
@@ -1849,9 +1870,11 @@ class Ffau {
                     comment = false;
                 }
 
-                if (childrenPreHandled)
-                    while (child.firstChild)
+                if (childrenPreHandled) {
+                    while (child.firstChild) {
                         child.removeChild(child.firstChild);
+                    }
+                }
 
                 // Extract the attributes
                 let attributes = Array.from(child.attributes || [])
@@ -1931,20 +1954,23 @@ class Ffau {
 
                 // Continue mapping with the child nodes of this node, until no remaining nodes are left, and pass on
                 // that this child is the parent
-                if (child.childNodes.length && childrenContainer)
+                if (child.childNodes.length && childrenContainer) {
                     reconstruct(child, childrenContainer);
+                }
 
-                if (newNode)
-                    parallelChildren.push(newNode); // Save this node to be appended to the parent
+                if (newNode) {
+                    parallelChildren.push(newNode);
+                } // Save this node to be appended to the parent
             }
 
             // Append everything we've mapped from the DOM parent to the XML parent, using the proper `<next>` tags
             let newParent = parallelParent;
             parallelChildren.forEach((child, i) => {
-                if (child)
+                if (child) {
                     newParent.appendChild(child);
-                else
+                } else {
                     return false;
+                }
 
                 // Nest the <next> tag in the previous child
                 if (i < parallelChildren.length - 1 && !isTopLevel) {
