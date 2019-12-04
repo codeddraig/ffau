@@ -235,3 +235,12 @@ input[type="checkbox"] {
     display: block;
     margin-top: 7px;
 }
+
+.blocklyScrollbarVertical.blocklyFlyoutScrollbar {
+    transform: translate(359.196px, 2.5px) !important;
+}
+
+.blocklyFlyout {
+    transform: translate(170px, 0px) !important;
+}
+
