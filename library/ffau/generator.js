@@ -22,31 +22,37 @@ function parseTransitions(block) {
     var transitions = [];
     var index = -1;
     var thisBlock = block.childBlocks_[0];
+    var i = 0;
     while (thisBlock) {
-        var blockText = htmlGen.blockToCode(thisBlock);
-        if (thisBlock.getNextBlock()) {
-            blockText = blockText.slice(0,
-                -htmlGen.blockToCode(thisBlock.getNextBlock()).length
-            );
-        }
-
-        if (thisBlock.type !== "transition") {
-            stmt += "\t" + blockText;
-        } else {
-            if (transitions.length === 0) {
-                index = stmt.length;
+        if (thisBlock.type !== "cssevents"){
+            var blockText = htmlGen.blockToCode(thisBlock);
+            if (thisBlock.getNextBlock()) {
+                blockText = blockText.slice(0,
+                    -htmlGen.blockToCode(thisBlock.getNextBlock()).length
+                );
             }
 
-            var split = blockText.trim().split(" ");
-            transitions.push({
-                duration: decodeURIComponent(split[0]),
-                property: decodeURIComponent(split[1]),
-                delay: decodeURIComponent(split[2]),
-                timingFunction: decodeURIComponent(split[3])
-            });
-        }
+            if (thisBlock.type !== "transition") {
+                stmt += "\t" + blockText;
+            } else {
+                if (transitions.length === 0) {
+                    index = stmt.length;
+                }
 
-        thisBlock = thisBlock.getNextBlock();
+                var split = blockText.trim().split(" ");
+                transitions.push({
+                    duration: decodeURIComponent(split[0]),
+                    property: decodeURIComponent(split[1]),
+                    delay: decodeURIComponent(split[2]),
+                    timingFunction: decodeURIComponent(split[3])
+                });
+            }
+
+            thisBlock = thisBlock.getNextBlock();
+        } else {
+            i++;
+            thisBlock = block.childBlocks_[i];
+        }
     }
 
     if (transitions.length) {
@@ -80,7 +86,7 @@ function looseEscape(input) {
         .replace(/'/g, "&#039;");
 }
 
-function CSSEscape(input) {
+function cssEscape(input) {
     return input
         .replace(/;/g, "")
         .replace(/{/g, "")
@@ -273,10 +279,12 @@ htmlGen['stylearg'] = function (block) {
 htmlGen['cssitem'] = function (block) {
     var stmt = parseTransitions(block);
 
+    console.log(block);
+
     var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
     mod = mod.split(' ').join(''); // remove spaces
 
-    var selector = CSSEscape(block.getFieldValue('selector'));
+    var selector = cssEscape(block.getFieldValue('selector'));
 
     return selector + mod + '{\n' + stmt + '}\n';
 };
@@ -291,7 +299,7 @@ htmlGen['cssevents'] = function (block) {
 htmlGen['cssnot'] = function (block) {
     var value = block.getFieldValue('content');
     var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    var code = ':not(' + CSSEscape(value) + ')' + mod;
+    var code = ':not(' + cssEscape(value) + ')' + mod;
     return code;
 };
 

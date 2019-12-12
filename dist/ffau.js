@@ -1363,7 +1363,7 @@ class Ffau {
             .closeTag(`hr${tempId}`, closeId)
             .closeTag(`br${tempId}`, closeId)
             // Extract all of the tags...
-            .split(/(?<=<\/?[a-zA-Z0-9]+(?: *[a-zA-Z]+(?:=(?:(?:"(?:\\.|[^"])*")|(?:'(?:\\.|[^'])*')|(?:[0-9]|(?:true|false))))?)* *\/?>(?:\\.|[^<])*)/g)
+            .split(/(?<=<\/?[!\-a-zA-Z0-9]+(?: *[a-zA-Z]+(?:=(?:(?:"(?:\\.|[^"])*")|(?:'(?:\\.|[^'])*')|(?:[0-9]|(?:true|false))))?)* *\/?>(?:\\.|[^<])*)/g)
             .reduce((v, e) =>
                 ((e.length - 1) ?
                     v.push(e) : (typeof v[v.length - 1] === "string" ? v.push([e]) : v[v.length - 1][0] += e))
@@ -1371,7 +1371,7 @@ class Ffau {
                 , [])
             .flat()
             .reduce((v, e) =>
-                (e[0] === "<" ? v.push(e) : v[v.length - 1] += e)
+                (e[0] === "<" && e[1] !== "!" ? v.push(e) : v[v.length - 1] += e)
                 && v
                 , [""])
             // And for each of them...
