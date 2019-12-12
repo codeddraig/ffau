@@ -227,6 +227,56 @@ class Ffau {
      *
      * @param {settingsDialogueType} settings
      * @param {number} [autoClose] - 0 means no auto-close, 1 means auto-close if focus shifts to elsewhere in editor, 2 means auto-close if focus shifts outside of editor, and 2 means to auto-close if focus leaves settings menu.
+     * @example
+
+     ffau.addSettings([
+        {
+            name: "theme",
+            label: "Theme",
+            type: "dropdown",
+            options: [
+                ["Panda", "panda"],
+                ["Dark", "dark"],
+                ["Light", "light"]
+            ],
+            callback: (value) => {
+                ffau.setTheme(value); // Set the theme for the Ffau editor
+            }
+        },
+        {
+            name: "ace_theme",
+            label: "Editor theme",
+            type: "dropdown",
+            default: "1",
+            options: [
+                ["Light", "0"],
+                ["Dark", "1"]
+            ],
+            callback: (value) => {         // Set the theme for the Ace editor
+                if (value === "0") {
+                    ffau.editor.setOptions({
+                        theme: "ace/theme/dawn"
+                    });
+                } else {
+                    ffau.editor.setOptions({
+                        theme: "ace/theme/tomorrow_night"
+                    });
+                }
+            }
+        },
+        {
+            name: "font_size",
+            label: "Ace font size",
+            type: "numeric",
+            default: "16",
+            callback: (value) => {         // Set Ace editor font size/demonstrate numeric input
+                ffau.editor.setOptions({
+                    fontSize: value
+                });
+            }
+        }],
+        1 // Set loose auto-closing (auto-close settings menu if focus is shifted to elsewhere in editor)
+     );
      **/
     addSettings(settings, autoClose) {
         if (this.hasSettings) {
@@ -1104,7 +1154,7 @@ class Ffau {
                             (   // Remove the initial `url(`
                                 (propPair[1].split(/(url\(['"])/g)[2]
                                     || "")
-                                // Remove the end bracket
+                                    // Remove the end bracket
                                     .split(/(['"]\))/g).reverse()[2]
                                 // Fall back to `url` if no URL is present
                                 || "url"
@@ -1344,7 +1394,7 @@ class Ffau {
         let overrideExp = "(" + overrideTags.join(")|(") + ")";
 
         let bodifiedCode = (" " + code)
-        // Find all of the strings
+            // Find all of the strings
             .split(/((?<=[^\\]|^)(("((\\")|[^"])*[^\\]")|('((\\')|[^'])*[^\\]')))|((?<=([^\\]>)|^)((\\<)|([^<]))*[^\\](?=<))/g)
             .filter((_, z) => z % 14 === 0 || (_ && (z % 14 === 1 || z % 14 === 9)))
             .map((v, i) =>
@@ -1391,8 +1441,8 @@ class Ffau {
                                         + (u.split(" ").length - 1 ? " " : "")
                                         + u.split(" ").slice(1).join(" ")
                                     )
-                                    // If something was both changed to be self-closing, then expanded, we only need to
-                                    // mark that is was changed to be self-closing: the fact it was then expanded is obvious
+                                        // If something was both changed to be self-closing, then expanded, we only need to
+                                        // mark that is was changed to be self-closing: the fact it was then expanded is obvious
                                         .replace(new RegExp(closeId + slashedId, "g"), closeId)
                                 }></${
                                     (u.split(" ")[0] + slashedId)
