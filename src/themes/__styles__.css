@@ -1,8 +1,8 @@
 /*
-        Ffau - A blocky-based editor for teaching HTML, CSS and Javascript.
+        Ffau - A Blockly-based editor for teaching HTML, CSS and Javascript.
 
-				Developed by Pal Kerecsenyi, Geza Kerecsenyi and Oli Plant.
-				Full details are avaliable at the Github repo: https://github.com/codeddraig/ffau
+				Developed by Pal Kerecsenyi and Geza Kerecsenyi.
+				Full details are available at the Github repo: https://github.com/codeddraig/ffau
 				Ffau editor will not work without its libraries. The best way to get all
 					off this data at once is to grab the latest release version from the
 					Github repo.
@@ -16,6 +16,51 @@
 
 				THIS IS VERSION 2.0.0
 */
+
+.blocklyTreeRow {
+    height: 40px;
+    transition: background-color 0.1s linear;
+}
+
+.blocklyTreeRow:not(.blocklyTreeSelected):hover {
+    background-color: unset !important;
+}
+
+.blocklyTreeLabel {
+    display: inline-block !important;
+    margin-left: 10px;
+    font-family: "Noto", "Roboto", sans-serif;
+    color: white;
+    vertical-align: middle;
+
+    height: 20px;
+    padding: 10px 0;
+}
+
+.blocklyTreeIcon {
+    display: none !important;
+}
+
+.blocklyTreeSeparator {
+    margin: 15px auto;
+    width: 60%;
+    border-color: black !important;
+}
+
+.blocklyToolboxDiv {
+    min-width: 170px;
+    overflow-x: visible;
+
+    background-color: #242424 !important;
+
+    box-shadow: 2px 0 30px -2px #000;
+
+    padding-bottom: 8px !important;
+}
+
+.blocklyText {
+    font-family: "Noto", "Roboto", sans-serif;
+}
 
 .cog-icon {
     color: rgba(0, 0, 0, 0.3);

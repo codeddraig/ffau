@@ -1,6 +1,6 @@
 <h1 align="center">FFAU</h1>
 <p align="center"><img src="https://img.shields.io/badge/version-0.3.1-brightgreen.svg"></p>
-<p align="center">Ffau - A blocky-based editor for teaching HTML, CSS and Javascript.</p>
+<p align="center">Ffau - A Blockly-based editor for teaching HTML and CSS.</p>
 <p align="center">Developed by Pal Kerecsenyi and Geza Kerecsenyi.</p>
 
 ## Information

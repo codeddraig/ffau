@@ -1,5 +1,5 @@
 /*
-        Ffau - A blockly-based editor for teaching HTML, CSS and Javascript.
+        Ffau - A Blockly-based editor for teaching HTML, CSS and Javascript.
 
 				Developed by Pal Kerecsenyi and Geza Kerecsenyi.
 				Full details are available at the Github repo: https://github.com/codeddraig/ffau
@@ -18,11 +18,23 @@
 */
 
 .blocklySvg {
-    background-color: #fff !important;
+    background-color: #040619 !important;
 }
 
 .blocklyFlyoutBackground {
-    fill: #242424 !important;
+    fill: #323232 !important;
+}
+
+.blocklyScrollbarHandle {
+    fill: #4f4f4f;
+}
+
+.blocklyToolboxDiv::-webkit-scrollbar-thumb {
+    background-color: #4f4f4f;
+}
+
+.blocklyToolboxDiv::-webkit-scrollbar-thumb:hover {
+    background-color: #606060;
 }
 
 .blocklyFlyoutLabelText {
