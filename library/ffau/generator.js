@@ -160,7 +160,7 @@ htmlGen.scrub_ = function (block, code) {
         var comment = block.getCommentText();
         if (htmlGen.getAncestors(block, []).map(e => e.type).includes("style")) {
             if (comment) {
-                comment = Blockly.utils.wrap(comment,
+                comment = Blockly.utils.string.wrap(comment,
                     htmlGen.COMMENT_WRAP - 3).replace(/\n*$|^\n*/g, "");
                 appendCommentCode(comment, "/*", "*/");
             }
@@ -172,7 +172,7 @@ htmlGen.scrub_ = function (block, code) {
             ) {
                 // Collect comment for this block.
                 if (comment) {
-                    comment = Blockly.utils.wrap(comment,
+                    comment = Blockly.utils.string.wrap(comment,
                         htmlGen.COMMENT_WRAP - 3).replace(/\n*$|^\n*/g, "");
                     appendCommentCode(comment, "<!--", "-->");
                 }
