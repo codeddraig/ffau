@@ -14,7 +14,7 @@
 
 				Copyright (c) 2017-19 The CodeDdraig Organisation
 
-				THIS IS VERSION 2.0.1
+				THIS IS VERSION 2.0.2
 */
 
 function parseTransitions(block) {
@@ -682,7 +682,7 @@ htmlGen['tablerow'] = function (block) {
 htmlGen['tableheading'] = function (block) {
     var content = htmlGen.statementToCode(block, 'content');
     var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    return '<th' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n' + content + '</th>\n';
+    return '<th' + (block_modifier ? " " + block_modifier.trim() : "") + '>' + content + '</th>\n';
 };
 
 htmlGen['tabledata'] = function (block) {

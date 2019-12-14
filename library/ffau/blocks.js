@@ -14,7 +14,7 @@
 
 				Copyright (c) 2017-19 The CodeDdraig Organisation
 
-				THIS IS VERSION 2.0.1
+				THIS IS VERSION 2.0.2
 */
 
 //Script tag
@@ -244,7 +244,6 @@ Blockly.Blocks['divider'] = {
                     "name": "content",
                     "check": [
                         "html",
-                        "textcontainer",
                         "form"
                     ]
                 }
