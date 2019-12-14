@@ -14,7 +14,7 @@
 
 				Copyright (c) 2017-19 The CodeDdraig Organisation
 
-				THIS IS VERSION 2.0.1
+				THIS IS VERSION 2.0.2
 */
 
 /* jshint esversion:6 */
@@ -2089,7 +2089,7 @@ class Ffau {
         // change the text to dom
         const dom = Blockly.Xml.textToDom(xmlString);
         // clear the workspace to avoid adding code on top
-        this.clearWorkspace();
+        this.clearWorkspace(false);
 
         // set the dom into the workspace
         Blockly.Xml.domToWorkspace(dom, this.ffauWorkspace);
@@ -2097,8 +2097,18 @@ class Ffau {
 
     /**
      * Clears all blocks from the workspace without further confirmation
+     *
+     * @param {boolean} [trashItems=true] - Whether to move deleted items to the trashcan storage. Default
      */
-    clearWorkspace() {
+    clearWorkspace(trashItems) {
+        if (trashItems === false) {
+            Blockly.Events.disable();
+        }
+
         this.ffauWorkspace.clear();
+
+        if (trashItems === false) {
+            Blockly.Events.enable();
+        }
     }
 }

@@ -15,7 +15,7 @@
 
 				Copyright (c) 2017-19 The CodeDdraig Organisation
 
-				THIS IS VERSION 2.0.1
+				THIS IS VERSION 2.0.2
  -->
 
 <html lang="en">
@@ -566,15 +566,11 @@
             try {
                 ffau.setXML(ffau.codeToXML(ffau.editor.getValue()));
                 ffau.ffauWorkspace.cleanUp();
-                ffau.ffauWorkspace.scrollCenter();
             } catch (e) {
-                ffau.clearWorkspace();
+                ffau.clearWorkspace(false);
             }
         }
     }, 'ace');
-
-    ffau.workspaceDiv.onfocus = () => ffau.editMode = 0;
-    ffau.editor.container.onfocus = () => ffau.editMode = 1;
 
     function toggleEditMode() {
         ffau.toggleEditMode();
