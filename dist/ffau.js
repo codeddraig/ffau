@@ -14,7 +14,7 @@
 
 				Copyright (c) 2017-19 The CodeDdraig Organisation
 
-				THIS IS VERSION 2.0.2
+				THIS IS VERSION 2.0.3
 */
 
 /* jshint esversion:6 */
@@ -81,7 +81,7 @@ class Ffau {
     }
 
     /**
-     * Generate an ID for a ffau component
+     * Generate an ID for a Ffau component
      *
      * @param {HTMLElement} object - The element to generate an ID for
      * @param {string} objectType - The name of the component
