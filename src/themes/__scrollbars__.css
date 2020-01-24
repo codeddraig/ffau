@@ -1,22 +1,22 @@
-.blocklyToolboxDiv {
+.blocklyToolboxDiv, .blocklyScrollbar {
     overflow-y: scroll;
     scrollbar-color: #555555 transparent;
     scrollbar-width: 7px;
 }
 
-.blocklyToolboxDiv::-webkit-scrollbar {
+.blocklyToolboxDiv::-webkit-scrollbar, .blocklyScrollbar::-webkit-scrollbar {
     width: 18px;
     background-color: transparent;
 }
 
-.blocklyToolboxDiv::-webkit-scrollbar-track {
+.blocklyToolboxDiv::-webkit-scrollbar-track, .blocklyScrollbar::-webkit-scrollbar-track {
     background-clip: padding-box;
     border: 4px solid rgba(0, 0, 0, 0);
     background-color: transparent;
     width: 10px !important;
 }
 
-.blocklyToolboxDiv::-webkit-scrollbar-thumb {
+.blocklyToolboxDiv::-webkit-scrollbar-thumb, .blocklyScrollbar::-webkit-scrollbar-thumb {
     background-clip: padding-box;
     border: 4px solid rgba(0, 0, 0, 0);
     width: 10px !important;
@@ -25,17 +25,17 @@
     background-color: #7d7d7d;
 }
 
-.blocklyToolboxDiv::-webkit-scrollbar-button {
+.blocklyToolboxDiv::-webkit-scrollbar-button, .blocklyScrollbar::-webkit-scrollbar-button {
     width: 0;
     height: 0;
     display: none;
 }
 
-.blocklyToolboxDiv::-webkit-scrollbar-corner {
+.blocklyToolboxDiv::-webkit-scrollbar-corner, .blocklyScrollbar::-webkit-scrollbar-corner {
     display: none;
 }
 
-.blocklyToolboxDiv::-webkit-scrollbar-thumb:hover {
+.blocklyToolboxDiv::-webkit-scrollbar-thumb:hover, .blocklyScrollbar::-webkit-scrollbar-thumb:hover {
     background-clip: padding-box;
     border: 4px solid rgba(0, 0, 0, 0);
     -webkit-border-radius: 12px;

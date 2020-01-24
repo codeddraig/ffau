@@ -14,7 +14,7 @@
 
 				Copyright (c) 2017-19 The CodeDdraig Organisation
 
-				THIS IS VERSION 2.0.3
+				THIS IS VERSION 2.1.0
 */
 
 /* jshint esversion:6 */
@@ -55,7 +55,7 @@ class Ffau {
      */
 
     /**
-     * @typedef {Object[]} settingsDialogueType - Customisable options to be loaded into settings flyout.
+     * @typedef {Object[]} settingsItemsType - Customisable options to be loaded into settings flyout.
      * @param {string} settings[].label - The label of the setting; the text to be displayed above it
      * @param {string} settings[].name - The internal name of the setting. Can be used to refer to it when manually setting its value.
      * @param {settingsType} settings[].type - The format type of the setting
@@ -65,12 +65,16 @@ class Ffau {
      **/
 
     /**
+     * @typedef {Object.<settingsItemsType>} settingsCategoryType - An object of categories/section headings for the settings flyout.
+     **/
+
+    /**
      * @callback settingChangeCallback
      * @param {string} newValue - The new value of the setting
      **/
 
     /**
-     * Initialise the Ffau instance in the document
+     * Initialise the Ffau instance in the document!!!
      */
     constructor() {
         console.log("=========================");
@@ -225,12 +229,12 @@ class Ffau {
     /**
      * Add the settings popout to the Blockly container
      *
-     * @param {settingsDialogueType} settings
+     * @param {settingsItemsType|settingsCategoryType} settings
      * @param {number} [autoClose] - 0 means no auto-close, 1 means auto-close if focus shifts to elsewhere in editor, 2 means auto-close if focus shifts outside of editor, and 2 means to auto-close if focus leaves settings menu.
      * @example
 
      ffau.addSettings([
-        {
+     {
             name: "theme",
             label: "Theme",
             type: "dropdown",
@@ -243,7 +247,7 @@ class Ffau {
                 ffau.setTheme(value); // Set the theme for the Ffau editor
             }
         },
-        {
+     {
             name: "ace_theme",
             label: "Editor theme",
             type: "dropdown",
@@ -264,7 +268,7 @@ class Ffau {
                 }
             }
         },
-        {
+     {
             name: "font_size",
             label: "Ace font size",
             type: "numeric",
@@ -275,7 +279,7 @@ class Ffau {
                 });
             }
         }],
-        1 // Set loose auto-closing (auto-close settings menu if focus is shifted to elsewhere in editor)
+     1 // Set loose auto-closing (auto-close settings menu if focus is shifted to elsewhere in editor)
      );
      **/
     addSettings(settings, autoClose) {
@@ -316,120 +320,142 @@ class Ffau {
         settingsWindow.appendChild(settingsWindowFiller);
         settingsWindow.appendChild(popout);
 
-        let settingsList = document.createElement("ul");
-        settingsList.className = "settings-list";
+        let settingsList = document.createElement("div");
+        settingsList.className = "settings-section-div blocklyScrollbar";
 
-        settings.forEach((setting, id) => {
-            let label = document.createElement("label");
-            label.setAttribute('for', "setting-" + id.toString());
-            label.className = "setting-label";
-            label.innerText = setting.label;
+        let settingSections = settings.length + 1 ? [[null, settings]] : Array.from(Object.keys(settings)).map(e => [e, settings[e]]);
 
-            let elem = undefined;
-            switch (setting.type) {
-                case "dropdown":
-                    elem = document.createElement("select");
-                    elem.className = "settings-select";
+        settingSections.forEach((section) => {
+            let sectionContainer = document.createElement("ul");
+            sectionContainer.className = "settings-list";
 
-                    setting.options.forEach(option => {
-                        let optionElem = document.createElement("option");
-                        optionElem.innerText = option[0];
-                        optionElem.value = option.length > 0 ? option[1] : option[1];
-                        elem.appendChild(optionElem);
-                    });
+            if (section[0] != null && section[0] !== "") {
+                let separator = document.createElement("div");
+                separator.className = "settings-separator";
+                separator.innerText = section[0];
 
-                    if (setting.default) {
-                        elem.value = setting.default;
-                    }
+                settingsList.appendChild(separator);
+            } else if (section[0] === "") {
+                let separator = document.createElement("div");
+                separator.className = "settings-hr";
 
-                    elem.onchange = () => {
-                        this.settings.forEach((e, i) => {
-                            if (e.name === setting.label) {
-                                this.settings[i].value = elem.value;
-                            }
-                        });
-                        setting.callback(elem.value);
-                    };
-                    this.settings.push({
-                        name: setting.name,
-                        value: elem.value,
-                        elem,
-                        propagateValue: (newValue) => {
-                            elem.value = newValue;
-                        },
-                        callback: elem.onchange
-                    });
-                    break;
-
-                case "boolean":
-                    elem = document.createElement("label");
-                    elem.className = "settings-checkbox-container";
-
-                    let checkboxInput = document.createElement("input");
-                    checkboxInput.type = "checkbox";
-                    checkboxInput.className = "settings-checkbox";
-                    checkboxInput.checked = setting.default || false;
-
-                    let span = document.createElement("span");
-                    span.className = "settings-slider";
-
-                    elem.appendChild(checkboxInput);
-                    elem.appendChild(span);
-
-                    checkboxInput.onclick = () => {
-                        this.settings.forEach((e, i) => {
-                            if (e.name === setting.label) {
-                                this.settings[i].value = checkboxInput.checked;
-                            }
-                        });
-                        setting.callback(checkboxInput.checked);
-                    };
-                    this.settings.push({
-                        name: setting.name,
-                        value: checkboxInput.checked,
-                        elem,
-                        propagateValue: (newValue) => {
-                            checkboxInput.checked = newValue;
-                        },
-                        callback: checkboxInput.onclick
-                    });
-                    break;
-
-                case "numeric":
-                    elem = document.createElement("input");
-                    elem.type = "number";
-                    elem.className = "settings-number";
-                    elem.value = setting.default || 0;
-
-                    elem.onchange = () => {
-                        this.settings.forEach((e, i) => {
-                            if (e.name === setting.label) {
-                                this.settings[i].value = parseInt(elem.value);
-                            }
-                        });
-                        setting.callback(parseInt(elem.value));
-                    };
-                    this.settings.push({
-                        name: setting.name,
-                        value: elem.value,
-                        elem,
-                        propagateValue: (newValue) => {
-                            elem.value = parseInt(newValue);
-                        },
-                        callback: elem.onchange
-                    });
-                    break;
+                settingsList.appendChild(separator);
             }
 
-            elem.id = "setting-" + id.toString();
+            section[1].forEach((setting, id) => {
+                let label = document.createElement("label");
+                label.setAttribute('for', "setting-" + id.toString());
+                label.className = "setting-label";
+                label.innerText = setting.label;
 
-            let li = document.createElement("li");
-            li.appendChild(label);
-            li.appendChild(elem);
+                let elem = undefined;
+                switch (setting.type) {
+                    case "dropdown":
+                        elem = document.createElement("select");
+                        elem.className = "settings-select";
 
-            li.className = "settings-li";
+                        setting.options.forEach(option => {
+                            let optionElem = document.createElement("option");
+                            optionElem.innerText = option[0];
+                            optionElem.value = option.length > 0 ? option[1] : option[1];
+                            elem.appendChild(optionElem);
+                        });
 
-            settingsList.appendChild(li);
+                        if (setting.default) {
+                            elem.value = setting.default;
+                        }
+
+                        elem.onchange = () => {
+                            this.settings.forEach((e, i) => {
+                                if (e.name === setting.label) {
+                                    this.settings[i].value = elem.value;
+                                }
+                            });
+                            setting.callback(elem.value);
+                        };
+                        this.settings.push({
+                            name: setting.name,
+                            value: elem.value,
+                            elem,
+                            propagateValue: (newValue) => {
+                                elem.value = newValue;
+                            },
+                            callback: elem.onchange
+                        });
+                        break;
+
+                    case "boolean":
+                        elem = document.createElement("label");
+                        elem.className = "settings-checkbox-container";
+
+                        let checkboxInput = document.createElement("input");
+                        checkboxInput.type = "checkbox";
+                        checkboxInput.className = "settings-checkbox";
+                        checkboxInput.checked = setting.default || false;
+
+                        let span = document.createElement("span");
+                        span.className = "settings-slider";
+
+                        elem.appendChild(checkboxInput);
+                        elem.appendChild(span);
+
+                        checkboxInput.onclick = () => {
+                            this.settings.forEach((e, i) => {
+                                if (e.name === setting.label) {
+                                    this.settings[i].value = checkboxInput.checked;
+                                }
+                            });
+                            setting.callback(checkboxInput.checked);
+                        };
+                        this.settings.push({
+                            name: setting.name,
+                            value: checkboxInput.checked,
+                            elem,
+                            propagateValue: (newValue) => {
+                                checkboxInput.checked = newValue;
+                            },
+                            callback: checkboxInput.onclick
+                        });
+                        break;
+
+                    case "numeric":
+                        elem = document.createElement("input");
+                        elem.type = "number";
+                        elem.className = "settings-number";
+                        elem.value = setting.default || 0;
+
+                        elem.onchange = () => {
+                            this.settings.forEach((e, i) => {
+                                if (e.name === setting.label) {
+                                    this.settings[i].value = parseInt(elem.value);
+                                }
+                            });
+                            setting.callback(parseInt(elem.value));
+                        };
+                        this.settings.push({
+                            name: setting.name,
+                            value: elem.value,
+                            elem,
+                            propagateValue: (newValue) => {
+                                elem.value = parseInt(newValue);
+                            },
+                            callback: elem.onchange
+                        });
+                        break;
+                }
+
+                elem.id = "setting-" + id.toString();
+
+                let li = document.createElement("li");
+                li.appendChild(label);
+                li.appendChild(elem);
+
+                li.className = "settings-li";
+
+                sectionContainer.appendChild(li);
+            });
+
+            settingsList.appendChild(sectionContainer);
         });
 
         this.settings.forEach(c => c.callback());
@@ -470,7 +496,7 @@ class Ffau {
      * @param {HTMLElement} toolbox - The XML toolbox
      *
      * @param {string} theme - The name of the theme to initiate Blockly with.
-     * @param {settingsDialogueType} [settings]
+     * @param {settingsItemsType|settingsCategoryType} [settings]
      *
      * @param {object} [options] - Custom options for the Blockly editor. Ffau will apply some default options if this is not specified.
      * @returns {*}

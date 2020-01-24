@@ -1,6 +1,6 @@
 {
   "name": "@codeddraig/ffau-editor",
-  "version": "2.0.3",
+  "version": "2.1.0",
   "description": "A Blockly-based editor for teaching HTML, CSS and Javascript.",
   "main": "dist/ffau.js",
   "repository": {
