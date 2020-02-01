@@ -14,7 +14,7 @@
 
 				Copyright (c) 2017-19 The CodeDdraig Organisation
 
-				THIS IS VERSION 2.1.0
+				THIS IS VERSION 2.1.1
 */
 
 //Script tag

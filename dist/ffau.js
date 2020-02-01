@@ -14,7 +14,7 @@
 
 				Copyright (c) 2017-19 The CodeDdraig Organisation
 
-				THIS IS VERSION 2.1.0
+				THIS IS VERSION 2.1.1
 */
 
 /* jshint esversion:6 */
@@ -672,7 +672,7 @@ class Ffau {
     /**
      * Add an event listener to Blockly or Ace to generate a preview and code
      *
-     * @param {function} [customFunction] - a function to execute at the end of the change event. Gets passed the scope as a parameter.
+     * @param {Function|Array} [customFunction] - a function to execute at the end of the change event. Gets passed the scope as a parameter. Can also be given [function, a], where `a` is an array of arguments to pass to the function (after the first argument, the scope)
      * @param {string} [scope=blockly] - whether to apply the event to "blockly" or "ace"
      * @param {string} [event] - the name of the event (e.g "change") to trigger the callback on - required if `scope === "ace"`, is ignored otherwise
      */
@@ -696,13 +696,21 @@ class Ffau {
 
                     if (typeof customFunction === "function") {
                         customFunction(this);
+                    } else if (typeof (customFunction || [])[0] === "function") {
+                        customFunction[0](this, ...customFunction[1])
                     }
                 }
             };
 
             this.ffauWorkspace.addChangeListener(this.editorCallbackFunction.bind(this) /* bind parent scope */);
         } else if (scope === "ace") {
-            this.aceCallbackFunction = () => customFunction();
+            this.aceCallbackFunction = () => {
+                if (typeof customFunction === "function") {
+                    return customFunction(this);
+                } else if (typeof (customFunction || [])[0] === "function") {
+                    return customFunction[0](this, ...customFunction[1])
+                }
+            };
 
             if (event) {
                 this.editor.container.addEventListener(event, customFunction);

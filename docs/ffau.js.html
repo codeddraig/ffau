@@ -38,7 +38,7 @@
 
 				Copyright (c) 2017-19 The CodeDdraig Organisation
 
-				THIS IS VERSION 2.1.0
+				THIS IS VERSION 2.1.1
 */
 
 /* jshint esversion:6 */
@@ -344,123 +344,142 @@ class Ffau {
         settingsWindow.appendChild(settingsWindowFiller);
         settingsWindow.appendChild(popout);
 
-        let settingsList = document.createElement("ul");
-        settingsList.className = "settings-list";
+        let settingsList = document.createElement("div");
+        settingsList.className = "settings-section-div blocklyScrollbar";
 
-        let settingSections = settings.length + 1 ? [null, settings] : Array.from(Object.keys(settings)).map(e => [e, settings[e]]);
-        console.log(settingSections);
+        let settingSections = settings.length + 1 ? [[null, settings]] : Array.from(Object.keys(settings)).map(e => [e, settings[e]]);
 
-        settingSections.forEach((setting, id) => {
-            let label = document.createElement("label");
-            label.setAttribute('for', "setting-" + id.toString());
-            label.className = "setting-label";
-            label.innerText = setting.label;
+        settingSections.forEach((section) => {
+            let sectionContainer = document.createElement("ul");
+            sectionContainer.className = "settings-list";
 
-            let elem = undefined;
-            switch (setting.type) {
-                case "dropdown":
-                    elem = document.createElement("select");
-                    elem.className = "settings-select";
+            if (section[0] != null &amp;&amp; section[0] !== "") {
+                let separator = document.createElement("div");
+                separator.className = "settings-separator";
+                separator.innerText = section[0];
 
-                    setting.options.forEach(option => {
-                        let optionElem = document.createElement("option");
-                        optionElem.innerText = option[0];
-                        optionElem.value = option.length > 0 ? option[1] : option[1];
-                        elem.appendChild(optionElem);
-                    });
+                settingsList.appendChild(separator);
+            } else if (section[0] === "") {
+                let separator = document.createElement("div");
+                separator.className = "settings-hr";
 
-                    if (setting.default) {
-                        elem.value = setting.default;
-                    }
-
-                    elem.onchange = () => {
-                        this.settings.forEach((e, i) => {
-                            if (e.name === setting.label) {
-                                this.settings[i].value = elem.value;
-                            }
-                        });
-                        setting.callback(elem.value);
-                    };
-                    this.settings.push({
-                        name: setting.name,
-                        value: elem.value,
-                        elem,
-                        propagateValue: (newValue) => {
-                            elem.value = newValue;
-                        },
-                        callback: elem.onchange
-                    });
-                    break;
-
-                case "boolean":
-                    elem = document.createElement("label");
-                    elem.className = "settings-checkbox-container";
-
-                    let checkboxInput = document.createElement("input");
-                    checkboxInput.type = "checkbox";
-                    checkboxInput.className = "settings-checkbox";
-                    checkboxInput.checked = setting.default || false;
-
-                    let span = document.createElement("span");
-                    span.className = "settings-slider";
-
-                    elem.appendChild(checkboxInput);
-                    elem.appendChild(span);
-
-                    checkboxInput.onclick = () => {
-                        this.settings.forEach((e, i) => {
-                            if (e.name === setting.label) {
-                                this.settings[i].value = checkboxInput.checked;
-                            }
-                        });
-                        setting.callback(checkboxInput.checked);
-                    };
-                    this.settings.push({
-                        name: setting.name,
-                        value: checkboxInput.checked,
-                        elem,
-                        propagateValue: (newValue) => {
-                            checkboxInput.checked = newValue;
-                        },
-                        callback: checkboxInput.onclick
-                    });
-                    break;
-
-                case "numeric":
-                    elem = document.createElement("input");
-                    elem.type = "number";
-                    elem.className = "settings-number";
-                    elem.value = setting.default || 0;
-
-                    elem.onchange = () => {
-                        this.settings.forEach((e, i) => {
-                            if (e.name === setting.label) {
-                                this.settings[i].value = parseInt(elem.value);
-                            }
-                        });
-                        setting.callback(parseInt(elem.value));
-                    };
-                    this.settings.push({
-                        name: setting.name,
-                        value: elem.value,
-                        elem,
-                        propagateValue: (newValue) => {
-                            elem.value = parseInt(newValue);
-                        },
-                        callback: elem.onchange
-                    });
-                    break;
+                settingsList.appendChild(separator);
             }
 
-            elem.id = "setting-" + id.toString();
+            section[1].forEach((setting, id) => {
+                let label = document.createElement("label");
+                label.setAttribute('for', "setting-" + id.toString());
+                label.className = "setting-label";
+                label.innerText = setting.label;
 
-            let li = document.createElement("li");
-            li.appendChild(label);
-            li.appendChild(elem);
+                let elem = undefined;
+                switch (setting.type) {
+                    case "dropdown":
+                        elem = document.createElement("select");
+                        elem.className = "settings-select";
 
-            li.className = "settings-li";
+                        setting.options.forEach(option => {
+                            let optionElem = document.createElement("option");
+                            optionElem.innerText = option[0];
+                            optionElem.value = option.length > 0 ? option[1] : option[1];
+                            elem.appendChild(optionElem);
+                        });
 
-            settingsList.appendChild(li);
+                        if (setting.default) {
+                            elem.value = setting.default;
+                        }
+
+                        elem.onchange = () => {
+                            this.settings.forEach((e, i) => {
+                                if (e.name === setting.label) {
+                                    this.settings[i].value = elem.value;
+                                }
+                            });
+                            setting.callback(elem.value);
+                        };
+                        this.settings.push({
+                            name: setting.name,
+                            value: elem.value,
+                            elem,
+                            propagateValue: (newValue) => {
+                                elem.value = newValue;
+                            },
+                            callback: elem.onchange
+                        });
+                        break;
+
+                    case "boolean":
+                        elem = document.createElement("label");
+                        elem.className = "settings-checkbox-container";
+
+                        let checkboxInput = document.createElement("input");
+                        checkboxInput.type = "checkbox";
+                        checkboxInput.className = "settings-checkbox";
+                        checkboxInput.checked = setting.default || false;
+
+                        let span = document.createElement("span");
+                        span.className = "settings-slider";
+
+                        elem.appendChild(checkboxInput);
+                        elem.appendChild(span);
+
+                        checkboxInput.onclick = () => {
+                            this.settings.forEach((e, i) => {
+                                if (e.name === setting.label) {
+                                    this.settings[i].value = checkboxInput.checked;
+                                }
+                            });
+                            setting.callback(checkboxInput.checked);
+                        };
+                        this.settings.push({
+                            name: setting.name,
+                            value: checkboxInput.checked,
+                            elem,
+                            propagateValue: (newValue) => {
+                                checkboxInput.checked = newValue;
+                            },
+                            callback: checkboxInput.onclick
+                        });
+                        break;
+
+                    case "numeric":
+                        elem = document.createElement("input");
+                        elem.type = "number";
+                        elem.className = "settings-number";
+                        elem.value = setting.default || 0;
+
+                        elem.onchange = () => {
+                            this.settings.forEach((e, i) => {
+                                if (e.name === setting.label) {
+                                    this.settings[i].value = parseInt(elem.value);
+                                }
+                            });
+                            setting.callback(parseInt(elem.value));
+                        };
+                        this.settings.push({
+                            name: setting.name,
+                            value: elem.value,
+                            elem,
+                            propagateValue: (newValue) => {
+                                elem.value = parseInt(newValue);
+                            },
+                            callback: elem.onchange
+                        });
+                        break;
+                }
+
+                elem.id = "setting-" + id.toString();
+
+                let li = document.createElement("li");
+                li.appendChild(label);
+                li.appendChild(elem);
+
+                li.className = "settings-li";
+
+                sectionContainer.appendChild(li);
+            });
+
+            settingsList.appendChild(sectionContainer);
         });
 
         this.settings.forEach(c => c.callback());
@@ -677,7 +696,7 @@ class Ffau {
     /**
      * Add an event listener to Blockly or Ace to generate a preview and code
      *
-     * @param {function} [customFunction] - a function to execute at the end of the change event. Gets passed the scope as a parameter.
+     * @param {Function|Array} [customFunction] - a function to execute at the end of the change event. Gets passed the scope as a parameter. Can also be given [function, a], where `a` is an array of arguments to pass to the function (after the first argument, the scope)
      * @param {string} [scope=blockly] - whether to apply the event to "blockly" or "ace"
      * @param {string} [event] - the name of the event (e.g "change") to trigger the callback on - required if `scope === "ace"`, is ignored otherwise
      */
@@ -701,13 +720,21 @@ class Ffau {
 
                     if (typeof customFunction === "function") {
                         customFunction(this);
+                    } else if (typeof (customFunction||[])[0] === "function") {
+                        customFunction[0](this, ...customFunction[1])
                     }
                 }
             };
 
             this.ffauWorkspace.addChangeListener(this.editorCallbackFunction.bind(this) /* bind parent scope */);
         } else if (scope === "ace") {
-            this.aceCallbackFunction = () => customFunction();
+            this.aceCallbackFunction = () => {
+                if (typeof customFunction === "function") {
+                    return customFunction(this);
+                } else if (typeof (customFunction||[])[0] === "function") {
+                    return customFunction[0](this, ...customFunction[1])
+                }
+            };
 
             if (event) {
                 this.editor.container.addEventListener(event, customFunction);
@@ -2165,7 +2192,7 @@ class Ffau {
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Wed Jan 22 2020 17:15:43
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Sat Feb 01 2020 17:26:36
     GMT+0000 (Greenwich Mean Time)
 </footer>
 

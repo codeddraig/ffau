@@ -15,7 +15,7 @@
 
 				Copyright (c) 2017-19 The CodeDdraig Organisation
 
-				THIS IS VERSION 2.1.0
+				THIS IS VERSION 2.1.1
  -->
 
 <html lang="en">
@@ -574,6 +574,7 @@
             try {
                 ffau.setXML(ffau.codeToXML(ffau.editor.getValue()));
                 ffau.ffauWorkspace.cleanUp();
+                ffau.ffauWorkspace.scrollCenter();
             } catch (e) {
                 ffau.clearWorkspace(false);
             }
