@@ -14,18 +14,18 @@
 
 				Copyright (c) 2017-19 The CodeDdraig Organisation
 
-				THIS IS VERSION 2.1.1
+				THIS IS VERSION 2.1.2
 */
 
 function parseTransitions(block) {
-    var stmt = "";
-    var transitions = [];
-    var index = -1;
-    var thisBlock = block.childBlocks_[0];
-    var i = 0;
+    let stmt = "";
+    const transitions = [];
+    let index = -1;
+    let thisBlock = block.childBlocks_[0];
+    let i = 0;
     while (thisBlock) {
         if (thisBlock.type !== "cssevents"){
-            var blockText = htmlGen.blockToCode(thisBlock);
+            let blockText = htmlGen.blockToCode(thisBlock);
             if (thisBlock.getNextBlock()) {
                 blockText = blockText.slice(0,
                     -htmlGen.blockToCode(thisBlock.getNextBlock()).length
@@ -39,7 +39,7 @@ function parseTransitions(block) {
                     index = stmt.length;
                 }
 
-                var split = blockText.trim().split(" ");
+                const split = blockText.trim().split(" ");
                 transitions.push({
                     duration: decodeURIComponent(split[0]),
                     property: decodeURIComponent(split[1]),
@@ -56,11 +56,11 @@ function parseTransitions(block) {
     }
 
     if (transitions.length) {
-        var reducedStr = transitions.reduce((a, e) =>
+        const reducedStr = transitions.reduce((a, e) =>
                 `${a},\n\t\t${e.property} ${e.duration}s ${e.timingFunction} ${e.delay}s`
             , "");
 
-        var transitionStr = `\ttransition: ${reducedStr.trim().substr(1)};\n`;
+        const transitionStr = `\ttransition: ${reducedStr.trim().substr(1)};\n`;
 
         stmt = stmt.substr(0, index) + transitionStr + stmt.substr(index);
     }
@@ -78,7 +78,13 @@ function fullEscape(input) {
 }
 
 function looseEscape(input) {
-    return input
+    let stringToEscape = input;
+
+    if(typeof input === 'number') {
+        stringToEscape = input.toString();
+    }
+
+    return stringToEscape
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
@@ -93,10 +99,11 @@ function cssEscape(input) {
         .replace(/}/g, "")
         .replace(/</g, "")
         .replace(/:/g, "")
+        .replace(/"/g, "")
 }
 
-var URLRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
-var hashRegex = /#([A-z0-9]*)/;
+const URLRegex = /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/;
+const hashRegex = /#([A-z0-9]*)/;
 
 function isNewTabUrl(input) {
     return URLRegex.test(input) || (!input.includes('http://') && !input.includes('https://')) && !hashRegex.test(input) && input.length > 0;
@@ -116,16 +123,16 @@ function URLInput(input) {
 }
 
 function makeid(length) {
-    var result = '';
-    var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    var charactersLength = characters.length;
-    for (var i = 0; i < length; i++) {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
         result += characters.charAt(Math.floor(Math.random() * charactersLength));
     }
     return result;
 }
 
-var htmlGen = new Blockly.Generator('HTML');
+const htmlGen = new Blockly.Generator('HTML');
 
 htmlGen.init = function (workspace) {
 };
@@ -154,10 +161,10 @@ htmlGen.scrub_ = function (block, code) {
             : comment}${suffix}\n`
     };
 
-    var commentCode = '';
+    let commentCode = '';
 
     if (!htmlGen.getAncestors(block, []).map(e => e.type).includes("stylearg")) {
-        var comment = block.getCommentText();
+        let comment = block.getCommentText();
         if (htmlGen.getAncestors(block, []).map(e => e.type).includes("style")) {
             if (comment) {
                 comment = Blockly.utils.string.wrap(comment,
@@ -178,11 +185,11 @@ htmlGen.scrub_ = function (block, code) {
                 }
                 // Collect comments for all value arguments.
                 // Don't collect comments for nested statements.
-                for (var i = 0; i < block.inputList.length; i++) {
+                for (let i = 0; i < block.inputList.length; i++) {
                     if (block.inputList[i].type === Blockly.INPUT_VALUE) {
-                        var childBlock = block.inputList[i].connection.targetBlock();
+                        const childBlock = block.inputList[i].connection.targetBlock();
                         if (childBlock && childBlock.type !== "style" && childBlock.type !== "stylearg") {
-                            var thisComment = htmlGen.allNestedComments(childBlock)
+                            const thisComment = htmlGen.allNestedComments(childBlock)
                                 .replace(/\n*$|^\n*/g, "");
                             if (thisComment) {
                                 appendCommentCode(thisComment, "<!--", "-->")
@@ -194,66 +201,66 @@ htmlGen.scrub_ = function (block, code) {
         }
     }
 
-    var nextBlock = block.nextConnection && block.nextConnection.targetBlock();
-    var nextCode = htmlGen.blockToCode(nextBlock);
+    const nextBlock = block.nextConnection && block.nextConnection.targetBlock();
+    const nextCode = htmlGen.blockToCode(nextBlock);
 
     return commentCode + code + nextCode;
 };
 
 htmlGen['html'] = function (block) {
-    var statements_content = htmlGen.statementToCode(block, 'content');
-    var code = '<!DOCTYPE html>\n<html>\n' + statements_content + '</html>\n';
+    const statements_content = htmlGen.statementToCode(block, 'content');
+    const code = '<!DOCTYPE html>\n<html>\n' + statements_content + '</html>\n';
     return code;
 };
 
 htmlGen['head'] = function (block) {
-    var statements_content = htmlGen.statementToCode(block, 'content');
-    var code = '<head>\n' + statements_content + '</head>\n';
+    const statements_content = htmlGen.statementToCode(block, 'content');
+    const code = '<head>\n' + statements_content + '</head>\n';
     return code;
 };
 
 htmlGen['metacharset'] = function (block) {
-    var value = block.getFieldValue('value');
-    var code = '<meta charset="' + value + '">\n';
+    const value = block.getFieldValue('value');
+    const code = '<meta charset="' + value + '">\n';
     return code;
 };
 
 htmlGen['metaviewport'] = function (block) {
-    var code = '<meta name="viewport" content="width=device-width, initial-scale=1">\n';
+    const code = '<meta name="viewport" content="width=device-width, initial-scale=1">\n';
     return code;
 };
 
 htmlGen['title'] = function (block) {
-    var value = block.getFieldValue('value');
-    var code = `<title>${looseEscape(value)}</title>\n`;
+    const value = block.getFieldValue('value');
+    const code = `<title>${looseEscape(value)}</title>\n`;
     return code;
 };
 
 htmlGen['body'] = function (block) {
-    var statements_content = htmlGen.statementToCode(block, 'content');
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC).trim();
-    var code = '<body' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n' + statements_content + '</body>\n';
+    const statements_content = htmlGen.statementToCode(block, 'content');
+    const block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC).trim();
+    const code = '<body' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n' + statements_content + '</body>\n';
     return code;
 };
 
 htmlGen['headertag'] = function (block) {
-    var statements_content = htmlGen.statementToCode(block, 'content');
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    var code = '<header' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n' + statements_content + '</header>\n';
+    const statements_content = htmlGen.statementToCode(block, 'content');
+    const block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    const code = '<header' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n' + statements_content + '</header>\n';
     return code;
 };
 
 htmlGen['footertag'] = function (block) {
-    var statements_content = htmlGen.statementToCode(block, 'content');
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    var code = '<footer' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n' + statements_content + '</footer>\n';
+    const statements_content = htmlGen.statementToCode(block, 'content');
+    const block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    const code = '<footer' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n' + statements_content + '</footer>\n';
     return code;
 };
 
 htmlGen['divider'] = function (block) {
-    var statements_content = htmlGen.statementToCode(block, 'content');
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    var code = '<div' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n' + statements_content + '</div>\n';
+    const statements_content = htmlGen.statementToCode(block, 'content');
+    const block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    const code = '<div' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n' + statements_content + '</div>\n';
     return code;
 };
 
@@ -262,168 +269,166 @@ htmlGen['linebreak'] = function (block) {
 };
 
 htmlGen['hline'] = function (block) {
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    const block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
     return "<hr" + (block_modifier ? " " + block_modifier.trim() : "") + "/>\n";
 };
 
 htmlGen['style'] = function (block) {
-    var statement = htmlGen.statementToCode(block, 'content');
+    const statement = htmlGen.statementToCode(block, 'content');
     return '<style>\n' + statement + '</style>\n';
 };
 
 htmlGen['stylearg'] = function (block) {
-    var statement = parseTransitions(block).trim();
+    const statement = parseTransitions(block).trim();
     return 'style="' + statement + '" ';
 };
 
 htmlGen['cssitem'] = function (block) {
-    var stmt = parseTransitions(block);
+    const stmt = parseTransitions(block);
 
-    console.log(block);
-
-    var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    let mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
     mod = mod.split(' ').join(''); // remove spaces
 
-    var selector = cssEscape(block.getFieldValue('selector'));
+    const selector = cssEscape(block.getFieldValue('selector'));
 
     return selector + mod + '{\n' + stmt + '}\n';
 };
 
 htmlGen['cssevents'] = function (block) {
-    var stmt = block.getFieldValue('content');
-    var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    var code = ':' + stmt + mod;
+    const stmt = block.getFieldValue('content');
+    const mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    const code = ':' + stmt + mod;
     return code;
 };
 
 htmlGen['cssnot'] = function (block) {
-    var value = block.getFieldValue('content');
-    var mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    var code = ':not(' + cssEscape(value) + ')' + mod;
+    const value = block.getFieldValue('content');
+    const mod = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    const code = ':not(' + cssEscape(value) + ')' + mod;
     return code;
 };
 
 htmlGen['fontfamily'] = function (block) {
-    var value = block.getFieldValue('value');
-    return 'font-family: ' + fullEscape(value) + ';\n';
+    const value = block.getFieldValue('value');
+    return 'font-family: ' + cssEscape(value) + ';\n';
 };
 
 htmlGen['fontsize'] = function (block) {
-    var value = block.getFieldValue('value');
+    const value = block.getFieldValue('value');
     return 'font-size: ' + fullEscape(value) + ';\n';
 };
 
 htmlGen['fontweight'] = function (block) {
-    var weight = block.getFieldValue('weight');
+    const weight = block.getFieldValue('weight');
     return `font-weight: ${weight};\n`;
 };
 
 htmlGen['textshadow-new'] = function (block) {
-    var x = fullEscape(block.getFieldValue('xoffset'));
-    var y = fullEscape(block.getFieldValue('yoffset'));
-    var b = fullEscape(block.getFieldValue('blur'));
-    var c = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC).trim();
+    const x = fullEscape(block.getFieldValue('xoffset'));
+    const y = fullEscape(block.getFieldValue('yoffset'));
+    const b = fullEscape(block.getFieldValue('blur'));
+    const c = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC).trim();
 
     return `text-shadow: ${x} ${y} ${b} ${c};\n`;
 };
 
 htmlGen['boxshadow-new'] = function (block) {
-    var x = fullEscape(block.getFieldValue('x-offset'));
-    var y = fullEscape(block.getFieldValue('y-offset'));
-    var blur = fullEscape(block.getFieldValue('blur'));
+    const x = fullEscape(block.getFieldValue('x-offset'));
+    const y = fullEscape(block.getFieldValue('y-offset'));
+    const blur = fullEscape(block.getFieldValue('blur'));
 
-    var color = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC).trim();
+    const color = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC).trim();
 
     return `box-shadow: ${x} ${y} ${blur} ${color};\n`;
 };
 
 htmlGen['boxshadow-2'] = function (block) {
-    var x = fullEscape(block.getFieldValue('xoffset'));
-    var y = fullEscape(block.getFieldValue('yoffset'));
-    var blur = fullEscape(block.getFieldValue('blur'));
+    const x = fullEscape(block.getFieldValue('xoffset'));
+    const y = fullEscape(block.getFieldValue('yoffset'));
+    const blur = fullEscape(block.getFieldValue('blur'));
 
-    var color = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC).trim();
+    const color = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC).trim();
 
     return `box-shadow: ${x} ${y} ${blur} ${color};\n`;
 };
 
 htmlGen['textshadow'] = function (block) {
-    var x = fullEscape(block.getFieldValue('xoffset'));
-    var y = fullEscape(block.getFieldValue('yoffset'));
-    var b = fullEscape(block.getFieldValue('blur'));
-    var c = block.getFieldValue('color');
+    const x = fullEscape(block.getFieldValue('xoffset'));
+    const y = fullEscape(block.getFieldValue('yoffset'));
+    const b = fullEscape(block.getFieldValue('blur'));
+    const c = block.getFieldValue('color');
 
     return `text-shadow: ${x} ${y} ${b} ${c};\n`;
 };
 
 htmlGen['boxshadow'] = function (block) {
-    var x = fullEscape(block.getFieldValue('x-offset'));
-    var y = fullEscape(block.getFieldValue('y-offset'));
-    var blur = fullEscape(block.getFieldValue('blur'));
+    const x = fullEscape(block.getFieldValue('x-offset'));
+    const y = fullEscape(block.getFieldValue('y-offset'));
+    const blur = fullEscape(block.getFieldValue('blur'));
 
-    var color = block.getFieldValue('color');
+    const color = block.getFieldValue('color');
 
     return `box-shadow: ${x} ${y} ${blur} ${color};\n`;
 };
 
 htmlGen['texttransform'] = function (block) {
-    var value = block.getFieldValue('value');
+    const value = block.getFieldValue('value');
     return `text-transform: ${value};\n`;
 };
 
 htmlGen['textalign'] = function (block) {
-    var value = block.getFieldValue('value');
+    const value = block.getFieldValue('value');
     return `text-align: ${value};\n`;
 };
 
 htmlGen['letterspacing'] = function (block) {
-    var value = block.getFieldValue('value');
+    const value = block.getFieldValue('value');
     return `letter-spacing: ${fullEscape(value)};\n`;
 };
 
 htmlGen['margin'] = function (block) {
-    var direction = block.getFieldValue('direction');
-    var value = block.getFieldValue('value');
+    const direction = block.getFieldValue('direction');
+    const value = block.getFieldValue('value');
     return 'margin-' + direction + ': ' + fullEscape(value) + ';\n';
 };
 
 htmlGen['padding'] = function (block) {
-    var direction = block.getFieldValue('direction');
-    var value = block.getFieldValue('value');
+    const direction = block.getFieldValue('direction');
+    const value = block.getFieldValue('value');
     return 'padding-' + direction + ': ' + fullEscape(value) + ';\n';
 };
 
 htmlGen['display'] = function (block) {
-    var value = block.getFieldValue('content');
+    const value = block.getFieldValue('content');
     return 'display: ' + value + ';\n';
 };
 
 htmlGen['overflow'] = function (block) {
-    var value = block.getFieldValue('content');
-    var direction = block.getFieldValue('direction');
+    const value = block.getFieldValue('content');
+    const direction = block.getFieldValue('direction');
 
     return `overflow-${direction}: ${value};\n`;
 };
 
 htmlGen['color-new'] = function (block) {
-    var color = htmlGen.statementToCode(block, 'value', htmlGen.ORDER_ATOMIC).trim();
+    const color = htmlGen.statementToCode(block, 'value', htmlGen.ORDER_ATOMIC).trim();
     return 'color: ' + color + ';\n';
 };
 
 htmlGen['color'] = function (block) {
-    var color = block.getFieldValue('value');
+    const color = block.getFieldValue('value');
     return 'color: ' + color + ';\n';
 };
 
 htmlGen['colordropdown'] = function (block) {
-    var color = block.getFieldValue('color');
+    const color = block.getFieldValue('color');
     return `color: ${color};\n`;
 };
 
 htmlGen['linkhead'] = function (block) {
-    var library = block.getFieldValue('library');
+    const library = block.getFieldValue('library');
 
-    var code;
+    let code;
     if (library === "bootstrap") {
         code = '<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zug+QiDoJOrZ5t4lssLdxGhVrurbmBWopoEl+M6BdEfwnCJZtKxi1KgxUyJq13dy" crossorigin="anonymous">\n';
     } else if (library === "materialize") {
@@ -436,85 +441,85 @@ htmlGen['linkhead'] = function (block) {
 };
 
 htmlGen['bgcolor-new'] = function (block) {
-    var color = htmlGen.statementToCode(block, 'value', htmlGen.ORDER_ATOMIC).trim();
+    const color = htmlGen.statementToCode(block, 'value', htmlGen.ORDER_ATOMIC).trim();
     return 'background-color: ' + color + ';\n';
 };
 
 htmlGen['bgcolor'] = function (block) {
-    var color = block.getFieldValue('value');
+    const color = block.getFieldValue('value');
     return 'background-color: ' + color + ';\n';
 };
 
 htmlGen['bgimage'] = function (block) {
-    var content = block.getFieldValue('content');
+    const content = block.getFieldValue('content');
     return 'background-image: url("' + URLInput(content) + '");\n';
 };
 
 htmlGen['bgposition'] = function (block) {
-    var content = block.getFieldValue('content');
+    const content = block.getFieldValue('content');
     return 'background-position: ' + content + ';\n';
 };
 
 htmlGen['bgrepeat'] = function (block) {
-    var content = block.getFieldValue('content');
-    var code = 'background-repeat: ' + content + ';\n';
+    const content = block.getFieldValue('content');
+    const code = 'background-repeat: ' + content + ';\n';
     return code;
 };
 
 htmlGen['bgsize'] = function (block) {
-    var content = block.getFieldValue('content');
-    var code = 'background-size: ' + fullEscape(content) + ';\n';
+    const content = block.getFieldValue('content');
+    const code = 'background-size: ' + fullEscape(content) + ';\n';
     return code;
 };
 
 htmlGen['border-new'] = function (block) {
-    var width = fullEscape(block.getFieldValue('width'));
-    var type = block.getFieldValue('type');
-    var color = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC).trim();
+    const width = fullEscape(block.getFieldValue('width'));
+    const type = block.getFieldValue('type');
+    const color = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC).trim();
 
     return 'border: ' + width + ' ' + type + ' ' + color + ';\n';
 };
 
 htmlGen['borderedge-new'] = function (block) {
-    var edge = block.getFieldValue('edge');
-    var width = fullEscape(block.getFieldValue('width'));
-    var type = block.getFieldValue('type');
-    var color = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC).trim();
+    const edge = block.getFieldValue('edge');
+    const width = fullEscape(block.getFieldValue('width'));
+    const type = block.getFieldValue('type');
+    const color = htmlGen.statementToCode(block, 'color', htmlGen.ORDER_ATOMIC).trim();
 
     return `border-${edge}: ${width} ${type} ${color};\n`;
 };
 
 htmlGen['border'] = function (block) {
-    var width = fullEscape(block.getFieldValue('width'));
-    var type = block.getFieldValue('type');
-    var color = block.getFieldValue('color');
+    const width = fullEscape(block.getFieldValue('width'));
+    const type = block.getFieldValue('type');
+    const color = block.getFieldValue('color');
 
     return 'border: ' + width + 'px ' + type + ' ' + color + ';\n';
 };
 
 htmlGen['borderedge'] = function (block) {
-    var edge = block.getFieldValue('edge');
-    var width = fullEscape(block.getFieldValue('width'));
-    var type = block.getFieldValue('type');
-    var color = block.getFieldValue('color');
+    const edge = block.getFieldValue('edge');
+    const width = fullEscape(block.getFieldValue('width'));
+    const type = block.getFieldValue('type');
+    const color = block.getFieldValue('color');
 
     return `border-${edge}: ${width}px ${type} ${color};\n`;
 };
 
 htmlGen['borderrad'] = function (block) {
-    var content = block.getFieldValue('content');
+    const content = block.getFieldValue('content');
     return 'border-radius: ' + fullEscape(content) + ';\n';
 };
 
 htmlGen['cursor'] = function (block) {
-    var content = block.getFieldValue('content');
+    const content = block.getFieldValue('content');
     return 'cursor: ' + content + ';\n';
 };
 
 htmlGen['bordercol'] = function (block) {
-    var collapse = block.getFieldValue('value');
+    const collapse = block.getFieldValue('value');
 
-    var code;
+    let code;
     if (collapse === "TRUE") {
         code = 'border-collapse: collapse;\n';
     } else {
@@ -525,27 +530,27 @@ htmlGen['bordercol'] = function (block) {
 };
 
 htmlGen['width'] = function (block) {
-    var size = block.getFieldValue('size');
+    const size = block.getFieldValue('size');
 
     return 'width: ' + fullEscape(size) + ';\n';
 };
 
 htmlGen['height'] = function (block) {
-    var size = block.getFieldValue('size');
+    const size = block.getFieldValue('size');
 
     return 'height: ' + fullEscape(size) + ';\n';
 };
 
 htmlGen['widthheightnum'] = function (block) {
-    var option = block.getFieldValue('option');
-    var size = block.getFieldValue('size');
+    const option = block.getFieldValue('option');
+    const size = block.getFieldValue('size');
 
     return option + ': ' + fullEscape(size) + ';\n';
 };
 
 htmlGen['widthheight'] = function (block) {
-    var option = block.getFieldValue('option');
-    var value = block.getFieldValue('value');
+    const option = block.getFieldValue('option');
+    const value = block.getFieldValue('value');
 
     return option + ': ' + value + ';\n';
 };
@@ -555,16 +560,16 @@ htmlGen['float'] = function (block) {
 };
 
 htmlGen['verticalalign'] = function (block) {
-    var align = block.getFieldValue('align');
+    const align = block.getFieldValue('align');
 
     return `vertical-align: ${align};\n`;
 };
 
 htmlGen['transition'] = function (block) {
-    var property = fullEscape(block.getFieldValue('transition-property')).trim();
-    var duration = fullEscape(block.getFieldValue('duration')).trim();
-    var delay = fullEscape(block.getFieldValue('delay')).trim();
-    var timing = (htmlGen.statementToCode(block, 'timing-function', htmlGen.ORDER_ATOMIC) || "linear").trim();
+    const property = fullEscape(block.getFieldValue('transition-property')).trim();
+    const duration = fullEscape(block.getFieldValue('duration')).trim();
+    const delay = fullEscape(block.getFieldValue('delay')).trim();
+    const timing = (htmlGen.statementToCode(block, 'timing-function', htmlGen.ORDER_ATOMIC) || "linear").trim();
 
     if (!this.parentBlock_) {
         return `transition-property: ${property};\ntransition-duration: ${duration};\ntransition-delay: ${delay};\ntransition-timing-function: ${timing.trim()};\n`;
@@ -578,38 +583,38 @@ htmlGen['transitiontimingdropdown'] = function (block) {
 };
 
 htmlGen['transitiontimingbezier'] = function (block) {
-    var bez1 = fullEscape(block.getFieldValue('bez1'));
-    var bez2 = fullEscape(block.getFieldValue('bez2'));
-    var bez3 = fullEscape(block.getFieldValue('bez3'));
-    var bez4 = fullEscape(block.getFieldValue('bez4'));
+    const bez1 = fullEscape(block.getFieldValue('bez1'));
+    const bez2 = fullEscape(block.getFieldValue('bez2'));
+    const bez3 = fullEscape(block.getFieldValue('bez3'));
+    const bez4 = fullEscape(block.getFieldValue('bez4'));
 
     return `cubic-bezier(${bez1}, ${bez2}, ${bez3}, ${bez4})`;
 };
 
 htmlGen['othercss'] = function (block) {
-    var property = fullEscape(block.getFieldValue('property'));
+    const property = fullEscape(block.getFieldValue('property'));
 
-    var value = fullEscape(block.getFieldValue('value'))
+    const value = fullEscape(block.getFieldValue('value'))
         .replace(/%20/g, " ")
         .replace(/%28/g, "(")
         .replace(/%29/g, ")");
 
-    var code = property + ': ' + value + ';\n';
+    const code = property + ': ' + value + ';\n';
     return code;
 };
 
 htmlGen['args'] = function (block) {
-    var code = htmlGen.statementToCode(block, 'content').trim();
+    const code = htmlGen.statementToCode(block, 'content').trim();
     return code;
 };
 
 htmlGen['class'] = function (block) {
-    var text_content = block.getFieldValue('content');
+    const text_content = block.getFieldValue('content');
     return 'class="' + looseEscape(text_content) + '" ';
 };
 
 htmlGen['id'] = function (block) {
-    var text_content = block.getFieldValue('content');
+    const text_content = block.getFieldValue('content');
     return 'id="' + looseEscape(text_content) + '" ';
 };
 
@@ -618,47 +623,47 @@ htmlGen['align'] = function (block) {
 };
 
 htmlGen['emptyarg'] = function (block) {
-    var property = block.getFieldValue('property');
-    var value = block.getFieldValue('value');
+    const property = block.getFieldValue('property');
+    const value = block.getFieldValue('value');
     return fullEscape(property) + '="' + looseEscape(value) + '" ';
 };
 
 htmlGen['emptytext'] = function (block) {
-    var text_content = block.getFieldValue('content');
+    const text_content = block.getFieldValue('content');
     return '\n' + looseEscape(text_content) + '\n';
 };
 
 htmlGen['paragraph'] = function (block) {
-    var statements_content = htmlGen.statementToCode(block, 'content');
-    var block_modifier = htmlGen.statementToCode(block, 'modifier');
+    const statements_content = htmlGen.statementToCode(block, 'content');
+    const block_modifier = htmlGen.statementToCode(block, 'modifier');
     return '<p' + (block_modifier ? " " + block_modifier.trim() : "") + '>' + statements_content + '</p>\n';
 };
 
 htmlGen['header'] = function (block) {
-    var statements_content = htmlGen.statementToCode(block, 'content');
-    var header_size = block.getFieldValue("size");
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC).trim();
+    const statements_content = htmlGen.statementToCode(block, 'content');
+    const header_size = block.getFieldValue("size");
+    const block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC).trim();
     return '<h' + (header_size + ' ' + block_modifier).trim() + '>' + statements_content + '</h' + header_size + '>\n';
 };
 
 htmlGen['textmod'] = function (block) {
-    var content = htmlGen.statementToCode(block, 'content');
-    var type = block.getFieldValue("type");
+    const content = htmlGen.statementToCode(block, 'content');
+    const type = block.getFieldValue("type");
     return '\n<' + type + '>' + content + '</' + type + '>\n';
 };
 
 htmlGen['span'] = function (block) {
-    var content = htmlGen.statementToCode(block, 'content');
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    const content = htmlGen.statementToCode(block, 'content');
+    const block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
     return '<span' + (block_modifier ? " " + block_modifier.trim() : "") + '>' + content + '</span>';
 };
 
 htmlGen['link'] = function (block) {
-    var text = htmlGen.statementToCode(block, 'content');
-    var bareLink = block.getFieldValue('target');
-    var link = URLInput(block.getFieldValue('target'));
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    var target = '';
+    const text = htmlGen.statementToCode(block, 'content');
+    const bareLink = block.getFieldValue('target');
+    const link = URLInput(block.getFieldValue('target'));
+    const block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    let target = '';
 
     if (isNewTabUrl(bareLink)) {
         target = ' target="_blank"';
@@ -668,100 +673,100 @@ htmlGen['link'] = function (block) {
 };
 
 htmlGen['table'] = function (block) {
-    var content = htmlGen.statementToCode(block, 'content');
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    const content = htmlGen.statementToCode(block, 'content');
+    const block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
     return '<table' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n' + content + '</table>\n';
 };
 
 htmlGen['tablerow'] = function (block) {
-    var content = htmlGen.statementToCode(block, 'content');
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    const content = htmlGen.statementToCode(block, 'content');
+    const block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
     return '<tr' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n' + content + '</tr>\n';
 };
 
 htmlGen['tableheading'] = function (block) {
-    var content = htmlGen.statementToCode(block, 'content');
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    const content = htmlGen.statementToCode(block, 'content');
+    const block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
     return '<th' + (block_modifier ? " " + block_modifier.trim() : "") + '>' + content + '</th>\n';
 };
 
 htmlGen['tabledata'] = function (block) {
-    var content = htmlGen.statementToCode(block, 'content');
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    const content = htmlGen.statementToCode(block, 'content');
+    const block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
     return '<td' + (block_modifier ? " " + block_modifier.trim() : "") + '>' + content + '</td>\n';
 };
 
 htmlGen['form'] = function (block) {
-    var content = htmlGen.statementToCode(block, 'content');
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    const content = htmlGen.statementToCode(block, 'content');
+    const block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
     return '<form' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n' + content + '</form>\n';
 };
 
 htmlGen['input'] = function (block) {
-    var type = block.getFieldValue('type');
-    var value = looseEscape(block.getFieldValue('value'));
-    var placeholder = looseEscape(block.getFieldValue('placeholder'));
-    var name = looseEscape(block.getFieldValue('name'));
+    const type = block.getFieldValue('type');
+    const value = looseEscape(block.getFieldValue('value'));
+    const placeholder = looseEscape(block.getFieldValue('placeholder'));
+    const name = looseEscape(block.getFieldValue('name'));
 
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    const block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
     return '<input type="' + type + '" value="' + value + '" placeholder="' + placeholder + '" name="' + name + '"' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n';
 };
 
 htmlGen['label'] = function (block) {
-    var labelFor = block.getFieldValue('for');
-    var content = htmlGen.statementToCode(block, 'content');
+    const labelFor = block.getFieldValue('for');
+    const content = htmlGen.statementToCode(block, 'content');
 
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    const block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
     return '<label for="' + looseEscape(labelFor) + '"' + (block_modifier ? " " + block_modifier.trim() : "") + '>' + content + '</label>\n';
 };
 
 htmlGen['image'] = function (block) {
-    var source = block.getFieldValue('source');
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    var code = '<img src="' + (URLInput(source) || 'https://codedragon.org/img/no_image.png') + '"' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n';
+    const source = block.getFieldValue('source');
+    const block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    const code = '<img src="' + (URLInput(source) || 'https://codedragon.org/img/no_image.png') + '"' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n';
     return code;
 };
 
 htmlGen['orderedlist'] = function (block) {
-    var content = htmlGen.statementToCode(block, 'content');
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    var code = '<ol' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n' + content + '</ol>\n';
+    const content = htmlGen.statementToCode(block, 'content');
+    const block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    const code = '<ol' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n' + content + '</ol>\n';
     return code;
 };
 
 htmlGen['unorderedlist'] = function (block) {
-    var content = htmlGen.statementToCode(block, 'content');
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    var code = '<ul' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n' + content + '</ul>\n';
+    const content = htmlGen.statementToCode(block, 'content');
+    const block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    const code = '<ul' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n' + content + '</ul>\n';
     return code;
 };
 
 htmlGen['listitem'] = function (block) {
-    var content = htmlGen.statementToCode(block, 'content');
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    var code = '<li' + (block_modifier ? " " + block_modifier.trim() : "") + '>' + content + '</li>\n';
+    const content = htmlGen.statementToCode(block, 'content');
+    const block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    const code = '<li' + (block_modifier ? " " + block_modifier.trim() : "") + '>' + content + '</li>\n';
     return code;
 };
 
 htmlGen['details'] = function (block) {
-    var content = htmlGen.statementToCode(block, 'content');
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    var code = '<details' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n' + content + '</details>\n';
+    const content = htmlGen.statementToCode(block, 'content');
+    const block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    const code = '<details' + (block_modifier ? " " + block_modifier.trim() : "") + '>\n' + content + '</details>\n';
     return code;
 };
 
 htmlGen['summary'] = function (block) {
-    var content = htmlGen.statementToCode(block, 'content');
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
-    var code = '<summary' + (block_modifier ? " " + block_modifier.trim() : "") + '>' + content + '</summary>\n';
+    const content = htmlGen.statementToCode(block, 'content');
+    const block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    const code = '<summary' + (block_modifier ? " " + block_modifier.trim() : "") + '>' + content + '</summary>\n';
     return code;
 };
 
 htmlGen['rgba_picker'] = function (block) {
-    var r = looseEscape(block.getFieldValue('r'));
-    var g = looseEscape(block.getFieldValue('g'));
-    var b = looseEscape(block.getFieldValue('b'));
-    var a = looseEscape(block.getFieldValue('a'));
+    const r = looseEscape(block.getFieldValue('r'));
+    const g = looseEscape(block.getFieldValue('g'));
+    const b = looseEscape(block.getFieldValue('b'));
+    const a = looseEscape(block.getFieldValue('a'));
 
     return `rgba(${r}, ${g}, ${b}, ${a})`;
 };
@@ -775,13 +780,13 @@ htmlGen['color_picker'] = function (block) {
 };
 
 htmlGen['audio'] = function (block) {
-    var source = block.getFieldValue('source');
-    var loop = block.getFieldValue('loop');
-    var autoplay = block.getFieldValue('autoplay');
-    var controls = block.getFieldValue('controls');
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    const source = block.getFieldValue('source');
+    const loop = block.getFieldValue('loop');
+    const autoplay = block.getFieldValue('autoplay');
+    const controls = block.getFieldValue('controls');
+    const block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
 
-    var code = '<audio' + (block_modifier ? " " + block_modifier.trim() : "");
+    let code = '<audio' + (block_modifier ? " " + block_modifier.trim() : "");
     if (loop === "TRUE") {
         code += ' loop';
     }
@@ -792,8 +797,8 @@ htmlGen['audio'] = function (block) {
         code += ' controls';
     }
 
-    var type;
-    var url;
+    let type;
+    let url;
     switch (source) {
         case "8bit.ogg":
             url = 'https://firebasestorage.googleapis.com/v0/b/cdr-app-firebase.appspot.com/o/8bit.ogg?alt=media&token=be7cc7aa-08b2-4ca4-95bd-677111139c8f';
@@ -814,13 +819,13 @@ htmlGen['audio'] = function (block) {
 };
 
 htmlGen['video'] = function (block) {
-    var source = block.getFieldValue('source');
-    var loop = block.getFieldValue('loop');
-    var autoplay = block.getFieldValue('autoplay');
-    var controls = block.getFieldValue('controls');
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
+    let source = block.getFieldValue('source');
+    const loop = block.getFieldValue('loop');
+    const autoplay = block.getFieldValue('autoplay');
+    const controls = block.getFieldValue('controls');
+    const block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC);
 
-    var code = '<video' + (block_modifier ? " " + block_modifier.trim() : "");
+    let code = '<video' + (block_modifier ? " " + block_modifier.trim() : "");
     if (loop === "TRUE") {
         code += ' loop';
     }
@@ -831,7 +836,7 @@ htmlGen['video'] = function (block) {
         code += ' controls';
     }
 
-    var type = "video/mp4";
+    let type = "video/mp4";
     switch (source) {
         case "bbb":
             source = "https://firebasestorage.googleapis.com/v0/b/cdr-app-firebase.appspot.com/o/bigbuckbunny_trail_720p.mp4?alt=media&token=4795c3dd-9271-4801-96da-34da2f0c65d7";
@@ -845,21 +850,21 @@ htmlGen['video'] = function (block) {
 };
 
 htmlGen['script'] = function (block) {
-    var content = Blockly.JavaScript.statementToCode(block, 'content');
-    var code = "<script>\n" + content + "\n</script>\n";
+    const content = Blockly.JavaScript.statementToCode(block, 'content');
+    const code = "<script>\n" + content + "\n</script>\n";
     return code;
 };
 
 htmlGen['chart'] = function (block) {
-    var block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC).trim();
-    var attributes = (block_modifier ? " " + block_modifier.trim() : "");
-    var data = htmlGen.statementToCode(block, 'data', htmlGen.ORDER_ATOMIC);
-    var title = looseEscape(block.getFieldValue('title'));
-    var subtitle = looseEscape(block.getFieldValue('subtitle'));
-    var chartType = block.getFieldValue('type');
-    var chartOrientation = '';
-    var chartLibrary;
-    var chartOptions = 'options';
+    const block_modifier = htmlGen.statementToCode(block, 'modifier', htmlGen.ORDER_ATOMIC).trim();
+    const attributes = (block_modifier ? " " + block_modifier.trim() : "");
+    const data = htmlGen.statementToCode(block, 'data', htmlGen.ORDER_ATOMIC);
+    const title = looseEscape(block.getFieldValue('title'));
+    const subtitle = looseEscape(block.getFieldValue('subtitle'));
+    let chartType = block.getFieldValue('type');
+    let chartOrientation = '';
+    let chartLibrary;
+    let chartOptions = 'options';
 
     if (chartType === 'Column') {
         chartType = 'Bar';
@@ -876,7 +881,7 @@ htmlGen['chart'] = function (block) {
         chartOptions = `google.charts.${chartType}.convertOptions(options)`;
     }
 
-    var divId = makeid(6);
+    const divId = makeid(6);
 
     return `
 <div id="${divId}" ${attributes}></div>
@@ -884,10 +889,10 @@ htmlGen['chart'] = function (block) {
 <script type="text/javascript">
   google.charts.load('current', {'packages':['bar', 'corechart']});
   google.charts.setOnLoadCallback(function() {
-    var data = google.visualization.arrayToDataTable([${data}
+    const data = google.visualization.arrayToDataTable([${data}
     ]);
       
-    var options = {
+    const options = {
       chart: {
         title: '${title}',
         subtitle: '${subtitle}'
@@ -895,20 +900,20 @@ htmlGen['chart'] = function (block) {
       orientation: '${chartOrientation}'
     };
       
-    var chart = new google.${chartLibrary}.${chartType}(document.getElementById('${divId}'));
+    const chart = new google.${chartLibrary}.${chartType}(document.getElementById('${divId}'));
     chart.draw(data, ${chartOptions});
   });
 </script>\n`;
 };
 
 htmlGen['chart_row'] = function (block) {
-    var columns = htmlGen.statementToCode(block, 'columns', htmlGen.ORDER_ATOMIC).trim();
+    const columns = htmlGen.statementToCode(block, 'columns', htmlGen.ORDER_ATOMIC).trim();
     return `
     [${columns}],`
 };
 
 htmlGen['chart_column'] = function (block) {
-    var value = looseEscape(block.getFieldValue('value'));
+    let value = looseEscape(block.getFieldValue('value'));
 
     if (isNaN(value)) {
         value = `'${value}'`;
@@ -918,7 +923,7 @@ htmlGen['chart_column'] = function (block) {
 };
 
 htmlGen['scrollspy'] = function (block) {
-    var elementId = looseEscape(block.getFieldValue('element'));
+    const elementId = looseEscape(block.getFieldValue('element'));
     return `
 <script src="https://cdn.jsdelivr.net/gh/cferdinandi/gumshoe@5.1/dist/gumshoe.polyfills.min.js"></script>
 <script>
