@@ -30,8 +30,8 @@ The Ffau editor is made to be easily addable to any existing project. There are 
 ```html
 <head>
     <!-- google's blockly stuff first -->
-    <script src="https://cdn.jsdelivr.net/gh/google/blockly@1a77a5e85938b9cd76a363f4a5b013b7a3324b69/blockly_compressed.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/google/blockly@1a77a5e85938b9cd76a363f4a5b013b7a3324b69/msg/js/en.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/blockly@3.20200402.1/blockly_compressed.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/google/blockly@3.20200402.1/msg/js/en.js"></script>
 
     <!-- jquery (you probably already have it imported, but make sure you've got at least v3.2.1) -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
