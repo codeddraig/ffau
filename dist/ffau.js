@@ -2564,3 +2564,5 @@ class Ffau {
 
     }
 }
+
+exports.default = Ffau;
