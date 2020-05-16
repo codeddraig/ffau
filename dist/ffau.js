@@ -2170,18 +2170,21 @@ class Ffau {
                 if (typeof thisCategory === 'string') {
                     if (scopes.every(e => virtualScope.includes(e)) &&
                         (thisCategory === category || thisCategory === 'all')
-                    )
+                    ) {
                         return true;
+                    }
                 } else {
                     const newScope = Object.assign([], scopes);
                     newScope.push(thisCategory.name);
 
-                    if (scopes.every(e => virtualScope.includes(e)) && scopes.length === virtualScope.length && thisCategory.name === category)
+                    if (scopes.every(e => virtualScope.includes(e)) && scopes.length === virtualScope.length && thisCategory.name === category) {
                         return true;
+                    }
 
                     const recursiveRes = categoryExists(category, thisCategory.categories, virtualScope, newScope);
-                    if (recursiveRes)
+                    if (recursiveRes) {
                         return true;
+                    }
                 }
             }
 
@@ -2197,8 +2200,9 @@ class Ffau {
 
             innerHTML += '</xml>';
 
-            if (parent)
+            if (parent) {
                 parent.innerHTML += innerHTML;
+            }
 
             return innerHTML;
         } else {
@@ -2550,8 +2554,9 @@ class Ffau {
     `.trim().replace(/((^(<sep><\/sep>))|((?=((<sep><\/sep>)|\s)*$)<sep><\/sep>))/g, '')}
 </xml>`.trim();
 
-            if (parent)
+            if (parent) {
                 parent.innerHTML += innerHTML;
+            }
 
             return innerHTML;
         }
