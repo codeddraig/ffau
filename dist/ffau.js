@@ -14,7 +14,7 @@
 
 				Copyright (c) 2017-19 The CodeDdraig Organisation
 
-				THIS IS VERSION 2.1.3
+				THIS IS VERSION 2.1.5
 */
 
 /* jshint esversion:6 */
