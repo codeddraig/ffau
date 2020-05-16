@@ -65,6 +65,16 @@ class Ffau {
      **/
 
     /**
+     * @typedef {Object} specificFfauCategory - see FfauCategory
+     * @param {string} name - The name of the category
+     * @param {'all' | (specificFfauCategory | string)[]} [categories] - The subcategories to include (all are included if empty)
+     */
+
+    /**
+     * @typedef {'all' | specificFfauCategory} FfauCategory - The definition for which particular categories to render. Used in Ffau.renderToolbox
+     */
+
+    /**
      * @typedef {Object.<settingsItemsType>} settingsCategoryType - An object of categories/section headings for the settings flyout.
      **/
 
@@ -2144,5 +2154,408 @@ class Ffau {
         if (trashItems === false) {
             Blockly.Events.enable();
         }
+    }
+
+    /**
+     * Renders the toolbox given a set of blocks or categories
+     *
+     * @param {HTMLElement} parent
+     * @param {string} id
+     * @param {['all'] | FfauCategory[]} [categories]
+     * @param {'all' | string[]} [blocks]
+     */
+    renderToolbox(parent, id, categories, blocks) {
+        const categoryExists = (category, scope, virtualScope, scopes) => {
+            for (const thisCategory of (scope || categories)) {
+                if (typeof thisCategory === 'string') {
+                    if (scopes.every(e => virtualScope.includes(e)) &&
+                        (thisCategory === category || thisCategory === 'all')
+                    )
+                        return true;
+                } else {
+                    const newScope = Object.assign([], scopes);
+                    newScope.push(thisCategory.name);
+
+                    if (scopes.every(e => virtualScope.includes(e)) && scopes.length === virtualScope.length && thisCategory.name === category)
+                        return true;
+
+                    const recursiveRes = categoryExists(category, thisCategory.categories, virtualScope, newScope);
+                    if (recursiveRes)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        if (blocks) {
+            let innerHTML = `<xml id="${id}" style="display: none;">`;
+
+            blocks.forEach(block => {
+                innerHTML += block === '*sep' ? '<sep></sep>' : `<block type="${block}"></block>`;
+            });
+
+            innerHTML += '</xml>';
+
+            if (parent)
+                parent.innerHTML += innerHTML;
+
+            return innerHTML;
+        } else {
+            const innerHTML = `
+<xml id="${id}" style="display: none;">
+    ${`
+    ${categoryExists('Structure', categories, [], []) ? `<category colour="210" name="Structure">
+        ${categoryExists('Page', categories, ['Structure'], []) ? `<category colour="210" name="Page">
+            <block type="html">
+                <value name="content">
+                    <block type="body"></block>
+                </value>
+                <value name="content">
+                    <block type="head">
+                        <value name="content">
+                            <block type="title"></block>
+                        </value>
+                        <value name="content">
+                            <block type="metacharset"></block>
+                        </value>
+                    </block>
+                </value>
+            </block>
+            <block type="html"></block>
+            <block type="head"></block>
+            <block type="metacharset"></block>
+            <block type="metaviewport"></block>
+            <block type="body"></block>
+            <block type="title"></block>
+            <block type="headertag"></block>
+            <block type="footertag"></block>
+        </category>` : ''}
+        ${categoryExists('Layout', categories, ['Structure'], []) ? `<category colour="210" name="Layout">
+            <block type="divider"></block>
+
+            <block type="divider">
+                <value name="modifier">
+                    <block type="args">
+                        <value name="content">
+                            <block type="class"></block>
+                        </value>
+                    </block>
+                </value>
+            </block>
+
+            <block type="linebreak"></block>
+            <block type="hline"></block>
+        </category>` : ''}
+    </category>` : ''}
+
+    ${categoryExists('Modifiers', categories, [], []) ? `<category colour="120" name="Modifiers">
+        <block type="args"></block>
+
+        <block type="args">
+            <value name="content">
+                <block type="class"></block>
+            </value>
+        </block>
+
+        <block type="args">
+            <value name="content">
+                <block type="stylearg"></block>
+            </value>
+        </block>
+
+        <block type="class"></block>
+        <block type="id"></block>
+        <block type="align"></block>
+
+        <block type="emptyarg"></block>
+    </category>` : ''}
+
+    ${categoryExists('Style', categories, [], []) ? `<category colour="290" name="Style">
+        ${categoryExists('Structure', categories, ['Style'], []) ? `<category colour="290" name="Structure">
+            <block type="style"></block>
+            <block type="stylearg"></block>
+            <block type="linkhead"></block>
+            <block type="cssitem"></block>
+        </category>` : ''}
+        ${categoryExists('Items', categories, ['Style'], []) ? `<category colour="290" name="Items">
+            ${categoryExists('Text', categories, ['Style', 'Items'], []) ? `<category colour="290" name="Text">
+                <label text="Font"></label>
+                <block type="fontfamily"></block>
+                <block type="fontsize"></block>
+                <block type="fontweight"></block>
+
+                <label text="Text Styling"></label>
+                <block type="color-new">
+                    <value name="value">
+                        <block type="color_picker"></block>
+                    </value>
+                </block>
+                <block type="colordropdown"></block>
+
+                <block type="textshadow-new">
+                    <value name="color">
+                        <block type="color_picker"></block>
+                    </value>
+                </block>
+                <block type="texttransform"></block>
+                <block type="textalign"></block>
+                <block type="letterspacing"></block>
+            </category>` : ''}
+
+            ${categoryExists('Arrangement', categories, ['Style', 'Items'], []) ? `<category colour="290" name="Arrangement">
+                <label text="Display"></label>
+                <block type="margin"></block>
+                <block type="padding"></block>
+                <block type="display"></block>
+                <block type="overflow"></block>
+                <block type="float"></block>
+                <block type="verticalalign"></block>
+
+                <label text="Dimensions"></label>
+                <block type="width"></block>
+                <block type="height"></block>
+            </category>` : ''}
+
+            ${categoryExists('Design', categories, ['Style', 'Items'], []) ? `<category colour="290" name="Design">
+                <label text="Colours"></label>
+                <block type="color_picker"></block>
+                <block type="hex_picker"></block>
+                <block type="rgba_picker"></block>
+
+                <label text="Backgrounds"></label>
+                <block type="bgcolor-new">
+                    <value name="value">
+                        <block type="color_picker"></block>
+                    </value>
+                </block>
+                <block type="bgimage"></block>
+                <block type="bgposition"></block>
+                <block type="bgrepeat"></block>
+                <block type="bgsize"></block>
+
+                <label text="Other Design"></label>
+                <block type="cursor"></block>
+                <block type="boxshadow-new">
+                    <value name="color">
+                        <block type="color_picker"></block>
+                    </value>
+                </block>
+            </category>` : ''}
+
+            ${categoryExists('Borders', categories, ['Style', 'Items'], []) ? `<category colour="290" name="Borders">
+                <block type="border-new">
+                    <value name="color">
+                        <block type="color_picker"></block>
+                    </value>
+                </block>
+                <block type="borderedge-new">
+                    <value name="color">
+                        <block type="color_picker"></block>
+                    </value>
+                </block>
+                <block type="bordercol"></block>
+                <block type="borderrad"></block>
+            </category>` : ''}
+
+            ${categoryExists('Transitions', categories, ['Style', 'Items'], []) ? `<category colour="270" name="Transitions">
+                <block type="transition">
+                    <value name="timing-function">
+                        <block type="transitiontimingdropdown"></block>
+                    </value>
+                </block>
+
+                <block type="transitiontimingdropdown"></block>
+                <block type="transitiontimingbezier"></block>
+            </category>` : ''}
+
+            <block type="othercss"></block>
+            <block type="cssevents"></block>
+            <block type="cssnot"></block>
+        </category>` : ''}
+    </category>` : ''}
+    <sep></sep>
+    ${categoryExists('Text', categories, [], []) ? `<category colour="65" name="Text">
+        <block type="emptytext"></block>
+        <block type="span">
+            <value name="content">
+                <block type="emptytext"></block>
+            </value>
+        </block>
+        <block type="textmod">
+            <value name="content">
+                <block type="emptytext"></block>
+            </value>
+        </block>
+        <block type="paragraph">
+            <value name="content">
+                <block type="emptytext"></block>
+            </value>
+        </block>
+        <block type="header">
+            <value name="content">
+                <block type="emptytext"></block>
+            </value>
+        </block>
+        <block type="link">
+            <value name="content">
+                <block type="emptytext"></block>
+            </value>
+        </block>
+    </category>` : ''}
+    ${categoryExists('Organisation', categories, [], []) ? `<category colour="20" name="Organisation">
+        ${categoryExists('Tables', categories, ['Organisation'], []) ? `<category colour="20" name="Tables">
+            <block type="table">
+                <value name="content">
+                    <block type="tablerow"></block>
+                </value>
+                <value name="content">
+                    <block type="tablerow"></block>
+                </value>
+            </block>
+            <block type="table"></block>
+            <block type="tablerow"></block>
+
+            <block type="tableheading">
+                <value name="content">
+                    <block type="emptytext"></block>
+                </value>
+            </block>
+
+            <block type="tabledata">
+                <value name="content">
+                    <block type="emptytext"></block>
+                </value>
+            </block>
+        </category>` : ''}
+        ${categoryExists('Lists', categories, ['Organisation'], []) ? `<category colour="20" name="Lists">
+            <block type="unorderedlist">
+                <value name="content">
+                    <block type="listitem">
+                        <value name="content">
+                            <block type="emptytext"></block>
+                        </value>
+                    </block>
+                </value>
+            </block>
+            <block type="orderedlist">
+                <value name="content">
+                    <block type="listitem">
+                        <value name="content">
+                            <block type="emptytext"></block>
+                        </value>
+                    </block>
+                </value>
+            </block>
+            <block type="listitem">
+                <value name="content">
+                    <block type="emptytext"></block>
+                </value>
+            </block>
+        </category>` : ''}
+        ${categoryExists('Summary', categories, ['Organisation'], []) ? `<category colour="20" name="Summary">
+            <block type="details"></block>
+            <block type="summary">
+                <value name="content">
+                    <block type="emptytext"></block>
+                </value>
+            </block>
+        </category>` : ''}
+    </category>` : ''}
+    ${categoryExists('Forms', categories, [], []) ? `<category colour="160" name="Forms">
+        <block type="form"></block>
+        <block type="input"></block>
+        <block type="label">
+            <value name="content">
+                <block type="emptytext"></block>
+            </value>
+        </block>
+    </category>` : ''}
+    ${categoryExists('Media', categories, [], []) ? `<category colour="330" name="Media">
+        <block type="image"></block>
+        <block type="audio"></block>
+        <block type="video"></block>
+    </category>` : ''}
+
+    <sep></sep>
+
+    ${categoryExists('Snippets', categories, [], []) ? `<category colour="#ff7575" name="Snippets">
+        ${categoryExists('Google Charts', categories, [], []) ? `<category colour="#ff7575" name="Google Charts">
+            <block type="chart">
+                <value name="data">
+                    <block type="chart_row">
+                        <value name="columns">
+                            <block type="chart_column">
+                                <field name="value">Value</field>
+                            </block>
+                        </value>
+                        <value name="columns">
+                            <block type="chart_column">
+                                <field name="value">Property</field>
+                            </block>
+                        </value>
+                    </block>
+                </value>
+                <value name="data">
+                    <block type="chart_row">
+                        <value name="columns">
+                            <block type="chart_column">
+                                <field name="value">Value header</field>
+                            </block>
+                        </value>
+                        <value name="columns">
+                            <block type="chart_column">
+                                <field name="value">Property header</field>
+                            </block>
+                        </value>
+                    </block>
+                </value>
+
+                <value name="modifier">
+                    <block type="args">
+                        <value name="content">
+                            <block type="stylearg">
+                                <value name="content">
+                                    <block type="height">
+                                        <field name="size">300px</field>
+                                    </block>
+                                </value>
+                                <value name="content">
+                                    <block type="width">
+                                        <field name="size">400px</field>
+                                    </block>
+                                </value>
+                            </block>
+                        </value>
+                    </block>
+                </value>
+            </block>
+
+            <block type="chart_row">
+                <value name="columns">
+                    <block type="chart_column"></block>
+                </value>
+                <value name="columns">
+                    <block type="chart_column"></block>
+                </value>
+            </block>
+
+            <block type="chart_column"></block>
+        </category>` : ''}
+
+        ${categoryExists('Gumshoe (scrollspy)', categories, [], []) ? `<category colour="#ff7575" name="Gumshoe (scrollspy)">
+            <block type="scrollspy"></block>
+        </category>` : ''}
+    </category>` : ''}
+    `.trim().replace(/((^(<sep><\/sep>))|((?=((<sep><\/sep>)|\s)*$)<sep><\/sep>))/g, '')}
+</xml>`.trim();
+
+            if (parent)
+                parent.innerHTML += innerHTML;
+
+            return innerHTML;
+        }
+
+
     }
 }

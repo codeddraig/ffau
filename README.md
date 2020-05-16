@@ -64,7 +64,7 @@ The Ffau editor is made to be easily addable to any existing project. There are 
 
 **See BLOCKS.md for a full list of XML blocks**
 
-Here's an example using all Ffau components and three blocks:
+ Here's an example using all Ffau components and three blocks:
 
 ```html
 <body>
@@ -84,6 +84,44 @@ Here's an example using all Ffau components and three blocks:
         <block type="emptytext"></block> <!-- empty text to go inside paragraph -->
     </xml>
 </body>
+```
+
+ The quick way of rendering all blocks at once is using `Ffau.renderToolbox()`. This will use the built-in, recommended layout for the toolbox, although it is more difficult to customise. We refer all users to the manual XML approach in almost all cases, except when there is a reason to use this function: for instance, when using frameworks like React wherein using non-standard HTML tags would be very difficult.
+ 
+ The standard usage, to import the entire toolbox with recommended categories, is simply as follows:
+ 
+ ```html
+<script>
+    ffau.renderToolbox(document.body, 'toolbox', ['all'])
+    //                 ^ where to render it
+    //                                ^ the ID of the element to render it into
+    //                                            ^ what to render
+</script>
+ ```
+ 
+ However, the `Ffau.renderToolbox` function _does_ support a selection of simple solutions to basic toolbox layout, although these all are simple filters of the recommended layout. In the place of `['all']` you could specify either a specific [set of] category(s) by their label:
+ 
+ ```js
+ffau.renderToolbox(document.body, 'toolbox', [{name: 'Structure', categories: ['all']}])
+```
+
+or subcategories:
+
+```js
+ffau.renderToolbox(document.body, 'toolbox', [{name: 'Organisation', categories: ['Lists', 'Summary']}])
+```
+
+...and so on. Alternatively, you can specify block names using the fourth parameter, although no fancy constructs are allowed here as of yet:
+
+```js
+ffau.renderToolbox(document.body, 'toolbox', null, ['head', 'html']);
+```
+
+The method also returns the HTML source, so you can miss out the first parameter if you want and do whatever with the raw source:
+
+```js
+const toolboxHtml = ffau.renderToolbox(null, 'toolbox', null, ['html', 'style']);
+myCustomHandler(toolboxHtml);
 ```
 
 4. Render all components using ffau.js. If your page is the same as the one shown in step 3, you can put this at the bottom of your body:
