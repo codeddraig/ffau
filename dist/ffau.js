@@ -86,12 +86,14 @@ class Ffau {
     /**
      * Initialise the Ffau instance in the document!!!
      */
-    constructor() {
-        console.log("=========================");
-        console.log('%c Ffau Editor ', 'background: #00d1b2; color: white;');
-        console.log("A Blockly-based HTML editor made by the CodeDdraig organisation.");
-        console.log("https://github.com/codeddraig/ffau");
-        console.log("=========================\n");
+    constructor(quiet) {
+        if (quiet !== true) {
+            console.log("=========================");
+            console.log('%c Ffau Editor ', 'background: #00d1b2; color: white;');
+            console.log("A Blockly-based HTML editor made by the CodeDdraig organisation.");
+            console.log("https://github.com/codeddraig/ffau");
+            console.log("=========================\n");
+        }
     }
 
     /**

@@ -55,7 +55,7 @@ The Ffau editor is made to be easily addable to any existing project. There are 
 
     <script>
         // Your JS goes at the bottom of <body>
-        const ffau = new Ffau();
+        const ffau = new Ffau(); // Pass 'true' as the first parameter to prevent decorative (but slow) `console.log`s
     </script>
 </body>
 ```
