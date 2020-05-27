@@ -275,7 +275,11 @@ The reverse-coding implementation supports:
 
 ### Limitations
 
-The only feature *not supported by reverse coding* is *snippets* - take care that toggling the edit mode twice in a row will remove all snippets from the workspace.
+The only intended feature *not* supported by reverse coding is **snippets** - take care that toggling the edit mode twice in a row will remove all snippets from the workspace.
+
+Also, note that due to the output HTML not encoding the location of the blocks in any way, when blocks are converted into HTML, then back to blocks using reverse coding, the original positions will not be stored. Also, some 'unused' elements, such as empty `emptytext` blocks or unused `args` modifiers, may be deleted, as they do not render to anything in HTML, so when converted back the system has no way of knowing they were there in the first place.
+
+If you notice any more issues or errors with reverse-coding, please do not hesitate to [open an issue](https://github.com/codeddraig/ffau/issues/new).
 
 ## Bugs
 To report problems or potential additions, please feel free to visit the 'issues' section of this repo. For security issues, please email us at: **contact@codedragon.org**.
@@ -287,7 +291,7 @@ This project would not be possible without the following amazing libraries. We a
 The JavaScript library which handles DOM transversals and event handling with far more grace and ease than pure JavaScript. It is also a requirement for other libraries used in this project.
 
 ### Blockly by Google (https://github.com/google/blockly)
-A magic library which you may have heard of by now. It creates the whole drag-and-drop block system (excluding the reverse-coding system), which is the basis for this entire system!
+A magic library which you may have heard of by now. It creates the whole drag-and-drop block framework (excluding the reverse-coding API), which is the basis for this entire library!
 
 ### Magic.css by Pal Kerecsenyi (https://github.com/palkerecsenyi/magic)
 CSS library for everything but the editor itself. Developed by one of our own team!
