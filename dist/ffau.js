@@ -911,9 +911,12 @@ class Ffau {
 
                         if (colorStr.split(",").length === 4) {
                             valueField.innerText = colorStr.split(",")[3].trim().replace(/\)$/g, "");
-                            colorBlock.appendChild(valueField);
+                        } else {
+                            b.innerText = b.innerText.trim().replace(/\)$/g, "");
+                            valueField.innerText = '1';
                         }
 
+                        colorBlock.appendChild(valueField);
                         colorValue.appendChild(colorBlock);
                     }
                     // Handle colour names
