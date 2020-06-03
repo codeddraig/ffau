@@ -2489,7 +2489,7 @@ class Ffau {
     <sep></sep>
 
     ${categoryExists('Snippets', categories, [], []) ? `<category colour="#ff7575" name="Snippets">
-        ${categoryExists('Google Charts', categories, [], []) ? `<category colour="#ff7575" name="Google Charts">
+        ${categoryExists('Google Charts', categories, ['Snippets'], []) ? `<category colour="#ff7575" name="Google Charts">
             <block type="chart">
                 <value name="data">
                     <block type="chart_row">
@@ -2552,7 +2552,7 @@ class Ffau {
             <block type="chart_column"></block>
         </category>` : ''}
 
-        ${categoryExists('Gumshoe (scrollspy)', categories, [], []) ? `<category colour="#ff7575" name="Gumshoe (scrollspy)">
+        ${categoryExists('Gumshoe (scrollspy)', categories, ['Snippets'], []) ? `<category colour="#ff7575" name="Gumshoe (scrollspy)">
             <block type="scrollspy"></block>
         </category>` : ''}
     </category>` : ''}
