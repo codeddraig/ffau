@@ -18,7 +18,7 @@ Ffau is open source software. This means you can clone, share and use it however
 
 For full details, please read LICENSE.
 
-Copyright (c) 2017-19 The CodeDdraig Organisation
+Copyright (c) 2017-20 The CodeDdraig Organisation
 
 ## Setup
 The Ffau editor is made to be easily addable to any existing project. There are 4 main steps to setting the Ffau up for a simple project like the one linked above.
@@ -48,9 +48,7 @@ The Ffau editor is made to be easily addable to any existing project. There are 
     <!-- ffau js last -->
     <script src="https://cdn.jsdelivr.net/npm/@codeddraig/ffau-editor@2.1.5/dist/ffau.min.js"></script>
 </head>
-
 <body>
-
     <!-- some elements need to go here, see step 3 -->
 
     <script>
@@ -117,7 +115,7 @@ ffau.renderToolbox(document.body, 'toolbox', [{name: 'Organisation', categories:
 ffau.renderToolbox(document.body, 'toolbox', null, ['head', 'html']);
 ```
 
-The method also returns the HTML source, so you can miss out the first parameter if you want and do whatever with the raw source:
+The method also returns the HTML source, so you can miss out the first parameter if you wish and use the raw source with a custom handler:
 
 ```js
 const toolboxHtml = ffau.renderToolbox(null, 'toolbox', null, ['html', 'style']);
@@ -188,7 +186,7 @@ myCustomHandler(toolboxHtml);
             }
         }
     ], 
-        1 // Set loose auto-closing (auto-close settings menu if focus is shifted to elsewhere in editor)
+        1 // Sets loose auto-closing (auto-close settings menu if focus is shifted to elsewhere in editor)
     );
 
 

@@ -13,277 +13,287 @@
 				However, Ffau is provided with NO WARRANTY whatsoever, and by using this
 					software, you agree to the terms of the MIT License.
 
-				Copyright (c) 2017-19 The CodeDdraig Organisation
+				Copyright (c) 2017-20 The CodeDdraig Organisation
 
 				THIS IS VERSION 2.1.5
  -->
 
-<html lang="en">
+<html lang='en'>
 
-<head>
-    <meta charset="utf-8">
+    <head>
+        <meta charset='utf-8'>
 
-    <!-- HEADER LIBRARIES -->
-    <script defer src="library/fontawesome/all.js"></script>
+        <!-- HEADER LIBRARIES -->
+        <script defer src='library/fontawesome/all.js'></script>
 
-    <!-- google's blockly stuff first -->
-    <script src="https://cdn.jsdelivr.net/gh/google/blockly@3.20200402.1/blockly_compressed.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/google/blockly@3.20200402.1/msg/js/en.js"></script>
+        <!-- google's blockly stuff first -->
+        <script src='https://cdn.jsdelivr.net/gh/google/blockly@3.20200402.1/blockly_compressed.js'></script>
+        <script src='https://cdn.jsdelivr.net/gh/google/blockly@3.20200402.1/msg/js/en.js'></script>
 
-    <!-- jquery -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js"></script>
+        <!-- jquery -->
+        <script src='https://cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js'></script>
 
-    <!-- our blockly tweaks -->
-    <script src="library/ffau/blocks.js"></script>
-    <script src="library/ffau/generator.js"></script>
+        <!-- our blockly tweaks -->
+        <script src='library/ffau/blocks.js'></script>
+        <script src='library/ffau/generator.js'></script>
 
-    <!-- ace editor -->
-    <script charset="utf-8" src="https://cdn.jsdelivr.net/npm/ace-builds@1.4.7/src-min-noconflict/ace.js"
-            type="text/javascript"></script>
+        <!-- ace editor -->
+        <script
+                charset='utf-8' src='https://cdn.jsdelivr.net/npm/ace-builds@1.4.7/src-min-noconflict/ace.js'
+                type='text/javascript'
+        ></script>
 
-    <!-- ffau js file -->
-    <script src="dist/ffau.js"></script>
-    <!-- ffau css file -->
-    <link href="dist/ffau.css" rel="stylesheet">
+        <!-- ffau js file -->
+        <script src='dist/ffau.js'></script>
+        <!-- ffau css file -->
+        <link href='dist/ffau.css' rel='stylesheet'>
 
-    <!-- tab switcher -->
-    <script src="library/index.js"></script>
+        <!-- tab switcher -->
+        <script src='library/index.js'></script>
 
-    <!-- aesthetic CSS libraries -->
-    <link href="https://cdn.jsdelivr.net/npm/magical-css@0.7.2/dist/magic.min.css" rel="stylesheet">
-    <link href="library/layout.css" rel="stylesheet" type="text/css"/>
-    <!-- /HEADER LIBRARIES -->
-    <!--Let browser know website is optimized for mobile-->
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Ffau Editor</title>
-</head>
+        <!-- aesthetic CSS libraries -->
+        <link href='https://cdn.jsdelivr.net/npm/magical-css@0.7.2/dist/magic.min.css' rel='stylesheet'>
+        <link href='library/layout.css' rel='stylesheet' type='text/css' />
+        <!-- /HEADER LIBRARIES -->
+        <!--Let browser know website is optimized for mobile-->
+        <meta content='width=device-width, initial-scale=1.0' name='viewport' />
+        <title>Ffau Editor</title>
+    </head>
 
-<body>
+    <body>
 
-<nav class="green">
-    <ul class="nav-left">
-        <li><a class="nav-brand-text">Ffau Editor</a></li>
-    </ul>
-    <ul class="nav-right">
-        <li class="nav-item">
-            <a href="#" onclick="resetTheme()">
-                <i class="fas fa-redo-alt"></i> Reset theme
-            </a>
-        </li>
+        <nav class='green'>
+            <ul class='nav-left'>
+                <li>
+                    <a class='nav-brand-text'>Ffau Editor</a>
+                </li>
+            </ul>
+            <ul class='nav-right'>
+                <li class='nav-item'>
+                    <a href='#' onclick='resetTheme()'>
+                        <i class='fas fa-redo-alt'></i> Reset theme
+                    </a>
+                </li>
 
-        <li class="nav-item">
-            <a href="#" onclick="saveCode()">
-                <i class="fas fa-download"></i> Download
-            </a>
-        </li>
+                <li class='nav-item'>
+                    <a href='#' onclick='saveCode()'>
+                        <i class='fas fa-download'></i> Download
+                    </a>
+                </li>
 
-        <li class="nav-item">
-            <a href="#!">
-                <label for="loadText" style="cursor:pointer;">
-                    <i class="fas fa-upload"></i>
-                    Upload
-                </label>
-            </a>
-        </li>
+                <li class='nav-item'>
+                    <a href='#!'>
+                        <label for='loadText' style='cursor:pointer;'>
+                            <i class='fas fa-upload'></i>
+                            Upload
+                        </label>
+                    </a>
+                </li>
 
-        <input class="load" id="loadText" onchange="uploadCode()" style="display:none;" type="file">
+                <input class='load' id='loadText' onchange='uploadCode()' style='display:none;' type='file'>
 
-        <li class="nav-item">
-            <a href="#!" onclick="clearCode()">
-                <i class="fas fa-trash"></i> Clear Workspace
-            </a>
-        </li>
-    </ul>
-</nav>
+                <li class='nav-item'>
+                    <a href='#!' onclick='clearCode()'>
+                        <i class='fas fa-trash'></i> Clear Workspace
+                    </a>
+                </li>
+            </ul>
+        </nav>
 
-<div class="hero green">
-    <div class="hero-content">
-        <h1 class="title">The Ffau Editor</h1>
-        <p class="caption">
-            Drag-and-drop HTML, made for teaching and learning web development.
-            <strong>Try it out below!</strong>
-        </p>
-    </div>
-</div>
-
-<div class="container">
-
-    <div class="error info">
-        Want to learn web development? Check out <a class="link white" href="https://codedragon.org" target="_blank">CodeDragon</a>
-        - it's where this editor comes from.
-    </div>
-
-    <div class="row"> <!-- row -->
-        <div class="col col7">
-            <div id="blocklyDiv"></div>
+        <div class='hero green'>
+            <div class='hero-content'>
+                <h1 class='title'>The Ffau Editor</h1>
+                <p class='caption'>
+                    Drag-and-drop HTML, made for teaching and learning web development.
+                    <strong>Try it out below!</strong>
+                </p>
+            </div>
         </div>
-        <div class="col col5" id="preview">
-            <div class="breadcrumb bottom">
-                <ul class="tab-switcher">
-                    <li><a href="#!" onclick="showMePreview()">Preview</a></li>
-                    <li><a href="#!" onclick="showMeCode()">Real code</a></li>
-                </ul>
-                <button class="toggle-edit-mode" onclick="toggleEditMode()">
-                    <i class="fas fa-mouse-pointer" id="mode-icon"></i>&nbsp;&nbsp;Toggle edit
-                    mode
-                </button>
+
+        <div class='container'>
+
+            <div class='error info'>
+                Want to learn web development? Check out
+                <a class='link white' href='https://codedragon.org' target='_blank'>CodeDragon</a>
+                - it's where this editor comes from.
             </div>
 
-            <div id="preview-frame"></div>
-            <div id="code-output"></div>
+            <div class='row'> <!-- row -->
+                <div class='col col7'>
+                    <div id='blocklyDiv'></div>
+                </div>
+                <div class='col col5' id='preview'>
+                    <div class='breadcrumb bottom'>
+                        <ul class='tab-switcher'>
+                            <li>
+                                <a href='#!' onclick='showMePreview()'>Preview</a>
+                            </li>
+                            <li>
+                                <a href='#!' onclick='showMeCode()'>Real code</a>
+                            </li>
+                        </ul>
+                        <button class='toggle-edit-mode' onclick='toggleEditMode()'>
+                            <i class='fas fa-mouse-pointer' id='mode-icon'></i>&nbsp;&nbsp;Toggle edit
+                            mode
+                        </button>
+                    </div>
+
+                    <div id='preview-frame'></div>
+                    <div id='code-output'></div>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
 
-<footer class="green">
-    <div class="bottom">
-        &copy; 2017-19 The CodeDdraig Organisation // <a class="link" href="https://github.com/codeddraig/ffau">https://github.com/codeddraig/ffau</a>
-    </div>
-</footer>
+        <footer class='green'>
+            <div class='bottom'>
+                &copy; 2017-20 The CodeDdraig Organisation //
+                <a class='link' href='https://github.com/codeddraig/ffau'>https://github.com/codeddraig/ffau</a>
+            </div>
+        </footer>
 
-<script>
-    const ffau = new Ffau();
+        <script>
+            const ffau = new Ffau();
 
-    // Render toolbox with all default categories
-    ffau.renderToolbox(document.body, 'toolbox', ['all'])
+            // Render toolbox with all default categories
+            ffau.renderToolbox(document.body, 'toolbox', ['all']);
 
-    // initialise blockly
-    ffau.renderBlockly(
-        document.getElementById('blocklyDiv'),
-        document.getElementById('toolbox'),
-        "panda"
-    );
+            // initialise blockly
+            ffau.renderBlockly(
+                document.getElementById('blocklyDiv'),
+                document.getElementById('toolbox'),
+                'panda',
+            );
 
-    // render preview
-    ffau.renderPreview(
-        document.getElementById('preview-frame')
-    );
+            // render preview
+            ffau.renderPreview(
+                document.getElementById('preview-frame'),
+            );
 
-    // render code
-    let aceSession = ffau.renderCode(
-        ace,
-        document.getElementById('code-output'),
-        "textmate",
-        false // Make it non read-only to allow for reverse coding
-    ).session;
+            // render code
+            let aceSession = ffau.renderCode(
+                ace,
+                document.getElementById('code-output'),
+                'textmate',
+                false, // Make it non read-only to allow for reverse coding
+            ).session;
 
-    ffau.addEvent(); // Bind default update events
+            ffau.addEvent(); // Bind default update events
 
-    ffau.addSettings({
-        "Ffau": [
-            {
-                name: "theme",
-                label:
-                    "Theme",
-                type: "dropdown",
-                options:
-                    [
-                        ["Panda", "panda"],
-                        ["Dark", "dark"],
-                        ["Light", "light"]
-                    ],
-                callback: (value) => {
-                    ffau.setTheme(value);
-                }
-            }],
-        "Ace editor": [
-            {
-                name: "ace_theme",
-                label:
-                    "Editor theme",
-                type: "dropdown",
-                default: "1",
-                options:
-                    [
-                        ["Light", "0"],
-                        ["Dark", "1"]
-                    ],
-                callback:
-                    (value) => {
-                        if (value === "0") {
+            ffau.addSettings({
+                'Ffau': [
+                    {
+                        name: 'theme',
+                        label:
+                            'Theme',
+                        type: 'dropdown',
+                        options:
+                            [
+                                ['Panda', 'panda'],
+                                ['Dark', 'dark'],
+                                ['Light', 'light'],
+                            ],
+                        callback: (value) => {
+                            ffau.setTheme(value);
+                        },
+                    },
+                ],
+                'Ace editor': [
+                    {
+                        name: 'ace_theme',
+                        label: 'Editor theme',
+                        type: 'dropdown',
+                        default: '1',
+                        options:
+                            [
+                                ['Light', '0'],
+                                ['Dark', '1'],
+                            ],
+                        callback:
+                            (value) => {
+                                if (value === '0') {
+                                    ffau.editor.setOptions({
+                                        theme: 'ace/theme/dawn',
+                                    });
+                                } else {
+                                    ffau.editor.setOptions({
+                                        theme: 'ace/theme/tomorrow_night',
+                                    });
+                                }
+                            },
+                    }, {
+                        name: 'font_size',
+                        label: 'Ace font size',
+                        type: 'numeric',
+                        default: '16',
+                        callback: (value) => {
                             ffau.editor.setOptions({
-                                theme: "ace/theme/dawn"
+                                fontSize: value,
                             });
-                        } else {
-                            ffau.editor.setOptions({
-                                theme: "ace/theme/tomorrow_night"
-                            });
-                        }
+                        },
+                    },
+                ],
+            }, 1);
+
+            // add default event listener
+            ffau.addEvent();
+
+            ffau.addEvent(() => {
+                if (ffau.editMode) {
+                    try {
+                        ffau.setXML(ffau.codeToXML(ffau.editor.getValue()));
+                        ffau.ffauWorkspace.cleanUp();
+                        ffau.ffauWorkspace.scrollCenter();
+                    } catch (e) {
+                        ffau.clearWorkspace(false);
                     }
-            }, {
-                name: "font_size",
-                label: "Ace font size",
-                type: "numeric",
-                default: "16",
-                callback: (value) => {
-                    ffau.editor.setOptions({
-                        fontSize: value
-                    });
                 }
+            }, 'ace');
+
+            function toggleEditMode() {
+                ffau.toggleEditMode();
+
+                let icon = document.getElementById('mode-icon');
+                if (icon.classList.contains('fa-code'))
+                    icon.classList.replace('fa-code', 'fa-mouse-pointer');
+                else
+                    icon.classList.replace('fa-mouse-pointer', 'fa-code');
             }
-        ]
-    }, 1);
 
-    // add default event listener
-    ffau.addEvent();
-
-    ffau.addEvent(() => {
-        if (ffau.editMode) {
-            try {
-                ffau.setXML(ffau.codeToXML(ffau.editor.getValue()));
-                ffau.ffauWorkspace.cleanUp();
-                ffau.ffauWorkspace.scrollCenter();
-            } catch (e) {
-                ffau.clearWorkspace(false);
+            function resetTheme() {
+                // reset the theme to the original
+                ffau.updateSettings({
+                    theme: 'panda',
+                    ace_theme: '1',
+                });
             }
-        }
-    }, 'ace');
 
-    function toggleEditMode() {
-        ffau.toggleEditMode();
+            function saveCode() {
+                // download as text file with default name
+                ffau.updateSettings({
+                    auto_save: false,
+                });
+                ffau.downloadXML();
+            }
 
-        let icon = document.getElementById("mode-icon");
-        if (icon.classList.contains("fa-code"))
-            icon.classList.replace("fa-code", "fa-mouse-pointer");
-        else
-            icon.classList.replace("fa-mouse-pointer", "fa-code");
-    }
+            function clearCode() {
+                // clear the workspace
+                ffau.clearWorkspace();
+            }
 
-    function resetTheme() {
-        // reset the theme to the original
-        ffau.updateSettings({
-            theme: "panda",
-            ace_theme: "1"
-        });
-    }
+            function uploadCode() {
+                const input = document.getElementById('loadText');
 
-    function saveCode() {
-        // download as text file with default name
-        ffau.updateSettings({
-            auto_save: false
-        });
-        ffau.downloadXML();
-    }
+                let fileReader = new FileReader();
 
-    function clearCode() {
-        // clear the workspace
-        ffau.clearWorkspace();
-    }
+                fileReader.onload = () => {
+                    ffau.setXML(fileReader.result);
+                    input.value = null;
+                };
 
-    function uploadCode() {
-        const input = document.getElementById('loadText');
+                fileReader.readAsText(input.files[0]);
+            }
+        </script>
 
-        let fileReader = new FileReader();
-
-        fileReader.onload = () => {
-            ffau.setXML(fileReader.result);
-            input.value = null;
-        };
-
-        fileReader.readAsText(input.files[0]);
-    }
-</script>
-
-</body>
+    </body>
 
 </html>

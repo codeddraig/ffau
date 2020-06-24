@@ -12,7 +12,7 @@
 				However, Ffau is provided with NO WARRANTY whatsoever, and by using this
 					software, you agree to the terms of the MIT License.
 
-				Copyright (c) 2017-19 The CodeDdraig Organisation
+				Copyright (c) 2017-20 The CodeDdraig Organisation
 
 				THIS IS VERSION 2.1.5
 */
