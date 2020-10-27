@@ -779,8 +779,12 @@ class Ffau {
         const getBlockId = () => {
             // Helper function to generate 20 character ID
             function idGen() {
-                return Array(20).fill(0).map(() => [...'`0123456789{}!$./,()*[]`ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'][Math.floor(
-                    Math.random() * 81)]).join('');
+                return Array(20)
+                    .fill(0)
+                    .map(
+                        () => [...'`0123456789{}!$./,()*[]ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ']
+                            [Math.floor(Math.random() * 81)],
+                    ).join('');
             }
 
             let id = idGen();

@@ -123,12 +123,11 @@ function URLInput(input) {
     }
 }
 
-function makeid(length) {
+function makeId(length) {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const charactersLength = characters.length;
     for (let i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
     }
     return result;
 }
@@ -157,9 +156,11 @@ htmlGen.getAncestors = function (block, ancestors) {
 // Called with each block/statement to pass onwards custom mapping
 htmlGen.scrub_ = function (block, code) {
     const appendCommentCode = (comment, prefix, suffix) => {
-        commentCode += `${prefix}${comment.includes('\n') ?
-                                   '\n\t' + comment.trim().split('\n').map(z => '\t' + z).join('\n').trim() + '\n'
-                                                          : comment}${suffix}\n`;
+        commentCode += `${prefix}${
+            comment.includes('\n')
+            ? `\n\t${comment.trim().split('\n').map(z => '\t' + z).join('\n').trim()}\n`
+            : comment
+        }${suffix}\n`;
     };
 
     let commentCode = '';
@@ -902,7 +903,7 @@ htmlGen['chart'] = function (block) {
         chartOptions = `google.charts.${chartType}.convertOptions(options)`;
     }
 
-    const divId = makeid(6);
+    const divId = makeId(6);
 
     return `
 <div id="${divId}" ${attributes}></div>
