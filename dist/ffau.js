@@ -1392,6 +1392,8 @@ class Ffau {
                         propertyField.setAttribute('name', 'property');
                         propertyField.innerText = propPair[0];
 
+                        valueField.innerText = propPair[1].trim();
+
                         styleBlock.appendChild(propertyField);
                         break;
                 }
