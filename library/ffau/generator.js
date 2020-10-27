@@ -240,7 +240,7 @@ htmlGen['metaviewport'] = function (block) {
 
 htmlGen['title'] = function (block) {
     const value = block.getFieldValue('value');
-    const code = `<title>${looseEscape(value)}</title>\n`;
+    const code = `<title>${looseEscape(value).trim()}</title>\n`;
     return code;
 };
 

@@ -783,7 +783,7 @@ class Ffau {
                 return Array(20)
                     .fill(0)
                     .map(
-                        () => [...'`0123456789{}!$./,()*[]ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz ']
+                        () => [...'`0123456789{}!$./,()*[]ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz']
                             [Math.floor(Math.random() * 81)],
                     ).join('');
             }
@@ -2137,6 +2137,21 @@ class Ffau {
     generateXML() {
         // workspace -> XML
         const dom = Blockly.Xml.workspaceToDom(this.ffauWorkspace);
+
+        // Filter out speech marks
+        dom
+            .querySelectorAll('*')
+            .forEach(node => {
+                if (node.nodeName.toLowerCase() === 'block') {
+                    node.setAttribute(
+                        'id',
+                        node
+                            .getAttribute('id')
+                            .replace(/"/g, '£'), // £ is not in Blockly's soup, so it won't affect uniqueness
+                    );
+                }
+            });
+
         // XML -> string
         return Blockly.Xml.domToText(dom);
     }
@@ -2171,8 +2186,35 @@ class Ffau {
      * @param {string} xmlString - The XML string to use
      */
     setXML(xmlString) {
+        const xmlLoader = document.createElement('div');
+        xmlLoader.innerHTML = xmlString;
+
+        xmlLoader
+            .querySelectorAll('*')
+            .forEach(thisNode => {
+                if (thisNode.nodeName === 'BLOCK' && thisNode.attributes.length > 2) {
+                    thisNode.setAttribute(
+                        'id',
+                        `${
+                            thisNode.getAttribute('id')
+                        }${
+                            [...thisNode.attributes]
+                                .map(attr => attr.name)
+                                .filter(attr => !['id', 'type'].includes(attr))
+                                .join('')
+                                .replace(/"/g, '£')
+                        }`,
+                    );
+                    [...thisNode.attributes].forEach(attr => {
+                        if (!['id', 'type'].includes(attr.name)) {
+                            thisNode.removeAttribute(attr.name);
+                        }
+                    });
+                }
+            });
+
         // change the text to dom
-        const dom = Blockly.Xml.textToDom(xmlString);
+        const dom = Blockly.Xml.textToDom(xmlLoader.innerHTML);
         // clear the workspace to avoid adding code on top
         this.clearWorkspace(false);
 
