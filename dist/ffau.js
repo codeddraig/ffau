@@ -47,51 +47,66 @@ const colorValues = [
 const cssUnits = ['em', 'ex', 'ch', 'rem', 'vw', 'vh', 'vmin', 'vmax', '%', 'cm', 'mm', 'in', 'px', 'pt', 'pc'];
 
 /**
+ * @typedef {"boolean" | "dropdown"} settingsType
+ */
+
+/**
+ * @typedef {"panda" | "light" | "dark"} ffauTheme
+ */
+
+/**
+ * @typedef {Object[]} settingsItemsType - Customisable options to be loaded into settings flyout.
+ * @param {string} settings[].label - The label of the setting; the text to be displayed above it
+ * @param {string} settings[].name - The internal name of the setting. Can be used to refer to it when manually setting its value.
+ * @param {settingsType} settings[].type - The format type of the setting
+ * @param {boolean} settings[].default - Required only if using type 'boolean' to specify default boolean value. If not specified, false is used.
+ * @param {Array<string[]>} [settings[].options] - Length: 2. Required only if using type 'dropdown' to specify dropdown values. The first item should be the human-readable name of the dropdown item; the second should be the machine value that gets returned to the callback. Omitting the second item will set the returned value to the plain-text one.
+ * @param {settingChangeCallback} settings[].callback - Will be called for each setting after settings menu is fully initialised with initial value, as well as whenever a setting is updated.
+ **/
+
+/**
+ * @typedef {Object} specificFfauCategory - see FfauCategory
+ * @param {string} name - The name of the category
+ * @param {'all' | Array.<(specificFfauCategory | string)>} [categories] - The subcategories to include (all are
+ * included if empty)
+ */
+
+/**
+ * @typedef {'all' | specificFfauCategory} FfauCategory - The definition for which particular categories to render. Used in Ffau.renderToolbox
+ */
+
+/**
+ * @typedef {Object.<settingsItemsType>} settingsCategoryType - An object of categories/section headings for the settings flyout.
+ **/
+
+/**
+ * @callback settingChangeCallback
+ * @param {string} newValue - The new value of the setting
+ **/
+
+/**
  * @class Class representing a Ffau instance, including all components.
+ *
+ * @property {Boolean} quiet - If `true`, no deliberate console.log/console.warns will occur
+ * @property {Boolean|undefined} hasSettings - Indicates whether the workspace has a settings menu attached
+ * @property {Boolean|undefined} settingsOpen - Indicates whether the settings menu is open
+ * @property {settingsItemsType|settingsCategoryType} settings - Indicates whether the workspace has a settings menu
+ * attached
+ * @property {HTMLDivElement|undefined} settingsDiv - The container of the settings menu (if it exists)
+ * @property {HTMLDivElement|undefined} workspaceDiv - The container of the workspace (if it has been created)
+ * @property {HTMLDivElement|undefined} toolboxDiv - The container of the toolbox (if it has been created)
+ * @property {Blockly.WorkspaceSvg|undefined} ffauWorkspace - The Blockly workspace SVG object (if it exists)
+ *
  */
 class Ffau {
     /**
-     * @typedef {"boolean" | "dropdown"} settingsType
-     */
-
-    /**
-     * @typedef {"panda" | "light" | "dark"} ffauTheme
-     */
-
-    /**
-     * @typedef {Object[]} settingsItemsType - Customisable options to be loaded into settings flyout.
-     * @param {string} settings[].label - The label of the setting; the text to be displayed above it
-     * @param {string} settings[].name - The internal name of the setting. Can be used to refer to it when manually setting its value.
-     * @param {settingsType} settings[].type - The format type of the setting
-     * @param {boolean} settings[].default - Required only if using type 'boolean' to specify default boolean value. If not specified, false is used.
-     * @param {Array<string[]>} [settings[].options] - Length: 2. Required only if using type 'dropdown' to specify dropdown values. The first item should be the human-readable name of the dropdown item; the second should be the machine value that gets returned to the callback. Omitting the second item will set the returned value to the plain-text one.
-     * @param {settingChangeCallback} settings[].callback - Will be called for each setting after settings menu is fully initialised with initial value, as well as whenever a setting is updated.
-     **/
-
-    /**
-     * @typedef {Object} specificFfauCategory - see FfauCategory
-     * @param {string} name - The name of the category
-     * @param {'all' | Array.<(specificFfauCategory | string)>} [categories] - The subcategories to include (all are
-     * included if empty)
-     */
-
-    /**
-     * @typedef {'all' | specificFfauCategory} FfauCategory - The definition for which particular categories to render. Used in Ffau.renderToolbox
-     */
-
-    /**
-     * @typedef {Object.<settingsItemsType>} settingsCategoryType - An object of categories/section headings for the settings flyout.
-     **/
-
-    /**
-     * @callback settingChangeCallback
-     * @param {string} newValue - The new value of the setting
-     **/
-
-    /**
-     * Initialise the Ffau instance in the document!!!
+     * Initialise the Ffau instance in the document
+     *
+     * @param {Boolean} [quiet] - Set to true to prevent console.logs in the Ffau instance
      */
     constructor(quiet) {
+        this.quiet = !!quiet;
+
         if (quiet !== true) {
             console.log('=========================');
             console.log('%c Ffau Editor ', 'background: #00d1b2; color: white;');
@@ -129,7 +144,8 @@ class Ffau {
                 });
 
                 if (settingIndex === -1) {
-                    console.warn('Setting `' + e + '` is not defined; skipping.');
+                    if (!this.quiet)
+                        console.warn('Setting `' + e + '` is not defined; skipping.');
                 } else {
                     this.settings[settingIndex].value = updaters[e];
                     this.settings[settingIndex].propagateValue(updaters[e]);
@@ -146,7 +162,8 @@ class Ffau {
      */
     openSettingsMenu(force) {
         if (!this.settingsDiv) {
-            console.warn('Cannot open settings dialogue as it has not yet been initialised.');
+            if (!this.quiet)
+                console.warn('Cannot open settings dialogue as it has not yet been initialised.');
             return false;
         }
 
@@ -189,7 +206,8 @@ class Ffau {
      */
     closeSettingsMenu(force) {
         if (!this.settingsDiv) {
-            console.warn('Cannot close settings dialogue as it has not yet been initialised.');
+            if (!this.quiet)
+                console.warn('Cannot close settings dialogue as it has not yet been initialised.');
             return false;
         }
 
@@ -238,7 +256,8 @@ class Ffau {
             this.hasSettings = false;
             return true;
         } else {
-            console.warn('Cannot delete settings dialogue as it has not yet been initialised.');
+            if (!this.quiet)
+                console.warn('Cannot delete settings dialogue as it has not yet been initialised.');
             return false;
         }
     }
@@ -623,7 +642,8 @@ class Ffau {
         if (theme === this.theme) return true;  // Save some processing/rendering effort.
 
         if (!this.isFfauTheme(theme, true)) {
-            console.warn('Could not set Ffau theme \'' + theme + '\' as it is not listed in `dist/ffau.css`');
+            if (!this.quiet)
+                console.warn('Could not set Ffau theme \'' + theme + '\' as it is not listed in `dist/ffau.css`');
             return false;
         }
 
@@ -737,7 +757,8 @@ class Ffau {
                 this.editor.getSession().on('change', customFunction);
             }
         } else {
-            console.warn('Scope `' + scope + '` is not one of [\'blockly\', \'ace\']');
+            if (!this.quiet)
+                console.warn('Scope `' + scope + '` is not one of [\'blockly\', \'ace\']');
         }
     }
 

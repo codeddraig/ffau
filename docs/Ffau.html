@@ -26,7 +26,7 @@
                 <h2>
                     <span class='attribs'><span class='type-signature'></span></span>
                     Ffau
-                    <span class='signature'>()</span>
+                    <span class='signature'>(quiet<span class='signature-attributes'>opt</span>)</span>
                     <span class='type-signature'></span>
                 </h2>
 
@@ -42,13 +42,223 @@
                     <h4 class='name' id='Ffau'>
                         <span class='type-signature'></span>
                         new Ffau
-                        <span class='signature'>()</span>
+                        <span class='signature'>(quiet<span class='signature-attributes'>opt</span>)</span>
                         <span class='type-signature'></span>
                     </h4>
 
                     <div class='description'>
-                        Initialise the Ffau instance in the document!!!
+                        Initialise the Ffau instance in the document
                     </div>
+
+                    <h5>Parameters:</h5>
+
+                    <table class='params'>
+                        <thead>
+                            <tr>
+
+                                <th>Name</th>
+
+                                <th>Type</th>
+
+                                <th>Attributes</th>
+
+                                <th class='last'>Description</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+
+                                <td class='name'>
+                                    <code>quiet</code>
+                                </td>
+
+                                <td class='type'>
+
+                                    <span class='param-type'>Boolean</span>
+
+                                </td>
+
+                                <td class='attributes'>
+
+                                    &lt;optional><br>
+
+                                </td>
+
+                                <td class='description last'>Set to true to prevent console.logs in the Ffau instance
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                    <h5 class='subsection-title'>Properties:</h5>
+
+                    <table class='props'>
+                        <thead>
+                            <tr>
+
+                                <th>Name</th>
+
+                                <th>Type</th>
+
+                                <th class='last'>Description</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <tr>
+
+                                <td class='name'>
+                                    <code>quiet</code>
+                                </td>
+
+                                <td class='type'>
+
+                                    <span class='param-type'>Boolean</span>
+
+                                </td>
+
+                                <td class='description last'>If `true`, no deliberate console.log/console.warns will
+                                    occur
+                                </td>
+                            </tr>
+
+                            <tr>
+
+                                <td class='name'>
+                                    <code>hasSettings</code>
+                                </td>
+
+                                <td class='type'>
+
+                                    <span class='param-type'>Boolean</span>
+                                    |
+
+                                    <span class='param-type'>undefined</span>
+
+                                </td>
+
+                                <td class='description last'>Indicates whether the workspace has a settings menu
+                                    attached
+                                </td>
+                            </tr>
+
+                            <tr>
+
+                                <td class='name'>
+                                    <code>settingsOpen</code>
+                                </td>
+
+                                <td class='type'>
+
+                                    <span class='param-type'>Boolean</span>
+                                    |
+
+                                    <span class='param-type'>undefined</span>
+
+                                </td>
+
+                                <td class='description last'>Indicates whether the settings menu is open</td>
+                            </tr>
+
+                            <tr>
+
+                                <td class='name'>
+                                    <code>settings</code>
+                                </td>
+
+                                <td class='type'>
+
+                                    <span class='param-type'><a href='global.html#settingsItemsType'>settingsItemsType</a></span>
+                                    |
+
+                                    <span class='param-type'><a href='global.html#settingsCategoryType'>settingsCategoryType</a></span>
+
+                                </td>
+
+                                <td class='description last'>Indicates whether the workspace has a settings menu
+                                    attached
+                                </td>
+                            </tr>
+
+                            <tr>
+
+                                <td class='name'>
+                                    <code>settingsDiv</code>
+                                </td>
+
+                                <td class='type'>
+
+                                    <span class='param-type'>HTMLDivElement</span>
+                                    |
+
+                                    <span class='param-type'>undefined</span>
+
+                                </td>
+
+                                <td class='description last'>The container of the settings menu (if it exists)</td>
+                            </tr>
+
+                            <tr>
+
+                                <td class='name'>
+                                    <code>workspaceDiv</code>
+                                </td>
+
+                                <td class='type'>
+
+                                    <span class='param-type'>HTMLDivElement</span>
+                                    |
+
+                                    <span class='param-type'>undefined</span>
+
+                                </td>
+
+                                <td class='description last'>The container of the workspace (if it has been created)
+                                </td>
+                            </tr>
+
+                            <tr>
+
+                                <td class='name'>
+                                    <code>toolboxDiv</code>
+                                </td>
+
+                                <td class='type'>
+
+                                    <span class='param-type'>HTMLDivElement</span>
+                                    |
+
+                                    <span class='param-type'>undefined</span>
+
+                                </td>
+
+                                <td class='description last'>The container of the toolbox (if it has been created)</td>
+                            </tr>
+
+                            <tr>
+
+                                <td class='name'>
+                                    <code>ffauWorkspace</code>
+                                </td>
+
+                                <td class='type'>
+
+                                    <span class='param-type'>Blockly.WorkspaceSvg</span>
+                                    |
+
+                                    <span class='param-type'>undefined</span>
+
+                                </td>
+
+                                <td class='description last'>The Blockly workspace SVG object (if it exists)</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
 
                     <dl class='details'>
 
@@ -58,7 +268,7 @@
                                 <li>
                                     <a href='ffau.js.html'>ffau.js</a>
                                     ,
-                                    <a href='ffau.js.html#line94'>line 94</a>
+                                    <a href='ffau.js.html#line107'>line 107</a>
                                 </li>
                             </ul>
                         </dd>
@@ -111,7 +321,7 @@
                             <li>
                                 <a href='ffau.js.html'>ffau.js</a>
                                 ,
-                                <a href='ffau.js.html#line682'>line 682</a>
+                                <a href='ffau.js.html#line702'>line 702</a>
                             </li>
                         </ul>
                     </dd>
@@ -188,7 +398,7 @@
                             <li>
                                 <a href='ffau.js.html'>ffau.js</a>
                                 ,
-                                <a href='ffau.js.html#line111'>line 111</a>
+                                <a href='ffau.js.html#line126'>line 126</a>
                             </li>
                         </ul>
                     </dd>
@@ -337,7 +547,7 @@
                             <li>
                                 <a href='ffau.js.html'>ffau.js</a>
                                 ,
-                                <a href='ffau.js.html#line698'>line 698</a>
+                                <a href='ffau.js.html#line718'>line 718</a>
                             </li>
                         </ul>
                     </dd>
@@ -430,7 +640,7 @@
                             <li>
                                 <a href='ffau.js.html'>ffau.js</a>
                                 ,
-                                <a href='ffau.js.html#line302'>line 302</a>
+                                <a href='ffau.js.html#line321'>line 321</a>
                             </li>
                         </ul>
                     </dd>
@@ -559,7 +769,7 @@
                             <li>
                                 <a href='ffau.js.html'>ffau.js</a>
                                 ,
-                                <a href='ffau.js.html#line2188'>line 2188</a>
+                                <a href='ffau.js.html#line2251'>line 2251</a>
                             </li>
                         </ul>
                     </dd>
@@ -638,7 +848,7 @@
                             <li>
                                 <a href='ffau.js.html'>ffau.js</a>
                                 ,
-                                <a href='ffau.js.html#line190'>line 190</a>
+                                <a href='ffau.js.html#line207'>line 207</a>
                             </li>
                         </ul>
                     </dd>
@@ -698,7 +908,7 @@
                             <li>
                                 <a href='ffau.js.html'>ffau.js</a>
                                 ,
-                                <a href='ffau.js.html#line760'>line 760</a>
+                                <a href='ffau.js.html#line781'>line 781</a>
                             </li>
                         </ul>
                     </dd>
@@ -791,7 +1001,7 @@
                             <li>
                                 <a href='ffau.js.html'>ffau.js</a>
                                 ,
-                                <a href='ffau.js.html#line2150'>line 2150</a>
+                                <a href='ffau.js.html#line2186'>line 2186</a>
                             </li>
                         </ul>
                     </dd>
@@ -834,7 +1044,7 @@
                             <li>
                                 <a href='ffau.js.html'>ffau.js</a>
                                 ,
-                                <a href='ffau.js.html#line749'>line 749</a>
+                                <a href='ffau.js.html#line770'>line 770</a>
                             </li>
                         </ul>
                     </dd>
@@ -873,7 +1083,7 @@
                             <li>
                                 <a href='ffau.js.html'>ffau.js</a>
                                 ,
-                                <a href='ffau.js.html#line2137'>line 2137</a>
+                                <a href='ffau.js.html#line2158'>line 2158</a>
                             </li>
                         </ul>
                     </dd>
@@ -965,7 +1175,7 @@
                             <li>
                                 <a href='ffau.js.html'>ffau.js</a>
                                 ,
-                                <a href='ffau.js.html#line572'>line 572</a>
+                                <a href='ffau.js.html#line591'>line 591</a>
                             </li>
                         </ul>
                     </dd>
@@ -1061,7 +1271,7 @@
                             <li>
                                 <a href='ffau.js.html'>ffau.js</a>
                                 ,
-                                <a href='ffau.js.html#line147'>line 147</a>
+                                <a href='ffau.js.html#line163'>line 163</a>
                             </li>
                         </ul>
                     </dd>
@@ -1087,7 +1297,7 @@
                             <li>
                                 <a href='ffau.js.html'>ffau.js</a>
                                 ,
-                                <a href='ffau.js.html#line230'>line 230</a>
+                                <a href='ffau.js.html#line248'>line 248</a>
                             </li>
                         </ul>
                     </dd>
@@ -1257,7 +1467,7 @@
                             <li>
                                 <a href='ffau.js.html'>ffau.js</a>
                                 ,
-                                <a href='ffau.js.html#line523'>line 523</a>
+                                <a href='ffau.js.html#line542'>line 542</a>
                             </li>
                         </ul>
                     </dd>
@@ -1419,7 +1629,7 @@
                             <li>
                                 <a href='ffau.js.html'>ffau.js</a>
                                 ,
-                                <a href='ffau.js.html#line652'>line 652</a>
+                                <a href='ffau.js.html#line672'>line 672</a>
                             </li>
                         </ul>
                     </dd>
@@ -1496,7 +1706,7 @@
                             <li>
                                 <a href='ffau.js.html'>ffau.js</a>
                                 ,
-                                <a href='ffau.js.html#line603'>line 603</a>
+                                <a href='ffau.js.html#line622'>line 622</a>
                             </li>
                         </ul>
                     </dd>
@@ -1645,7 +1855,7 @@
                             <li>
                                 <a href='ffau.js.html'>ffau.js</a>
                                 ,
-                                <a href='ffau.js.html#line2208'>line 2208</a>
+                                <a href='ffau.js.html#line2271'>line 2271</a>
                             </li>
                         </ul>
                     </dd>
@@ -1705,7 +1915,7 @@
                             <li>
                                 <a href='ffau.js.html'>ffau.js</a>
                                 ,
-                                <a href='ffau.js.html#line620'>line 620</a>
+                                <a href='ffau.js.html#line639'>line 639</a>
                             </li>
                         </ul>
                     </dd>
@@ -1765,7 +1975,7 @@
                             <li>
                                 <a href='ffau.js.html'>ffau.js</a>
                                 ,
-                                <a href='ffau.js.html#line2173'>line 2173</a>
+                                <a href='ffau.js.html#line2209'>line 2209</a>
                             </li>
                         </ul>
                     </dd>
@@ -1791,7 +2001,7 @@
                             <li>
                                 <a href='ffau.js.html'>ffau.js</a>
                                 ,
-                                <a href='ffau.js.html#line678'>line 678</a>
+                                <a href='ffau.js.html#line698'>line 698</a>
                             </li>
                         </ul>
                     </dd>
@@ -1851,7 +2061,7 @@
                             <li>
                                 <a href='ffau.js.html'>ffau.js</a>
                                 ,
-                                <a href='ffau.js.html#line120'>line 120</a>
+                                <a href='ffau.js.html#line135'>line 135</a>
                             </li>
                         </ul>
                     </dd>
@@ -1887,7 +2097,7 @@
     <footer>
         Documentation generated by
         <a href='https://github.com/jsdoc/jsdoc'>JSDoc 3.6.3</a>
-        on Tue Oct 27 2020 13:27:50 GMT+0000 (Greenwich Mean Time)
+        on Tue Oct 27 2020 14:19:41 GMT+0000 (Greenwich Mean Time)
     </footer>
 
 <script> prettyPrint(); </script>
