@@ -71,7 +71,8 @@ class Ffau {
     /**
      * @typedef {Object} specificFfauCategory - see FfauCategory
      * @param {string} name - The name of the category
-     * @param {'all' | (specificFfauCategory | string)[]} [categories] - The subcategories to include (all are included if empty)
+     * @param {'all' | Array.<(specificFfauCategory | string)>} [categories] - The subcategories to include (all are
+     * included if empty)
      */
 
     /**
@@ -2201,7 +2202,7 @@ class Ffau {
      *
      * @param {HTMLElement} parent
      * @param {string} id
-     * @param {['all'] | FfauCategory[]} [categories]
+     * @param {FfauCategory[]} [categories]
      * @param {'all' | string[]} [blocks]
      */
     renderToolbox(parent, id, categories, blocks) {
